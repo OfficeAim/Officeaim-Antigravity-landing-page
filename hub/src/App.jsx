@@ -11,6 +11,9 @@ import AgentHQ from './pages/AgentHQ';
 import ProjectLab from './pages/ProjectLab';
 import ModuleViewer from './pages/ModuleViewer';
 
+// Hardcoded admin whitelist — these users always get admin access
+const KNOWN_ADMINS = ['b2283a40-d51e-4bd2-ba46-262465a83d95'];
+
 // AdminGuard: re-checks role from DB on every visit to /hub/admin
 const AdminGuard = ({ session, profile, setProfile }) => {
   const [checking, setChecking] = useState(true);
@@ -20,26 +23,29 @@ const AdminGuard = ({ session, profile, setProfile }) => {
   useEffect(() => {
     const checkAdmin = async () => {
       if (!session) { console.log('AdminGuard: No session'); setChecking(false); return; }
+      const userId = session.user.id;
+      const isWhitelisted = KNOWN_ADMINS.includes(userId);
       try {
-        console.log('AdminGuard: Checking role for user', session.user.id);
         const { data, error } = await supabase
           .from('profiles')
           .select('*')
-          .eq('id', session.user.id)
+          .eq('id', userId)
           .maybeSingle();
-        console.log('AdminGuard: Query result', { data, error });
-        if (error) {
-          console.warn('AdminGuard: RLS or query error:', error.message);
-        }
         if (data) {
-          console.log('AdminGuard: Role found =', data.role);
-          setFreshProfile(data);
-          setProfile(data);
-          setIsAdmin(data.role === 'admin');
-        } else {
-          console.warn('AdminGuard: No profile found for user');
+          // Override role if user is in whitelist
+          const adminProfile = isWhitelisted ? { ...data, role: 'admin' } : data;
+          setFreshProfile(adminProfile);
+          setProfile(adminProfile);
+          setIsAdmin(adminProfile.role === 'admin');
+        } else if (isWhitelisted) {
+          // No profile but whitelisted — grant admin anyway
+          const fallback = { id: userId, role: 'admin', full_name: session.user.user_metadata?.full_name || 'Admin' };
+          setFreshProfile(fallback);
+          setProfile(fallback);
+          setIsAdmin(true);
         }
       } catch (e) {
+        if (isWhitelisted) { setIsAdmin(true); }
         console.warn('Admin check failed:', e);
       }
       setChecking(false);
@@ -127,7 +133,9 @@ const App = () => {
           full_name: metaName
         });
       } else {
-        setProfile(data);
+        // Override role for whitelisted admins
+        const profileData = KNOWN_ADMINS.includes(userId) ? { ...data, role: 'admin' } : data;
+        setProfile(profileData);
       }
     } catch (err) {
       console.error("Critical Profile Fetch Error:", err);
