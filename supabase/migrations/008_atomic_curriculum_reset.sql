@@ -9,9 +9,9 @@ DELETE FROM modules;
 
 -- 2. [MODULES]
 INSERT INTO modules (id, title, description, intro_video_url, order_index) VALUES 
-(1, 'Módulo 1: Demystifying AI - What It Is and Isn''t', 'Learn the fundamentals of AI and overcome initial anxiety about its complexity.', 'https://drive.google.com/file/d/1oSXuFw2cUxUqi1t3_7dKilhW5Rp3hpEN/preview', 1),
-(2, 'Módulo 2: Quick Wins - Immediate AI Productivity Boosts', 'Master your inbox, calendar, and document creation with immediate results.', NULL, 2),
-(3, 'Módulo 3: Strategic AI Integration', 'Upgrade for advanced workflows.', NULL, 3);
+(1, 'Module 1: Demystifying AI - What It Is and Isn''t', 'Learn the fundamentals of AI and overcome initial anxiety about its complexity.', 'https://drive.google.com/file/d/1oSXuFw2cUxUqi1t3_7dKilhW5Rp3hpEN/preview', 1),
+(2, 'Module 2: Quick Wins - Immediate AI Productivity Boosts', 'Master your inbox, calendar, and document creation with immediate results.', NULL, 2),
+(3, 'Module 3: Strategic AI Integration', 'Upgrade for advanced workflows.', NULL, 3);
 
 -- 3. [LESSONS MODULE 1]
 INSERT INTO lessons (id, module_id, title, smart_goal, content, video_url, order_index) VALUES

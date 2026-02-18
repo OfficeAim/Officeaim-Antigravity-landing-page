@@ -249,11 +249,11 @@ const Dashboard = ({ profile }) => {
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
 
-                                    {/* Módulo Label Overlay */}
+                                    {/* Module Label Overlay */}
                                     <div className="absolute top-4 left-4 z-20">
                                         <div className="px-3 py-1 bg-black/40 backdrop-blur-md border border-white/10 rounded-lg">
                                             <span className="text-[10px] font-black uppercase tracking-[0.2em] italic text-white/90">
-                                                Módulo {course.order_index || idx + 1}
+                                                Module {course.order_index || idx + 1}
                                             </span>
                                         </div>
                                     </div>
