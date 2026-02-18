@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { BookOpen, Trophy, Clock, Play, ChevronRight, TrendingUp, Bot, Users, Loader2 } from 'lucide-react';
+import { BookOpen, Trophy, Clock, Play, ChevronRight, TrendingUp, Bot, Users, Loader2, LogOut, Shield } from 'lucide-react';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -84,7 +84,7 @@ const Dashboard = ({ profile }) => {
                     progress: isUnlocked ? Math.min(100, Math.round((completedLessons / Math.max(1, moduleLessons.length)) * 100)) : 0,
                     lessons: moduleLessons.length,
                     status: isUnlocked ? 'In Progress' : 'Locked',
-                    image: m.thumbnail_url || `/images/module${m.id}_hero.png`
+                    image: m.thumbnail_url || `/hub/images/module${m.id}_hero.png`
                 };
             });
 
@@ -116,8 +116,8 @@ const Dashboard = ({ profile }) => {
             console.error("Dashboard data fetch error (falling back to mock data):", err);
             // FAILSAFE MOCK DATA
             setCourses([
-                { id: 1, title: 'AI Foundations', badge: 'Free • Introductory', progress: 65, lessons: 12, status: 'In Progress', image: '/images/module1_hero.png' },
-                { id: 2, title: 'Automation Masterclass', badge: 'Premium • Pilot', progress: 0, lessons: 8, status: 'Locked', image: '/images/module2_hero.png' }
+                { id: 1, title: 'AI Foundations', badge: 'Free • Introductory', progress: 65, lessons: 12, status: 'In Progress', image: '/hub/images/module1_hero.png' },
+                { id: 2, title: 'Automation Masterclass', badge: 'Premium • Pilot', progress: 0, lessons: 8, status: 'Locked', image: '/hub/images/module2_hero.png' }
             ]);
             setStats({ progress: 45, totalLessons: 20 });
         } finally {
@@ -138,12 +138,28 @@ const Dashboard = ({ profile }) => {
                     <span className="text-accent-secondary font-black tracking-widest text-[10px] uppercase mb-4 block italic">CAMPUS DASHBOARD</span>
                     <h1 className="text-5xl lg:text-7xl font-black title-gradient leading-tight italic">
                         Welcome back,<br />
-                        <span className="text-white">{(profile?.full_name || 'Rody').split(' ')[0]}.</span>
+                        <span className="text-white">{(profile?.full_name || 'Student').split(' ')[0]}.</span>
                     </h1>
                 </div>
-                <div className="hidden lg:block text-right">
+                <div className="hidden lg:block text-right space-y-3">
                     <div className="text-[10px] text-text-muted font-black uppercase tracking-widest mb-2 italic">Your Completion Velocity</div>
                     <div className="text-3xl font-black text-white">{stats.progress}% <span className="text-green-400 text-sm">↑ Active</span></div>
+                    <div className="flex items-center gap-3 justify-end mt-4">
+                        {profile?.role === 'admin' && (
+                            <button
+                                onClick={() => navigate('/hub/admin')}
+                                className="flex items-center gap-2 px-4 py-2 text-xs font-black uppercase tracking-widest bg-white/5 border border-white/10 rounded-xl hover:bg-accent-secondary/20 hover:border-accent-secondary/50 transition-all text-accent-secondary"
+                            >
+                                <Shield size={14} /> Admin
+                            </button>
+                        )}
+                        <button
+                            onClick={async () => { await supabase.auth.signOut(); navigate('/hub/login'); }}
+                            className="flex items-center gap-2 px-4 py-2 text-xs font-black uppercase tracking-widest bg-white/5 border border-white/10 rounded-xl hover:bg-red-500/20 hover:border-red-500/50 transition-all text-text-muted hover:text-red-400"
+                        >
+                            <LogOut size={14} /> Sign Out
+                        </button>
+                    </div>
                 </div>
             </motion.div>
 

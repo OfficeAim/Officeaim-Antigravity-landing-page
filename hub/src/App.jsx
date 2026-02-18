@@ -64,7 +64,7 @@ const App = () => {
         const metaName = user?.user_metadata?.full_name || 'Student';
         setProfile({
           id: userId,
-          role: 'admin',
+          role: 'student',
           membership_status: 'active',
           full_name: metaName
         });
@@ -74,7 +74,7 @@ const App = () => {
         const metaName = user?.user_metadata?.full_name || 'Student';
         setProfile({
           id: userId,
-          role: 'admin',
+          role: 'student',
           membership_status: 'active',
           full_name: metaName
         });
