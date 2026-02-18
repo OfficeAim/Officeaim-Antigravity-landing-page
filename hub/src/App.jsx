@@ -11,6 +11,54 @@ import AgentHQ from './pages/AgentHQ';
 import ProjectLab from './pages/ProjectLab';
 import ModuleViewer from './pages/ModuleViewer';
 
+// AdminGuard: re-checks role from DB on every visit to /hub/admin
+const AdminGuard = ({ session, profile, setProfile }) => {
+  const [checking, setChecking] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [freshProfile, setFreshProfile] = useState(profile);
+
+  useEffect(() => {
+    const checkAdmin = async () => {
+      if (!session) { console.log('AdminGuard: No session'); setChecking(false); return; }
+      try {
+        console.log('AdminGuard: Checking role for user', session.user.id);
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .maybeSingle();
+        console.log('AdminGuard: Query result', { data, error });
+        if (error) {
+          console.warn('AdminGuard: RLS or query error:', error.message);
+        }
+        if (data) {
+          console.log('AdminGuard: Role found =', data.role);
+          setFreshProfile(data);
+          setProfile(data);
+          setIsAdmin(data.role === 'admin');
+        } else {
+          console.warn('AdminGuard: No profile found for user');
+        }
+      } catch (e) {
+        console.warn('Admin check failed:', e);
+      }
+      setChecking(false);
+    };
+    checkAdmin();
+  }, [session]);
+
+  if (checking) return (
+    <div className="h-screen w-full flex items-center justify-center bg-[#070A12] text-white">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-accent-secondary mx-auto mb-4"></div>
+        <p className="text-text-muted text-sm">Verifying admin access...</p>
+      </div>
+    </div>
+  );
+  if (!session || !isAdmin) return <Navigate to="/hub/dashboard" />;
+  return <AdminDashboard profile={freshProfile} />;
+};
+
 const App = () => {
   const [session, setSession] = useState(null);
   const [profile, setProfile] = useState(null);
@@ -143,9 +191,7 @@ const App = () => {
 
           <Route path="/hub/admin" element={
             (isPreview) ? <AdminDashboard profile={{ full_name: 'Admin Rody' }} /> :
-              !session || profile?.role !== 'admin'
-                ? <Navigate to="/hub/dashboard" />
-                : <AdminDashboard profile={profile} />
+              <AdminGuard session={session} profile={profile} setProfile={setProfile} />
           } />
 
           <Route path="/hub/agents" element={

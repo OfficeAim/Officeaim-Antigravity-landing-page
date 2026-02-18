@@ -44,8 +44,7 @@ const AdminDashboard = ({ profile }) => {
             console.log("Admin: Fetching users...");
             const { data, error } = await supabase
                 .from('profiles')
-                .select('*')
-                .order('created_at', { ascending: false });
+                .select('*');
 
             if (error) throw error;
 
@@ -514,7 +513,7 @@ const AdminDashboard = ({ profile }) => {
                                     </td>
                                     <td className="px-10 py-6">
                                         <span className="text-[10px] text-text-muted italic">
-                                            {user.created_at ? new Date(user.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}
+                                            {user.created_at ? new Date(user.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Member'}
                                         </span>
                                     </td>
                                     <td className="px-10 py-6 text-right">
