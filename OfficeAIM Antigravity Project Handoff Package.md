@@ -120,3 +120,7 @@ AI is not a distant threat; it's a present-day helper. By recognizing its pervas
    - Connect the "Office Navigator" chat interface to the backend.
    - Index course content for RAG.
 3. **Student Experience**: Verify the "First Login" onboarding flow.
+
+### 📚 Documentation Logs
+- **Version History**: See [`SAVES.md`](file:///Users/rodyfigueroa/Movies/OFICEAIM/Officeaim%20Antigravity%20landing%20page/SAVES.md) for stable save points.
+- **Time Tracking**: See [`How_Long_Working.md`](file:///Users/rodyfigueroa/Movies/OFICEAIM/Officeaim%20Antigravity%20landing%20page/How_Long_Working.md) for session duration estimates.
