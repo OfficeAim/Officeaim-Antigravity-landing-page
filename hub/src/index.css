@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-bg: #070A12;
+  --color-brand-card: rgba(15, 27, 46, 0.6);
+  --color-accent-primary: #FF7A18;
+  --color-accent-secondary: #22D3EE;
+  --color-text-muted: #94A3B8;
+
+  --font-plus-jakarta: "Plus Jakarta Sans", sans-serif;
+  --font-inter: "Inter", sans-serif;
+}
+
+:root {
+  --accent-primary: #FF7A18;
+  --accent-secondary: #22D3EE;
+  --background-dark: #070A12;
+  --card-glass: rgba(15, 27, 46, 0.6);
+  --text-muted: #94A3B8;
+  --white: #FFFFFF;
+}
+
+body {
+  background-color: var(--background-dark);
+  color: var(--white);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.glass-card {
+  @apply bg-brand-card backdrop-blur-xl border border-white/5 rounded-2xl;
+}
+
+.btn-primary {
+  @apply bg-accent-primary hover:bg-[#FF8B38] text-white font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:-translate-y-1 shadow-lg shadow-orange-500/20 active:scale-95 text-center cursor-pointer;
+}
+
+.btn-secondary {
+  @apply bg-white/5 hover:bg-white/10 text-white font-semibold py-3 px-8 rounded-full border border-white/10 transition-all duration-300 backdrop-blur-md active:scale-95 text-center cursor-pointer;
+}
+
+.title-gradient {
+  @apply bg-gradient-to-r from-white via-white to-white/60 bg-clip-text text-transparent;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LESSON CONTENT STYLES — Standard for all module content
+   ═══════════════════════════════════════════════════════════ */
+
+/* Action Boxes: contain all children properly */
+.action-box {
+  overflow: hidden;
+  max-width: 100%;
+}
+
+/* Pre/Code blocks inside lesson content: wrap text, don't overflow */
+.prose pre,
+.action-box pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-x: auto;
+  max-width: 100%;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: #94A3B8;
+}
+
+/* Ordered/Unordered lists inside action boxes */
+.action-box ol,
+.action-box ul {
+  padding-left: 1.5rem;
+}
+
+.action-box ol li,
+.action-box ul li {
+  margin-bottom: 0.5rem;
+}

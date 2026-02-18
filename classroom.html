@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classroom | Workplace Writing with AI - OfficeAim</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --sidebar-width: 350px;
+            --classroom-bg: #070A12;
+            --header-height: 70px;
+        }
+
+        body {
+            background-color: var(--classroom-bg);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .classroom-header {
+            height: var(--header-height);
+            background: #0B1220;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 100;
+        }
+
+        .classroom-body {
+            flex-grow: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Side Navigation */
+        .classroom-sidebar {
+            width: var(--sidebar-width);
+            background: #0B1220;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .curriculum-list {
+            list-style: none;
+        }
+
+        .lesson-group {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .group-title {
+            padding: 16px 24px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            background: rgba(255, 255, 255, 0.01);
+            font-weight: 700;
+        }
+
+        .lesson-item {
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .lesson-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            color: white;
+        }
+
+        .lesson-item.active {
+            background: rgba(34, 211, 238, 0.08);
+            color: var(--accent-secondary);
+            border-left: 3px solid var(--accent-secondary);
+        }
+
+        .lesson-status {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+        }
+
+        .lesson-status.completed {
+            border-color: var(--accent-primary);
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        /* Main Content */
+        .classroom-content {
+            flex-grow: 1;
+            padding: 40px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        .video-container {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .video-placeholder-ui {
+            text-align: center;
+        }
+
+        .play-btn {
+            width: 80px;
+            height: 80px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            margin: 0 auto 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .lesson-text {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .action-box {
+            background: rgba(34, 211, 238, 0.05);
+            border: 1px solid rgba(34, 211, 238, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-right: 8px;
+            color: var(--text-muted);
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 1024px) {
+            .classroom-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="classroom-header">
+        <div class="logo">
+            <a href="courses.html"
+                style="text-decoration: none; color: white; display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 1.2rem;">←</span>
+                <img src="images/logo.png" alt="OfficeAim" class="logo-img" style="height: 30px;">
+            </a>
+        </div>
+        <div class="course-nav-title">
+            <span style="color: var(--text-muted); font-size: 0.8rem;">CURRICULUM:</span>
+            <span style="color: white; font-weight: 700; margin-left: 8px;">AI Fear Buster</span>
+        </div>
+        <div class="user-actions">
+            <a href="#" class="btn btn-secondary btn-sm">Need Help?</a>
+        </div>
+    </header>
+
+    <div class="classroom-body">
+        <!-- Lesson List -->
+        <aside class="classroom-sidebar">
+            <div class="sidebar-header">
+                <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Course Curriculum</h3>
+                <div class="status-labels">
+                    <span>9 Lessons</span>
+                    <span>10% Done</span>
+                </div>
+            </div>
+
+            <nav class="curriculum-list">
+                <div class="lesson-group">
+                    <div class="group-title">Module 1: Demystifying AI</div>
+                    <a href="#" class="lesson-item active">
+                        <div class="lesson-status"></div>
+                        <span>1.1: AI in Daily Life: Beyond Hype</span>
+                    </a>
+                    <a href="#" class="lesson-item">
+                        <div class="lesson-status"></div>
+                        <span>1.2: The Human-AI Partnership</span>
+                    </a>
+                    <a href="#" class="lesson-item">
+                        <div class="lesson-status"></div>
+                        <span>1.3: Your First AI Tool: Introduction</span>
+                    </a>
+                </div>
+
+                <div class="lesson-group">
+                    <div class="group-title">Module 2: Quick Wins</div>
+                    <a href="#" class="lesson-item">
+                        <div class="lesson-status"></div>
+                        <span>2.1: Email Management with AI</span>
+                    </a>
+                    <a href="#" class="lesson-item">
+                        <div class="lesson-status"></div>
+                        <span>2.2: Calendar & Scheduling</span>
+                    </a>
+                    <a href="#" class="lesson-item">
+                        <div class="lesson-status"></div>
+                        <span>2.3: Document Creation Basics</span>
+                    </a>
+                </div>
+
+                <div class="lesson-group">
+                    <div class="group-title">Module 3: Speaking AI</div>
+                    <a href="#" class="lesson-item">
+                        <div class="lesson-status"></div>
+                        <span>3.1: Jargon-Free AI Communication</span>
+                    </a>
+                    <a href="#" class="lesson-item">
+                        <div class="lesson-status"></div>
+                        <span>3.2: Addressing AI Concerns</span>
+                    </a>
+                    <a href="#" class="lesson-item">
+                        <div class="lesson-status"></div>
+                        <span>3.3: The Collaborative Future</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Player -->
+        <main class="classroom-content">
+            <div class="lesson-text">
+                <div class="video-container">
+                    <div class="video-placeholder-ui">
+                        <div class="play-btn">▶</div>
+                        <p style="color: var(--text-muted);">Watch: AI in Your Daily Life (5:45)</p>
+                    </div>
+                </div>
+
+                <div class="lesson-header" style="margin-bottom: 30px;">
+                    <div style="margin-bottom: 15px;">
+                        <span class="tag">MODULE 1</span>
+                        <span class="tag">CONFIDENCE</span>
+                    </div>
+                    <h1 style="font-size: 2.5rem; color: white;">AI in Your Daily Life: Beyond the Hype</h1>
+                    <p class="text-muted" style="font-size: 1.1rem; margin-top: 10px;">
+                        Welcome to OfficeAIM! In this first lesson, we're going to tackle one of the biggest hurdles to
+                        embracing AI: the hype and the fear.
+                    </p>
+                </div>
+
+                <div class="content-rich text-muted" style="line-height: 1.8;">
+                    <h4 style="color: white; margin-bottom: 15px;">What is AI, Really?</h4>
+                    <p>Forget the robots from sci-fi movies. At its core, Artificial Intelligence is simply a computer
+                        system designed to perform tasks that typically require human intelligence. This includes things
+                        like learning, problem-solving, understanding language, and recognizing patterns. Think of it as
+                        a very smart tool, not a sentient being.</p>
+
+                    <h4 style="color: white; margin: 25px 0 15px;">Where is AI Hiding in Plain Sight?</h4>
+                    <p>AI isn't some futuristic technology; it's woven into the fabric of our daily lives. Let's look at
+                        a few examples:</p>
+                    <ul style="margin: 15px 0; padding-left: 20px;">
+                        <li><strong>Your Smartphone:</strong> Face ID and predictive text all use AI.</li>
+                        <li><strong>Online Shopping:</strong> Amazon recommendations analyze your history via AI.</li>
+                        <li><strong>Streaming Services:</strong> Netflix and Spotify suggest content using AI.</li>
+                        <li><strong>Navigation Apps:</strong> Google Maps analyzes real-time traffic data with AI.</li>
+                        <li><strong>Email Spam Filters:</strong> Algorithms block unwanted emails in the background.
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="action-box">
+                    <h3 style="color: var(--accent-secondary); margin-bottom: 15px;">🚀 Action Item: Spot the AI!</h3>
+                    <p style="margin-bottom: 20px;">Take a moment to think about your last 24 hours. Identify at least
+                        three instances where you interacted with AI without even realizing it properly. Use this prompt
+                        to help you brainstorm more:</p>
+                    <div
+                        style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; font-family: monospace; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 15px;">
+                        "Act as a helpful assistant. I'm trying to identify instances of AI in my daily life. Give me 5
+                        common examples of AI I might interact with regularly, explaining briefly how AI is used in
+                        each. Focus on examples that are not overly technical."
+                    </div>
+                    <button class="btn btn-secondary btn-sm"
+                        onclick="navigator.clipboard.writeText('Act as a helpful assistant. I\'m trying to identify instances of AI in my daily life. Give me 5 common examples of AI I might interact with regularly, explaining briefly how AI is used in each. Focus on examples that are not overly technical.')">Copy
+                        Prompt</button>
+                </div>
+
+                <div class="content-rich text-muted" style="line-height: 1.8;">
+                    <h4 style="color: white; margin-bottom: 15px;">The "Monday Morning Test"</h4>
+                    <p>Understanding that AI is already a helpful assistant in your personal life is the first step to
+                        seeing it as a helpful assistant in your professional life. The same principles of pattern
+                        recognition and intelligent assistance apply to your office tasks.</p>
+                </div>
+
+                <div class="lesson-navigation"
+                    style="display: flex; justify-content: space-between; margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05);">
+                    <a href="courses.html" class="btn btn-secondary">← Back to Dashboard</a>
+                    <a href="#" class="btn btn-primary">Complete & Continue →</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Simple UI interactivity for classroom
+        document.querySelectorAll('.lesson-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                if (!e.target.closest('a')) return;
+                document.querySelectorAll('.lesson-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+    </script>
+</body>
+
+</html>

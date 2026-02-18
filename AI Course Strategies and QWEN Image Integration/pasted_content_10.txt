@@ -1,0 +1,121 @@
+Perfect — I’ll give you exact qwen.ai prompts for every image in your visual checklist so you can generate them consistently. Then I’ll guide you on next steps, especially integrating them with your existing content (like your module page).
+
+🎨 Qwen.AI Prompts for OfficeAim Website
+Home Page
+
+Hero image (top banner)
+Prompt:
+
+Modern flat-style illustration of a professional sitting at a desk, with a glowing abstract digital presence (data shapes, flowing lines) symbolizing AI assistance. Minimal color palette: blue, teal, white, gray. Clean, futuristic, not robotic.
+
+Benefits section icons
+
+Clarity:
+
+Minimal vector icon of a glowing lightbulb made of abstract digital lines.
+
+Actionable workflows:
+
+Minimal vector icon of a connected workflow diagram with arrows and steps.
+
+Made for everyone:
+
+Illustration of a diverse group of professionals (different genders, ethnicities) working together on laptops, flat design, minimal.
+
+Closing CTA image
+Prompt:
+
+Abstract digital illustration of a glowing forward path with arrows and flowing data lines, symbolizing progress and starting a journey with AI.
+
+About Page
+
+Hero image (top)
+Prompt:
+
+Illustration of a professional at a desk with an abstract AI assistant visualized as floating digital shapes helping them. Clean and minimal, futuristic, no robots, soft blue/teal tones.
+
+Mission section visual
+Prompt:
+
+Abstract illustration of tangled lines transforming into a clear glowing path. Symbolizes clarity, flat vector style, minimal colors.
+
+Why trust us section
+
+Checklist:
+
+Flat icon illustration of a checklist on paper with digital highlights.
+
+Research:
+
+Flat icon illustration of a magnifying glass over a document.
+
+Trust:
+
+Flat icon illustration of a shield with a digital glowing edge.
+
+Features Page
+
+Hero image (top)
+Prompt:
+
+Dashboard-style mockup illustration showing multiple connected AI tools in one simple interface. Clean design, minimal lines, futuristic but abstract.
+
+Feature icons
+
+Curated reviews:
+
+Vector icon of a magnifying glass hovering over a browser window.
+
+Step-by-step guides:
+
+Vector icon of an open book with digital highlights.
+
+Workflow templates:
+
+Vector icon of a diagram with connected arrows and boxes.
+
+Updates explained:
+
+Vector icon of a notification bell with glowing highlights.
+
+Who it’s for section
+
+Entrepreneur:
+
+Illustration of a modern entrepreneur with laptop in a coworking space, flat vector style.
+
+Freelancer:
+
+Illustration of a freelancer working from a café with coffee and laptop, flat vector style.
+
+Student:
+
+Illustration of a student studying with a digital tablet, sitting at a desk, flat vector style.
+
+✅ Next Steps
+
+Generate all visuals in qwen.ai using the prompts above (keep style consistent: flat, modern, minimal, blue/teal tones).
+
+Upload them into WordPress (Media Library).
+
+Place them section by section on:
+
+Home page → hero, benefits icons, CTA
+
+About page → hero, mission, trust icons
+
+Features page → hero, icons, personas
+
+Check Module 1 page (https://officeaim.wordpress.com/workplace-writing-with-ai-module-1/
+):
+
+This already has strong educational value.
+
+Add a hero image similar to your Home hero (so your course page feels like part of the brand).
+
+Add section illustrations (e.g., writing with AI = digital notepad glowing, professional editing = abstract doc with pen & AI overlay).
+
+👉 Once visuals are in place, your site will feel professional, cohesive, and trustworthy.
+The next big step after that is to connect visuals with CTAs → so every page drives people either to explore your modules or subscribe to your updates.
+
+Do you want me to also prepare Qwen.AI prompts for your Module pages (like Module 1 and future ones), so each has its own branded visuals?
