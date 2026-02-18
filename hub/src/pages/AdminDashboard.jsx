@@ -192,7 +192,7 @@ const AdminDashboard = ({ profile }) => {
         setSupportMessage('');
     };
 
-    const adminName = profile?.full_name?.split(' ')[0] || 'Admin';
+    const adminName = profile?.full_name?.split(' ')[0] || 'Rody';
 
     return (
         <div className="max-w-7xl mx-auto py-12 px-6 lg:px-8 bg-[#070A12] min-h-screen text-white relative">

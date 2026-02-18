@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { motion } from 'framer-motion';
-import { Mail, Lock, ArrowRight, Sparkles } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Mail, Lock, ArrowRight, Sparkles, Zap } from 'lucide-react';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -13,6 +13,23 @@ const Login = () => {
     const [phone, setPhone] = useState('');
     const [isSignUp, setIsSignUp] = useState(false);
     const [message, setMessage] = useState('');
+
+    // Secret admin trigger — tap logo 5 times
+    const [tapCount, setTapCount] = useState(0);
+    const [showAdminLink, setShowAdminLink] = useState(false);
+    const tapTimer = useRef(null);
+
+    const handleLogoTap = () => {
+        clearTimeout(tapTimer.current);
+        const next = tapCount + 1;
+        setTapCount(next);
+        if (next >= 5) {
+            setShowAdminLink(true);
+            setTapCount(0);
+        }
+        // Reset counter after 3s of inactivity
+        tapTimer.current = setTimeout(() => setTapCount(0), 3000);
+    };
 
     const handleAuth = async (e) => {
         e.preventDefault();
@@ -67,7 +84,13 @@ const Login = () => {
             >
                 <div className="text-center mb-12">
                     <div className="flex justify-center mb-8">
-                        <img src="/images/logo_premium.png" alt="OfficeAim" className="h-10" />
+                        <img
+                            src="/images/logo_premium.png"
+                            alt="OfficeAim"
+                            className="h-10 cursor-pointer select-none"
+                            onClick={handleLogoTap}
+                            draggable={false}
+                        />
                     </div>
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-secondary/10 border border-accent-secondary/20 mb-8">
                         <Sparkles className="h-4 w-4 text-accent-secondary" />
@@ -193,6 +216,27 @@ const Login = () => {
                         <div className="h-1 w-1 bg-white rounded-full"></div> Immediate Access
                     </div>
                 </div>
+
+                {/* Secret admin link — appears after 5 logo taps */}
+                <AnimatePresence>
+                    {showAdminLink && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.4, ease: 'easeOut' }}
+                            className="mt-8 flex justify-center"
+                        >
+                            <button
+                                onClick={() => navigate('/hub/admin')}
+                                className="group flex items-center gap-3 px-8 py-4 rounded-2xl bg-accent-primary/10 border border-accent-primary/30 hover:border-accent-secondary/60 hover:bg-accent-secondary/10 transition-all duration-300"
+                            >
+                                <Zap className="h-4 w-4 text-accent-secondary" />
+                                <span className="text-[10px] font-black tracking-widest uppercase italic text-accent-secondary group-hover:text-white transition-colors">Command Center</span>
+                            </button>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </motion.div>
         </div>
     );
