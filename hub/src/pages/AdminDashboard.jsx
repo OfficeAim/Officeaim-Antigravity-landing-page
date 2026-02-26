@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Shield, ShieldCheck, Power, Search, AlertTriangle, TrendingUp, Bot, Sparkles, RefreshCcw, BookOpen, Clock, MessageSquare, Send, ChevronRight, X, Activity, Award, HeadphonesIcon } from 'lucide-react';
+import { Users, Shield, ShieldCheck, Power, Search, AlertTriangle, TrendingUp, Bot, Sparkles, RefreshCcw, BookOpen, Clock, MessageSquare, Send, ChevronRight, X, Activity, Award, HeadphonesIcon, DollarSign, Cpu, BarChart3, Wallet, Pencil, Check, ChevronDown, ChevronUp, Globe, Server, Zap, Mail, ExternalLink, Copy, CheckCircle, Inbox, Bug, ClipboardCheck } from 'lucide-react';
 
 const AdminDashboard = ({ profile }) => {
     const [users, setUsers] = useState([]);
@@ -13,7 +13,10 @@ const AdminDashboard = ({ profile }) => {
         canceled: 0,
         completionRate: '0%',
         revenue: '$0',
-        totalLessonsCompleted: 0
+        totalLessonsCompleted: 0,
+        apiCosts: '$12.50',
+        netMargin: '$0',
+        tierBreakdown: { free: 0, pro: 0, plus: 0 }
     });
 
     // Student detail modal
@@ -22,14 +25,82 @@ const AdminDashboard = ({ profile }) => {
     const [userQuizAttempts, setUserQuizAttempts] = useState([]);
     const [loadingProgress, setLoadingProgress] = useState(false);
 
-    // Support agent
-    const [supportMessage, setSupportMessage] = useState('');
-    const [supportLog, setSupportLog] = useState([
-        { type: 'system', text: 'Support Agent initialized. Ready to assist students.', time: new Date().toISOString() }
-    ]);
+    // Bug-to-Prompt Inbox
+    const [supportTickets, setSupportTickets] = useState([]);
+    const [ticketsLoading, setTicketsLoading] = useState(true);
+    const [copiedId, setCopiedId] = useState(null);
+    const [ticketFilter, setTicketFilter] = useState('open');
+    const [expandedTicket, setExpandedTicket] = useState(null);
+
+    // Cost Analysis Panel
+    const [showCosts, setShowCosts] = useState(true);
+    const [editingCost, setEditingCost] = useState(null);
+    const [editValue, setEditValue] = useState('');
+    const [costs, setCosts] = useState({
+        fixed: [
+            { id: 'supabase', name: 'Supabase', plan: 'Pro', cost: 25, icon: 'server', color: 'green', url: 'https://supabase.com/dashboard/org/_/billing' },
+            { id: 'vercel', name: 'Vercel', plan: 'Pro', cost: 20, icon: 'globe', color: 'blue', url: 'https://vercel.com/dashboard/settings/billing' },
+            { id: 'google_ai', name: 'Google AI', plan: 'Pro', cost: 20, icon: 'sparkles', color: 'purple', url: 'https://one.google.com/ai-premium' },
+            { id: 'domain', name: 'Domain', plan: 'Annual', cost: 1, icon: 'globe', color: 'cyan', url: 'https://domains.google.com/registrar' },
+        ],
+        variable: [
+            { id: 'gemini_api', name: 'Gemini API', plan: 'Usage-based', cost: 5, icon: 'cpu', color: 'orange', url: 'https://aistudio.google.com/billing' },
+            { id: 'n8n', name: 'n8n', plan: 'Not active', cost: 0, icon: 'zap', color: 'yellow', url: 'https://app.n8n.cloud/account/billing' },
+            { id: 'email', name: 'Email Service', plan: 'Not active', cost: 0, icon: 'mail', color: 'pink', url: 'https://resend.com/billing' },
+        ]
+    });
+
+    const totalFixed = costs.fixed.reduce((sum, c) => sum + c.cost, 0);
+    const totalVariable = costs.variable.reduce((sum, c) => sum + c.cost, 0);
+    const totalCosts = totalFixed + totalVariable;
+    const mrrValue = parseFloat(stats.revenue.replace('$', '')) || 0;
+    const netMarginValue = mrrValue - totalCosts;
+    const breakeven = totalCosts > 0 ? Math.ceil(totalCosts / 49) : 0;
+
+    const handleCostEdit = (type, id) => {
+        const list = costs[type];
+        const item = list.find(c => c.id === id);
+        setEditingCost(`${type}-${id}`);
+        setEditValue(item.cost.toString());
+    };
+
+    const handleCostSave = (type, id) => {
+        const val = parseFloat(editValue) || 0;
+        setCosts(prev => ({
+            ...prev,
+            [type]: prev[type].map(c => c.id === id ? { ...c, cost: val } : c)
+        }));
+        setEditingCost(null);
+    };
+
+    const getCostIcon = (icon) => {
+        const iconMap = {
+            server: <Server className="h-3.5 w-3.5" />,
+            globe: <Globe className="h-3.5 w-3.5" />,
+            sparkles: <Sparkles className="h-3.5 w-3.5" />,
+            cpu: <Cpu className="h-3.5 w-3.5" />,
+            zap: <Zap className="h-3.5 w-3.5" />,
+            mail: <Mail className="h-3.5 w-3.5" />,
+        };
+        return iconMap[icon] || <DollarSign className="h-3.5 w-3.5" />;
+    };
+
+    const getColorClasses = (color) => {
+        const map = {
+            green: 'bg-green-500/10 text-green-400',
+            blue: 'bg-blue-500/10 text-blue-400',
+            purple: 'bg-purple-500/10 text-purple-400',
+            cyan: 'bg-cyan-500/10 text-cyan-400',
+            orange: 'bg-orange-500/10 text-orange-400',
+            yellow: 'bg-yellow-500/10 text-yellow-400',
+            pink: 'bg-pink-500/10 text-pink-400',
+        };
+        return map[color] || 'bg-white/10 text-white';
+    };
 
     useEffect(() => {
         fetchUsers();
+        fetchTickets();
     }, []);
 
     useEffect(() => {
@@ -67,18 +138,31 @@ const AdminDashboard = ({ profile }) => {
             const totalPossible = studentCount * (totalLessons || 1);
             const rate = totalPossible > 0 ? Math.round((completedCount / totalPossible) * 100) : 0;
 
+            // Tier breakdown
+            const freeUsers = userList.filter(u => u.subscription_tier === 'free' || !u.subscription_tier).length;
+            const proUsers = userList.filter(u => u.subscription_tier === 'pro').length;
+            const plusUsers = userList.filter(u => u.subscription_tier === 'plus').length;
+
+            // Revenue calc: Pro=$49, Plus=$99
+            const mrr = (proUsers * 49) + (plusUsers * 99);
+            const apiCosts = 12.50; // placeholder
+            const netMargin = mrr - apiCosts;
+
             setStats({
                 total: userList.length,
                 active,
                 canceled,
                 completionRate: `${rate}%`,
-                revenue: `$${active * 49}`,
-                totalLessonsCompleted: completedCount
+                revenue: `$${mrr}`,
+                totalLessonsCompleted: completedCount,
+                apiCosts: `$${apiCosts.toFixed(2)}`,
+                netMargin: `$${netMargin.toFixed(2)}`,
+                tierBreakdown: { free: freeUsers, pro: proUsers, plus: plusUsers }
             });
         } catch (err) {
             console.error("Error fetching users:", err.message);
             setUsers([]);
-            setStats({ total: 0, active: 0, canceled: 0, completionRate: '0%', revenue: '$0', totalLessonsCompleted: 0 });
+            setStats({ total: 0, active: 0, canceled: 0, completionRate: '0%', revenue: '$0', totalLessonsCompleted: 0, apiCosts: '$0', netMargin: '$0', tierBreakdown: { free: 0, pro: 0, plus: 0 } });
         } finally {
             setLoading(false);
         }
@@ -183,16 +267,75 @@ const AdminDashboard = ({ profile }) => {
         return `${days}d ago`;
     };
 
-    const handleSupportSend = () => {
-        if (!supportMessage.trim()) return;
-        setSupportLog(prev => [...prev,
-        { type: 'admin', text: supportMessage, time: new Date().toISOString() },
-        { type: 'system', text: `Message queued. Support ticket created for review.`, time: new Date().toISOString() }
-        ]);
-        setSupportMessage('');
+    const fetchTickets = async () => {
+        setTicketsLoading(true);
+        try {
+            const { data, error } = await supabase
+                .from('support_tickets')
+                .select('*')
+                .order('created_at', { ascending: false });
+            if (error) throw error;
+            setSupportTickets((data || []).map(t => ({
+                id: t.id,
+                student: t.student_name,
+                issue: t.issue,
+                description: t.description,
+                pageUrl: t.page_url,
+                generatedPrompt: t.generated_prompt || `# Role: Dev\n# Bug: ${t.issue}\n# Context: ${t.description || 'No details provided.'}\n# Page: ${t.page_url || 'Unknown'}`,
+                status: t.status,
+                timestamp: t.created_at,
+                userId: t.user_id
+            })));
+        } catch (err) {
+            console.error('Error fetching tickets:', err.message);
+        } finally {
+            setTicketsLoading(false);
+        }
     };
 
-    const adminName = profile?.full_name?.split(' ')[0] || 'Rody';
+    const handleCopyPrompt = async (id, prompt) => {
+        try {
+            await navigator.clipboard.writeText(prompt);
+            setCopiedId(id);
+            setTimeout(() => setCopiedId(null), 2000);
+        } catch (err) {
+            console.error('Failed to copy:', err);
+        }
+    };
+
+    const handleResolveTicket = async (id) => {
+        try {
+            const { error } = await supabase
+                .from('support_tickets')
+                .update({ status: 'resolved', resolved_at: new Date().toISOString(), resolved_by: profile?.id })
+                .eq('id', id);
+            if (error) throw error;
+            setSupportTickets(prev => prev.map(t => t.id === id ? { ...t, status: 'resolved' } : t));
+            if (expandedTicket === id) setExpandedTicket(null);
+        } catch (err) {
+            console.error('Error resolving ticket:', err.message);
+        }
+    };
+
+    const handleReopenTicket = async (id) => {
+        try {
+            const { error } = await supabase
+                .from('support_tickets')
+                .update({ status: 'open', resolved_at: null, resolved_by: null })
+                .eq('id', id);
+            if (error) throw error;
+            setSupportTickets(prev => prev.map(t => t.id === id ? { ...t, status: 'open' } : t));
+        } catch (err) {
+            console.error('Error reopening ticket:', err.message);
+        }
+    };
+
+    const filteredTickets = supportTickets.filter(t => {
+        if (ticketFilter === 'all') return true;
+        return t.status === ticketFilter;
+    });
+
+    const adminName = profile?.role === 'admin' ? 'Admin' : (profile?.full_name?.split(' ')[0] || 'Student');
 
     return (
         <div className="max-w-7xl mx-auto py-12 px-6 lg:px-8 bg-[#070A12] min-h-screen text-white relative">
@@ -369,59 +512,76 @@ const AdminDashboard = ({ profile }) => {
             </AnimatePresence>
 
             {/* =================== HEADER =================== */}
-            <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
-                <div>
-                    <span className="text-accent-secondary font-black tracking-widest text-[10px] uppercase mb-4 block italic">ADMIN COMMAND CENTER</span>
-                    <h1 className="text-5xl lg:text-7xl font-black title-gradient leading-tight italic">
-                        Welcome back,<br />
-                        <span className="text-white">{adminName}.</span>
-                    </h1>
-                </div>
-                <div className="flex gap-4">
-                    <div className="glass-card px-8 py-5 border-white/5 bg-white/[0.02]">
-                        <div className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-1 italic">Est. Revenue</div>
-                        <div className="text-2xl font-black text-white">{stats.revenue}</div>
-                    </div>
-                    <div className="glass-card px-8 py-5 border-white/5 bg-white/[0.02]">
-                        <div className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-1 italic">Course Velocity</div>
-                        <div className="text-2xl font-black text-cyan-400">{stats.completionRate}</div>
-                    </div>
-                </div>
+            <div className="mb-12">
+                <span className="text-accent-secondary font-black tracking-widest text-[10px] uppercase mb-4 block italic">ADMIN COMMAND CENTER</span>
+                <h1 className="text-5xl lg:text-7xl font-black title-gradient leading-tight italic">
+                    Welcome back,<br />
+                    <span className="text-white">{adminName}.</span>
+                </h1>
             </div>
 
-            {/* =================== STAT CARDS =================== */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-                <div className="glass-card p-10 border-white/5 bg-white/[0.01] relative overflow-hidden group">
+            {/* =================== 4-CARD KPI ROW =================== */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                {/* Card 1: Total Enrolled */}
+                <div className="glass-card p-8 border-white/5 bg-white/[0.01] relative overflow-hidden group">
                     <div className="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                        <Users size={120} />
+                        <Users size={100} />
                     </div>
-                    <div className="flex items-center gap-3 mb-6">
-                        <Users className="text-accent-primary h-5 w-5" />
+                    <div className="flex items-center gap-3 mb-4">
+                        <div className="h-9 w-9 rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
+                            <Users className="text-blue-400 h-4 w-4" />
+                        </div>
                         <h3 className="text-[10px] font-black uppercase tracking-[0.2em] italic text-text-muted">Total Enrolled</h3>
                     </div>
-                    <div className="text-5xl font-black italic">{stats.total}</div>
+                    <div className="text-4xl font-black italic mb-2">{stats.total}</div>
+                    <div className="text-[10px] text-text-muted italic font-bold tracking-wide">
+                        {stats.tierBreakdown.free} Free · {stats.tierBreakdown.pro} Pro · {stats.tierBreakdown.plus} Plus
+                    </div>
                 </div>
 
-                <div className="glass-card p-10 border-white/5 bg-white/[0.01] relative overflow-hidden group">
+                {/* Card 2: Monthly Revenue (MRR) */}
+                <div className="glass-card p-8 border-white/5 bg-white/[0.01] relative overflow-hidden group">
                     <div className="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                        <ShieldCheck size={120} />
+                        <DollarSign size={100} />
                     </div>
-                    <div className="flex items-center gap-3 mb-6">
-                        <ShieldCheck className="text-green-400 h-5 w-5" />
-                        <h3 className="text-[10px] font-black uppercase tracking-[0.2em] italic text-text-muted">Active Access</h3>
+                    <div className="flex items-center gap-3 mb-4">
+                        <div className="h-9 w-9 rounded-xl bg-green-500/10 flex items-center justify-center border border-green-500/20">
+                            <DollarSign className="text-green-400 h-4 w-4" />
+                        </div>
+                        <h3 className="text-[10px] font-black uppercase tracking-[0.2em] italic text-text-muted">Monthly Revenue</h3>
                     </div>
-                    <div className="text-5xl font-black italic text-green-400">{stats.active}</div>
+                    <div className="text-4xl font-black italic text-green-400">{stats.revenue}</div>
+                    <div className="text-[10px] text-text-muted italic font-bold tracking-wide">MRR · Pro $49 + Plus $99</div>
                 </div>
 
-                <div className="glass-card p-10 border-white/5 bg-white/[0.01] relative overflow-hidden group">
+                {/* Card 3: LLM API Costs */}
+                <div className="glass-card p-8 border-white/5 bg-white/[0.01] relative overflow-hidden group">
                     <div className="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                        <TrendingUp size={120} />
+                        <Cpu size={100} />
                     </div>
-                    <div className="flex items-center gap-3 mb-6">
-                        <TrendingUp className="text-accent-secondary h-5 w-5" />
-                        <h3 className="text-[10px] font-black uppercase tracking-[0.2em] italic text-text-muted">Lessons Completed</h3>
+                    <div className="flex items-center gap-3 mb-4">
+                        <div className="h-9 w-9 rounded-xl bg-orange-500/10 flex items-center justify-center border border-orange-500/20">
+                            <Cpu className="text-orange-400 h-4 w-4" />
+                        </div>
+                        <h3 className="text-[10px] font-black uppercase tracking-[0.2em] italic text-text-muted">Infra Costs</h3>
                     </div>
-                    <div className="text-5xl font-black italic">{stats.totalLessonsCompleted}</div>
+                    <div className="text-4xl font-black italic text-orange-400">${totalCosts.toFixed(2)}</div>
+                    <div className="text-[10px] text-text-muted italic font-bold tracking-wide">Fixed ${totalFixed} + Variable ${totalVariable}</div>
+                </div>
+
+                {/* Card 4: Net Margin */}
+                <div className="glass-card p-8 border-white/5 bg-white/[0.01] relative overflow-hidden group">
+                    <div className="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                        <BarChart3 size={100} />
+                    </div>
+                    <div className="flex items-center gap-3 mb-4">
+                        <div className="h-9 w-9 rounded-xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20">
+                            <BarChart3 className="text-purple-400 h-4 w-4" />
+                        </div>
+                        <h3 className="text-[10px] font-black uppercase tracking-[0.2em] italic text-text-muted">Net Margin</h3>
+                    </div>
+                    <div className={`text-4xl font-black italic ${netMarginValue >= 0 ? 'text-purple-400' : 'text-red-400'}`}>{netMarginValue >= 0 ? '+' : ''}${netMarginValue.toFixed(2)}</div>
+                    <div className="text-[10px] text-text-muted italic font-bold tracking-wide">Revenue − API Costs</div>
                 </div>
             </div>
 
@@ -547,6 +707,209 @@ const AdminDashboard = ({ profile }) => {
                 </div>
             </div>
 
+            {/* =================== FINANCIAL COMMAND CENTER =================== */}
+            <div className="glass-card border-amber-500/20 bg-amber-500/[0.01] relative overflow-hidden mb-12">
+                <div className="absolute -right-20 -top-20 w-64 h-64 bg-amber-500/5 blur-[120px] rounded-full"></div>
+                <button
+                    onClick={() => setShowCosts(!showCosts)}
+                    className="w-full p-10 flex items-center justify-between hover:bg-white/[0.02] transition-colors"
+                >
+                    <div className="flex items-center gap-4">
+                        <div className="h-10 w-10 rounded-xl bg-amber-500/10 flex items-center justify-center border border-amber-500/20">
+                            <Wallet className="text-amber-400 h-5 w-5" />
+                        </div>
+                        <div className="text-left">
+                            <h2 className="text-xl font-black italic uppercase tracking-tight text-white">Financial Command Center</h2>
+                            <p className="text-[10px] text-text-muted italic font-bold tracking-wide mt-1">Real infrastructure costs · Click any amount to update</p>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-6">
+                        <div className="text-right">
+                            <div className="text-[10px] font-black text-text-muted uppercase tracking-widest italic">Total Monthly</div>
+                            <div className="text-2xl font-black text-amber-400">${totalCosts.toFixed(2)}</div>
+                        </div>
+                        {showCosts ? <ChevronUp className="h-5 w-5 text-text-muted" /> : <ChevronDown className="h-5 w-5 text-text-muted" />}
+                    </div>
+                </button>
+
+                {showCosts && (
+                    <div className="px-10 pb-10">
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            {/* Fixed Costs */}
+                            <div className="bg-white/[0.02] rounded-2xl border border-white/5 overflow-hidden">
+                                <div className="p-5 border-b border-white/5 flex items-center justify-between">
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-text-muted italic">Fixed Costs</span>
+                                    <span className="text-sm font-black text-white italic">${totalFixed.toFixed(2)}/mo</span>
+                                </div>
+                                <div className="divide-y divide-white/5">
+                                    {costs.fixed.map(item => (
+                                        <div key={item.id} className="px-5 py-4 flex items-center justify-between group hover:bg-white/[0.02] transition-colors">
+                                            <div className="flex items-center gap-3">
+                                                <div className={`h-7 w-7 rounded-lg ${getColorClasses(item.color)} flex items-center justify-center`}>
+                                                    {getCostIcon(item.icon)}
+                                                </div>
+                                                <div>
+                                                    <div className="text-xs font-bold text-white italic">{item.name}</div>
+                                                    <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-[9px] text-text-muted italic hover:text-accent-secondary transition-colors inline-flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                                                        {item.plan} <ExternalLink className="h-2.5 w-2.5" />
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                {editingCost === `fixed-${item.id}` ? (
+                                                    <div className="flex items-center gap-1">
+                                                        <span className="text-xs text-text-muted">$</span>
+                                                        <input
+                                                            type="number"
+                                                            value={editValue}
+                                                            onChange={(e) => setEditValue(e.target.value)}
+                                                            onKeyDown={(e) => e.key === 'Enter' && handleCostSave('fixed', item.id)}
+                                                            className="w-16 bg-white/10 border border-amber-500/30 rounded-lg px-2 py-1 text-xs text-white text-right focus:outline-none"
+                                                            autoFocus
+                                                        />
+                                                        <button onClick={() => handleCostSave('fixed', item.id)} className="p-1 hover:bg-white/10 rounded-md transition-colors">
+                                                            <Check className="h-3 w-3 text-green-400" />
+                                                        </button>
+                                                    </div>
+                                                ) : (
+                                                    <>
+                                                        <span className="text-sm font-black text-white italic">${item.cost}</span>
+                                                        <button
+                                                            onClick={() => handleCostEdit('fixed', item.id)}
+                                                            className="p-1 opacity-0 group-hover:opacity-100 hover:bg-white/10 rounded-md transition-all"
+                                                        >
+                                                            <Pencil className="h-3 w-3 text-text-muted" />
+                                                        </button>
+                                                    </>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Variable Costs */}
+                            <div className="bg-white/[0.02] rounded-2xl border border-white/5 overflow-hidden">
+                                <div className="p-5 border-b border-white/5 flex items-center justify-between">
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-text-muted italic">Variable Costs</span>
+                                    <span className="text-sm font-black text-white italic">${totalVariable.toFixed(2)}/mo</span>
+                                </div>
+                                <div className="divide-y divide-white/5">
+                                    {costs.variable.map(item => (
+                                        <div key={item.id} className="px-5 py-4 flex items-center justify-between group hover:bg-white/[0.02] transition-colors">
+                                            <div className="flex items-center gap-3">
+                                                <div className={`h-7 w-7 rounded-lg ${getColorClasses(item.color)} flex items-center justify-center`}>
+                                                    {getCostIcon(item.icon)}
+                                                </div>
+                                                <div>
+                                                    <div className="text-xs font-bold text-white italic">{item.name}</div>
+                                                    <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-[9px] text-text-muted italic hover:text-accent-secondary transition-colors inline-flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                                                        {item.plan} <ExternalLink className="h-2.5 w-2.5" />
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                {editingCost === `variable-${item.id}` ? (
+                                                    <div className="flex items-center gap-1">
+                                                        <span className="text-xs text-text-muted">$</span>
+                                                        <input
+                                                            type="number"
+                                                            value={editValue}
+                                                            onChange={(e) => setEditValue(e.target.value)}
+                                                            onKeyDown={(e) => e.key === 'Enter' && handleCostSave('variable', item.id)}
+                                                            className="w-16 bg-white/10 border border-amber-500/30 rounded-lg px-2 py-1 text-xs text-white text-right focus:outline-none"
+                                                            autoFocus
+                                                        />
+                                                        <button onClick={() => handleCostSave('variable', item.id)} className="p-1 hover:bg-white/10 rounded-md transition-colors">
+                                                            <Check className="h-3 w-3 text-green-400" />
+                                                        </button>
+                                                    </div>
+                                                ) : (
+                                                    <>
+                                                        <span className="text-sm font-black text-white italic">${item.cost}</span>
+                                                        <button
+                                                            onClick={() => handleCostEdit('variable', item.id)}
+                                                            className="p-1 opacity-0 group-hover:opacity-100 hover:bg-white/10 rounded-md transition-all"
+                                                        >
+                                                            <Pencil className="h-3 w-3 text-text-muted" />
+                                                        </button>
+                                                    </>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Summary */}
+                            <div className="space-y-6">
+                                {/* Profit/Loss Card */}
+                                <div className={`rounded-2xl border p-6 ${netMarginValue >= 0 ? 'bg-green-500/[0.03] border-green-500/10' : 'bg-red-500/[0.03] border-red-500/10'}`}>
+                                    <div className="text-[10px] font-black uppercase tracking-widest text-text-muted italic mb-3">Monthly P&L</div>
+                                    <div className="space-y-3">
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-xs text-text-muted italic">Revenue (MRR)</span>
+                                            <span className="text-sm font-black text-green-400 italic">${mrrValue.toFixed(2)}</span>
+                                        </div>
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-xs text-text-muted italic">Total Costs</span>
+                                            <span className="text-sm font-black text-red-400 italic">-${totalCosts.toFixed(2)}</span>
+                                        </div>
+                                        <div className="h-px bg-white/10"></div>
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-xs font-bold text-white italic">Net Margin</span>
+                                            <span className={`text-lg font-black italic ${netMarginValue >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                                                {netMarginValue >= 0 ? '+' : ''}${netMarginValue.toFixed(2)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    {/* Margin bar */}
+                                    <div className="mt-4">
+                                        <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                                            <div
+                                                className={`h-full rounded-full transition-all duration-500 ${netMarginValue >= 0 ? 'bg-gradient-to-r from-green-500 to-emerald-400' : 'bg-gradient-to-r from-red-500 to-orange-400'}`}
+                                                style={{ width: `${mrrValue > 0 ? Math.min(100, Math.max(5, ((mrrValue - totalCosts) / mrrValue) * 100)) : 0}%` }}
+                                            />
+                                        </div>
+                                        <div className="flex justify-between mt-1">
+                                            <span className="text-[8px] text-text-muted">Costs</span>
+                                            <span className="text-[8px] text-text-muted">{mrrValue > 0 ? Math.round(((mrrValue - totalCosts) / mrrValue) * 100) : 0}% margin</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Breakeven */}
+                                <div className="bg-white/[0.02] rounded-2xl border border-white/5 p-6">
+                                    <div className="text-[10px] font-black uppercase tracking-widest text-text-muted italic mb-3">Breakeven Point</div>
+                                    <div className="text-3xl font-black text-amber-400 italic mb-1">{breakeven} <span className="text-sm text-text-muted">students</span></div>
+                                    <div className="text-[10px] text-text-muted italic">at $49/mo Pro plan to cover ${totalCosts.toFixed(0)}/mo costs</div>
+                                </div>
+
+                                {/* Scale Projections */}
+                                <div className="bg-white/[0.02] rounded-2xl border border-white/5 p-6">
+                                    <div className="text-[10px] font-black uppercase tracking-widest text-text-muted italic mb-3">Revenue Projections</div>
+                                    <div className="space-y-2">
+                                        {[{ students: 10, label: '10 paid' }, { students: 25, label: '25 paid' }, { students: 50, label: '50 paid' }, { students: 100, label: '100 paid' }].map(tier => {
+                                            const rev = tier.students * 49;
+                                            const estCost = totalFixed + (tier.students * 2);
+                                            return (
+                                                <div key={tier.students} className="flex items-center justify-between">
+                                                    <span className="text-[10px] text-text-muted italic w-16">{tier.label}</span>
+                                                    <div className="flex-1 mx-3 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                                                        <div className="h-full bg-gradient-to-r from-amber-500 to-green-400 rounded-full" style={{ width: `${Math.min(100, (rev / (100 * 49)) * 100)}%` }} />
+                                                    </div>
+                                                    <span className="text-[10px] font-black text-green-400 italic w-20 text-right">+${(rev - estCost).toLocaleString()}</span>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+
             {/* =================== BOTTOM ROW: INFRA + SUPPORT =================== */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Infrastructure */}
@@ -573,46 +936,140 @@ const AdminDashboard = ({ profile }) => {
                     <button className="w-full py-4 bg-white/5 border border-white/10 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all italic">RUN DIAGNOSTIC SCAN</button>
                 </div>
 
-                {/* Support Agent */}
+                {/* Bug-to-Prompt Inbox */}
                 <div className="glass-card p-12 border-emerald-500/20 bg-emerald-500/[0.01] relative overflow-hidden">
                     <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-emerald-500/5 blur-[100px] rounded-full"></div>
-                    <h3 className="text-xl font-black mb-6 italic uppercase tracking-tight text-white flex items-center gap-3">
-                        <HeadphonesIcon className="text-emerald-400 h-5 w-5" />
-                        Support Agent
-                    </h3>
 
-                    {/* Chat Log */}
-                    <div className="bg-black/30 rounded-2xl border border-white/5 mb-4 max-h-48 overflow-y-auto p-4 space-y-3">
-                        {supportLog.map((msg, idx) => (
-                            <div key={idx} className={`flex gap-3 ${msg.type === 'admin' ? 'justify-end' : ''}`}>
-                                {msg.type === 'system' && (
-                                    <div className="h-6 w-6 rounded-md bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
-                                        <Bot className="h-3 w-3 text-emerald-400" />
-                                    </div>
-                                )}
-                                <div className={`text-xs italic max-w-[80%] p-2.5 rounded-xl ${msg.type === 'admin' ? 'bg-accent-secondary/10 text-accent-secondary border border-accent-secondary/20' : 'bg-white/[0.03] text-text-muted border border-white/5'}`}>
-                                    {msg.text}
-                                </div>
-                            </div>
-                        ))}
+                    {/* Header + Filter */}
+                    <div className="flex items-center justify-between mb-6">
+                        <h3 className="text-xl font-black italic uppercase tracking-tight text-white flex items-center gap-3">
+                            <Inbox className="text-emerald-400 h-5 w-5" />
+                            Bug-to-Prompt Inbox
+                        </h3>
+                        <div className="flex items-center gap-1 bg-white/[0.03] rounded-xl border border-white/5 p-1">
+                            {['open', 'resolved', 'all'].map(f => (
+                                <button
+                                    key={f}
+                                    onClick={() => setTicketFilter(f)}
+                                    className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${ticketFilter === f
+                                        ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                                        : 'text-text-muted hover:text-white border border-transparent'
+                                        }`}
+                                >
+                                    {f}
+                                </button>
+                            ))}
+                        </div>
                     </div>
 
-                    {/* Input */}
-                    <div className="flex gap-3">
-                        <input
-                            type="text"
-                            value={supportMessage}
-                            onChange={(e) => setSupportMessage(e.target.value)}
-                            onKeyDown={(e) => e.key === 'Enter' && handleSupportSend()}
-                            placeholder="Type a support note..."
-                            className="flex-grow bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-emerald-500/30 transition-all"
-                        />
-                        <button
-                            onClick={handleSupportSend}
-                            className="px-4 py-3 bg-emerald-500/20 border border-emerald-500/30 rounded-xl hover:bg-emerald-500/30 transition-all"
-                        >
-                            <Send className="h-4 w-4 text-emerald-400" />
-                        </button>
+                    {/* Ticket Count */}
+                    <div className="flex items-center gap-2 mb-4">
+                        <div className={`h-2 w-2 rounded-full ${filteredTickets.length > 0 ? 'bg-emerald-400 shadow-[0_0_8px_#34D399]' : 'bg-white/20'}`} />
+                        <span className="text-[10px] font-black uppercase tracking-widest text-text-muted italic">
+                            {filteredTickets.length} ticket{filteredTickets.length !== 1 ? 's' : ''}
+                        </span>
+                    </div>
+
+                    {/* Ticket List */}
+                    <div className="space-y-3 max-h-[420px] overflow-y-auto pr-1" style={{ scrollbarWidth: 'thin', scrollbarColor: '#34D39930 transparent' }}>
+                        {filteredTickets.length === 0 ? (
+                            <div className="py-12 text-center bg-black/20 rounded-2xl border border-dashed border-white/10">
+                                <CheckCircle className="h-8 w-8 text-emerald-500/30 mx-auto mb-3" />
+                                <p className="text-xs text-text-muted italic">No {ticketFilter !== 'all' ? ticketFilter : ''} tickets. All clear!</p>
+                            </div>
+                        ) : filteredTickets.map(ticket => (
+                            <motion.div
+                                key={ticket.id}
+                                layout
+                                initial={{ opacity: 0, y: 8 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -8 }}
+                                className={`bg-black/30 rounded-2xl border transition-all ${ticket.status === 'resolved'
+                                    ? 'border-white/5 opacity-60'
+                                    : 'border-emerald-500/10 hover:border-emerald-500/20'
+                                    }`}
+                            >
+                                {/* Ticket Header — clickable */}
+                                <button
+                                    onClick={() => setExpandedTicket(expandedTicket === ticket.id ? null : ticket.id)}
+                                    className="w-full px-5 py-4 flex items-center justify-between text-left group"
+                                >
+                                    <div className="flex items-center gap-3 min-w-0">
+                                        <div className={`h-8 w-8 rounded-lg flex items-center justify-center flex-shrink-0 ${ticket.status === 'resolved'
+                                            ? 'bg-green-500/10'
+                                            : 'bg-red-500/10'
+                                            }`}>
+                                            {ticket.status === 'resolved'
+                                                ? <CheckCircle className="h-4 w-4 text-green-400" />
+                                                : <Bug className="h-4 w-4 text-red-400" />
+                                            }
+                                        </div>
+                                        <div className="min-w-0">
+                                            <div className="text-xs font-black text-white italic truncate">{ticket.student}</div>
+                                            <div className="text-[10px] text-text-muted italic truncate">{ticket.issue}</div>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-3 flex-shrink-0">
+                                        <span className="text-[9px] text-text-muted italic hidden sm:inline">
+                                            {new Date(ticket.timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                                        </span>
+                                        <ChevronDown className={`h-4 w-4 text-text-muted transition-transform duration-200 ${expandedTicket === ticket.id ? 'rotate-180' : ''
+                                            }`} />
+                                    </div>
+                                </button>
+
+                                {/* Expanded Payload */}
+                                <AnimatePresence>
+                                    {expandedTicket === ticket.id && (
+                                        <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: 'auto', opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            transition={{ duration: 0.2 }}
+                                            className="overflow-hidden"
+                                        >
+                                            <div className="px-5 pb-5">
+                                                {/* Code Block */}
+                                                <pre className="bg-gray-950 border border-emerald-500/10 rounded-xl p-4 font-mono text-[11px] text-emerald-400 leading-relaxed whitespace-pre-wrap overflow-x-auto mb-4">
+                                                    {ticket.generatedPrompt}
+                                                </pre>
+
+                                                {/* Actions */}
+                                                <div className="flex items-center gap-3">
+                                                    <button
+                                                        onClick={(e) => { e.stopPropagation(); handleCopyPrompt(ticket.id, ticket.generatedPrompt); }}
+                                                        className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border ${copiedId === ticket.id
+                                                            ? 'bg-emerald-500/20 border-emerald-500/30 text-emerald-400'
+                                                            : 'bg-white/5 border-white/10 text-text-muted hover:text-white hover:bg-white/10'
+                                                            }`}
+                                                    >
+                                                        {copiedId === ticket.id
+                                                            ? <><ClipboardCheck className="h-3.5 w-3.5" /> Copied!</>
+                                                            : <><Copy className="h-3.5 w-3.5" /> Copy Prompt</>
+                                                        }
+                                                    </button>
+                                                    {ticket.status === 'open' ? (
+                                                        <button
+                                                            onClick={(e) => { e.stopPropagation(); handleResolveTicket(ticket.id); }}
+                                                            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border bg-green-500/5 border-green-500/20 text-green-400 hover:bg-green-500/15"
+                                                        >
+                                                            <CheckCircle className="h-3.5 w-3.5" /> Mark Resolved
+                                                        </button>
+                                                    ) : (
+                                                        <button
+                                                            onClick={(e) => { e.stopPropagation(); handleReopenTicket(ticket.id); }}
+                                                            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border bg-orange-500/5 border-orange-500/20 text-orange-400 hover:bg-orange-500/15"
+                                                        >
+                                                            <RefreshCcw className="h-3.5 w-3.5" /> Reopen
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </motion.div>
+                        ))}
                     </div>
                 </div>
             </div>

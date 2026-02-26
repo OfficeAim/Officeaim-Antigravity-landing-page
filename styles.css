@@ -90,6 +90,7 @@ h6 {
     font-family: var(--font-heading);
     font-weight: 700;
     line-height: 1.2;
+    letter-spacing: -0.02em;
     margin-bottom: var(--spacing-md);
 }
 
@@ -113,6 +114,7 @@ h4 {
 p {
     margin-bottom: var(--spacing-md);
     color: var(--text-secondary);
+    line-height: 1.8;
 }
 
 /* ============================================================

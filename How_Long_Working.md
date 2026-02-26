@@ -17,7 +17,9 @@ Estimación del tiempo de desarrollo basado en las sesiones de trabajo registrad
 | **23/02/2026** | ~3h 15m | AgentHQ Layout, Guardrails & Login Polish (AM) |
 | **23/02/2026** | ~6h | Gem Cards Grid, Agent Persona Fix, 3 New Skills (PM) |
 | **25/02/2026** | ~8h 45m | Sprint 1–3: Gems direct links, Gema routing upgrade, Workflow Guide, Lesson 1.4 SQL debug, NotebookLM video |
-| **TOTAL** | **~77.25 horas** | **Semana 2–3 de Desarrollo Intenso** |
+| **26/02/2026** | ~3h | Landing page avatar fixes, Admin Dashboard KPI expansion, Financial Command Center, Cost Analysis |
+| **26/02/2026** | ~3.5h | Mascot Bug Triage logic, Chat UI polish, Landing Page Global Widget |
+| **TOTAL** | **~83.75 horas** | **Semana 2–3 de Desarrollo Intenso** |
 
 ---
 *Nota: Estos tiempos son aproximados basados en la duración de las sesiones de terminal.*

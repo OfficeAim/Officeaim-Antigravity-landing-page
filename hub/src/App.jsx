@@ -14,6 +14,7 @@ import ModuleViewer from './pages/ModuleViewer';
 import AgentTestConsole from './pages/AgentTestConsole';
 import MyProjects from './pages/MyProjects';
 import Lounge from './pages/Lounge';
+import MascotAssistant from './components/MascotAssistant';
 import { Toaster } from 'react-hot-toast';
 
 // Hardcoded admin whitelist — these users always get admin access
@@ -150,7 +151,9 @@ const App = () => {
     }
   };
 
-  if (loading) {
+  const isWidgetRoute = window.location.pathname === '/hub/widget';
+
+  if (loading && !isWidgetRoute) {
     return (
       <div className="h-screen w-full flex items-center justify-center bg-[#070A12] text-white">
         <div className="text-center">
@@ -161,7 +164,7 @@ const App = () => {
     );
   }
 
-  if (error) {
+  if (error && !isWidgetRoute) {
     return (
       <div className="h-screen w-full flex items-center justify-center bg-[#070A12] text-white p-10">
         <div className="glass-card p-10 border-red-500/20 text-center max-w-md">
@@ -179,7 +182,7 @@ const App = () => {
   return (
     <Router>
       <Toaster position="top-right" reverseOrder={false} toastOptions={{ className: 'glass-card border-white/10 text-white text-[12px] italic font-bold', style: { background: 'rgba(7, 10, 18, 0.9)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255, 255, 255, 0.1)', color: '#fff' } }} />
-      <div className="min-h-screen bg-[#070A12] text-white font-plus-jakarta">
+      <div className={isWidgetRoute ? "min-h-screen bg-transparent text-white font-plus-jakarta" : "min-h-screen bg-[#070A12] text-white font-plus-jakarta"}>
         <Routes>
           {/* Main Redirect */}
           <Route path="/hub" element={isPreview ? <Navigate to="/hub/dashboard" /> : (!session ? <Navigate to="/hub/login" /> : <Navigate to="/hub/dashboard" />)} />
@@ -211,6 +214,8 @@ const App = () => {
             <Route path="/hub/projects" element={<MyProjects />} />
             <Route path="/hub/lounge" element={<Lounge profile={profile} />} />
           </Route>
+
+          <Route path="/hub/widget" element={<MascotAssistant profile={{ role: 'guest' }} />} />
 
           <Route path="/hub/admin" element={
             (isPreview) ? <AdminDashboard profile={{ full_name: 'Admin Rody' }} /> :

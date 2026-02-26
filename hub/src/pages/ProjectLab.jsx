@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, useSearchParams, useOutletContext } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../lib/supabase';
@@ -57,6 +57,34 @@ const ProjectLab = () => {
     const [isSaving, setIsSaving] = useState(false);
     const [isLoadingSession, setIsLoadingSession] = useState(false);
     const [isVaultOpen, setIsVaultOpen] = useState(false);
+
+    const [processingTime, setProcessingTime] = useState(0);
+    const messagesEndRef = useRef(null);
+
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages, isProcessing]);
+
+    useEffect(() => {
+        let interval;
+        if (isProcessing) {
+            setProcessingTime(0);
+            interval = setInterval(() => {
+                setProcessingTime(prev => prev + 0.1);
+            }, 100);
+        } else {
+            setProcessingTime(0);
+        }
+        return () => clearInterval(interval);
+    }, [isProcessing]);
+
+    const getThinkingColorClasses = () => {
+        if (processingTime < 1.5) return { border: 'border-emerald-500', shadow: 'shadow-[0_0_15px_rgba(16,185,129,0.5)]', bg: 'bg-emerald-500', text: 'text-emerald-500', glow: 'shadow-[0_0_20px_rgba(16,185,129,0.15)]' };
+        if (processingTime < 3.0) return { border: 'border-yellow-500', shadow: 'shadow-[0_0_15px_rgba(234,179,8,0.5)]', bg: 'bg-yellow-500', text: 'text-yellow-500', glow: 'shadow-[0_0_20px_rgba(234,179,8,0.15)]' };
+        if (processingTime < 5.0) return { border: 'border-orange-500', shadow: 'shadow-[0_0_15px_rgba(249,115,22,0.5)]', bg: 'bg-orange-500', text: 'text-orange-500', glow: 'shadow-[0_0_20px_rgba(249,115,22,0.15)]' };
+        return { border: 'border-red-500', shadow: 'shadow-[0_0_15px_rgba(239,68,68,0.5)]', bg: 'bg-red-500', text: 'text-red-500', glow: 'shadow-[0_0_20px_rgba(239,68,68,0.15)]' };
+    };
+    const tc = getThinkingColorClasses();
 
     // Mock Vault Blueprints
     const vaultBlueprints = [
@@ -249,10 +277,10 @@ const ProjectLab = () => {
                         exit={{ width: 0, opacity: 0 }}
                         className="h-full border-r border-white/5 bg-[#0B1220]/50 flex flex-col shrink-0 overflow-hidden"
                     >
-                        <div className="p-8 flex flex-col h-full min-w-[380px] overflow-y-auto overflow-x-hidden custom-scrollbar">
+                        <div className="flex flex-col h-full min-w-[380px] overflow-y-auto overflow-x-hidden custom-scrollbar">
 
-                            {/* Massive Avatar Section */}
-                            <div className="flex flex-col items-center justify-center mb-8 shrink-0">
+                            {/* Massive Avatar Section - STICKY */}
+                            <div className="sticky top-0 z-10 bg-gray-950 pt-8 pb-6 px-8 flex flex-col items-center justify-center shrink-0 border-b border-white/5 shadow-2xl">
                                 <div className="relative mb-6 group">
                                     {agent.avatar ? (
                                         <div className={`h-40 w-40 rounded-full overflow-hidden border-4 ${isProcessing ? `border-red-500 shadow-[0_0_30px_rgba(239,68,68,0.4)] animate-pulse` : `border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.2)]`}`}>
@@ -282,40 +310,42 @@ const ProjectLab = () => {
                                 </p>
                             </div>
 
-                            {/* Info Block */}
-                            <div className="w-full space-y-3 text-left glass-card p-5 rounded-xl border-white/5 bg-white/[0.02] mb-8 shrink-0">
-                                <div className="flex items-center justify-between text-[10px] font-bold italic"><span className="text-text-muted uppercase">Framework:</span><span className="text-white">OfficeAIM V2</span></div>
-                                <div className="flex items-center justify-between text-[10px] font-bold italic"><span className="text-text-muted uppercase">Role:</span><span className={`font-black ${agent.color}`}>{agent.role || 'Agent'}</span></div>
-                                <div className="flex items-center justify-between text-[10px] font-bold italic"><span className="text-text-muted uppercase">Origin:</span><span className="text-white">{agent.nationality || 'Unknown'}</span></div>
-                                <div className="flex items-center justify-between text-[10px] font-bold italic"><span className="text-text-muted uppercase">Clearance:</span><span className="text-emerald-400">{userTier}</span></div>
-                            </div>
-
-                            {/* Persona Intelligence & Session Parameters */}
-                            <div className="space-y-6 flex-grow flex flex-col shrink-0">
-                                <div>
-                                    <h3 className="text-[8px] font-black uppercase tracking-widest text-text-muted mb-2 italic">Persona Intelligence</h3>
-                                    <p className="text-[10px] text-text-muted leading-relaxed italic">{agent.description || "Specialized intelligence for the OfficeAIM board. I maintain memory of this session to provide consistent guidance."}</p>
+                            <div className="p-8 flex flex-col flex-grow">
+                                {/* Info Block */}
+                                <div className="w-full space-y-3 text-left glass-card p-5 rounded-xl border-white/5 bg-white/[0.02] mb-8 shrink-0">
+                                    <div className="flex items-center justify-between text-[10px] font-bold italic"><span className="text-text-muted uppercase">Framework:</span><span className="text-white">OfficeAIM V2</span></div>
+                                    <div className="flex items-center justify-between text-[10px] font-bold italic"><span className="text-text-muted uppercase">Role:</span><span className={`font-black ${agent.color}`}>{agent.role || 'Agent'}</span></div>
+                                    <div className="flex items-center justify-between text-[10px] font-bold italic"><span className="text-text-muted uppercase">Origin:</span><span className="text-white">{agent.nationality || 'Unknown'}</span></div>
+                                    <div className="flex items-center justify-between text-[10px] font-bold italic"><span className="text-text-muted uppercase">Clearance:</span><span className="text-emerald-400">{userTier}</span></div>
                                 </div>
 
-                                <div className="glass-card p-5 border-white/5 bg-white/[0.01] rounded-2xl">
-                                    <h3 className="text-[8px] font-black uppercase tracking-widest text-text-muted mb-4 italic">Session Parameters</h3>
-                                    <input type="text" placeholder="Project Name..." value={projectTitle} onChange={(e) => setProjectTitle(e.target.value)} className="bg-transparent text-[11px] font-bold italic text-white placeholder:text-white/20 outline-none w-full border-b border-white/5 pb-2 mb-4" />
-                                    <div className="space-y-3 mb-6">
-                                        <div className="flex items-center justify-between text-[9px] font-bold italic"><span className="text-text-muted">Stability:</span><span className="text-green-400">99.9%</span></div>
-                                        <div className="flex items-center justify-between text-[9px] font-bold italic"><span className="text-text-muted">Memory:</span><span>{messages.length} units</span></div>
-                                        <div className="flex items-center justify-between text-[9px] font-bold italic"><span className="text-text-muted">Access:</span><span className="text-accent-secondary">{userTier}</span></div>
+                                {/* Persona Intelligence & Session Parameters */}
+                                <div className="space-y-6 flex-grow flex flex-col shrink-0">
+                                    <div>
+                                        <h3 className="text-[8px] font-black uppercase tracking-widest text-text-muted mb-2 italic">Persona Intelligence</h3>
+                                        <p className="text-[10px] text-text-muted leading-relaxed italic">{agent.description || "Specialized intelligence for the OfficeAIM board. I maintain memory of this session to provide consistent guidance."}</p>
                                     </div>
-                                    <button onClick={handleSaveToVault} disabled={isSaving || messages.length === 0} className={`w-full py-3 rounded-xl border transition-all flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest italic bg-white/5 border-white/10 text-white/40 hover:bg-white/10 hover:text-white`}>
-                                        {isSaving ? <Loader2 className="h-3 w-3 animate-spin" /> : <><Save className="h-3 w-3" /> {searchParams.get('sessionId') ? 'Anchor Update' : 'Anchor in Vault'}</>}
+
+                                    <div className="glass-card p-5 border-white/5 bg-white/[0.01] rounded-2xl">
+                                        <h3 className="text-[8px] font-black uppercase tracking-widest text-text-muted mb-4 italic">Session Parameters</h3>
+                                        <input type="text" placeholder="Project Name..." value={projectTitle} onChange={(e) => setProjectTitle(e.target.value)} className="bg-transparent text-[11px] font-bold italic text-white placeholder:text-white/20 outline-none w-full border-b border-white/5 pb-2 mb-4" />
+                                        <div className="space-y-3 mb-6">
+                                            <div className="flex items-center justify-between text-[9px] font-bold italic"><span className="text-text-muted">Stability:</span><span className="text-green-400">99.9%</span></div>
+                                            <div className="flex items-center justify-between text-[9px] font-bold italic"><span className="text-text-muted">Memory:</span><span>{messages.length} units</span></div>
+                                            <div className="flex items-center justify-between text-[9px] font-bold italic"><span className="text-text-muted">Access:</span><span className="text-accent-secondary">{userTier}</span></div>
+                                        </div>
+                                        <button onClick={handleSaveToVault} disabled={isSaving || messages.length === 0} className={`w-full py-3 rounded-xl border transition-all flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest italic bg-white/5 border-white/10 text-white/40 hover:bg-white/10 hover:text-white`}>
+                                            {isSaving ? <Loader2 className="h-3 w-3 animate-spin" /> : <><Save className="h-3 w-3" /> {searchParams.get('sessionId') ? 'Anchor Update' : 'Anchor in Vault'}</>}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Exit button at exactly the bottom */}
+                                <div className="mt-8 pt-6 border-t border-white/5 shrink-0">
+                                    <button onClick={() => navigate('/hub/agents')} className="flex w-full justify-center items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-red-400 transition-colors italic group">
+                                        <ChevronLeft className="h-3 w-3 group-hover:-translate-x-1 transition-transform" /> Exit Lab
                                     </button>
                                 </div>
-                            </div>
-
-                            {/* Exit button at exactly the bottom */}
-                            <div className="mt-8 pt-6 border-t border-white/5 shrink-0">
-                                <button onClick={() => navigate('/hub/agents')} className="flex w-full justify-center items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-red-400 transition-colors italic group">
-                                    <ChevronLeft className="h-3 w-3 group-hover:-translate-x-1 transition-transform" /> Exit Lab
-                                </button>
                             </div>
 
                         </div>
@@ -392,35 +422,36 @@ const ProjectLab = () => {
                             ))}
                             {isProcessing && (
                                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex justify-start">
-                                    <div className={`p-6 bg-[#0B1220] border border-red-500/50 shadow-[0_0_20px_rgba(239,68,68,0.15)] rounded-2xl rounded-tl-none flex gap-4 max-w-[85%]`}>
+                                    <div className={`p-6 bg-[#0B1220] border ${tc.glow.replace('shadow-', 'border-').replace('0.15', '0.50')} ${tc.glow} rounded-2xl rounded-tl-none flex gap-4 max-w-[85%]`}>
 
-                                        {/* Thinking Avatar (Red) */}
-                                        <div className="shrink-0 h-10 w-10 mt-1 rounded-full overflow-hidden border-2 border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)] animate-pulse">
+                                        {/* Thinking Avatar (Dynamic Color) */}
+                                        <div className={`shrink-0 h-10 w-10 mt-1 rounded-full overflow-hidden border-2 flex items-center justify-center ${tc.border} ${tc.shadow} animate-pulse bg-[#0B1220]`}>
                                             {agent.avatar ? (
                                                 <img src={agent.avatar} alt="Thinking..." className="h-full w-full object-cover grayscale-[30%]" crossOrigin="anonymous" referrerPolicy="no-referrer" />
                                             ) : (
-                                                <div className={`w-full h-full flex items-center justify-center ${agent.bg}`}><agent.icon className={`h-5 w-5 text-red-400`} /></div>
+                                                <agent.icon className={`h-5 w-5 ${tc.text}`} />
                                             )}
                                         </div>
 
                                         <div className="flex flex-col gap-3 justify-center w-full">
                                             <div className="flex items-center left-0 gap-4">
                                                 <div className="flex gap-1">
-                                                    <div className={`h-1.5 w-1.5 rounded-full bg-red-500 animate-bounce`} />
-                                                    <div className={`h-1.5 w-1.5 rounded-full bg-red-500 animate-bounce [animation-delay:-0.15s]`} />
-                                                    <div className={`h-1.5 w-1.5 rounded-full bg-red-500 animate-bounce [animation-delay:-0.3s]`} />
+                                                    <div className={`h-1.5 w-1.5 rounded-full ${tc.bg} animate-bounce`} />
+                                                    <div className={`h-1.5 w-1.5 rounded-full ${tc.bg} animate-bounce [animation-delay:-0.15s]`} />
+                                                    <div className={`h-1.5 w-1.5 rounded-full ${tc.bg} animate-bounce [animation-delay:-0.3s]`} />
                                                 </div>
-                                                <span className="text-[9px] font-black uppercase tracking-widest text-red-500 italic">
-                                                    Initializing {agent.featured ? 'Gemini 2.5 Pro (Max Compute)' : agent.tier === 'PLUS' ? 'Gemini 2.5 Pro (Max Compute)' : agent.tier === 'PRO' ? 'Gemini 2.5 Flash (Advanced Context)' : 'Gemini 2.5 Flash (Standard Logic)'}...
+                                                <span className={`text-[9px] font-black uppercase tracking-widest ${tc.text} italic`}>
+                                                    Thinking {agent.featured ? 'Gemini 2.5 Pro (Max Compute)' : agent.tier === 'PLUS' ? 'Gemini 2.5 Pro (Max Compute)' : agent.tier === 'PRO' ? 'Gemini 2.5 Flash (Advanced Context)' : 'Gemini 2.5 Flash (Standard Logic)'}...
                                                 </span>
                                             </div>
                                             <div className="h-0.5 w-full bg-white/5 rounded-full overflow-hidden">
-                                                <motion.div initial={{ x: '-100%' }} animate={{ x: '100%' }} transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }} className={`h-full w-1/3 bg-gradient-to-r from-transparent via-red-500/50 to-transparent`} />
+                                                <motion.div initial={{ x: '-100%' }} animate={{ x: '100%' }} transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }} className={`h-full w-1/3 bg-gradient-to-r from-transparent ${processingTime < 1.5 ? 'via-emerald-500/50' : processingTime < 3.0 ? 'via-yellow-500/50' : processingTime < 5.0 ? 'via-orange-500/50' : 'via-red-500/50'} to-transparent`} />
                                             </div>
                                         </div>
                                     </div>
                                 </motion.div>
                             )}
+                            <div ref={messagesEndRef} />
                         </div>
                     )}
                 </div>

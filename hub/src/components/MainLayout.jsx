@@ -4,9 +4,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     BookOpen, Trophy, Bot, Layout, Award, Settings,
     LogOut, ChevronRight, ChevronLeft, Activity, Shield,
-    MessageSquare, CheckCircle2, ListTodo, PenTool
+    MessageSquare, CheckCircle2, ListTodo, PenTool, Bug, X, Send, CheckCircle
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import MascotAssistant from './MascotAssistant';
 
 const MainLayout = ({ profile }) => {
     const navigate = useNavigate();
@@ -68,6 +69,43 @@ const MainLayout = ({ profile }) => {
         { id: 1, text: "Finish Module 1", done: false },
         { id: 2, text: "Deploy Quality Checker", done: false }
     ]);
+
+    // Report Bug state
+    const [showBugReport, setShowBugReport] = useState(false);
+    const [bugIssue, setBugIssue] = useState('');
+    const [bugDescription, setBugDescription] = useState('');
+    const [bugSubmitting, setBugSubmitting] = useState(false);
+    const [bugSubmitted, setBugSubmitted] = useState(false);
+
+    const handleBugSubmit = async () => {
+        if (!bugIssue.trim() || !profile?.id) return;
+        setBugSubmitting(true);
+        try {
+            const { error } = await supabase
+                .from('support_tickets')
+                .insert({
+                    user_id: profile.id,
+                    student_name: profile.full_name || profile.email || 'Student',
+                    issue: bugIssue.trim(),
+                    description: bugDescription.trim() || null,
+                    page_url: location.pathname,
+                    status: 'open'
+                });
+            if (error) throw error;
+            setBugSubmitted(true);
+            setTimeout(() => {
+                setShowBugReport(false);
+                setBugIssue('');
+                setBugDescription('');
+                setBugSubmitted(false);
+            }, 2000);
+        } catch (err) {
+            console.error('Error submitting bug report:', err.message);
+            alert('Failed to submit. Please try again.');
+        } finally {
+            setBugSubmitting(false);
+        }
+    };
 
     const toggleTask = (id) => {
         setTasks(tasks.map(t => t.id === id ? { ...t, done: !t.done } : t));
@@ -217,6 +255,101 @@ const MainLayout = ({ profile }) => {
                 <main className="min-h-full">
                     <Outlet context={{ isLeftOpen, isRightOpen }} />
                 </main>
+
+                {/* Floating Report Bug Button (non-admin only) */}
+                {profile?.role !== 'admin' && (
+                    <button
+                        onClick={() => setShowBugReport(true)}
+                        className="fixed bottom-6 right-[300px] z-40 h-12 w-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center hover:bg-orange-500/20 hover:scale-105 transition-all group shadow-lg shadow-orange-500/10"
+                        title="Report a Bug"
+                    >
+                        <Bug className="h-5 w-5 text-orange-400 group-hover:text-orange-300" />
+                    </button>
+                )}
+
+                {/* Bug Report Modal */}
+                <AnimatePresence>
+                    {showBugReport && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={() => setShowBugReport(false)}>
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                                className="w-full max-w-md bg-[#0A0F18] border border-orange-500/20 rounded-2xl shadow-2xl overflow-hidden"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                {/* Modal Header */}
+                                <div className="p-6 border-b border-white/5 flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <div className="h-9 w-9 rounded-xl bg-orange-500/10 flex items-center justify-center border border-orange-500/20">
+                                            <Bug className="h-4 w-4 text-orange-400" />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-sm font-black italic uppercase tracking-widest text-white">Report a Bug</h3>
+                                            <p className="text-[9px] text-text-muted italic">Our team will review it ASAP</p>
+                                        </div>
+                                    </div>
+                                    <button onClick={() => setShowBugReport(false)} className="h-8 w-8 rounded-lg bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors">
+                                        <X className="h-4 w-4 text-text-muted" />
+                                    </button>
+                                </div>
+
+                                {/* Modal Body */}
+                                <div className="p-6 space-y-4">
+                                    {bugSubmitted ? (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 8 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            className="py-8 text-center"
+                                        >
+                                            <CheckCircle className="h-12 w-12 text-emerald-400 mx-auto mb-3" />
+                                            <p className="text-sm font-black italic text-white">Bug Report Sent!</p>
+                                            <p className="text-[10px] text-text-muted italic mt-1">Thank you. We're on it.</p>
+                                        </motion.div>
+                                    ) : (
+                                        <>
+                                            <div>
+                                                <label className="text-[10px] font-black uppercase tracking-widest text-text-muted italic mb-2 block">What's the issue? *</label>
+                                                <input
+                                                    type="text"
+                                                    value={bugIssue}
+                                                    onChange={(e) => setBugIssue(e.target.value)}
+                                                    placeholder="e.g. Quiz won't submit, page won't load..."
+                                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500/30 transition-all placeholder:text-white/20"
+                                                    autoFocus
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="text-[10px] font-black uppercase tracking-widest text-text-muted italic mb-2 block">Details (optional)</label>
+                                                <textarea
+                                                    value={bugDescription}
+                                                    onChange={(e) => setBugDescription(e.target.value)}
+                                                    placeholder="What were you doing when it happened? Any error messages?"
+                                                    rows={3}
+                                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500/30 transition-all resize-none placeholder:text-white/20"
+                                                />
+                                            </div>
+                                            <div className="text-[9px] text-text-muted italic bg-white/[0.02] p-3 rounded-xl border border-white/5">
+                                                📍 Page: <span className="text-white/60 font-mono">{location.pathname}</span>
+                                            </div>
+                                            <button
+                                                onClick={handleBugSubmit}
+                                                disabled={!bugIssue.trim() || bugSubmitting}
+                                                className="w-full py-3.5 bg-orange-500/10 border border-orange-500/20 rounded-xl text-[10px] font-black uppercase tracking-widest text-orange-400 hover:bg-orange-500/20 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                            >
+                                                {bugSubmitting ? (
+                                                    <><div className="h-3.5 w-3.5 border-2 border-orange-400/30 border-t-orange-400 rounded-full animate-spin" /> Sending...</>
+                                                ) : (
+                                                    <><Send className="h-3.5 w-3.5" /> Submit Report</>
+                                                )}
+                                            </button>
+                                        </>
+                                    )}
+                                </div>
+                            </motion.div>
+                        </div>
+                    )}
+                </AnimatePresence>
             </div>
 
             {/* RIGHT PANEL TOGGLE BUTTON (Floating) */}
@@ -302,6 +435,11 @@ const MainLayout = ({ profile }) => {
                             ))}
                         </div>
                     </div>
+
+                    {/* Mascot Assistant (Only on Dashboard) */}
+                    {location.pathname.endsWith('/dashboard') && (
+                        <MascotAssistant profile={profile} />
+                    )}
 
                     {/* Admin Quick Action */}
                     {profile?.role === 'admin' && (

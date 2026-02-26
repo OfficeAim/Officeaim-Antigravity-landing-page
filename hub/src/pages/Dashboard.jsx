@@ -208,8 +208,18 @@ const Dashboard = ({ profile }) => {
                     className="glass-card p-1 bg-gradient-to-r from-accent-primary/20 to-accent-secondary/20 rounded-3xl overflow-hidden mb-12"
                 >
                     <div className="bg-[#0B1220]/90 backdrop-blur-xl p-8 rounded-[22px] flex flex-col md:flex-row items-center gap-8 border border-white/5">
-                        <div className="h-20 w-20 bg-accent-primary/10 rounded-2xl flex items-center justify-center border border-accent-primary/20 shrink-0">
-                            <Bot className="h-10 w-10 text-accent-primary" />
+                        <div className="h-20 w-20 rounded-2xl border border-accent-primary/20 shrink-0 relative overflow-hidden bg-accent-primary/10">
+                            <img
+                                src="https://lh3.googleusercontent.com/d/1qVeSx1suf01TU01h_SGecwfbieBrotw6"
+                                alt="Gema — AI Project Manager"
+                                className="h-full w-full object-cover"
+                                referrerPolicy="no-referrer"
+                                crossOrigin="anonymous"
+                                onError={(e) => {
+                                    e.target.style.display = 'none';
+                                    e.target.parentElement.innerHTML = '<div class="h-full w-full flex items-center justify-center text-3xl">📋</div>';
+                                }}
+                            />
                         </div>
                         <div className="flex-grow text-center md:text-left">
                             <span className="text-[10px] font-black text-accent-primary uppercase tracking-widest mb-1 block italic">Neural Link Ready</span>
