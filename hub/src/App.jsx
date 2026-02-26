@@ -4,12 +4,17 @@ import { supabase } from './lib/supabase';
 
 // Pages
 import Login from './pages/Login';
+import MainLayout from './components/MainLayout';
 import Dashboard from './pages/Dashboard';
 import Classroom from './pages/Classroom';
 import AdminDashboard from './pages/AdminDashboard';
 import AgentHQ from './pages/AgentHQ';
 import ProjectLab from './pages/ProjectLab';
 import ModuleViewer from './pages/ModuleViewer';
+import AgentTestConsole from './pages/AgentTestConsole';
+import MyProjects from './pages/MyProjects';
+import Lounge from './pages/Lounge';
+import { Toaster } from 'react-hot-toast';
 
 // Hardcoded admin whitelist — these users always get admin access
 const KNOWN_ADMINS = ['b2283a40-d51e-4bd2-ba46-262465a83d95'];
@@ -173,6 +178,7 @@ const App = () => {
 
   return (
     <Router>
+      <Toaster position="top-right" reverseOrder={false} toastOptions={{ className: 'glass-card border-white/10 text-white text-[12px] italic font-bold', style: { background: 'rgba(7, 10, 18, 0.9)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255, 255, 255, 0.1)', color: '#fff' } }} />
       <div className="min-h-screen bg-[#070A12] text-white font-plus-jakarta">
         <Routes>
           {/* Main Redirect */}
@@ -181,37 +187,34 @@ const App = () => {
           {/* Specific Routes with /hub prefix */}
           <Route path="/hub/login" element={(session && !isPreview) ? <Navigate to="/hub/dashboard" /> : <Login />} />
 
-          <Route path="/hub/dashboard" element={
-            (isPreview) ? <Dashboard profile={{ full_name: 'Rody Figueroa', role: 'admin', membership_status: 'beta' }} /> :
-              !session ? <Navigate to="/hub/login" /> :
-                isCanceled && profile?.role !== 'admin' ?
-                  <div className="p-20 text-center bg-[#070A12] h-screen flex flex-col items-center justify-center">
-                    <div className="glass-card p-12 border-amber-500/20">
-                      <h2 className="text-3xl font-black mb-4 italic text-white">Access Temporarily Suspended</h2>
-                      <p className="text-text-muted italic max-w-sm mx-auto">Your membership is currently inactive. Please contact support at the Team Brain HQ to reactivate your access.</p>
-                    </div>
-                  </div> :
-                  <Dashboard profile={profile} />
-          } />
+          {/* PROTECTED ROUTES WRAPPED IN MAIN LAYOUT */}
+          <Route element={
+            // Global guard for the layout
+            !session ? <Navigate to="/hub/login" /> :
+              (isCanceled && profile?.role !== 'admin') ?
+                <div className="p-20 text-center bg-[#070A12] h-screen flex flex-col items-center justify-center">
+                  <div className="glass-card p-12 border-amber-500/20">
+                    <h2 className="text-3xl font-black mb-4 italic text-white">Access Temporarily Suspended</h2>
+                    <p className="text-text-muted italic max-w-sm mx-auto">Your membership is currently inactive. Please contact support at the Team Brain HQ to reactivate your access.</p>
+                  </div>
+                </div>
+                : <MainLayout profile={profile} />
+          }>
+            <Route path="/hub/dashboard" element={<Dashboard profile={profile} />} />
+            <Route path="/hub/classroom" element={<Navigate to="/hub/module/1" />} />
+            <Route path="/hub/classroom/:lessonId" element={<Navigate to="/hub/module/1" />} />
 
-          <Route path="/hub/classroom" element={<Navigate to="/hub/module/1" />} />
-          <Route path="/hub/classroom/:lessonId" element={<Navigate to="/hub/module/1" />} />
+            <Route path="/hub/agents" element={<AgentHQ />} />
+            <Route path="/hub/module/:moduleId" element={<ModuleViewer />} />
+            <Route path="/hub/lab/:agentId" element={<ProjectLab />} />
+            <Route path="/hub/agent-test" element={<AgentTestConsole />} />
+            <Route path="/hub/projects" element={<MyProjects />} />
+            <Route path="/hub/lounge" element={<Lounge profile={profile} />} />
+          </Route>
 
           <Route path="/hub/admin" element={
             (isPreview) ? <AdminDashboard profile={{ full_name: 'Admin Rody' }} /> :
               <AdminGuard session={session} profile={profile} setProfile={setProfile} />
-          } />
-
-          <Route path="/hub/agents" element={
-            !session ? <Navigate to="/hub/login" /> : <AgentHQ />
-          } />
-
-          <Route path="/hub/module/:moduleId" element={
-            !session ? <Navigate to="/hub/login" /> : <ModuleViewer />
-          } />
-
-          <Route path="/hub/lab/:agentId" element={
-            !session ? <Navigate to="/hub/login" /> : <ProjectLab />
           } />
 
           {/* Fallback for the root or mistakes */}

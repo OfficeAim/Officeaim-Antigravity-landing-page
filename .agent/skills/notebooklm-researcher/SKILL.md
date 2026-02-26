@@ -5,6 +5,22 @@ description: A bridge skill to interact with NotebookLM via MCP using custom Pyt
 
 # NotebookLM Researcher Skill
 
+> [!IMPORTANT]
+> **OfficeAIM Course Videos — ALWAYS use `mcp_notebooklm_video_overview_create`, NEVER `audio_overview_create`.**
+> All lessons in the "Demystifying AI" notebook (ID: `91887db2-6e22-4a61-8635-f00affd03ca0`) are **videos**, not podcasts.
+> The correct tool call is:
+> ```
+> mcp_notebooklm_video_overview_create(
+>   notebook_id = "91887db2-...",
+>   source_ids  = ["<lesson-script-source-id>"],
+>   format      = "explainer",
+>   visual_style = "auto_select",
+>   confirm     = true
+> )
+> ```
+> After starting, poll with `mcp_notebooklm_studio_status` until `status = "completed"`, then copy the `video_url` and run:
+> `UPDATE lessons SET video_url = '<url>' WHERE id = '<lesson-id>';`
+
 This skill provides a set of tools to interact with Google's NotebookLM via the MCP implementation, bypassing IDE-specific UI limitations by using direct Python scripting.
 
 ## Capabilities

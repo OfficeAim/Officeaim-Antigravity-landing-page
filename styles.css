@@ -313,6 +313,112 @@ p {
     width: 100%;
 }
 
+/* --- MEGA MENU STYLES --- */
+.nav-item-dropdown {
+    position: relative;
+    /* Important for containing the absolute mega-menu */
+    padding: 1rem 0;
+    /* Gives hover tolerance */
+}
+
+.dropdown-arrow {
+    vertical-align: middle;
+    margin-left: 2px;
+    transition: transform var(--transition-fast);
+}
+
+.nav-item-dropdown:hover .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.mega-menu {
+    position: absolute;
+    top: 100%;
+    /* Push directly below navbar */
+    left: 50%;
+    transform: translateX(-50%) translateY(15px);
+    width: 600px;
+    /* Fixed wide width for Smoobu style */
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-normal);
+    z-index: 1000;
+    pointer-events: none;
+}
+
+/* Hover activates the menu */
+.nav-item-dropdown:hover .mega-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+
+.mega-menu-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+}
+
+.mega-menu-col h4 {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: var(--spacing-sm);
+    padding-left: var(--spacing-xs);
+}
+
+.mega-link {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    transition: background var(--transition-fast);
+}
+
+.mega-link::after {
+    display: none;
+    /* Disable the underline effect from base nav-links */
+}
+
+.mega-link:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.mega-icon {
+    font-size: 1.5rem;
+    background: rgba(34, 211, 238, 0.1);
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mega-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.mega-text strong {
+    color: var(--text-primary);
+    font-size: 1rem;
+    margin-bottom: 2px;
+}
+
+.mega-text span {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.2;
+}
+
 .nav-ctas {
     display: flex;
     gap: var(--spacing-sm);
@@ -1310,12 +1416,52 @@ p {
         padding: 2rem;
         gap: 1.5rem;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        text-align: center;
+        text-align: left;
+        /* Better for mobile dropdowns */
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        max-height: calc(100vh - 80px);
+        overflow-y: auto;
     }
 
     .nav-links.active {
         display: flex;
+    }
+
+    /* Mobile Mega Menu Adjustments */
+    .mega-menu {
+        position: static;
+        /* Clear absolute positioning on mobile */
+        transform: none;
+        width: 100%;
+        box-shadow: none;
+        background: rgba(0, 0, 0, 0.2);
+        margin-top: 1rem;
+        display: none;
+        /* Hide by default on mobile */
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        border: none;
+        border-left: 2px solid var(--accent-primary);
+        border-radius: 0;
+    }
+
+    .nav-item-dropdown:hover .mega-menu,
+    .nav-item-dropdown.active .mega-menu {
+        display: block;
+        /* Show on click/hover for mobile */
+        transform: none;
+    }
+
+    .mega-menu-inner {
+        grid-template-columns: 1fr;
+        /* Stack columns on mobile */
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .mega-link {
+        padding: 0.5rem;
     }
 
     .nav-ctas {
@@ -1367,6 +1513,110 @@ p {
     }
 
     .template-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================================
+   TEMPLATE VAULT — GEM CARDS SECTION
+   ============================================================ */
+.template-vault-section {
+    padding: var(--spacing-3xl) 0;
+    background: var(--bg-primary);
+    text-align: center;
+}
+
+.gems-grid {
+    display: grid;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+    justify-content: center;
+}
+
+.gems-row-3 {
+    grid-template-columns: repeat(3, minmax(0, 340px));
+}
+
+.gems-row-4 {
+    grid-template-columns: repeat(4, minmax(0, 260px));
+}
+
+.gem-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg) var(--spacing-md);
+    transition: all var(--transition-normal);
+    text-decoration: none;
+    color: inherit;
+    gap: 0.375rem;
+}
+
+.gem-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--accent-secondary);
+    box-shadow: 0 12px 40px rgba(34, 211, 238, 0.18);
+    background: linear-gradient(145deg, var(--bg-card), rgba(34, 211, 238, 0.05));
+}
+
+.gem-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+    line-height: 1;
+}
+
+.gem-name {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    text-align: center;
+}
+
+.gem-desc {
+    font-size: 0.825rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin: 0.5rem 0;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.gem-agent-tag {
+    display: inline-block;
+    margin-top: auto;
+    padding: 0.2rem 0.7rem;
+    background: rgba(34, 211, 238, 0.1);
+    color: var(--accent-secondary);
+    border: 1px solid rgba(34, 211, 238, 0.3);
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+}
+
+@media (max-width: 900px) {
+    .gems-row-4 {
+        grid-template-columns: repeat(2, minmax(0, 280px));
+    }
+
+    .gems-row-3 {
+        grid-template-columns: repeat(2, minmax(0, 340px));
+    }
+}
+
+@media (max-width: 480px) {
+
+    .gems-row-3,
+    .gems-row-4 {
         grid-template-columns: 1fr;
     }
 }

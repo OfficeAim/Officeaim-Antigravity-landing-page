@@ -53,7 +53,11 @@ END $$;
 
 -- 4. Auto-create profile on signup
 CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = ''  -- Locks search_path to prevent schema injection (Supabase security lint fix)
+AS $$
 BEGIN
   INSERT INTO public.profiles (id, full_name, email, phone, role, membership_status)
   VALUES (
@@ -66,11 +70,11 @@ BEGIN
   )
   ON CONFLICT (id) DO UPDATE SET
     email = EXCLUDED.email,
-    full_name = COALESCE(EXCLUDED.full_name, profiles.full_name),
+    full_name = COALESCE(EXCLUDED.full_name, public.profiles.full_name),
     updated_at = NOW();
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$;
 
 -- Drop existing trigger if any, then create
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;

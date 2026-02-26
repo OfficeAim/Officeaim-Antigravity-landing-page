@@ -2,7 +2,22 @@ import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, Lock, ArrowRight, Sparkles, Zap } from 'lucide-react';
+import { Mail, Lock, ArrowRight, Sparkles, Zap, ShieldAlert } from 'lucide-react';
+
+// --- Password Validation (replaces paid HaveIBeenPwned feature) ---
+const WEAK_PASSWORDS = [
+    'password', '123456', '12345678', 'qwerty', 'abc123',
+    'letmein', 'monkey', 'master', 'iloveyou', 'admin',
+    'welcome', 'login', 'pass', 'test', '111111'
+];
+
+const validatePassword = (pwd) => {
+    if (pwd.length < 8) return 'Mínimo 8 caracteres';
+    if (WEAK_PASSWORDS.includes(pwd.toLowerCase())) return 'Contraseña demasiado común, elige una más segura';
+    if (!/[A-Z]/.test(pwd)) return 'Debe incluir al menos una letra mayúscula';
+    if (!/[0-9]/.test(pwd)) return 'Debe incluir al menos un número';
+    return null; // válida
+};
 
 const Login = () => {
     const navigate = useNavigate();
@@ -13,6 +28,7 @@ const Login = () => {
     const [phone, setPhone] = useState('');
     const [isSignUp, setIsSignUp] = useState(false);
     const [message, setMessage] = useState('');
+    const [passwordError, setPasswordError] = useState('');
 
     // Secret admin trigger — tap logo 5 times
     const [tapCount, setTapCount] = useState(0);
@@ -35,12 +51,20 @@ const Login = () => {
         e.preventDefault();
         setLoading(true);
         setMessage('');
+        setPasswordError('');
 
         console.log(`Attempting login for: ${email}`); // DEBUG
 
         try {
             if (isSignUp) {
-                // ... (Sign Up Logic) ...
+                // Validate password strength before calling Supabase
+                const pwdError = validatePassword(password);
+                if (pwdError) {
+                    setPasswordError(pwdError);
+                    setLoading(false);
+                    return;
+                }
+
                 const { error } = await supabase.auth.signUp({
                     email,
                     password,
@@ -82,30 +106,26 @@ const Login = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 className="w-full max-w-xl"
             >
-                <div className="text-center mb-12">
+                <div className="text-center mb-6 mt-4">
                     <div className="flex justify-center mb-8">
                         <img
-                            src="/images/logo_premium.png"
+                            src="/hub/images/logo_premium.png"
                             alt="OfficeAim"
-                            className="h-10 cursor-pointer select-none"
+                            className="h-16 object-cover object-center w-64 rounded-xl cursor-pointer select-none"
                             onClick={handleLogoTap}
                             draggable={false}
                         />
                     </div>
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-secondary/10 border border-accent-secondary/20 mb-8">
-                        <Sparkles className="h-4 w-4 text-accent-secondary" />
-                        <span className="text-[10px] font-black tracking-widest text-accent-secondary uppercase italic">The OfficeAIM Campus</span>
-                    </div>
-                    <h1 className="text-5xl lg:text-7xl font-black mb-6 leading-tight italic text-white">
-                        {isSignUp ? 'Join the' : 'Welcome'}<br />
-                        <span className="title-gradient">{isSignUp ? 'Beta Cohort' : 'Back, Student.'}</span>
+                    <h1 className="text-2xl lg:text-4xl font-black mb-3 leading-tight italic text-white flex flex-col md:flex-row md:items-center justify-center gap-2">
+                        {isSignUp ? <span>Join the</span> : <span>Welcome to</span>}
+                        <span className="title-gradient">{isSignUp ? 'Beta Cohort' : 'OfficeAIM.'}</span>
                     </h1>
-                    <p className="text-text-muted text-lg font-medium italic">
+                    <p className="text-text-muted text-xs font-medium italic">
                         {isSignUp ? 'Secure your spot in the OfficeAIM Beta and lead the AI transformation.' : 'Continue your transformation into an AI-powered professional.'}
                     </p>
                 </div>
 
-                <div className="glass-card p-12 relative overflow-hidden text-white">
+                <div className="glass-card p-6 lg:p-8 relative overflow-hidden text-white">
                     <form onSubmit={handleAuth} className="space-y-8">
                         {/* Full Name (Sign Up only) */}
                         {isSignUp && (
@@ -166,19 +186,35 @@ const Login = () => {
                                 type="password"
                                 required
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 text-white focus:border-accent-secondary outline-none transition-all placeholder:text-white/10"
+                                onChange={(e) => { setPassword(e.target.value); setPasswordError(''); }}
+                                className={`w-full bg-white/5 border rounded-2xl py-4 px-6 text-white focus:outline-none transition-all placeholder:text-white/10 ${passwordError ? 'border-red-500/60 focus:border-red-500' : 'border-white/10 focus:border-accent-secondary'
+                                    }`}
                                 placeholder="••••••••"
                             />
+                            {passwordError && (
+                                <motion.p
+                                    initial={{ opacity: 0, y: -4 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="flex items-center gap-2 text-xs text-red-400 font-bold italic mt-1"
+                                >
+                                    <ShieldAlert className="h-3 w-3 flex-shrink-0" />
+                                    {passwordError}
+                                </motion.p>
+                            )}
+                            {isSignUp && !passwordError && password.length > 0 && (
+                                <p className="text-[10px] text-text-muted italic mt-1">
+                                    ✓ 8+ caracteres · 1 mayúscula · 1 número
+                                </p>
+                            )}
                         </div>
 
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full py-5 bg-white text-black font-black uppercase tracking-widest italic rounded-2xl hover:bg-accent-secondary hover:text-white transition-all shadow-2xl flex items-center justify-center gap-3 active:scale-95 disabled:opacity-50"
+                            className="w-full py-4 bg-white text-black font-black uppercase tracking-widest italic rounded-2xl hover:bg-accent-secondary hover:text-white transition-all shadow-xl flex items-center justify-center gap-3 active:scale-95 disabled:opacity-50"
                         >
                             {loading ? 'SYNCING...' : (isSignUp ? 'CLAIM MY SEAT' : 'ENTER CAMPUS')}
-                            {!loading && <ArrowRight className="h-5 w-5" />}
+                            {!loading && <ArrowRight className="h-4 w-4" />}
                         </button>
 
                         {message && (
@@ -192,13 +228,13 @@ const Login = () => {
                         )}
                     </form>
 
-                    <div className="mt-10 pt-10 border-t border-white/5 text-center">
-                        <p className="text-text-muted text-xs font-bold mb-4 italic">
+                    <div className="mt-8 pt-8 border-t border-white/5 text-center">
+                        <p className="text-text-muted text-xs font-bold mb-3 italic">
                             {isSignUp ? 'Already a founding member?' : 'New to OfficeAIM?'}
                         </p>
                         <button
                             onClick={() => setIsSignUp(!isSignUp)}
-                            className="text-white hover:text-accent-secondary font-black uppercase tracking-widest text-sm transition-all italic underline underline-offset-8 decoration-accent-secondary/50"
+                            className="text-white hover:text-accent-secondary font-black uppercase tracking-widest text-xs transition-all italic underline underline-offset-4 decoration-accent-secondary/50"
                         >
                             {isSignUp ? 'BACK TO LOGIN' : 'CREATE FREE ACCOUNT'}
                         </button>

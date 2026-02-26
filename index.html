@@ -4,551 +4,411 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OfficeAim — Your first step into AI for the office — made simple</title>
+    <title>OfficeAIM — Your private AI board of directors</title>
     <meta name="description"
-        content="Learn to save time, work smarter, and make AI your daily assistant. Copy proven workflows for emails, reports, notes, and productivity. No jargon. No coding. Just real results.">
+        content="19 specialist AI agents. Strategist. Psychologist. SEO Master. All inside your personal command deck. Free to start.">
+    <link rel="icon" type="image/png" href="images/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700;1,800&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="landing-new.css">
+    <link rel="stylesheet" href="gems-page.css">
 </head>
 
 <body>
-    <!-- Language Toggle (hidden by default, can be activated) -->
-    <div class="language-selector" id="languageSelector">
-        <button class="lang-btn active" data-lang="en">EN</button>
-        <button class="lang-btn" data-lang="es">ES</button>
-        <button class="lang-btn" data-lang="nl">NL</button>
-    </div>
 
     <!-- Sticky Navigation -->
     <nav class="navbar" id="navbar">
         <div class="container nav-container">
             <a href="#hero" class="logo">
-                <img src="images/logo_premium_v2.png" alt="OfficeAim Logo" class="logo-img">
+                <img src="images/favicon.png" alt="OfficeAIM Logo" class="logo-img">
             </a>
-
             <ul class="nav-links">
-                <li><a href="#features">Features</a></li>
-                <li><a href="#demo">Demo</a></li>
-                <li><a href="#courses">Curriculum</a></li>
-                <li><a href="#toolkit">Toolkit</a></li>
-                <li><a href="#news">News/Blog</a></li>
-                <li><a href="hub" class="special-link">Campus Hub</a></li>
+                <li class="nav-item-dropdown">
+                    <a href="#features" class="nav-link">Features <svg class="dropdown-arrow" width="12" height="12"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-inner">
+                            <div class="mega-menu-col">
+                                <h4>The Platform</h4>
+                                <a href="board.html" class="mega-link">
+                                    <div class="mega-icon">👥</div>
+                                    <div class="mega-text">
+                                        <strong>The AI Board</strong>
+                                        <span>Meet your 19 specialist agents</span>
+                                    </div>
+                                </a>
+                                <a href="index.html#how" class="mega-link">
+                                    <div class="mega-icon">⚡</div>
+                                    <div class="mega-text">
+                                        <strong>How it Works</strong>
+                                        <span>Your workflow from 0 to 1</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="mega-menu-col">
+                                <h4>Use Cases</h4>
+                                <a href="board.html#cloner" class="mega-link">
+                                    <div class="mega-icon">🧬</div>
+                                    <div class="mega-text">
+                                        <strong>Idea Cloner</strong>
+                                        <span>Reverse-engineer any SaaS</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
 
+                <li class="nav-item-dropdown">
+                    <a href="#resources" class="nav-link">Resources <svg class="dropdown-arrow" width="12" height="12"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-inner">
+                            <div class="mega-menu-col">
+                                <h4>Free Tools</h4>
+                                <a href="gems.html" class="mega-link">
+                                    <div class="mega-icon">⭐</div>
+                                    <div class="mega-text">
+                                        <strong>Prompt Generator</strong>
+                                        <span>Our most powerful free tool</span>
+                                    </div>
+                                </a>
+                                <a href="gems.html#gemini" class="mega-link">
+                                    <div class="mega-icon">💎</div>
+                                    <div class="mega-text">
+                                        <strong>15 Gem Agents</strong>
+                                        <span>Try Google Gemini integrations</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li><a href="pricing.html" class="nav-link">Pricing</a></li>
             </ul>
             <div class="nav-ctas">
-                <a href="hub/login" class="btn btn-primary" data-i18n="nav.hub">Campus Login</a>
+                <a href="hub/login" class="btn btn-primary">Enter Campus →</a>
             </div>
-
-
             <button class="mobile-menu-toggle" id="mobileMenuToggle">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span></span><span></span><span></span>
             </button>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero" id="hero">
-        <div class="container hero-container">
-            <div class="hero-content">
-                <div class="eyebrow" data-i18n="hero.eyebrow">Practical AI for everyday work</div>
-                <h1 class="hero-title" data-i18n="hero.title">Make AI your daily office assistant — in minutes.</h1>
-                <p class="hero-subtitle" data-i18n="hero.subtitle">Copy proven workflows for emails, reports, notes, and
-                    productivity. No jargon. No coding. Just real results.</p>
-                <div class="social-proof">
-                    <span class="rocket-icon">🚀</span>
-                    <span data-i18n="hero.social">Join 250+ professionals already taking action with OfficeAim.</span>
-                </div>
-                <div class="hero-ctas">
-                    <a href="/hub/login" class="btn btn-primary btn-large" data-i18n="hero.cta1">Claim Your Seat —
-                        Free</a>
-                    <a href="#demo" class="btn btn-secondary btn-large" data-i18n="hero.cta2">Try the prompt
-                        generator</a>
-                </div>
-                <p class="cta-note" data-i18n="hero.note">You'll be redirected to a secure Google Form.</p>
-            </div>
-            <div class="hero-visual">
-                <img src="images/module1_hero.png" alt="AI-powered office workflow automation" class="hero-image">
-            </div>
-
+    <!-- ===== HERO ===== -->
+    <section class="hero-v2" id="hero">
+        <div class="hero-v2-bg">
+            <div class="hero-grid"></div>
+            <div class="hero-glow-left"></div>
+            <div class="hero-glow-right"></div>
         </div>
-    </section>
-
-    <!-- Why OfficeAim Section -->
-    <section class="why-section" id="features">
-        <div class="container">
-            <h2 class="section-title" data-i18n="why.title">Why OfficeAim?</h2>
-            <div class="benefits-grid">
-                <div class="benefit-card">
-                    <div class="benefit-image">
-                        <img src="images/why_1.webp" alt="No tech background needed">
-                    </div>
-                    <h3 data-i18n="why.benefit1.title">No tech background needed</h3>
-                    <p data-i18n="why.benefit1.desc">Copy simple, proven systems. No coding, no complex setup—just
-                        practical workflows you can use right away.</p>
+        <div class="container hero-v2-container">
+            <div class="hero-v2-content">
+                <div class="hero-v2-eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    19 Specialist AI Agents · Free to Start
                 </div>
-                <div class="benefit-card">
-                    <div class="benefit-image">
-                        <img src="images/why_2.webp" alt="Step-by-step guidance">
-                    </div>
-                    <h3 data-i18n="why.benefit2.title">Step-by-step guidance</h3>
-                    <p data-i18n="why.benefit2.desc">Practical workflows that save hours. We break down every process
-                        into clear, actionable steps.</p>
+                <h1 class="hero-v2-title">
+                    Your private<br>
+                    <em>AI board of<br>directors.</em>
+                </h1>
+                <p class="hero-v2-subtitle">
+                    OfficeAIM gives you a full team of AI specialists — strategist, behavioral psychologist, SEO master
+                    — all inside one command deck built for the modern professional.
+                </p>
+                <div class="hero-v2-ctas">
+                    <a href="/hub/login" class="btn-hero-primary">
+                        Enter the Campus — Free
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                    <a href="#agents" class="btn-hero-secondary">Meet the Agents</a>
                 </div>
-                <div class="benefit-card">
-                    <div class="benefit-image">
-                        <img src="images/why_3.webp" alt="Made for office tasks">
+                <div class="hero-v2-social">
+                    <div class="social-avatars">
+                        <img src="images/why_1.webp" alt="">
+                        <img src="images/why_2.webp" alt="">
+                        <img src="images/why_3.webp" alt="">
                     </div>
-                    <h3 data-i18n="why.benefit3.title">Made for office tasks</h3>
-                    <p data-i18n="why.benefit3.desc">Emails, reports, notes, summaries—everything you need for daily
-                        office productivity.</p>
+                    <span>Join 250+ professionals already inside</span>
                 </div>
             </div>
-            <div class="anti-hype">
-                <p data-i18n="why.antihype">AI shouldn't be hype or confusion. We cut through the noise and show what
-                    works, step by step.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Embedded Demo: Prompt Generator -->
-    <section class="demo-section" id="demo">
-        <div class="container">
-            <div class="demo-header">
-                <h2 class="section-title" data-i18n="demo.title">OfficeAim Prompt Generator</h2>
-                <p class="section-subtitle" data-i18n="demo.subtitle">Generate ready-to-use AI prompts for your daily
-                    tasks</p>
-                <div class="demo-visual">
-                    <img src="images/demo.webp" alt="Prompt generator interface">
-                </div>
-            </div>
-
-            <div class="demo-container">
-                <div class="demo-privacy-note">
-                    <span class="icon">🔒</span>
-                    <span data-i18n="demo.privacy">Don't paste sensitive data. This tool runs entirely in your
-                        browser.</span>
-                </div>
-
-                <!-- Template Selector -->
-                <div class="template-selector">
-                    <h3 data-i18n="demo.selectTemplate">Select a template:</h3>
-                    <div class="template-cards">
-                        <div class="template-card active" data-template="email">
-                            <div class="template-icon">✉️</div>
-                            <h4 data-i18n="demo.templates.email">Professional Email</h4>
-                        </div>
-                        <div class="template-card" data-template="summary">
-                            <div class="template-icon">📄</div>
-                            <h4 data-i18n="demo.templates.summary">Document Summary</h4>
-                        </div>
-                        <div class="template-card" data-template="project">
-                            <div class="template-icon">📋</div>
-                            <h4 data-i18n="demo.templates.project">Project Plan</h4>
-                        </div>
-                        <div class="template-card" data-template="marketing">
-                            <div class="template-icon">📢</div>
-                            <h4 data-i18n="demo.templates.marketing">Marketing Copy</h4>
-                        </div>
+            <div class="hero-v2-visual">
+                <div class="hub-preview-frame">
+                    <div class="hub-preview-bar">
+                        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                        <span class="hub-preview-url">officeaim.app/hub/agents</span>
                     </div>
-                </div>
-
-                <!-- Dynamic Form Area -->
-                <div class="form-area" id="formArea">
-                    <!-- Forms will be dynamically loaded here -->
-                </div>
-
-                <!-- Global Options -->
-                <div class="global-options">
-                    <div class="option-group">
-                        <label for="toneSelector" data-i18n="demo.tone">Tone:</label>
-                        <select id="toneSelector">
-                            <option value="professional" data-i18n="demo.tones.professional">Professional</option>
-                            <option value="friendly" data-i18n="demo.tones.friendly">Friendly</option>
-                            <option value="technical" data-i18n="demo.tones.technical">Technical</option>
-                        </select>
-                    </div>
-                    <div class="option-group">
-                        <label for="languageOutput" data-i18n="demo.language">Output Language:</label>
-                        <select id="languageOutput">
-                            <option value="en">English</option>
-                            <option value="es">Español</option>
-                            <option value="nl">Nederlands</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="demo-actions">
-                    <button class="btn btn-primary" id="generateBtn" data-i18n="demo.generate">Generate Prompt</button>
-                    <button class="btn btn-secondary" id="resetBtn" data-i18n="demo.reset">Reset</button>
-                </div>
-
-                <!-- Output Area -->
-                <div class="output-area" id="outputArea" style="display: none;">
-                    <div class="output-header">
-                        <h3 data-i18n="demo.output.title">Your Generated Prompt</h3>
-                        <button class="btn btn-copy" id="copyBtn" data-i18n="demo.copy">Copy</button>
-                    </div>
-                    <div class="output-content" id="outputContent"></div>
-                    <div class="output-helper">
-                        <p data-i18n="demo.helper">Paste this prompt into ChatGPT, Gemini, or your preferred AI
-                            assistant.</p>
+                    <img src="images/module1_hero.png" alt="OfficeAIM Agent Command Deck" class="hub-preview-img">
+                    <div class="hub-preview-overlay">
+                        <div class="hub-stat"><span>19</span><em>Agents</em></div>
+                        <div class="hub-stat"><span>3</span><em>Tiers</em></div>
+                        <div class="hub-stat"><span>∞</span><em>Sessions</em></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- What You Get Section -->
-    <section class="starter-kit-section">
-        <div class="container">
-            <h2 class="section-title" data-i18n="starter.title">What you get when you join (Free)</h2>
-            <div class="starter-grid">
-                <div class="starter-card">
-                    <div class="starter-icon">🎓</div>
-                    <h3 data-i18n="starter.course.title">AI Starter Course (Free)</h3>
-                    <p data-i18n="starter.course.desc">Guided first steps into practical AI for the workplace</p>
-                </div>
-                <div class="starter-card">
-                    <div class="starter-icon">📝</div>
-                    <h3 data-i18n="starter.cheatsheet.title">200 Prompt Cheat Sheet (Free)</h3>
-                    <p data-i18n="starter.cheatsheet.desc">Workplace writing + productivity prompts ready to copy</p>
-                </div>
-                <div class="starter-card">
-                    <div class="starter-icon">🛠️</div>
-                    <h3 data-i18n="starter.toolkit.title">AI Toolkit (Free)</h3>
-                    <p data-i18n="starter.toolkit.desc">Curated tools that work in office settings</p>
-                </div>
-                <div class="starter-card">
-                    <div class="starter-icon">💡</div>
-                    <h3 data-i18n="starter.examples.title">Practical Example Library</h3>
-                    <p data-i18n="starter.examples.desc">Real office tasks solved step by step</p>
-                </div>
-            </div>
-            <div class="section-cta">
-                <a href="/hub/login" class="btn btn-primary btn-large" data-i18n="starter.cta">Join & Get the Free
-                    Starter Kit</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Practical Examples Section -->
-    <section class="examples-section" id="examples">
-        <div class="container">
-            <h2 class="section-title" data-i18n="examples.title">Proof: Real Examples Built with AI</h2>
-            <p class="section-subtitle" data-i18n="examples.subtitle">See what's possible when you learn the right
-                workflows</p>
-            <div class="examples-grid">
-                <div class="example-card">
-                    <div class="example-image">
-                        <img src="images/example_1.webp" alt="Week Number Calculator">
-                    </div>
-                    <div class="example-content">
-                        <h3 data-i18n="examples.weekcalc.title">Week Number Calculator</h3>
-                        <p class="example-problem" data-i18n="examples.weekcalc.problem"><strong>Problem:</strong> Need
-                            a quick tool to find ISO week numbers for planning</p>
-                        <p class="example-solution" data-i18n="examples.weekcalc.solution"><strong>Solution:</strong>
-                            Built with Manus AI—no coding needed</p>
-                        <p class="example-learn" data-i18n="examples.weekcalc.learn"><strong>What you learn:</strong>
-                            How to create custom tools for your workflow</p>
-                        <a href="https://weekcalc-ck6omtgn.manus.space" target="_blank" class="btn btn-secondary"
-                            data-i18n="examples.cta">Try it</a>
-                    </div>
-                </div>
-                <div class="example-card">
-                    <div class="example-image">
-                        <img src="images/example_prompter.png" alt="OfficeAim Prompter App">
-                    </div>
-
-                    <div class="example-content">
-                        <h3 data-i18n="examples.prompter.title">OfficeAim Prompter App</h3>
-                        <p class="example-problem" data-i18n="examples.prompter.problem"><strong>Problem:</strong>
-                            Writing effective prompts takes time and practice</p>
-                        <p class="example-solution" data-i18n="examples.prompter.solution"><strong>Solution:</strong>
-                            Built with Lovable AI—structured prompt templates</p>
-                        <p class="example-learn" data-i18n="examples.prompter.learn"><strong>What you learn:</strong>
-                            Template-based prompt engineering</p>
-                        <a href="https://office-aim-prompter.lovable.app" target="_blank" class="btn btn-secondary"
-                            data-i18n="examples.cta">Try it</a>
-                    </div>
-                </div>
-                <div class="example-card">
-                    <div class="example-image">
-                        <img src="images/example_qr.png" alt="QR Generator">
-                    </div>
-
-                    <div class="example-content">
-                        <h3 data-i18n="examples.qr.title">QR Code Generator</h3>
-                        <p class="example-problem" data-i18n="examples.qr.problem"><strong>Problem:</strong> Need custom
-                            QR codes for events and marketing</p>
-                        <p class="example-solution" data-i18n="examples.qr.solution"><strong>Solution:</strong> Built
-                            with Gemini + HTML/JS in minutes</p>
-                        <p class="example-learn" data-i18n="examples.qr.learn"><strong>What you learn:</strong> Rapid
-                            prototyping with AI assistance</p>
-                        <a href="#" class="btn btn-secondary" data-i18n="examples.cta">See how</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features-section">
-        <div class="container">
-            <h2 class="section-title" data-i18n="features.title">Everything You Need to Work Smarter</h2>
-            <div class="features-grid">
-                <div class="feature-item">
-                    <div class="feature-icon">⭐</div>
-                    <h3 data-i18n="features.reviews.title">Curated AI Tool Reviews</h3>
-                    <p data-i18n="features.reviews.desc">What works, what doesn't, and when to use each tool</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">📖</div>
-                    <h3 data-i18n="features.guides.title">Step-by-Step Guides</h3>
-                    <p data-i18n="features.guides.desc">Copy/paste instructions for common workflows</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">⚡</div>
-                    <h3 data-i18n="features.templates.title">Workflow Templates</h3>
-                    <p data-i18n="features.templates.desc">Productivity frameworks ready to implement</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🔔</div>
-                    <h3 data-i18n="features.updates.title">AI Updates Explained</h3>
-                    <p data-i18n="features.updates.desc">We track releases so you don't have to</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Courses Section -->
-    <section class="courses-section" id="courses">
-        <div class="container">
-            <h2 class="section-title" data-i18n="courses.title">Your AI Learning Journey</h2>
-            <div class="course-featured">
-                <div class="course-image">
-                    <img src="images/course_module1.png" alt="AI Fear Buster">
-                </div>
-
-                <div class="course-content">
-                    <div class="course-badge" data-i18n="courses.module1.badge">Free • Start Now</div>
-                    <h3 data-i18n="courses.module1.title">AI Fear Buster: From Anxiety to Confidence</h3>
-                    <p data-i18n="courses.module1.desc">Specifically designed for white-collar professionals to overcome
-                        AI intimidation and gain foundational skills.</p>
-                    <ul class="course-outcomes">
-                        <li data-i18n="courses.module1.outcome1">Demystify AI jargon and "hype"</li>
-                        <li data-i18n="courses.module1.outcome2">Boost email and scheduling speed</li>
-                        <li data-i18n="courses.module1.outcome3">Draft reports and documents faster</li>
-                        <li data-i18n="courses.module1.outcome4">Build a long-term tech-confidence mindset</li>
-                    </ul>
-                    <div class="course-download">
-                        <span data-i18n="courses.module1.download">Includes: "Spot the AI" Action Sheet</span>
-                    </div>
-                </div>
-            </div>
-            <div class="course-roadmap">
-                <h3 data-i18n="courses.roadmap.title">Coming Up: The AI Productivity Sprint</h3>
-                <div class="roadmap-grid">
-                    <div class="roadmap-item">
-                        <div class="roadmap-number">1</div>
-                        <h4 data-i18n="courses.module2.title">Advanced Prompt Engineering</h4>
-                        <p data-i18n="courses.module2.desc">Connect AI tools and craft complex office workflows</p>
-                    </div>
-                    <div class="roadmap-item">
-                        <div class="roadmap-number">2</div>
-                        <h4 data-i18n="courses.module3.title">AI Content & Research</h4>
-                        <p data-i18n="courses.module3.desc">Strategic report writing and visual generation</p>
-                    </div>
-                    <div class="roadmap-item">
-                        <div class="roadmap-number">3</div>
-                        <h4 data-i18n="courses.module4.title">Strategic AI Integration</h4>
-                        <p data-i18n="courses.module4.desc">AI ethics, privacy, and building your personal toolkit</p>
-                    </div>
-                </div>
-            </div>
-            <div class="section-cta">
-                <a href="/hub/login" class="btn btn-primary btn-large" data-i18n="courses.cta">Claim Your Free Seat</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- AI Toolkit Section -->
-    <section class="toolkit-section" id="toolkit">
-        <div class="container">
-            <div class="toolkit-header">
-                <div class="toolkit-content">
-                    <h2 class="section-title" data-i18n="toolkit.title">Top AI Platforms for Business Growth</h2>
-                    <p class="toolkit-subtitle" data-i18n="toolkit.subtitle">20+ curated tools ranked by impact and
-                        adoption</p>
-                    <div class="toolkit-methodology">
-                        <h4 data-i18n="toolkit.methodology.title">Our Methodology</h4>
-                        <p data-i18n="toolkit.methodology.desc">Rankings based on adoption, feature completeness,
-                            pricing accessibility, integration, and professional community feedback. Updated quarterly
-                            (Oct 2025).</p>
-                    </div>
-                    <a href="#" class="btn btn-primary" data-i18n="toolkit.cta">Explore the toolkit</a>
-                </div>
-                <div class="toolkit-image">
-                    <img src="images/toolkit.webp" alt="AI Toolkit Overview">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- GPT Toolkit Section -->
-    <section class="gpt-toolkit-section">
-        <div class="container">
-            <h2 class="section-title" data-i18n="gpt.title">OfficeAim GPT Toolkit</h2>
-            <p class="section-subtitle" data-i18n="gpt.subtitle">Specialized GPTs used internally at OfficeAim. Use
-                individually or combine into projects.</p>
-            <div class="gpt-ecosystem-visual">
-
-                <img src="images/gpt_ecosystem.png" alt="GPT Toolkit Ecosystem">
-            </div>
-
-            <div class="gpt-grid">
-                <div class="gpt-card">
-                    <div class="gpt-icon">🎓</div>
-                    <h3 data-i18n="gpt.course.title">Course Creator</h3>
-                    <p data-i18n="gpt.course.desc">Build course structures with engagement strategies</p>
-                </div>
-                <div class="gpt-card">
-                    <div class="gpt-icon">✨</div>
-                    <h3 data-i18n="gpt.prompter.title">AI Prompter</h3>
-                    <p data-i18n="gpt.prompter.desc">Generate structured prompts for any AI tool</p>
-                </div>
-                <div class="gpt-card">
-                    <div class="gpt-icon">📢</div>
-                    <h3 data-i18n="gpt.marketing.title">Marketing Pro</h3>
-                    <p data-i18n="gpt.marketing.desc">Create copy and campaigns that convert</p>
-                </div>
-                <div class="gpt-card">
-                    <div class="gpt-icon">👥</div>
-                    <h3 data-i18n="gpt.community.title">Community Builder</h3>
-                    <p data-i18n="gpt.community.desc">Grow and engage your community effectively</p>
-                </div>
-            </div>
-            <div class="gpt-tagline">
-                <p data-i18n="gpt.tagline">Start with one. Grow into many.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Plans Section -->
-    <section class="plans-section" id="plans">
-        <div class="container">
-            <h2 class="section-title" data-i18n="plans.title">Choose Your Path</h2>
-            <p class="section-subtitle" data-i18n="plans.subtitle">All plans start with the free waiting list — join now
-                to unlock early access</p>
-            <div class="plans-grid">
-                <div class="plan-card">
-                    <div class="plan-header">
-                        <h3 data-i18n="plans.free.title">Free Plan</h3>
-                        <p class="plan-tagline" data-i18n="plans.free.tagline">Try AI with zero risk</p>
-                    </div>
-                    <ul class="plan-features">
-                        <li data-i18n="plans.free.feature1">Starter course</li>
-                        <li data-i18n="plans.free.feature2">200 prompt cheat sheet</li>
-                        <li data-i18n="plans.free.feature3">Toolkit overview</li>
-                    </ul>
-                    <a href="/hub/login" class="btn btn-primary" data-i18n="plans.free.cta">Start for Free</a>
-                    <p class="plan-note" data-i18n="plans.free.note">Immediate Access</p>
-                </div>
-                <div class="plan-card plan-featured">
-                    <div class="plan-badge" data-i18n="plans.group.badge">Popular</div>
-                    <div class="plan-header">
-                        <h3 data-i18n="plans.group.title">Small Group Plan</h3>
-                        <p class="plan-tagline" data-i18n="plans.group.tagline">Learn together</p>
-                    </div>
-                    <ul class="plan-features">
-                        <li data-i18n="plans.group.feature1">Guided workshops for teams</li>
-                        <li data-i18n="plans.group.feature2">Custom workflows tailored to your office</li>
-                        <li data-i18n="plans.group.feature3">Extended examples + templates</li>
-                    </ul>
-                    <a href="#" class="btn btn-primary" data-i18n="plans.group.cta">Ask details</a>
-                </div>
-                <div class="plan-card">
-                    <div class="plan-header">
-                        <h3 data-i18n="plans.enterprise.title">Enterprise Plan</h3>
-                        <p class="plan-tagline" data-i18n="plans.enterprise.tagline">Custom AI for business</p>
-                    </div>
-                    <ul class="plan-features">
-                        <li data-i18n="plans.enterprise.feature1">Bespoke AI integration into daily operations</li>
-                        <li data-i18n="plans.enterprise.feature2">Scalable training for staff</li>
-                        <li data-i18n="plans.enterprise.feature3">Consultation-based approach</li>
-                    </ul>
-                    <a href="#" class="btn btn-primary" data-i18n="plans.enterprise.cta">Ask details</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Newsletter Section -->
-    <section class="newsletter-section" id="newsletter">
-        <div class="container">
-            <div class="newsletter-container">
-                <div class="newsletter-visual">
-
-                    <img src="images/newsletter_hero.png" alt="Newsletter">
-                </div>
-
-                <div class="newsletter-content">
-                    <h2 data-i18n="newsletter.title">Extra bonuses every week</h2>
-                    <p data-i18n="newsletter.subtitle">Get practical workflows, tool updates, and new examples—without
-                        the noise.</p>
-                    <form class="newsletter-form" id="newsletterForm">
-                        <input type="email" placeholder="Your email address" required
-                            data-i18n-placeholder="newsletter.placeholder">
-                        <button type="submit" class="btn btn-primary" data-i18n="newsletter.cta">Subscribe</button>
-                    </form>
-                    <p class="newsletter-note" data-i18n="newsletter.note">No spam. Unsubscribe anytime.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Final CTA Section -->
-    <section class="final-cta-section">
-        <div class="container">
-            <h2 class="cta-title" data-i18n="finalcta.title">Start small. Grow big. Work smarter this week.</h2>
-            <p class="cta-subtitle" data-i18n="finalcta.subtitle">Join the waiting list and get the free starter kit.
+    <!-- ===== FREE AGENTS SHOWCASE ===== -->
+    <section class="agents-section" id="agents">
+        <div class="container" style="text-align:center;">
+            <div class="section-label">FREE TIER — YOUR STARTING TEAM</div>
+            <h2 class="section-heading" style="text-align:center;">Meet the team working for you</h2>
+            <p class="agents-single-line">
+                Each agent is a specialist with a distinct personality, nationality, and area of expertise. They don't
+                overlap — they collaborate.
             </p>
-            <div class="cta-buttons">
-                <a href="/hub/login" class="btn btn-primary btn-large" data-i18n="finalcta.cta1">Launch Your Career</a>
-                <a href="#demo" class="btn btn-secondary btn-large" data-i18n="finalcta.cta2">Try the demo</a>
+
+            <div class="agents-grid-v3">
+                <!-- Gema -->
+                <a href="/hub/login" class="agent-card-v3">
+                    <div class="agent-avatar-v3">
+                        <img src="https://lh3.googleusercontent.com/d/1qVeSx1suf01TU01h_SGecwfbieBrotw6"
+                            alt="Gema — AI Project Manager" crossorigin="anonymous" referrerpolicy="no-referrer"
+                            onerror="this.src='images/why_1.webp'">
+                    </div>
+                    <div class="agent-tag free">FREE</div>
+                    <h3>Gema</h3>
+                    <div class="agent-role">AI Project Manager · Nigerian</div>
+                    <p>Orchestrates your tasks, manages your board of directors, and keeps every project on track. The
+                        first agent every student meets.</p>
+                    <div style="margin-top:0.75rem;font-size:0.75rem;color:var(--accent-secondary);font-weight:700;">
+                        Create account to activate →</div>
+                </a>
+
+                <!-- Behavioral Psychologist -->
+                <a href="/hub/login" class="agent-card-v3 card-featured">
+                    <div class="agent-avatar-v3">
+                        <img src="https://lh3.googleusercontent.com/d/1dwtTpaggtlN_a5zEMfrNFiV4889fgzpE"
+                            alt="Behavioral Psychologist" crossorigin="anonymous" referrerpolicy="no-referrer"
+                            onerror="this.src='images/why_2.webp'">
+                    </div>
+                    <div class="agent-tag featured-free">FREE · FEATURED</div>
+                    <h3>Behavioral Psych</h3>
+                    <div class="agent-role">The UX · Kenyan</div>
+                    <p>Analyzes cognitive patterns, decision-making, and emotional architecture to build psychologically
+                        resonant products.</p>
+                    <div style="margin-top:0.75rem;font-size:0.75rem;color:var(--accent-secondary);font-weight:700;">
+                        Create account to activate →</div>
+                </a>
+
+                <!-- Idea Cloner — Added to Teaser -->
+                <a href="/hub/login" class="agent-card-v3 card-featured">
+                    <div class="agent-avatar-v3">
+                        <img src="images/idea_cloner_avatar.png" alt="Idea Cloner — SaaS Blueprint Architect"
+                            onerror="this.onerror=null;this.src='images/why_3.webp'">
+                    </div>
+                    <div class="agent-tag featured-premium">PREMIUM · FEATURED</div>
+                    <h3>Idea Cloner</h3>
+                    <div class="agent-role">SaaS Blueprint Architect · Remote</div>
+                    <p>Paste any SaaS URL, and get a complete step-by-step React + Supabase implementation plan.</p>
+                    <div style="margin-top:0.75rem;font-size:0.75rem;color:var(--accent-primary);font-weight:700;">
+                        Create account to activate →</div>
+                </a>
+            </div>
+
+            <div class="section-cta" style="margin-top: 3rem; text-align: center;">
+                <a href="board.html" class="btn btn-primary btn-large">Meet The Full Board of 19 Agents →</a>
+            </div>
+        </div>
+
+        <div class="agents-cta">
+            <a href="/hub/login" class="btn btn-primary btn-large">Create Your Free Account — Activate Agents</a>
+            <p class="agents-cta-note">Sign up free · No credit card · Instant access to all Free tier agents inside
+                the Student Campus.</p>
+        </div>
+        </div>
+    </section>
+
+    <!-- ===== HOW IT WORKS ===== -->
+    <section class="how-section" id="how">
+        <div class="container">
+            <div class="section-label">THE PROCESS</div>
+            <h2 class="section-heading">From zero to your first AI project in 3 steps</h2>
+            <div class="how-steps">
+                <div class="how-step">
+                    <div class="step-number">01</div>
+                    <div class="step-content">
+                        <h3>Enter the Campus</h3>
+                        <p>Create your free account and access the Agent Command Deck. No setup, no configuration — your
+                            board is ready the moment you log in.</p>
+                    </div>
+                </div>
+                <div class="how-connector"></div>
+                <div class="how-step">
+                    <div class="step-number">02</div>
+                    <div class="step-content">
+                        <h3>Activate an Agent</h3>
+                        <p>Choose the specialist you need — project manager, SEO strategist, behavioral psychologist —
+                            and open a live session. Each agent remembers your context.</p>
+                    </div>
+                </div>
+                <div class="how-connector"></div>
+                <div class="how-step">
+                    <div class="step-number">03</div>
+                    <div class="step-content">
+                        <h3>Build &amp; Save</h3>
+                        <p>Work through real projects with your AI team. In Módulo 2, you'll build your first automated
+                            workflow and unlock the Idea Cloner. Save sessions to your Neural Vault anytime.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- ===== FREE TOOLS TEASER ===== -->
+    <section class="gems-teaser-section" id="gems-teaser"
+        style="background: var(--bg-surface); padding: var(--spacing-3xl) 0;">
+        <div class="container">
+            <div class="gems-teaser-inner"
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-xl); align-items: center;">
+                <div class="gems-teaser-text">
+                    <div class="section-label">FREE — OUR MOST POWERFUL TOOL</div>
+                    <h2 class="section-heading" style="margin-bottom:0.75rem;">The OfficeAIM Prompt Generator</h2>
+                    <p
+                        style="color:var(--text-secondary); font-size:1.1rem; line-height:1.7; max-width:480px; margin-bottom: 2rem;">
+                        Before you even build your agents, you need to know how to talk to them. We built the ultimate
+                        prompt engineering framework, and we're giving it away for free.
+                    </p>
+                    <a href="gems.html" class="btn btn-primary btn-large"
+                        style="display:inline-flex; align-items:center; gap: 0.5rem;">
+                        Try the Prompt Generator
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Quick 3-card Gem Feature -->
+                <div class="gems-teaser-cards" style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div
+                        style="background: rgba(255,122,24,0.1); border: 1px solid rgba(255,122,24,0.3); padding: 1.5rem; border-radius: var(--radius-md);">
+                        <h4
+                            style="color: var(--accent-primary); margin-bottom: 0.5rem; display:flex; align-items:center; gap:0.5rem;">
+                            <span style="font-size:1.2rem;">⭐</span> The Prompt Generator</h4>
+                        <p style="font-size:0.9rem; color: var(--text-secondary); margin:0;">Craft the perfect context,
+                            rules, and output format for any LLM instantly.</p>
+                    </div>
+                    <div
+                        style="background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); padding: 1.5rem; border-radius: var(--radius-md);">
+                        <h4
+                            style="color: var(--text-primary); margin-bottom: 0.5rem; display:flex; align-items:center; gap:0.5rem;">
+                            <span style="font-size:1.2rem;">💎</span> 15 Google Gemini Gems</h4>
+                        <p style="font-size:0.9rem; color: var(--text-secondary); margin:0;">Direct links to
+                            pre-configured Google Gemini agents for marketing, strategy, and more.</p>
+                    </div>
+                    <div style="text-align:center; padding-top: 1rem;">
+                        <a href="gems.html" style="color: var(--accent-secondary); font-weight: 600;">Explore all 15
+                            Free Gems →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    </div>
+    </section>
+
+    <!-- ===== PRICING TEASER ===== -->
+    <section class="pricing-teaser-section" id="pricing" style="padding: var(--spacing-3xl) 0;">
+        <div class="container" style="text-align:center;">
+            <div class="section-label">CHOOSE YOUR ACCESS</div>
+            <h2 class="section-heading">Start free. Scale when you're ready.</h2>
+            <p class="section-desc" style="max-width:580px; margin:0 auto 3rem; text-align:center;">
+                Every plan gives you real AI agents, real sessions, and real results. No fluff.
+            </p>
+
+            <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; margin-bottom: 2rem;">
+                <div
+                    style="background:var(--bg-card); padding:1.5rem 2rem; border-radius:var(--radius-md); border:1px solid rgba(255,255,255,0.05); min-width:200px;">
+                    <h3 style="margin:0; font-size:1.2rem;">Free</h3>
+                    <div style="font-size:1.5rem; font-weight:700; color:var(--text-primary); margin-top:0.5rem;">€0
+                    </div>
+                    <p style="font-size:0.8rem; color:var(--text-muted); margin-top:0.5rem;">6 Agents + Módulo 1 & 2</p>
+                </div>
+                <div
+                    style="background:var(--bg-card); padding:1.5rem 2rem; border-radius:var(--radius-md); border:1px solid var(--accent-primary); box-shadow: 0 0 20px rgba(255,122,24,0.1); min-width:200px; position:relative;">
+                    <span
+                        style="position:absolute; top:-10px; left:50%; transform:translateX(-50%); background:var(--accent-primary); color:white; font-size:0.7rem; padding:2px 8px; border-radius:10px; font-weight:bold;">POPULAR</span>
+                    <h3 style="margin:0; font-size:1.2rem;">Pro</h3>
+                    <div style="font-size:1.5rem; font-weight:700; color:var(--text-primary); margin-top:0.5rem;">€19
+                        <span style="font-size:0.9rem; font-weight:normal; color:var(--text-muted);">/mo</span></div>
+                    <p style="font-size:0.8rem; color:var(--text-muted); margin-top:0.5rem;">13 Agents + Full Course</p>
+                </div>
+                <div
+                    style="background:var(--bg-card); padding:1.5rem 2rem; border-radius:var(--radius-md); border:1px solid rgba(255,255,255,0.05); min-width:200px;">
+                    <h3 style="margin:0; font-size:1.2rem;">Plus</h3>
+                    <div style="font-size:1.5rem; font-weight:700; color:var(--text-primary); margin-top:0.5rem;">€49
+                        <span style="font-size:0.9rem; font-weight:normal; color:var(--text-muted);">/mo</span></div>
+                    <p style="font-size:0.8rem; color:var(--text-muted); margin-top:0.5rem;">Full 19 Agent Board</p>
+                </div>
+            </div>
+
+            <div style="margin-top:2rem;">
+                <a href="pricing.html" class="btn btn-secondary btn-large">View Full Plan Comparison →</a>
+            </div>
+        </div>
+        </a>
+        </div>
+        </div>
+    </section>
+
+    <!-- ===== FINAL CTA ===== -->
+    <section class="final-cta-v2">
+        <div class="final-cta-glow"></div>
+        <div class="container">
+            <h2>Ready to build with your AI team?</h2>
+            <p>Join 250+ professionals who stopped browsing AI tools and started using them. Your command deck is
+                waiting.</p>
+            <a href="/hub/login" class="btn-hero-primary" style="display:inline-flex;">
+                Enter the Campus — Free
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
-                    <img src="images/logo_premium.png" alt="OfficeAim Logo" class="footer-logo">
-
-                    <p class="footer-tagline" data-i18n="footer.tagline">Learn. Apply. Automate.</p>
+                    <img src="images/favicon.png" alt="OfficeAIM Logo" class="footer-logo"
+                        style="display:block;margin:0 auto 0.75rem;">
+                    <p class="footer-tagline" style="text-align:center;">Learn. Build. Automate.</p>
+                    <p style="text-align:center;margin-top:0.5rem;">
+                        <a href="policy.html"
+                            style="color:var(--text-muted);font-size:0.8rem;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:2px;">Privacy
+                            &amp; Policies</a>
+                    </p>
                 </div>
                 <div class="footer-links">
                     <div class="footer-column">
-                        <h4 data-i18n="footer.product">Product</h4>
+                        <h4>Platform</h4>
                         <ul>
-                            <li><a href="#features" data-i18n="footer.features">Features</a></li>
-                            <li><a href="#courses" data-i18n="footer.courses">Courses</a></li>
-                            <li><a href="#toolkit" data-i18n="footer.toolkit">Toolkit</a></li>
-                            <li><a href="#examples" data-i18n="footer.examples">Examples</a></li>
+                            <li><a href="#agents">The Board</a></li>
+                            <li><a href="#how">How It Works</a></li>
+                            <li><a href="gems.html">Free Gems &amp; Tools</a></li>
+                            <li><a href="pricing.html">Pricing</a></li>
+                            <li><a href="/hub/login">Campus Login</a></li>
                         </ul>
                     </div>
                     <div class="footer-column">
-                        <h4 data-i18n="footer.connect">Connect</h4>
+                        <h4>Connect</h4>
                         <ul>
-                            <li><a href="#newsletter" data-i18n="footer.newsletter">Newsletter</a></li>
                             <li><a href="https://www.instagram.com/office.aim/" target="_blank">Instagram</a></li>
                             <li><a href="https://www.youtube.com/@Aimora-Officeaim" target="_blank">YouTube</a></li>
                             <li><a href="https://www.facebook.com/profile.php?id=61584047901312"
@@ -573,13 +433,6 @@
                                 d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
                         </svg>
                     </a>
-                    <a href="https://www.facebook.com/profile.php?id=61584047901312" target="_blank" class="social-icon"
-                        aria-label="Facebook">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                        </svg>
-                    </a>
                     <a href="https://www.linkedin.com/in/office-aim-hq-b8a7013a8/" target="_blank" class="social-icon"
                         aria-label="LinkedIn">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -590,8 +443,8 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 OfficeAim. <span data-i18n="footer.rights">All rights reserved.</span></p>
-                <p data-i18n="footer.redirect">You will be redirected to a secure Google Form for the waiting list.</p>
+                <p>© 2026 OfficeAIM. All rights reserved. · <a href="policy.html"
+                        style="color:inherit;text-decoration:none;">Privacy &amp; Terms</a></p>
             </div>
         </div>
     </footer>

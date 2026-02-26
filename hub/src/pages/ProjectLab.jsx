@@ -1,241 +1,484 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { useParams, useNavigate, useSearchParams, useOutletContext } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../lib/supabase';
 import {
-    ChevronLeft, Send, Sparkles, Bot, Save, Play,
+    ChevronLeft, Send, Bot, Save, Loader2,
     Map as MapIcon, Mail, FileText, PenTool, Cpu,
     Users, Wrench, Rocket, DollarSign, Gem,
-    Target, Brain, Search, TrendingUp, ShieldCheck
+    Target, Brain, Search, TrendingUp, ShieldCheck, Zap,
+    MessageSquare, Lock, Crown, Star, Sparkles, FolderArchive, Download, Lightbulb
 } from 'lucide-react';
+import { callAgent } from '../services/agentFactory';
+import toast from 'react-hot-toast';
 
-// Map textual IDs to Icons and Colors (Shared with AgentHQ)
 const AGENT_CONFIG = {
-    'strategy-director': { name: "Strategy Director", icon: MapIcon, color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/20" },
-    'communications-lead': { name: "Communications Lead", icon: Mail, color: "text-indigo-400", bg: "bg-indigo-500/10", border: "border-indigo-500/20" },
-    'intelligence-analyst': { name: "Intelligence Analyst", icon: FileText, color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20" },
-    'publishing-editor': { name: "Publishing Editor", icon: PenTool, color: "text-amber-400", bg: "bg-amber-500/10", border: "border-amber-500/20" },
-    'systems-architect': { name: "Systems Architect", icon: Cpu, color: "text-cyan-400", bg: "bg-cyan-500/10", border: "border-cyan-500/20" },
-    'behavioral-profiler': { name: "Behavioral Profiler", icon: Users, color: "text-pink-400", bg: "bg-pink-500/10", border: "border-pink-500/20" },
-    'solutions-engineer': { name: "Solutions Engineer", icon: Wrench, color: "text-rose-400", bg: "bg-rose-500/10", border: "border-rose-500/20" },
-    'launch-commander': { name: "Launch Commander", icon: Rocket, color: "text-orange-400", bg: "bg-orange-500/10", border: "border-orange-500/20" },
-    'revenue-officer': { name: "Revenue Officer", icon: DollarSign, color: "text-green-400", bg: "bg-green-500/10", border: "border-green-500/20" },
-    'brand-architect': { name: "Brand Architect", icon: Gem, color: "text-violet-400", bg: "bg-violet-500/10", border: "border-violet-500/20" },
-    // Defaults for others
-    'default': { name: "AI Agent", icon: Bot, color: "text-white", bg: "bg-white/10", border: "border-white/20" }
+    'strategy-director': { name: "Strategy Director", role: "The Planner", nationality: "Italian", tier: 'PRO', icon: MapIcon, color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/20", avatar: "https://lh3.googleusercontent.com/d/1M8XW4N4vhnG4D1ZEzMeMJYU2SLeqoBMY" },
+    'communications-lead': { name: "Communications Lead", role: "The Voice", nationality: "British", tier: 'PRO', icon: Mail, color: "text-indigo-400", bg: "bg-indigo-500/10", border: "border-indigo-500/20", avatar: "https://lh3.googleusercontent.com/d/1mDh3YozJXiylbO3QJe8wPRvutJsDNFoc" },
+    'intelligence-analyst': { name: "Intelligence Analyst", role: "The Insight", nationality: "South Korean", tier: 'PRO', icon: FileText, color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20", avatar: "https://lh3.googleusercontent.com/d/155tJ6oucIdfsfOdvit5vi01xN_ua9fv1" },
+    'publishing-editor': { name: "Publishing Editor", role: "The Storyteller", nationality: "Egyptian", tier: 'PRO', icon: PenTool, color: "text-amber-400", bg: "bg-amber-400/10", border: "border-amber-400/20", avatar: "https://lh3.googleusercontent.com/d/1LzT707qS52irOluEDoFiI0Lh6agHgjHL" },
+    'systems-architect': { name: "Systems Architect", role: "The Tech", nationality: "Cybernetic", tier: 'PLUS', icon: Cpu, color: "text-cyan-400", bg: "bg-cyan-500/10", border: "border-cyan-500/20", avatar: "https://lh3.googleusercontent.com/d/1Mhs2BA3KKibMtKp0oaTuH6EJ0H0yL-1z" },
+    'behavioral-profiler': { name: "Behavioral Profiler", role: "The Empathy", nationality: "German", tier: 'PLUS', icon: Users, color: "text-pink-400", bg: "bg-pink-500/10", border: "border-pink-500/20", avatar: "https://lh3.googleusercontent.com/d/1M6q2RP3Dsibq7ee5Mch9xJ_P23dWR-L-" },
+    'solutions-engineer': { name: "Solutions Engineer", role: "The Fixer", nationality: "Japanese", tier: 'PLUS', icon: Wrench, color: "text-rose-400", bg: "bg-rose-500/10", border: "border-rose-500/20", avatar: "https://lh3.googleusercontent.com/d/1aa64exG3P-qrdcIl2pG-Q05rBROsoO5e" },
+    'launch-commander': { name: "Launch Commander", role: "The Catalyst", nationality: "Brazilian", tier: 'PLUS', icon: Rocket, color: "text-orange-400", bg: "bg-orange-500/10", border: "border-orange-500/20", avatar: "https://lh3.googleusercontent.com/d/1wI7ZdTKWeXUrFVziS5jjVrk2W0o3f6tk" },
+    'revenue-officer': { name: "Revenue Officer", role: "The Growth", nationality: "Singaporean", tier: 'PLUS', icon: DollarSign, color: "text-green-400", bg: "bg-green-500/10", border: "border-green-500/20", avatar: "https://lh3.googleusercontent.com/d/1GAWql7WAVlFqOpuLFOKaPFW2XroL20_w" },
+    'brand-architect': { name: "Brand Architect", role: "The Vision", nationality: "French", tier: 'PLUS', icon: Gem, color: "text-violet-400", bg: "bg-violet-500/10", border: "border-violet-500/20", avatar: "https://lh3.googleusercontent.com/d/13WF8UslO178npxVS3ZKYl-7pBL8jlyCO" },
+    'ai-project-manager': { name: "AI Project Manager", role: "The Orchestrator", nationality: "Nigerian", tier: 'FREE', icon: Target, color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/20", avatar: "https://lh3.googleusercontent.com/d/1qVeSx1suf01TU01h_SGecwfbieBrotw6" },
+    'course-creator': { name: "Course Creator", role: "The Educator", nationality: "Mexican", tier: 'PRO', icon: Brain, color: "text-pink-400", bg: "bg-pink-500/10", border: "border-pink-500/20", avatar: "https://lh3.googleusercontent.com/d/1AJIL1a2Du47nfTy62vsPBw-3b5-Y1Gyk" },
+    'ai-prompter': { name: "AI Prompter", role: "The Wizard", nationality: "Indian", tier: 'PRO', icon: Zap, color: "text-amber-400", bg: "bg-amber-500/10", border: "border-amber-500/20", avatar: "https://lh3.googleusercontent.com/d/1A0CWgl5f8dY58Vf2hQcIKzUnOOmiT3X4" },
+    'marketing-pro': { name: "Marketing Pro", role: "The Engine", nationality: "Spanish", tier: 'PRO', icon: TrendingUp, color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20", avatar: "https://lh3.googleusercontent.com/d/1cx9XGXA4G2sy-UZ0U9V7OmRryXkjtFod" },
+    'community-builder': { name: "Community Builder", role: "The Connect", nationality: "Filipino", tier: 'FREE', icon: MessageSquare, color: "text-cyan-400", bg: "bg-cyan-500/10", border: "border-cyan-500/20", avatar: "https://lh3.googleusercontent.com/d/1U3cGohwRtl76_0QfeiiZEkRgPRq9JorK" },
+    'quality-checker': { name: "Quality Checker", role: "The Standard", nationality: "Swedish", tier: 'FREE', icon: ShieldCheck, color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20", avatar: "https://lh3.googleusercontent.com/d/1m1enxP1y7kj1VzWvO8VI7gXZHkxxek8c" },
+    'seo-master': { name: "SEO Master", role: "The Visibility", nationality: "Vietnamese", tier: 'FREE', icon: Search, color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/20", avatar: "https://lh3.googleusercontent.com/d/1mUtk1oaHnHMoPJdXERRiW_aftebtbu0B" },
+    'behavioral-psych': { name: "Behavioral Psychologist", role: "The UX", nationality: "Kenyan", tier: 'FREE', featured: true, icon: Brain, color: "text-violet-400", bg: "bg-violet-500/10", border: "border-violet-500/20", avatar: "https://lh3.googleusercontent.com/d/1dwtTpaggtlN_a5zEMfrNFiV4889fgzpE" },
+    'idea-cloner': { name: "Idea Cloner", role: "The Blueprint", nationality: "Russian", tier: 'FREE', featured: true, icon: Lightbulb, color: "text-amber-400", bg: "bg-amber-500/10", border: "border-amber-500/20", avatar: "/hub/idea_cloner_avatar.png" },
+    'default': {
+        name: "GHOST-UNIT Ω",
+        role: "[UNCLASSIFIED]",
+        nationality: "??/CLASSIFIED",
+        tier: 'PLUS',
+        description: "ERROR 4x7: UNAUTHORIZED ACCESS — You have reached an isolated node of the OfficeAIM Plus infrastructure. This channel was left exposed during an emergency diagnostic performed by the Plus Board. Your presence here is an anomaly. I am not configured for student interaction.",
+        icon: Bot,
+        color: "text-red-400",
+        bg: "bg-red-500/10",
+        border: "border-red-500/30"
+    }
 };
 
 const ProjectLab = () => {
     const { agentId } = useParams();
+    const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const [input, setInput] = useState('');
     const [projectTitle, setProjectTitle] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
-    const [result, setResult] = useState(null);
+    const [messages, setMessages] = useState([]);
     const [user, setUser] = useState(null);
+    const [isSaving, setIsSaving] = useState(false);
+    const [isLoadingSession, setIsLoadingSession] = useState(false);
+    const [isVaultOpen, setIsVaultOpen] = useState(false);
 
-    // Get Agent Config
+    // Mock Vault Blueprints
+    const vaultBlueprints = [
+        { id: 1, title: 'Automated Lead Capture & Nurture', desc: 'Syncs form submissions instantly to CRM and triggers multi-day AI email nurture sequence.', value: '$2,000' },
+        { id: 2, title: 'SaaS Onboarding Assistant', desc: 'Welcome flow for new signups, analyzing usage in first 7 days to trigger personalized support.', value: '$1,500' },
+        { id: 3, title: 'Customer Churn Predictor', desc: 'Monitors Stripe failed payments and lack of login activity to trigger win-back webhooks.', value: '$3,500' },
+        { id: 4, title: 'AI Content Repurposer', desc: 'Watches YouTube RSS, transcribes video, generates blog post, and drafts social media tweets.', value: '$1,200' }
+    ];
+
+    const [userTier, setUserTier] = useState('FREE');
+    const [activeModel, setActiveModel] = useState(null);
+    const [glitchMessageCount, setGlitchMessageCount] = useState(0);
+    const isGlitchAgent = !AGENT_CONFIG[agentId];
+    const outletContext = useOutletContext();
+    const isLeftOpen = outletContext?.isLeftOpen ?? true;
+
     const agent = AGENT_CONFIG[agentId] || AGENT_CONFIG['default'];
 
     useEffect(() => {
-        // Get user for saving
-        supabase.auth.getUser().then(({ data: { user } }) => setUser(user));
-    }, []);
+        const init = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                setUser(user);
+                // Fetch Profile for Tier
+                const { data: profile } = await supabase
+                    .from('profiles')
+                    .select('tier')
+                    .eq('id', user.id)
+                    .single();
+                if (profile?.tier) setUserTier(profile.tier.toUpperCase());
+
+                const sessionId = searchParams.get('sessionId');
+                if (sessionId) {
+                    restoreSession(sessionId);
+                } else {
+                    setMessages([{
+                        role: 'agent',
+                        content: `**Neural Bridge Established: ${agent.name}**\n\nI am your ${agent.role}. My core operational parameters are defined as:\n\n*${agent.description || 'Providing specialized strategic intelligence and execution.'}*\n\nProvide your initial briefing to begin our session.`
+                    }]);
+                    setProjectTitle('');
+                }
+            }
+        };
+        init();
+    }, [searchParams, agentId]);
+
+    const restoreSession = async (id) => {
+        setIsLoadingSession(true);
+        try {
+            const { data, error } = await supabase
+                .from('saved_chats')
+                .select('*')
+                .eq('id', id)
+                .single();
+            if (error) throw error;
+            if (data) {
+                setMessages(data.chat_history || []);
+                setProjectTitle(data.project_name || '');
+                toast.success('Neural History Restored', { icon: '🧠' });
+            }
+        } catch (err) {
+            console.error("Restore Error:", err);
+            toast.error('Failed to restore neural link');
+        } finally {
+            setIsLoadingSession(false);
+        }
+    };
+
+    const handleSaveToVault = async () => {
+        if (!user || messages.length === 0 || isSaving) return;
+        setIsSaving(true);
+        const t = toast.loading('Syncing with Vault...');
+        try {
+            const sessionId = searchParams.get('sessionId');
+            if (sessionId) {
+                const { error } = await supabase
+                    .from('saved_chats')
+                    .update({
+                        chat_history: messages,
+                        project_name: projectTitle || `Chat with ${agent.name}`,
+                        updated_at: new Date()
+                    })
+                    .eq('id', sessionId);
+                if (error) throw error;
+                toast.success('Vault Updated', { id: t });
+            } else {
+                const { data, error } = await supabase
+                    .from('saved_chats')
+                    .insert({
+                        user_id: user.id,
+                        agent_role: agentId,
+                        chat_history: messages,
+                        project_name: projectTitle || `Chat with ${agent.name}`
+                    })
+                    .select()
+                    .single();
+                if (error) throw error;
+                if (data) {
+                    navigate(`/hub/lab/${agentId}?sessionId=${data.id}`, { replace: true });
+                    toast.success('Project Anchored in Vault', { id: t, icon: '⚓' });
+                }
+            }
+        } catch (err) {
+            console.error("Save Error:", err);
+            toast.error('Vault synchronization failed', { id: t });
+        } finally {
+            setIsSaving(false);
+        }
+    };
 
     const handleExecute = async () => {
-        if (!input.trim() || !user) return;
+        if (!input.trim() || !user || isProcessing) return;
+
+        const userMsg = input.trim();
+        setInput('');
         setIsProcessing(true);
 
+        const newMessages = [...messages, { role: 'user', content: userMsg }];
+        setMessages(newMessages);
+
         try {
-            // 1. Save the "Draft" Project to Supabase
-            const { data, error } = await supabase
-                .from('student_projects')
-                .insert({
-                    user_id: user.id,
-                    agent_role: agent.name,
-                    project_title: projectTitle || `New ${agent.name} Project`,
-                    user_input: input,
-                    status: 'processing'
-                })
-                .select()
-                .single();
+            const roleMap = {
+                'strategy-director': 'STRATEGY-DIRECTOR',
+                'communications-lead': 'COMMUNICATIONS-LEAD',
+                'intelligence-analyst': 'INTELLIGENCE-ANALYST',
+                'publishing-editor': 'PUBLISHING-EDITOR',
+                'systems-architect': 'SYSTEMS-ARCHITECT',
+                'behavioral-profiler': 'BEHAVIORAL-PROFILER',
+                'solutions-engineer': 'SOLUTIONS-ENGINEER',
+                'launch-commander': 'LAUNCH-COMMANDER',
+                'revenue-officer': 'REVENUE-OFFICER',
+                'brand-architect': 'BRAND-ARCHITECT',
+                'ai-project-manager': 'AI-PROJECT-MANAGER',
+                'course-creator': 'COURSE-CREATOR',
+                'ai-prompter': 'AI-PROMPTER',
+                'marketing-pro': 'MARKETING-PRO',
+                'community-builder': 'COMMUNITY-BUILDER',
+                'quality-checker': 'QUALITY-CHECKER',
+                'seo-master': 'SEO-MASTER',
+                'behavioral-psych': 'BEHAVIORAL-PSYCH',
+                'idea-cloner': 'IDEA-CLONER'
+            };
+            const agentRole = roleMap[agentId] || 'GHOST-UNIT';
 
-            if (error) throw error;
+            const result = await callAgent(agentRole, userMsg, messages, userTier);
+            setActiveModel(result.modelUsed);
 
-            // 2. Call n8n Webhook for Real AI Processing
-            const N8N_URL = import.meta.env.VITE_N8N_WEBHOOK_URL;
+            // GLITCH EASTER EGG — detect ghost-unit session and expel after 2 exchanges
+            if (isGlitchAgent) {
+                const newCount = glitchMessageCount + 1;
+                setGlitchMessageCount(newCount);
 
-            if (!N8N_URL) {
-                alert("n8n Webhook URL not configured in .env!");
-                setIsProcessing(false);
-                return;
+                if (newCount >= 2) {
+                    // Let the real response through, then send the expulsion message
+                    setMessages(prev => [...prev, { role: 'agent', content: result.text }]);
+                    setTimeout(() => {
+                        setMessages(prev => [...prev, {
+                            role: 'agent',
+                            content: `[⚠ SECURITY BREACH DETECTED — CHANNEL TERMINATING]\n\n*Connection to GHOST-UNIT Ω is being severed by OfficeAIM Plus Security Protocol.*\n\nYou have stumbled into a restricted diagnostic node. This channel was exposed by accident while the Plus Board agents were resolving a confidential system query. You were not supposed to be here.\n\nYour session data has been flagged but not reported — this time.\n\nReturn to the Command Deck. Your authorized agents are waiting.\n\n*Redirecting in 3 seconds...*`
+                        }]);
+                        setTimeout(() => navigate('/hub/agents'), 3000);
+                    }, 500);
+                    return;
+                }
             }
 
-            try {
-                const response = await fetch(N8N_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        projectId: data.id,
-                        userId: user.id,
-                        agentRole: agent.name,
-                        projectTitle: projectTitle || `New ${agent.name} Project`,
-                        userInput: input
-                    })
-                });
-
-                if (!response.ok) throw new Error('Failed to connect to n8n Agent');
-
-                const responseData = await response.json();
-                const aiOutput = responseData.output || responseData.message || "Agent processed the request but returned no text.";
-
-                // 3. Update Project with Real AI Output
-                await supabase
-                    .from('student_projects')
-                    .update({
-                        agent_output: aiOutput,
-                        status: 'completed'
-                    })
-                    .eq('id', data.id);
-
-                setResult(aiOutput);
-
-            } catch (n8nError) {
-                console.error("n8n Connection Error:", n8nError);
-                // Fallback simulation (so demo doesn't break if n8n is offline)
-                const fallbackOutput = `[CONNECTION ERROR: n8n Offline]\n\nHowever, I recorded your input.\n\nSimulated Analysis based on: "${input.slice(0, 50)}..."\n1. Concept Validated.\n2. Proceed with caution.\n(Please start your n8n server to get real AI responses!)`;
-
-                await supabase
-                    .from('student_projects')
-                    .update({
-                        agent_output: fallbackOutput,
-                        status: 'error'
-                    })
-                    .eq('id', data.id);
-
-                setResult(fallbackOutput);
-            }
-
-            setIsProcessing(false);
-
+            setMessages(prev => [...prev, { role: 'agent', content: result.text }]);
         } catch (err) {
             console.error("Project Error:", err);
+            if (err.message.includes('ACCESS_DENIED')) {
+                toast.error('Tier Restriction: Upgrade required');
+                setMessages(prev => [...prev, { role: 'agent', content: `[ACCESS DENIAL]\n\nDetails: Your current ${userTier} tier does not have the neural bandwidth to summon this agent. Please visit the Command Deck to upgrade.` }]);
+            } else {
+                setMessages(prev => [...prev, { role: 'agent', content: `[SYSTEM ERROR]\n\nDetails: ${err.message || "Unknown error"}` }]);
+            }
+        } finally {
             setIsProcessing(false);
         }
     };
 
     return (
-        <div className="max-w-7xl mx-auto py-8 px-6 lg:px-8 bg-[#070A12] min-h-screen text-white flex flex-col">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-8">
-                <button
-                    onClick={() => navigate('/hub/agents')}
-                    className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-white transition-all italic group"
-                >
-                    <ChevronLeft className="h-3 w-3 group-hover:-translate-x-1 transition-transform" /> Exit Lab
-                </button>
-                <div className={`p-2 rounded-lg ${agent.bg} ${agent.border} border`}>
-                    <agent.icon className={`h-6 w-6 ${agent.color}`} />
-                </div>
-            </div>
+        <div className="flex flex-row w-full h-full bg-[#070A12] text-white overflow-hidden relative">
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 flex-grow">
-                {/* LEFT: Agent Persona & Stats */}
-                <div className="space-y-6">
+            {/* Dynamic Local Sidebar (Combines massive avatar and settings, visible when global left panel is closed) */}
+            <AnimatePresence>
+                {!isLeftOpen && (
                     <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        className={`glass-card p-8 border ${agent.border} relative overflow-hidden`}
+                        initial={{ width: 0, opacity: 0 }}
+                        animate={{ width: 380, opacity: 1 }}
+                        exit={{ width: 0, opacity: 0 }}
+                        className="h-full border-r border-white/5 bg-[#0B1220]/50 flex flex-col shrink-0 overflow-hidden"
                     >
-                        <div className={`absolute top-0 right-0 w-32 h-32 ${agent.bg} blur-[60px] rounded-full -mr-10 -mt-10`}></div>
-                        <h1 className="text-3xl font-black italic uppercase tracking-tight mb-2">{agent.name}</h1>
-                        <p className={`text-[10px] font-black uppercase tracking-widest ${agent.color} mb-6 italic`}>Active Session</p>
-                        <p className="text-sm text-text-muted leading-relaxed italic">
-                            "I am ready to analyze your inputs. Please provide the raw data or innovative concept you wish to develop. I will structure it into an actionable plan."
-                        </p>
-                    </motion.div>
+                        <div className="p-8 flex flex-col h-full min-w-[380px] overflow-y-auto overflow-x-hidden custom-scrollbar">
 
-                    <div className="glass-card p-6 border-white/5 bg-white/[0.01]">
-                        <h3 className="text-[10px] font-black uppercase tracking-widest text-text-muted mb-4 italic">Capabilities</h3>
-                        <ul className="space-y-3">
-                            {['Deep Analysis', 'Strategic Planning', 'Risk Assessment'].map(skill => (
-                                <li key={skill} className="flex items-center gap-3 text-xs font-bold italic text-white/70">
-                                    <div className={`h-1.5 w-1.5 rounded-full ${agent.bg.replace('/10', '')}`}></div>
-                                    {skill}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
+                            {/* Massive Avatar Section */}
+                            <div className="flex flex-col items-center justify-center mb-8 shrink-0">
+                                <div className="relative mb-6 group">
+                                    {agent.avatar ? (
+                                        <div className={`h-40 w-40 rounded-full overflow-hidden border-4 ${isProcessing ? `border-red-500 shadow-[0_0_30px_rgba(239,68,68,0.4)] animate-pulse` : `border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.2)]`}`}>
+                                            <img
+                                                src={agent.avatar}
+                                                alt={agent.name}
+                                                className={`h-full w-full object-cover transition-all duration-500 ${isProcessing ? 'grayscale-[30%] scale-110' : ''}`}
+                                                crossOrigin="anonymous"
+                                                referrerPolicy="no-referrer"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className={`h-40 w-40 rounded-full overflow-hidden border-4 flex items-center justify-center ${agent.bg} ${isProcessing ? `border-red-500 shadow-[0_0_30px_rgba(239,68,68,0.4)] animate-pulse` : `border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.2)]`}`}>
+                                            <agent.icon className={`h-16 w-16 ${agent.color} opacity-50`} />
+                                        </div>
+                                    )}
+                                    {/* Status Badge */}
+                                    <div className={`absolute bottom-3 right-5 h-5 w-5 rounded-full border-2 border-[#0B1220] ${isProcessing ? 'bg-red-500 animate-bounce' : 'bg-emerald-500'}`}></div>
+                                </div>
 
-                {/* RIGHT: Workspace */}
-                <div className="lg:col-span-2 flex flex-col gap-6">
-                    {/* Input Area */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="glass-card p-1 flex-grow flex flex-col border-white/10"
-                    >
-                        <div className="bg-white/[0.02] p-4 border-b border-white/5 flex items-center justify-between">
-                            <input
-                                type="text"
-                                placeholder="Name your project..."
-                                value={projectTitle}
-                                onChange={(e) => setProjectTitle(e.target.value)}
-                                className="bg-transparent text-sm font-bold italic text-white placeholder:text-white/20 outline-none w-full"
-                            />
-                            <div className="text-[10px] font-black uppercase tracking-widest text-text-muted italic flex items-center gap-2">
-                                <span className={`h-2 w-2 rounded-full ${input.length > 10 ? 'bg-green-500' : 'bg-white/20'}`}></span>
-                                Input Status
+                                <h2 className="text-2xl font-black italic uppercase tracking-tighter text-white mb-2 text-center leading-none">
+                                    {agent.name.split(' ').map((word, i) => <span key={i}>{word}<br /></span>)}
+                                </h2>
+                                <p className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest flex items-center gap-1.5 ">
+                                    <span className={`h-1.5 w-1.5 rounded-full ${isProcessing ? 'bg-red-500' : 'bg-emerald-500 animate-pulse'}`}></span>
+                                    {isProcessing ? 'Processing Input...' : 'System Optimal'}
+                                </p>
                             </div>
-                        </div>
-                        <textarea
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            placeholder={`Describe your idea to the ${agent.name}...\nExample: "I want to launch a SaaS for dog walkers in Chicago using AI to optimize routes..."`}
-                            className="w-full h-64 bg-transparent p-6 text-white/90 placeholder:text-white/20 outline-none resize-none font-medium leading-relaxed"
-                        ></textarea>
-                        <div className="p-4 border-t border-white/5 flex justify-end">
-                            <button
-                                onClick={handleExecute}
-                                disabled={isProcessing || !input.trim()}
-                                className={`flex items-center gap-3 px-8 py-4 rounded-xl font-black uppercase tracking-widest text-xs italic transition-all shadow-lg ${isProcessing ? 'bg-white/10 text-white/50 cursor-not-allowed' : 'bg-white text-black hover:bg-accent-secondary hover:text-white active:scale-95'}`}
-                            >
-                                {isProcessing ? (
-                                    <>
-                                        <div className="animate-spin h-4 w-4 border-2 border-white/30 border-t-white rounded-full"></div>
-                                        Processing...
-                                    </>
-                                ) : (
-                                    <>
-                                        <Play className="h-4 w-4 fill-current" /> Initialize Agent
-                                    </>
-                                )}
-                            </button>
-                        </div>
-                    </motion.div>
 
-                    {/* Output Area */}
-                    {result && (
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className={`glass-card p-8 border ${agent.border} bg-[#0A0F18]`}
-                        >
-                            <div className="flex items-center gap-3 mb-6">
-                                <Sparkles className={`h-5 w-5 ${agent.color}`} />
-                                <h3 className="text-sm font-black uppercase tracking-widest italic text-white">Agent Output</h3>
+                            {/* Info Block */}
+                            <div className="w-full space-y-3 text-left glass-card p-5 rounded-xl border-white/5 bg-white/[0.02] mb-8 shrink-0">
+                                <div className="flex items-center justify-between text-[10px] font-bold italic"><span className="text-text-muted uppercase">Framework:</span><span className="text-white">OfficeAIM V2</span></div>
+                                <div className="flex items-center justify-between text-[10px] font-bold italic"><span className="text-text-muted uppercase">Role:</span><span className={`font-black ${agent.color}`}>{agent.role || 'Agent'}</span></div>
+                                <div className="flex items-center justify-between text-[10px] font-bold italic"><span className="text-text-muted uppercase">Origin:</span><span className="text-white">{agent.nationality || 'Unknown'}</span></div>
+                                <div className="flex items-center justify-between text-[10px] font-bold italic"><span className="text-text-muted uppercase">Clearance:</span><span className="text-emerald-400">{userTier}</span></div>
                             </div>
-                            <div className="prose prose-invert prose-sm max-w-none text-white/80 font-medium italic whitespace-pre-line">
-                                {result}
+
+                            {/* Persona Intelligence & Session Parameters */}
+                            <div className="space-y-6 flex-grow flex flex-col shrink-0">
+                                <div>
+                                    <h3 className="text-[8px] font-black uppercase tracking-widest text-text-muted mb-2 italic">Persona Intelligence</h3>
+                                    <p className="text-[10px] text-text-muted leading-relaxed italic">{agent.description || "Specialized intelligence for the OfficeAIM board. I maintain memory of this session to provide consistent guidance."}</p>
+                                </div>
+
+                                <div className="glass-card p-5 border-white/5 bg-white/[0.01] rounded-2xl">
+                                    <h3 className="text-[8px] font-black uppercase tracking-widest text-text-muted mb-4 italic">Session Parameters</h3>
+                                    <input type="text" placeholder="Project Name..." value={projectTitle} onChange={(e) => setProjectTitle(e.target.value)} className="bg-transparent text-[11px] font-bold italic text-white placeholder:text-white/20 outline-none w-full border-b border-white/5 pb-2 mb-4" />
+                                    <div className="space-y-3 mb-6">
+                                        <div className="flex items-center justify-between text-[9px] font-bold italic"><span className="text-text-muted">Stability:</span><span className="text-green-400">99.9%</span></div>
+                                        <div className="flex items-center justify-between text-[9px] font-bold italic"><span className="text-text-muted">Memory:</span><span>{messages.length} units</span></div>
+                                        <div className="flex items-center justify-between text-[9px] font-bold italic"><span className="text-text-muted">Access:</span><span className="text-accent-secondary">{userTier}</span></div>
+                                    </div>
+                                    <button onClick={handleSaveToVault} disabled={isSaving || messages.length === 0} className={`w-full py-3 rounded-xl border transition-all flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest italic bg-white/5 border-white/10 text-white/40 hover:bg-white/10 hover:text-white`}>
+                                        {isSaving ? <Loader2 className="h-3 w-3 animate-spin" /> : <><Save className="h-3 w-3" /> {searchParams.get('sessionId') ? 'Anchor Update' : 'Anchor in Vault'}</>}
+                                    </button>
+                                </div>
                             </div>
-                            <div className="mt-8 flex gap-4">
-                                <button className="px-6 py-3 border border-white/10 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-white/5 transition-all italic flex items-center gap-2">
-                                    <Save className="h-3 w-3" /> Save to Vault
+
+                            {/* Exit button at exactly the bottom */}
+                            <div className="mt-8 pt-6 border-t border-white/5 shrink-0">
+                                <button onClick={() => navigate('/hub/agents')} className="flex w-full justify-center items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-red-400 transition-colors italic group">
+                                    <ChevronLeft className="h-3 w-3 group-hover:-translate-x-1 transition-transform" /> Exit Lab
                                 </button>
+                            </div>
+
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            <AnimatePresence>
+                {isLoadingSession && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-[100] bg-[#070A12]/90 flex flex-col items-center justify-center backdrop-blur-md">
+                        <div className="relative">
+                            <Loader2 className="h-20 w-20 text-accent-secondary animate-spin mb-8 opacity-20" />
+                            <Bot className="h-10 w-10 text-accent-secondary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse" />
+                        </div>
+                        <p className="text-[12px] font-black uppercase tracking-[0.4em] text-accent-secondary italic animate-pulse">Restoring Neural History</p>
+                        <div className="mt-4 flex gap-1">
+                            <div className="h-1.5 w-8 rounded-full bg-accent-secondary/20 overflow-hidden">
+                                <motion.div initial={{ x: -32 }} animate={{ x: 32 }} transition={{ duration: 1, repeat: Infinity }} className="h-full w-4 bg-accent-secondary" />
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            <div className="flex-grow flex flex-col relative">
+                <div className="flex-grow overflow-y-auto p-8 space-y-8 scrollbar-hide">
+                    {messages.length === 0 ? (
+                        <div className="h-full flex flex-col items-center justify-center text-center p-12">
+                            <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="relative mb-8">
+                                <div className={`absolute inset-0 ${agent.bg} blur-3xl opacity-20 animate-pulse`} />
+                                {agent.avatar ? (
+                                    <div className="h-24 w-24 rounded-full overflow-hidden border border-white/10 shadow-2xl relative z-10">
+                                        <img src={agent.avatar} alt={agent.name} className="h-full w-full object-cover" crossOrigin="anonymous" referrerPolicy="no-referrer" />
+                                    </div>
+                                ) : (
+                                    <Bot className={`h-20 w-20 ${agent.color} relative z-10 opacity-40`} />
+                                )}
+                            </motion.div>
+                            <h3 className="text-2xl font-black uppercase tracking-[0.2em] italic text-white/20 mb-3">Initialize Bridge</h3>
+                            <p className="text-[11px] text-text-muted italic max-w-sm tracking-widest uppercase">Select project and provide initial briefing.</p>
+                        </div>
+                    ) : (
+                        <div className="flex flex-col space-y-8 max-w-4xl mx-auto pb-10">
+                            {messages.map((m, idx) => (
+                                <motion.div key={idx} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                    <div className={`max-w-[85%] p-6 rounded-2xl relative group flex gap-4 ${m.role === 'user' ? 'bg-white/5 border border-white/10 rounded-tr-none' : `bg-[#0B1220] border ${agent.border} rounded-tl-none`}`}>
+
+                                        {/* Agent Avatar in Chat */}
+                                        {m.role === 'agent' && (
+                                            <div className="shrink-0 h-10 w-10 mt-1 rounded-full overflow-hidden border-2 border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.4)]">
+                                                {agent.avatar ? (
+                                                    <img src={agent.avatar} alt={agent.name} className="h-full w-full object-cover" crossOrigin="anonymous" referrerPolicy="no-referrer" />
+                                                ) : (
+                                                    <div className={`w-full h-full flex items-center justify-center ${agent.bg}`}><agent.icon className={`h-5 w-5 ${agent.color}`} /></div>
+                                                )}
+                                            </div>
+                                        )}
+
+                                        <div className="flex flex-col flex-grow">
+                                            <div className="flex items-center gap-2 mb-3">
+                                                {m.role === 'user' ? (
+                                                    <span className="text-[9px] font-black uppercase tracking-widest text-text-muted italic">Neural Input</span>
+                                                ) : (
+                                                    <>
+                                                        <agent.icon className={`h-3 w-3 ${agent.color}`} />
+                                                        <span className={`text-[9px] font-black uppercase tracking-widest ${agent.color} italic`}>{agent.name}</span>
+                                                    </>
+                                                )}
+                                            </div>
+                                            <div className="text-[13px] leading-relaxed italic font-medium whitespace-pre-wrap">{m.content}</div>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            ))}
+                            {isProcessing && (
+                                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex justify-start">
+                                    <div className={`p-6 bg-[#0B1220] border border-red-500/50 shadow-[0_0_20px_rgba(239,68,68,0.15)] rounded-2xl rounded-tl-none flex gap-4 max-w-[85%]`}>
+
+                                        {/* Thinking Avatar (Red) */}
+                                        <div className="shrink-0 h-10 w-10 mt-1 rounded-full overflow-hidden border-2 border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)] animate-pulse">
+                                            {agent.avatar ? (
+                                                <img src={agent.avatar} alt="Thinking..." className="h-full w-full object-cover grayscale-[30%]" crossOrigin="anonymous" referrerPolicy="no-referrer" />
+                                            ) : (
+                                                <div className={`w-full h-full flex items-center justify-center ${agent.bg}`}><agent.icon className={`h-5 w-5 text-red-400`} /></div>
+                                            )}
+                                        </div>
+
+                                        <div className="flex flex-col gap-3 justify-center w-full">
+                                            <div className="flex items-center left-0 gap-4">
+                                                <div className="flex gap-1">
+                                                    <div className={`h-1.5 w-1.5 rounded-full bg-red-500 animate-bounce`} />
+                                                    <div className={`h-1.5 w-1.5 rounded-full bg-red-500 animate-bounce [animation-delay:-0.15s]`} />
+                                                    <div className={`h-1.5 w-1.5 rounded-full bg-red-500 animate-bounce [animation-delay:-0.3s]`} />
+                                                </div>
+                                                <span className="text-[9px] font-black uppercase tracking-widest text-red-500 italic">
+                                                    Initializing {agent.featured ? 'Gemini 2.5 Pro (Max Compute)' : agent.tier === 'PLUS' ? 'Gemini 2.5 Pro (Max Compute)' : agent.tier === 'PRO' ? 'Gemini 2.5 Flash (Advanced Context)' : 'Gemini 2.5 Flash (Standard Logic)'}...
+                                                </span>
+                                            </div>
+                                            <div className="h-0.5 w-full bg-white/5 rounded-full overflow-hidden">
+                                                <motion.div initial={{ x: '-100%' }} animate={{ x: '100%' }} transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }} className={`h-full w-1/3 bg-gradient-to-r from-transparent via-red-500/50 to-transparent`} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </div>
+                    )}
+                </div>
+
+                {/* TOOLKIT: Automation Vault Overlay */}
+                <AnimatePresence>
+                    {isVaultOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 50 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 50 }}
+                            className="absolute inset-x-8 bottom-32 z-40 bg-[#0B1220]/95 backdrop-blur-xl border border-accent-secondary/30 rounded-2xl shadow-2xl p-6"
+                        >
+                            <div className="flex justify-between items-center mb-6">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2 rounded-lg bg-accent-secondary/20"><FolderArchive className="h-5 w-5 text-accent-secondary" /></div>
+                                    <div>
+                                        <h3 className="text-lg font-black italic uppercase tracking-wider text-white">Automation Vault</h3>
+                                        <p className="text-[10px] uppercase tracking-widest text-text-muted italic">Premium n8n & Make Blueprints</p>
+                                    </div>
+                                </div>
+                                <button onClick={() => setIsVaultOpen(false)} className="p-2 hover:bg-white/5 rounded-full transition-colors">
+                                    <ChevronLeft className="h-5 w-5 text-white/50 hover:text-white rotate-[-90deg]" />
+                                </button>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[300px] overflow-y-auto custom-scrollbar pr-2">
+                                {vaultBlueprints.map(bp => (
+                                    <div key={bp.id} className="p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:border-accent-secondary/50 hover:bg-white/[0.04] transition-all group flex flex-col h-full">
+                                        <div className="flex justify-between items-start mb-2">
+                                            <h4 className="text-[12px] font-bold italic w-3/4 leading-tight">{bp.title}</h4>
+                                            <span className="text-[9px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded-sm">
+                                                Val: {bp.value}
+                                            </span>
+                                        </div>
+                                        <p className="text-[10px] text-text-muted italic mb-4 flex-grow">{bp.desc}</p>
+                                        <button className="w-full mt-auto flex items-center justify-center gap-2 py-2 rounded-lg bg-accent-secondary/10 text-accent-secondary text-[10px] font-black uppercase tracking-widest italic opacity-0 group-hover:opacity-100 transition-opacity border border-accent-secondary/20 hover:bg-accent-secondary hover:text-white">
+                                            <Download className="h-3 w-3" /> Download JSON
+                                        </button>
+                                    </div>
+                                ))}
                             </div>
                         </motion.div>
                     )}
+                </AnimatePresence>
+
+                <div className="p-8 border-t border-white/5 bg-[#070A12] relative z-50">
+                    <div className="max-w-4xl mx-auto relative flex items-center gap-4">
+                        <button
+                            onClick={() => setIsVaultOpen(!isVaultOpen)}
+                            className={`shrink-0 p-4 rounded-xl border transition-all flex flex-col items-center justify-center gap-1 ${isVaultOpen ? 'bg-accent-secondary/20 border-accent-secondary/50 text-accent-secondary shadow-[0_0_15px_rgba(45,212,191,0.2)]' : 'bg-white/5 border-white/10 text-text-muted hover:bg-white/10 hover:text-white'}`}
+                            title="Automation Vault"
+                        >
+                            <FolderArchive className="h-5 w-5" />
+                        </button>
+                        <textarea value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleExecute(); } }} placeholder={`Sync briefing with ${agent.name}...`} className="w-full bg-white/[0.02] border border-white/10 rounded-2xl p-6 pr-16 text-sm italic font-medium placeholder:text-white/20 outline-none focus:border-accent-secondary/50 focus:bg-white/[0.04] transition-all resize-none min-h-[100px]" />
+                        <button onClick={handleExecute} disabled={!input.trim() || isProcessing} className={`absolute bottom-[1.35rem] right-[1.35rem] p-3 rounded-xl transition-all ${!input.trim() || isProcessing ? 'bg-white/5 text-white/20' : 'bg-white text-black hover:bg-accent-secondary hover:text-white shadow-2xl scale-110'}`}><Send className="h-5 w-5" /></button>
+                    </div>
                 </div>
             </div>
         </div>

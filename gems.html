@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OfficeAIM — Free Gem Agents & Prompt Generator</title>
+    <meta name="description"
+        content="15 specialist Gemini Gem Agents ready to use right now — no sign-up required. Plus a free AI Prompt Generator for emails, reports, and more.">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="landing-new.css">
+    <link rel="stylesheet" href="gems-page.css">
+</head>
+
+<body>
+
+    <!-- Sticky Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="images/favicon.png" alt="OfficeAIM Logo" class="logo-img">
+            </a>
+            <ul class="nav-links">
+                <li class="nav-item-dropdown">
+                    <a href="#features" class="nav-link">Features <svg class="dropdown-arrow" width="12" height="12"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-inner">
+                            <div class="mega-menu-col">
+                                <h4>The Platform</h4>
+                                <a href="board.html" class="mega-link">
+                                    <div class="mega-icon">👥</div>
+                                    <div class="mega-text">
+                                        <strong>The AI Board</strong>
+                                        <span>Meet your 19 specialist agents</span>
+                                    </div>
+                                </a>
+                                <a href="index.html#how" class="mega-link">
+                                    <div class="mega-icon">⚡</div>
+                                    <div class="mega-text">
+                                        <strong>How it Works</strong>
+                                        <span>Your workflow from 0 to 1</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="mega-menu-col">
+                                <h4>Use Cases</h4>
+                                <a href="board.html#cloner" class="mega-link">
+                                    <div class="mega-icon">🧬</div>
+                                    <div class="mega-text">
+                                        <strong>Idea Cloner</strong>
+                                        <span>Reverse-engineer any SaaS</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="nav-item-dropdown">
+                    <a href="#resources" class="nav-link">Resources <svg class="dropdown-arrow" width="12" height="12"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-inner">
+                            <div class="mega-menu-col">
+                                <h4>Free Tools</h4>
+                                <a href="gems.html" class="mega-link">
+                                    <div class="mega-icon">⭐</div>
+                                    <div class="mega-text">
+                                        <strong>Prompt Generator</strong>
+                                        <span>Our most powerful free tool</span>
+                                    </div>
+                                </a>
+                                <a href="gems.html#gemini" class="mega-link">
+                                    <div class="mega-icon">💎</div>
+                                    <div class="mega-text">
+                                        <strong>15 Gem Agents</strong>
+                                        <span>Try Google Gemini integrations</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li><a href="pricing.html" class="nav-link">Pricing</a></li>
+            </ul>
+            <div class="nav-ctas">
+                <a href="hub/login" class="btn btn-primary">Enter Campus →</a>
+            </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="page-hero-bg">
+            <div class="hero-grid"></div>
+            <div class="hero-glow-right"></div>
+        </div>
+        <div class="container" style="position:relative;z-index:1;padding-top:8rem;padding-bottom:4rem;">
+            <div class="section-label">FREE TOOLS — NO SIGN-UP NEEDED</div>
+            <h1 class="page-hero-title">AI Agents &amp; Tools,<br><em>ready to use right now.</em></h1>
+            <p class="page-hero-desc">No account needed. Click any agent to open a live Gemini session, or use the
+                prompt generator below to build your first AI briefing.</p>
+        </div>
+    </section>
+
+    <!-- ===== PROMPT GENERATOR ===== -->
+    <section class="demo-section" id="demo">
+        <div class="container">
+            <div class="demo-header" style="text-align:center;">
+                <div class="section-label">OUR MOST POWERFUL FREE TOOL</div>
+                <h2 class="section-heading">The OfficeAIM Prompt Generator</h2>
+                <p class="section-desc" style="text-align:center; max-width:100%; margin-left:auto; margin-right:auto;">
+                    Pick a template, fill in the blanks, copy the result. Ready to paste into any AI tool.
+                </p>
+            </div>
+            <div class="demo-container">
+                <div class="demo-privacy-note">
+                    <span>🔒</span>
+                    <span>Runs entirely in your browser. No data sent anywhere.</span>
+                </div>
+                <div class="template-selector">
+                    <div class="template-cards">
+                        <div class="template-card active" data-template="email">
+                            <div class="template-icon">✉️</div>
+                            <h4>Professional Email</h4>
+                        </div>
+                        <div class="template-card" data-template="summary">
+                            <div class="template-icon">📄</div>
+                            <h4>Document Summary</h4>
+                        </div>
+                        <div class="template-card" data-template="project">
+                            <div class="template-icon">📋</div>
+                            <h4>Project Plan</h4>
+                        </div>
+                        <div class="template-card" data-template="marketing">
+                            <div class="template-icon">📢</div>
+                            <h4>Marketing Copy</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-area" id="formArea"></div>
+                <div class="global-options">
+                    <div class="option-group">
+                        <label for="toneSelector">Tone:</label>
+                        <select id="toneSelector">
+                            <option value="professional">Professional</option>
+                            <option value="friendly">Friendly</option>
+                            <option value="technical">Technical</option>
+                        </select>
+                    </div>
+                    <div class="option-group">
+                        <label for="languageOutput">Output Language:</label>
+                        <select id="languageOutput">
+                            <option value="en">English</option>
+                            <option value="es">Español</option>
+                            <option value="nl">Nederlands</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="demo-actions">
+                    <button class="btn btn-primary" id="generateBtn">Generate Prompt</button>
+                    <button class="btn btn-secondary" id="resetBtn">Reset</button>
+                </div>
+                <div class="output-area" id="outputArea" style="display:none;">
+                    <div class="output-header">
+                        <h3>Your Generated Prompt</h3>
+                        <button class="btn btn-copy" id="copyBtn">Copy</button>
+                    </div>
+                    <div class="output-content" id="outputContent"></div>
+                    <div class="output-helper">
+                        <p>Paste into ChatGPT, Gemini, or any AI assistant.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ALL 15 GEM AGENTS ===== -->
+    <section class="gems-full-section" id="gemini"
+        style="border-top:1px solid rgba(255,255,255,0.05); padding-top: var(--spacing-3xl);">
+        <div class="container">
+            <div class="section-label">✨ GEMINI GEM AGENTS</div>
+            <h2 class="section-heading">Try a Gem Agent right now</h2>
+            <p class="section-desc" style="text-align:center; max-width:100%;">
+                15 specialized AI agents built inside Gemini. Click any card to open a live chat — no sign-up required.
+            </p>
+
+            <div class="gems-full-grid">
+                <!-- Row 1 -->
+                <a href="https://gemini.google.com/gem/1Iy2lhiaFbHPHNfN7TBfU1iNkWzjmgXrH?usp=sharing" target="_blank"
+                    class="gem-card-v2">
+                    <div class="gem-icon-v2">🗓️</div>
+                    <h4>Content Calendar Strategist</h4>
+                    <p>Plan weeks of content in minutes — topics, formats, channels, and posting schedule all mapped out
+                        for you.</p>
+                    <span class="gem-cta">Open in Gemini →</span>
+                </a>
+                <a href="https://gemini.google.com/gem/19970f28e4b1?usp=drive_open" target="_blank" class="gem-card-v2">
+                    <div class="gem-icon-v2">✍️</div>
+                    <h4>Social Media Copywriter</h4>
+                    <p>Generate platform-native social copy — captions, threads, carousels — tuned for engagement and
+                        reach.</p>
+                    <span class="gem-cta">Open in Gemini →</span>
+                </a>
+                <a href="https://gemini.google.com/gem/e8e8a46db2ad?usp=drive_open" target="_blank" class="gem-card-v2">
+                    <div class="gem-icon-v2">📧</div>
+                    <h4>Newsletter Architect</h4>
+                    <p>Craft high-performing email newsletters with compelling subject lines, modular layouts, and CTAs
+                        that convert.</p>
+                    <span class="gem-cta">Open in Gemini →</span>
+                </a>
+                <!-- Row 2 -->
+                <a href="https://gemini.google.com/gem/d83cc1146cde?usp=drive_open" target="_blank" class="gem-card-v2">
+                    <div class="gem-icon-v2">💌</div>
+                    <h4>Email Marketing Specialist</h4>
+                    <p>Design full email sequences, welcome flows, and promotional campaigns optimized for open rates
+                        and revenue.</p>
+                    <span class="gem-cta">Open in Gemini →</span>
+                </a>
+                <a href="https://gemini.google.com/gem/957ef2107250?usp=drive_open" target="_blank" class="gem-card-v2">
+                    <div class="gem-icon-v2">🛠️</div>
+                    <h4>Technical Support Tech</h4>
+                    <p>Resolve technical queries, troubleshoot issues, and guide users step-by-step through clear
+                        solutions.</p>
+                    <span class="gem-cta">Open in Gemini →</span>
+                </a>
+                <a href="https://gemini.google.com/gem/f552d6380a1e?usp=drive_open" target="_blank" class="gem-card-v2">
+                    <div class="gem-icon-v2">📊</div>
+                    <h4>Executive Summary Analyst</h4>
+                    <p>Distill complex documents, reports, and datasets into sharp, decision-ready executive summaries
+                        in minutes.</p>
+                    <span class="gem-cta">Open in Gemini →</span>
+                </a>
+                <a href="https://gemini.google.com/gem/2e2f8752f6c6?usp=drive_open" target="_blank" class="gem-card-v2">
+                    <div class="gem-icon-v2">📖</div>
+                    <h4>Interactive Storyteller</h4>
+                    <p>Craft immersive narratives, branching scenario scripts, and interactive story arcs for any format
+                        or audience.</p>
+                    <span class="gem-cta">Open in Gemini →</span>
+                </a>
+                <!-- Row 3 -->
+                <a href="https://gemini.google.com/gem/46b5b2e35064?usp=drive_open" target="_blank" class="gem-card-v2">
+                    <div class="gem-icon-v2">🖊️</div>
+                    <h4>Content Curator &amp; Blogger</h4>
+                    <p>Discover, organize, and write high-quality blog posts and curated content pieces on any niche
+                        topic.</p>
+                    <span class="gem-cta">Open in Gemini →</span>
+                </a>
+                <a href="https://gemini.google.com/gem/a207573ecf24?usp=drive_open" target="_blank" class="gem-card-v2">
+                    <div class="gem-icon-v2">🎯</div>
+                    <h4>Buyer Persona Architect</h4>
+                    <p>Build detailed, research-backed buyer personas with demographics, goals, pain points, and
+                        behavioral triggers.</p>
+                    <span class="gem-cta">Open in Gemini →</span>
+                </a>
+                <a href="https://gemini.google.com/gem/1d9b8d5f9d14?usp=drive_open" target="_blank" class="gem-card-v2">
+                    <div class="gem-icon-v2">🧠</div>
+                    <h4>Pain Point Analyzer</h4>
+                    <p>Uncover your audience's deepest frustrations and translate pain points into high-impact strategic
+                        insights.</p>
+                    <span class="gem-cta">Open in Gemini →</span>
+                </a>
+                <a href="https://gemini.google.com/gem/b4f1f589131b?usp=drive_open" target="_blank" class="gem-card-v2">
+                    <div class="gem-icon-v2">🚀</div>
+                    <h4>GTM Strategist</h4>
+                    <p>Build go-to-market strategies, launch roadmaps, and positioning frameworks for any product or
+                        service.</p>
+                    <span class="gem-cta">Open in Gemini →</span>
+                </a>
+                <!-- Row 4 -->
+                <a href="https://gemini.google.com/gem/c4a1a6e72bb8?usp=drive_open" target="_blank" class="gem-card-v2">
+                    <div class="gem-icon-v2">🔍</div>
+                    <h4>Feasibility Analyst</h4>
+                    <p>Assess business ideas, market viability, and execution risks to help you make confident,
+                        data-backed decisions.</p>
+                    <span class="gem-cta">Open in Gemini →</span>
+                </a>
+                <a href="https://gemini.google.com/gem/c87d84099997?usp=drive_open" target="_blank" class="gem-card-v2">
+                    <div class="gem-icon-v2">🏆</div>
+                    <h4>Value Proposition Architect</h4>
+                    <p>Define and articulate a compelling value proposition that resonates deeply with your target
+                        market.</p>
+                    <span class="gem-cta">Open in Gemini →</span>
+                </a>
+                <a href="https://drive.google.com/open?id=1WYbzSr69g8LdUwII864JUznMDtvzkOsp" target="_blank"
+                    class="gem-card-v2">
+                    <div class="gem-icon-v2">📈</div>
+                    <h4>Funnel Optimization Expert</h4>
+                    <p>Analyze and improve every stage of your conversion funnel to maximize revenue and minimize
+                        drop-off.</p>
+                    <span class="gem-cta">View PDF →</span>
+                </a>
+                <a href="https://gemini.google.com/gem/489db51d1ccf?usp=drive_open" target="_blank" class="gem-card-v2">
+                    <div class="gem-icon-v2">💰</div>
+                    <h4>Pricing Strategy Analyst</h4>
+                    <p>Model pricing tiers, analyze competitors, and build a strategy to maximize your revenue and
+                        positioning.</p>
+                    <span class="gem-cta">Open in Gemini →</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA TO JOIN ===== -->
+    <section class="gems-join-cta">
+        <div class="container">
+            <div class="gems-join-inner">
+                <div class="gems-join-text">
+                    <h2>Want even more? Enter the full Campus.</h2>
+                    <p>19 specialist AI agents. Your personal Neural Vault. A full curriculum. All starting at €0.</p>
+                </div>
+                <a href="/hub/login" class="btn-hero-primary">
+                    Enter the Campus — Free
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="images/logo_premium.png" alt="OfficeAIM Logo" class="footer-logo">
+                    <p class="footer-tagline">Learn. Build. Automate.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Platform</h4>
+                        <ul>
+                            <li><a href="index.html#agents">The Board</a></li>
+                            <li><a href="index.html#how">How It Works</a></li>
+                            <li><a href="index.html#pricing">Pricing</a></li>
+                            <li><a href="/hub/login">Campus Login</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Connect</h4>
+                        <ul>
+                            <li><a href="https://www.instagram.com/office.aim/" target="_blank">Instagram</a></li>
+                            <li><a href="https://www.youtube.com/@Aimora-Officeaim" target="_blank">YouTube</a></li>
+                            <li><a href="https://www.linkedin.com/in/office-aim-hq-b8a7013a8/"
+                                    target="_blank">LinkedIn</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 OfficeAIM. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

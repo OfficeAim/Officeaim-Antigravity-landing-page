@@ -1,0 +1,323 @@
+import { useState, useEffect } from 'react';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+    BookOpen, Trophy, Bot, Layout, Award, Settings,
+    LogOut, ChevronRight, ChevronLeft, Activity, Shield,
+    MessageSquare, CheckCircle2, ListTodo, PenTool
+} from 'lucide-react';
+import { supabase } from '../lib/supabase';
+
+const MainLayout = ({ profile }) => {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // Panel States
+    const [isLeftOpen, setIsLeftOpen] = useState(true);
+    const [isRightOpen, setIsRightOpen] = useState(true);
+
+    // Stats for placeholder progress
+    const [progress, setProgress] = useState(45);
+
+    // Mock Data for New Features
+    const courseModules = [
+        { id: 1, title: "Module 1: Foundations", completed: true },
+        { id: 2, title: "Module 2: Agent Architecture", completed: false },
+        { id: 3, title: "Module 3: Advanced Workflows", completed: false },
+    ];
+
+    // Project Memory State
+    const [recentProjects, setRecentProjects] = useState([]);
+
+    useEffect(() => {
+        if (!profile?.id) return;
+        const fetchProjects = async () => {
+            const { data } = await supabase
+                .from('saved_chats')
+                .select('id, project_name, agent_role, updated_at')
+                .eq('user_id', profile.id)
+                .order('updated_at', { ascending: false })
+                .limit(5);
+
+            if (data) {
+                setRecentProjects(data.map(p => ({
+                    id: p.id,
+                    title: p.project_name || 'Untitled Project',
+                    agent: p.agent_role.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+                    rawAgentId: p.agent_role,
+                    time: new Date(p.updated_at).toLocaleDateString(),
+                    status: 'saved'
+                })));
+            }
+        };
+
+        fetchProjects();
+
+        // Optional: Listen for changes in saved_chats
+        const channel = supabase.channel('saved_chats_changes')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'saved_chats', filter: `user_id=eq.${profile.id}` }, () => {
+                fetchProjects();
+            })
+            .subscribe();
+
+        return () => supabase.removeChannel(channel);
+    }, [profile?.id]);
+
+    const [notes, setNotes] = useState("");
+    const [tasks, setTasks] = useState([
+        { id: 1, text: "Finish Module 1", done: false },
+        { id: 2, text: "Deploy Quality Checker", done: false }
+    ]);
+
+    const toggleTask = (id) => {
+        setTasks(tasks.map(t => t.id === id ? { ...t, done: !t.done } : t));
+    };
+
+    const handleSignOut = async () => {
+        await supabase.auth.signOut();
+        navigate('/hub/login');
+    };
+
+    return (
+        <div className="h-screen w-full flex overflow-hidden bg-[#070A12] text-white font-plus-jakarta relative">
+
+            {/* LEFT PANEL TOGGLE BUTTON (Floating) */}
+            <button
+                onClick={() => setIsLeftOpen(!isLeftOpen)}
+                className={`absolute top-1/2 -translate-y-1/2 z-50 p-1.5 rounded-r-xl bg-[#0B1220] border-y border-r border-white/10 hover:bg-white/10 transition-all ${isLeftOpen ? 'left-[280px]' : 'left-0'}`}
+            >
+                {isLeftOpen ? <ChevronLeft className="h-4 w-4 text-text-muted" /> : <ChevronRight className="h-4 w-4 text-white" />}
+            </button>
+
+            {/* LEFT PANEL - NAVIGATION */}
+            <motion.div
+                initial={false}
+                animate={{ width: isLeftOpen ? 280 : 0, opacity: isLeftOpen ? 1 : 0 }}
+                className="h-full border-r border-white/5 bg-[#0B1220] flex flex-col shrink-0 relative z-40 shadow-2xl overflow-hidden"
+            >
+                <div className="p-6 flex flex-col h-full overflow-y-auto scrollbar-hide min-w-[280px]">
+                    {/* Logo Area */}
+                    <div className="flex items-center gap-3 mb-8 pb-6 border-b border-white/5">
+                        <div className="h-10 w-10 bg-accent-secondary/20 rounded-xl flex items-center justify-center border border-accent-secondary/30 relative overflow-hidden group cursor-pointer shrink-0">
+                            <div className="absolute inset-0 bg-accent-secondary/20 blur-md group-hover:bg-accent-secondary/40 transition-colors"></div>
+                            <Bot className="text-accent-secondary relative z-10 h-5 w-5" />
+                        </div>
+                        <div>
+                            <h1 className="text-xl font-black italic tracking-tighter title-gradient leading-none">OfficeAIM</h1>
+                            <span className="text-[9px] font-black uppercase tracking-widest text-text-muted italic block mt-1 opacity-70">Neural Campus</span>
+                        </div>
+                    </div>
+
+                    {/* Main Navigation */}
+                    <nav className="space-y-2 mb-8">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-text-muted italic block mb-3 ml-2 opacity-50">Global</span>
+
+                        <button
+                            onClick={() => navigate('/hub/dashboard')}
+                            className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all text-sm font-black italic ${location.pathname.includes('/dashboard') ? 'bg-white/10 text-white shadow-inner border border-white/5' : 'text-text-muted hover:bg-white/5 hover:text-white'}`}
+                        >
+                            <Layout className="h-4 w-4" /> Dashboard
+                        </button>
+
+                        <button
+                            onClick={() => navigate('/hub/agents')}
+                            className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all text-sm font-black italic ${location.pathname.includes('/agents') || location.pathname.includes('/lab/') ? 'bg-accent-primary/10 text-accent-primary shadow-inner border border-accent-primary/20' : 'text-text-muted hover:bg-white/5 hover:text-white'}`}
+                        >
+                            <Bot className="h-4 w-4" /> Corporate Board
+                        </button>
+
+                        <button
+                            onClick={() => navigate('/hub/projects')}
+                            className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all text-sm font-black italic ${location.pathname.includes('/projects') ? 'bg-white/10 text-white shadow-inner border border-white/5' : 'text-text-muted hover:bg-white/5 hover:text-white'}`}
+                        >
+                            <Award className="h-4 w-4" /> Neural Vault
+                        </button>
+                    </nav>
+
+                    {/* Dynamic Course Curriculum */}
+                    <div className="mb-8">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-text-muted italic block mb-3 ml-2 opacity-50">Curriculum</span>
+                        <div className="space-y-1 pl-2 border-l border-white/10 ml-4 py-1">
+                            {courseModules.map((mod) => (
+                                <button
+                                    key={mod.id}
+                                    onClick={() => navigate(`/hub/module/${mod.id}`)}
+                                    className={`w-full flex items-center gap-3 px-4 py-2 rounded-xl transition-all text-xs font-black italic ${location.pathname.includes(`/module/${mod.id}`)
+                                        ? 'text-white bg-white/5'
+                                        : mod.completed
+                                            ? 'text-emerald-400 hover:bg-emerald-400/10'
+                                            : 'text-text-muted hover:text-white hover:bg-white/5'
+                                        }`}
+                                >
+                                    {mod.completed ? <CheckCircle2 className="h-3.5 w-3.5 shrink-0" /> : <BookOpen className="h-3.5 w-3.5 shrink-0" />}
+                                    <span className="truncate">{mod.title}</span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Student Lounge Link */}
+                    <div className="mb-auto">
+                        <div
+                            onClick={() => navigate('/hub/lounge')}
+                            className={`glass-card p-4 rounded-2xl border-indigo-500/20 relative overflow-hidden group cursor-pointer transition-colors ${location.pathname.includes('/lounge') ? 'bg-indigo-500/20' : 'bg-indigo-500/5 hover:bg-indigo-500/10'}`}
+                        >
+                            <div className="absolute -right-4 -top-4 w-16 h-16 bg-indigo-500/20 blur-xl rounded-full"></div>
+                            <div className="flex items-center gap-3 mb-2">
+                                <MessageSquare className="h-4 w-4 text-indigo-400" />
+                                <h3 className="text-sm font-black italic text-white uppercase tracking-widest">Student Lounge</h3>
+                            </div>
+                            <p className="text-[10px] text-indigo-200/60 leading-relaxed italic mb-3">Connect with 250+ action-takers in our private ecosystem.</p>
+                            <button className="text-[9px] font-black uppercase tracking-[0.2em] text-indigo-400 hover:text-white transition-colors flex items-center gap-1 group-hover:gap-2">
+                                Enter System <ChevronRight className="h-3 w-3" />
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Performance Hub (Bottom) */}
+                    <div className="mt-8 pt-6 border-t border-white/5">
+                        <div className="flex justify-between items-end mb-3">
+                            <span className="text-[9px] font-black uppercase tracking-widest text-text-muted italic opacity-50">Total Progress</span>
+                            <span className="text-accent-secondary font-black text-sm italic">{progress}%</span>
+                        </div>
+                        <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden mb-4">
+                            <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: `${progress}%` }}
+                                className="h-full bg-gradient-to-r from-accent-primary to-accent-secondary"
+                            />
+                        </div>
+
+                        <div className="flex justify-between items-center text-[10px] font-bold text-text-muted uppercase tracking-widest italic bg-white/5 p-3 rounded-xl mb-4">
+                            <span>Status: Found. Member</span>
+                            <span className="text-emerald-400">ACTIVE</span>
+                        </div>
+
+                        {/* User Card */}
+                        <div className="p-3 glass-card bg-white/[0.02] border border-white/5 rounded-xl flex items-center justify-between cursor-pointer hover:bg-white/[0.04] transition-colors relative z-20">
+                            <div className="flex items-center gap-3 shrink-0 truncate">
+                                <div className="h-8 w-8 rounded-full bg-accent-primary/20 border border-accent-primary/30 flex items-center justify-center text-accent-primary text-[10px] font-black">
+                                    {profile?.full_name?.charAt(0) || 'U'}
+                                </div>
+                                <div className="truncate">
+                                    <div className="text-xs font-black italic truncate max-w-[100px]">{profile?.full_name || 'Student'}</div>
+                                    <div className="text-[9px] font-bold text-text-muted uppercase tracking-widest italic">{profile?.role || 'Member'}</div>
+                                </div>
+                            </div>
+                            <button onClick={handleSignOut} className="text-text-muted hover:text-red-400 transition-colors p-2 shrink-0">
+                                <LogOut className="h-4 w-4" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </motion.div>
+
+            {/* CENTER PANEL - MAIN WORKSPACE */}
+            <div className="flex-grow h-full overflow-y-auto scrollbar-hide bg-[#070A12] relative z-0 transition-all duration-300">
+                <main className="min-h-full">
+                    <Outlet context={{ isLeftOpen, isRightOpen }} />
+                </main>
+            </div>
+
+            {/* RIGHT PANEL TOGGLE BUTTON (Floating) */}
+            <button
+                onClick={() => setIsRightOpen(!isRightOpen)}
+                className={`absolute top-1/2 -translate-y-1/2 z-50 p-1.5 rounded-l-xl bg-[#0A0F18] border-y border-l border-white/10 hover:bg-white/10 transition-all ${isRightOpen ? 'right-[280px]' : 'right-0'}`}
+            >
+                {isRightOpen ? <ChevronRight className="h-4 w-4 text-text-muted" /> : <ChevronLeft className="h-4 w-4 text-white" />}
+            </button>
+
+            {/* RIGHT PANEL - TACTICAL HUD */}
+            <motion.div
+                initial={false}
+                animate={{ width: isRightOpen ? 280 : 0, opacity: isRightOpen ? 1 : 0 }}
+                className="h-full border-l border-white/5 bg-[#0A0F18] flex flex-col shrink-0 z-40 overflow-hidden shadow-2xl"
+            >
+                <div className="p-6 flex flex-col h-full overflow-y-auto scrollbar-hide min-w-[280px]">
+
+                    {/* Tactical Scratchpad */}
+                    <div className="mb-8">
+                        <div className="flex items-center gap-2 mb-4">
+                            <PenTool className="text-amber-400 h-4 w-4" />
+                            <h2 className="text-xs font-black italic uppercase tracking-widest text-white">Scratchpad</h2>
+                        </div>
+                        <textarea
+                            value={notes}
+                            onChange={(e) => setNotes(e.target.value)}
+                            placeholder="Jot down active thoughts, prompts, or notes..."
+                            className="w-full bg-white/[0.02] border border-white/10 rounded-xl p-3 text-[11px] italic font-medium placeholder:text-white/20 outline-none focus:border-amber-400/50 focus:bg-white/[0.04] transition-all resize-none min-h-[120px]"
+                        />
+                    </div>
+
+                    {/* Active Checklist */}
+                    <div className="mb-8 border-t border-white/5 pt-6">
+                        <div className="flex items-center gap-2 mb-4">
+                            <ListTodo className="text-emerald-400 h-4 w-4" />
+                            <h2 className="text-xs font-black italic uppercase tracking-widest text-white">Active Focus</h2>
+                        </div>
+                        <div className="space-y-2">
+                            {tasks.map(task => (
+                                <button
+                                    key={task.id}
+                                    onClick={() => toggleTask(task.id)}
+                                    className={`w-full text-left flex items-start gap-3 p-2.5 rounded-xl border transition-all ${task.done ? 'bg-emerald-400/5 border-emerald-400/20 opacity-60' : 'bg-white/[0.02] border-white/10 hover:border-white/20'}`}
+                                >
+                                    <div className={`mt-0.5 shrink-0 h-4 w-4 rounded-full border flex items-center justify-center ${task.done ? 'bg-emerald-400 border-emerald-400 text-black' : 'border-white/20'}`}>
+                                        {task.done && <CheckCircle2 className="h-3 w-3" />}
+                                    </div>
+                                    <span className={`text-[11px] italic font-bold leading-tight ${task.done ? 'text-white/40 line-through' : 'text-white'}`}>
+                                        {task.text}
+                                    </span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Project Memory (Pushed to bottom) */}
+                    <div className="mt-auto border-t border-white/5 pt-6">
+                        <div className="flex items-center gap-2 mb-4">
+                            <Activity className="text-accent-secondary h-4 w-4" />
+                            <h2 className="text-xs font-black italic uppercase tracking-widest text-white">Recent Memory</h2>
+                        </div>
+                        <div className="space-y-3">
+                            {recentProjects.map((project, idx) => (
+                                <div
+                                    key={project.id || idx}
+                                    onClick={() => {
+                                        if (project.id) {
+                                            navigate(`/hub/lab/${project.rawAgentId || 'quality-checker'}?sessionId=${project.id}`);
+                                        }
+                                    }}
+                                    className="p-3 rounded-xl bg-white/[0.02] border border-white/5 group cursor-pointer hover:border-accent-secondary/30 transition-all"
+                                >
+                                    <div className="flex justify-between items-start mb-1">
+                                        <span className="text-[9px] font-black uppercase tracking-widest text-text-muted italic bg-black/50 px-2 py-0.5 rounded">
+                                            {project.agent}
+                                        </span>
+                                    </div>
+                                    <h3 className="text-[11px] font-black italic text-white group-hover:text-accent-secondary transition-colors line-clamp-1">
+                                        {project.title}
+                                    </h3>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Admin Quick Action */}
+                    {profile?.role === 'admin' && (
+                        <div className="mt-6 pt-6 border-t border-white/5">
+                            <button
+                                onClick={() => navigate('/hub/admin')}
+                                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-500/10 text-red-400 font-black uppercase tracking-widest text-[10px] rounded-xl border border-red-500/20 hover:bg-red-500 hover:text-white transition-all italic"
+                            >
+                                <Shield className="h-4 w-4" /> Admin Controls
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </motion.div>
+        </div>
+    );
+};
+
+export default MainLayout;

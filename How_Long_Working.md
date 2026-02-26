@@ -11,7 +11,13 @@ Estimación del tiempo de desarrollo basado en las sesiones de trabajo registrad
 | **16/02/2026** | ~2 horas | Mejoras Visuales (Qwen Images) |
 | **17/02/2026** | ~13 horas | Debugging Visibilidad de Módulos |
 | **18/02/2026** | ~9h 15m | Restauración Contenido + Admin Access |
-| **TOTAL** | **~44 horas** | **Semana 1 de Desarrollo Intenso** |
+| **20/02/2026** | ~8h 30m | Monetization, Tier Gating & Neural Vault |
+| **21/02/2026** | ~3 horas | Refining Quality Checker UI |
+| **22/02/2026** | ~3 horas | Video Placement & Avatar Fixes |
+| **23/02/2026** | ~3h 15m | AgentHQ Layout, Guardrails & Login Polish (AM) |
+| **23/02/2026** | ~6h | Gem Cards Grid, Agent Persona Fix, 3 New Skills (PM) |
+| **25/02/2026** | ~8h 45m | Sprint 1–3: Gems direct links, Gema routing upgrade, Workflow Guide, Lesson 1.4 SQL debug, NotebookLM video |
+| **TOTAL** | **~77.25 horas** | **Semana 2–3 de Desarrollo Intenso** |
 
 ---
 *Nota: Estos tiempos son aproximados basados en la duración de las sesiones de terminal.*

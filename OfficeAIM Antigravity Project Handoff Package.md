@@ -8,17 +8,14 @@
 
 **Evergreen Content Strategy:** Focus on fundamental AI applications and user actions that remain relevant despite rapid technological changes, ensuring long-term value and reducing the need for frequent content updates.
 
-**8-Agent Team Strategy (Summary):** OfficeAIM operates with a multi-agent AI system, where each agent embodies a specialized persona to manage different aspects of the platform's development and content creation. The agents are:
+**18-Agent Board Strategy (Summary):** OfficeAIM operates with a comprehensive 18-agent elite board, categorized by tier (FREE, PRO, PLUS). Each agent provides specialized intelligence:
 
-1.  **AI Project Manager:** Orchestrates all tasks, delegates to appropriate agents, and ensures sequential execution and feedback loops.
-2.  **Course Creator:** Designs engaging, practical, and pedagogically sound AI courses, focusing on confidence-building and measurable outcomes.
-3.  **AI Prompter:** Crafts optimized, copy-paste ready prompts for various AI models (LLMs, image generation) to ensure high-quality outputs for all agents.
-4.  **Marketing Pro:** Develops conversion-driven marketing strategies and content to attract and convert AI-anxious professionals.
-5.  **Community Builder:** Fosters a supportive and engaging online learning community, enhancing learner retention and peer-to-peer support.
-6.  **Quality Checker:** Ensures all content and processes meet high standards for accuracy, clarity, consistency, and effectiveness.
-7.  **SEO Master:** Optimizes content and website for search engines to maximize organic visibility and reach.
-8.  **Business Strategist:** Provides guidance on lean startup principles, market validation, and overall business viability.
-9.  **Behavioral Psychologist & UX Strategist:** Integrates psychological principles and UX design to optimize learning experiences and reduce AI anxiety.
+- **FREE Tier**: 
+  - AI Project Manager (Orchestrator), Community Builder, Quality Checker, SEO Master, Behavioral Psychologist.
+- **PRO Tier (Gemini 2.5 Flash)**:
+  - Strategy Director, Communications Lead, Intelligence Analyst, Publishing Editor, Course Creator, AI Prompter, Marketing Pro.
+- **PLUS Tier (Gemini 2.5 Pro)**:
+  - Systems Architect, Behavioral Profiler, Solutions Engineer, Launch Commander, Revenue Officer, Brand Architect.
 
 ## 2. Master Syllabus for OfficeAIM Courses
 
@@ -100,26 +97,57 @@ Prompt for ChatGPT (or similar LLM):
 **Conclusion:**
 AI is not a distant threat; it's a present-day helper. By recognizing its pervasive, often beneficial, role in our lives, we can begin to approach it with curiosity rather than fear. In our next lesson, we'll dive into how this human-AI partnership can specifically enhance your office tasks, making your work more efficient and your career more secure. Get ready to turn AI from a buzzword into your most valuable colleague!
 
-## 4. Technical State of Play (Feb 18, 2026)
+## 4. Technical State of Play (Feb 20, 2026)
 
-### ✅ Admin Dashboard & Access
+### ✅ Monetization & Tier Gating
+- **Status**: FULLY OPERATIONAL
+- **Tiers**: Free, Pro, Plus (Configured in `AgentHQ.jsx` and `ProjectLab.jsx`).
+- **Logic**: Dynamic model selection (Pro vs Flash) via `agentFactory.js`.
+- **UI**: Visual lock icons, tier badges, and "Access Restricted" upgrade modals active.
+
+### ✅ My Neural Vault & Session Management
+- **Status**: FULLY FUNCTIONAL
+- **Storage**: Sessions persisted in Supabase `saved_chats` table (JSONB).
+- **Features**: 
+  - "Anchor in Vault" (Save/Update).
+  - Neural Session Restoration (Automatic via `sessionId`).
+  - Project Purge (Safe deletion with toast feedback).
+- **Feedback**: Global `react-hot-toast` integration for all vault actions.
+
+### ✅ AI Agent Factory (18 Specialists)
+- **Status**: PRODUCTION READY
+- **Tech Stack**: Gemini 2.5 SDK (Latest).
+- **Agents Active**: All 18 specialists mapped with distinct personas and system instructions.
+- **UX**: Advanced loading overlays showing specific model summoning progress.
+
+### 📋 Next Session Goals (Priority Order)
+1. **Dynamic Content RAG**: Implement vector indexing for course PDF/docs to give agents "Brain" memory of the curriculum.
+2. **Stripe Integration**: Connect the "Upgrade" buttons to a real checkout flow.
+3. **Advanced Profile Sync**: Implement the `tier` edit UI in the Admin dashboard for easy user management.
 - **Status**: FULLY FUNCTIONAL
 - **URL**: `/hub/admin`
 - **Security**: 
   - **Secret Trigger**: Tap OfficeAIM logo 5 times on `/hub/login` to see Command Center button.
-  - **Whitelist**: `rodyf81@yahoo.es` (UUID: `b22...d95`) is hardcoded as System Admin in `App.jsx`.
-- **Features**: View enrolled students, total revenue, and activity logs.
+
+### ✅ AI Agent Factory (New!)
+- **Status**: FULLY OPERATIONAL (Scalable)
+- **Tech Stack**: Gemini 1.5 Flash + @google/generative-ai (Latest).
+- **Architecture**: `agentFactory.js` manages all personas.
+- **Agents Active**:
+  - **Gema (PM)**: 15+ years experience orchestrator.
+  - **Course Creator**: Lead instructional designer.
+  - **AI Prompter**: Prompt engineering expert.
+  - **Marketing Pro**: Growth hacker/message specialist.
+- **Integration**: Linked from Dashboard spotlight to `/hub/lab/:agentId`.
 
 ### ✅ User Interface
 - **Language**: Standardized to **English** (Modules/Lessons).
 - **Theme**: Dark mode "OfficeAIM Campus" aesthetic is stable.
 
 ### 📋 Next Session Goals (Priority Order)
-1. **Restore Content**: Re-run `002_seed_module_1.sql` to ensure deep lesson content is available.
-2. **AI Integration**:
-   - Connect the "Office Navigator" chat interface to the backend.
-   - Index course content for RAG.
-3. **Student Experience**: Verify the "First Login" onboarding flow.
+1. **Verify Full Flow**: Re-run E2E once the Supabase `handle_new_user` trigger/database 500 issue is cleared by the team.
+2. **Expand Roster**: Add the remaining 4 agents (Community, Quality, SEO, Business Strategist) to the factory.
+3. **Index Content**: Prepare RAG indexing for course content to feed into agent prompts.
 
 ### 📚 Documentation Logs
 - **Version History**: See [`SAVES.md`](file:///Users/rodyfigueroa/Movies/OFICEAIM/Officeaim%20Antigravity%20landing%20page/SAVES.md) for stable save points.
