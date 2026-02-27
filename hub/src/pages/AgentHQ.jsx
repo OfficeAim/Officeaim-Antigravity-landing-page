@@ -138,12 +138,12 @@ const AgentHQ = () => {
                         {(() => {
                             if (agent.tier === 'PLUS') return (
                                 <span className="text-[9px] font-bold text-amber-400 uppercase tracking-widest italic opacity-60 group-hover:opacity-100 transition-opacity flex items-center gap-1.5">
-                                    <Sparkles className="h-3 w-3" /> Gemini 2.5 Pro • Max Compute
+                                    <Sparkles className="h-3 w-3" /> Gemini 3.3 Pro • Max Compute
                                 </span>
                             );
                             if (agent.tier === 'PRO') return (
                                 <span className="text-[9px] font-bold text-blue-400 uppercase tracking-widest italic opacity-60 group-hover:opacity-100 transition-opacity flex items-center gap-1.5">
-                                    <Zap className="h-3 w-3" /> Gemini 2.5 Flash • Advanced Context
+                                    <Zap className="h-3 w-3" /> Gemini 3.3 Flash • Advanced Context
                                 </span>
                             );
                             return (

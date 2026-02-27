@@ -370,10 +370,10 @@ const ProjectLab = () => {
                 )}
             </AnimatePresence>
 
-            <div className="flex-grow flex flex-col relative">
-                <div className="flex-grow overflow-y-auto p-8 space-y-8 scrollbar-hide">
+            <div className="flex-grow flex flex-col relative min-w-0">
+                <div className="flex-grow overflow-y-auto p-8 scrollbar-hide flex flex-col">
                     {messages.length === 0 ? (
-                        <div className="h-full flex flex-col items-center justify-center text-center p-12">
+                        <div className="h-full flex flex-col items-center justify-center text-center p-12 mt-auto mb-auto">
                             <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="relative mb-8">
                                 <div className={`absolute inset-0 ${agent.bg} blur-3xl opacity-20 animate-pulse`} />
                                 {agent.avatar ? (
@@ -388,71 +388,74 @@ const ProjectLab = () => {
                             <p className="text-[11px] text-text-muted italic max-w-sm tracking-widest uppercase">Select project and provide initial briefing.</p>
                         </div>
                     ) : (
-                        <div className="flex flex-col space-y-8 max-w-4xl mx-auto pb-10">
-                            {messages.map((m, idx) => (
-                                <motion.div key={idx} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                    <div className={`max-w-[85%] p-6 rounded-2xl relative group flex gap-4 ${m.role === 'user' ? 'bg-white/5 border border-white/10 rounded-tr-none' : `bg-[#0B1220] border ${agent.border} rounded-tl-none`}`}>
+                        <>
+                            <div className="flex-grow min-h-0"></div>
+                            <div className="flex flex-col space-y-8 max-w-4xl w-full mx-auto pb-10 shrink-0">
+                                {messages.map((m, idx) => (
+                                    <motion.div key={idx} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                        <div className={`max-w-[85%] p-6 rounded-2xl relative group flex gap-4 ${m.role === 'user' ? 'bg-white/5 border border-white/10 rounded-tr-none' : `bg-[#0B1220] border ${agent.border} rounded-tl-none`}`}>
 
-                                        {/* Agent Avatar in Chat */}
-                                        {m.role === 'agent' && (
-                                            <div className="shrink-0 h-10 w-10 mt-1 rounded-full overflow-hidden border-2 border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.4)]">
-                                                {agent.avatar ? (
-                                                    <img src={agent.avatar} alt={agent.name} className="h-full w-full object-cover" crossOrigin="anonymous" referrerPolicy="no-referrer" />
-                                                ) : (
-                                                    <div className={`w-full h-full flex items-center justify-center ${agent.bg}`}><agent.icon className={`h-5 w-5 ${agent.color}`} /></div>
-                                                )}
-                                            </div>
-                                        )}
-
-                                        <div className="flex flex-col flex-grow">
-                                            <div className="flex items-center gap-2 mb-3">
-                                                {m.role === 'user' ? (
-                                                    <span className="text-[9px] font-black uppercase tracking-widest text-text-muted italic">Neural Input</span>
-                                                ) : (
-                                                    <>
-                                                        <agent.icon className={`h-3 w-3 ${agent.color}`} />
-                                                        <span className={`text-[9px] font-black uppercase tracking-widest ${agent.color} italic`}>{agent.name}</span>
-                                                    </>
-                                                )}
-                                            </div>
-                                            <div className="text-[13px] leading-relaxed italic font-medium whitespace-pre-wrap">{m.content}</div>
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            ))}
-                            {isProcessing && (
-                                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex justify-start">
-                                    <div className={`p-6 bg-[#0B1220] border ${tc.glow.replace('shadow-', 'border-').replace('0.15', '0.50')} ${tc.glow} rounded-2xl rounded-tl-none flex gap-4 max-w-[85%]`}>
-
-                                        {/* Thinking Avatar (Dynamic Color) */}
-                                        <div className={`shrink-0 h-10 w-10 mt-1 rounded-full overflow-hidden border-2 flex items-center justify-center ${tc.border} ${tc.shadow} animate-pulse bg-[#0B1220]`}>
-                                            {agent.avatar ? (
-                                                <img src={agent.avatar} alt="Thinking..." className="h-full w-full object-cover grayscale-[30%]" crossOrigin="anonymous" referrerPolicy="no-referrer" />
-                                            ) : (
-                                                <agent.icon className={`h-5 w-5 ${tc.text}`} />
-                                            )}
-                                        </div>
-
-                                        <div className="flex flex-col gap-3 justify-center w-full">
-                                            <div className="flex items-center left-0 gap-4">
-                                                <div className="flex gap-1">
-                                                    <div className={`h-1.5 w-1.5 rounded-full ${tc.bg} animate-bounce`} />
-                                                    <div className={`h-1.5 w-1.5 rounded-full ${tc.bg} animate-bounce [animation-delay:-0.15s]`} />
-                                                    <div className={`h-1.5 w-1.5 rounded-full ${tc.bg} animate-bounce [animation-delay:-0.3s]`} />
+                                            {/* Agent Avatar in Chat */}
+                                            {m.role === 'agent' && (
+                                                <div className="shrink-0 h-10 w-10 mt-1 rounded-full overflow-hidden border-2 border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.4)]">
+                                                    {agent.avatar ? (
+                                                        <img src={agent.avatar} alt={agent.name} className="h-full w-full object-cover" crossOrigin="anonymous" referrerPolicy="no-referrer" />
+                                                    ) : (
+                                                        <div className={`w-full h-full flex items-center justify-center ${agent.bg}`}><agent.icon className={`h-5 w-5 ${agent.color}`} /></div>
+                                                    )}
                                                 </div>
-                                                <span className={`text-[9px] font-black uppercase tracking-widest ${tc.text} italic`}>
-                                                    Thinking {agent.featured ? 'Gemini 2.5 Pro (Max Compute)' : agent.tier === 'PLUS' ? 'Gemini 2.5 Pro (Max Compute)' : agent.tier === 'PRO' ? 'Gemini 2.5 Flash (Advanced Context)' : 'Gemini 2.5 Flash (Standard Logic)'}...
-                                                </span>
-                                            </div>
-                                            <div className="h-0.5 w-full bg-white/5 rounded-full overflow-hidden">
-                                                <motion.div initial={{ x: '-100%' }} animate={{ x: '100%' }} transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }} className={`h-full w-1/3 bg-gradient-to-r from-transparent ${processingTime < 1.5 ? 'via-emerald-500/50' : processingTime < 3.0 ? 'via-yellow-500/50' : processingTime < 5.0 ? 'via-orange-500/50' : 'via-red-500/50'} to-transparent`} />
+                                            )}
+
+                                            <div className="flex flex-col flex-grow">
+                                                <div className="flex items-center gap-2 mb-3">
+                                                    {m.role === 'user' ? (
+                                                        <span className="text-[9px] font-black uppercase tracking-widest text-text-muted italic">Neural Input</span>
+                                                    ) : (
+                                                        <>
+                                                            <agent.icon className={`h-3 w-3 ${agent.color}`} />
+                                                            <span className={`text-[9px] font-black uppercase tracking-widest ${agent.color} italic`}>{agent.name}</span>
+                                                        </>
+                                                    )}
+                                                </div>
+                                                <div className="text-[13px] leading-relaxed italic font-medium whitespace-pre-wrap">{m.content}</div>
                                             </div>
                                         </div>
-                                    </div>
-                                </motion.div>
-                            )}
-                            <div ref={messagesEndRef} />
-                        </div>
+                                    </motion.div>
+                                ))}
+                                {isProcessing && (
+                                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex justify-start">
+                                        <div className={`p-6 bg-[#0B1220] border ${tc.glow.replace('shadow-', 'border-').replace('0.15', '0.50')} ${tc.glow} rounded-2xl rounded-tl-none flex gap-4 max-w-[85%]`}>
+
+                                            {/* Thinking Avatar (Dynamic Color) */}
+                                            <div className={`shrink-0 h-10 w-10 mt-1 rounded-full overflow-hidden border-2 flex items-center justify-center ${tc.border} ${tc.shadow} animate-pulse bg-[#0B1220]`}>
+                                                {agent.avatar ? (
+                                                    <img src={agent.avatar} alt="Thinking..." className="h-full w-full object-cover grayscale-[30%]" crossOrigin="anonymous" referrerPolicy="no-referrer" />
+                                                ) : (
+                                                    <agent.icon className={`h-5 w-5 ${tc.text}`} />
+                                                )}
+                                            </div>
+
+                                            <div className="flex flex-col gap-3 justify-center w-full">
+                                                <div className="flex items-center left-0 gap-4">
+                                                    <div className="flex gap-1">
+                                                        <div className={`h-1.5 w-1.5 rounded-full ${tc.bg} animate-bounce`} />
+                                                        <div className={`h-1.5 w-1.5 rounded-full ${tc.bg} animate-bounce [animation-delay:-0.15s]`} />
+                                                        <div className={`h-1.5 w-1.5 rounded-full ${tc.bg} animate-bounce [animation-delay:-0.3s]`} />
+                                                    </div>
+                                                    <span className={`text-[9px] font-black uppercase tracking-widest ${tc.text} italic`}>
+                                                        Thinking {agent.featured ? 'Gemini 3.3 Pro (Max Compute)' : agent.tier === 'PLUS' ? 'Gemini 3.3 Pro (Max Compute)' : agent.tier === 'PRO' ? 'Gemini 3.3 Flash (Advanced Context)' : 'Gemini 2.5 Flash (Standard Logic)'}...
+                                                    </span>
+                                                </div>
+                                                <div className="h-0.5 w-full bg-white/5 rounded-full overflow-hidden">
+                                                    <motion.div initial={{ x: '-100%' }} animate={{ x: '100%' }} transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }} className={`h-full w-1/3 bg-gradient-to-r from-transparent ${processingTime < 1.5 ? 'via-emerald-500/50' : processingTime < 3.0 ? 'via-yellow-500/50' : processingTime < 5.0 ? 'via-orange-500/50' : 'via-red-500/50'} to-transparent`} />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                )}
+                                <div ref={messagesEndRef} />
+                            </div>
+                        </>
                     )}
                 </div>
 
@@ -512,7 +515,7 @@ const ProjectLab = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 
