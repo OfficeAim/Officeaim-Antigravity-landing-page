@@ -54,6 +54,11 @@ docker run -it --rm \
 Output the following message clearly to the user:
 > **🚀 Your environment is starting!** 
 > 
+> **Quick Links for Today's Session:**
+> - 🏠 **Landing Page (Local):** `file:///Users/rodyfigueroa/Movies/OFICEAIM/Officeaim Antigravity landing page/index.html`
+> - 🎓 **OfficeAIM Hub & Dev Server:** [http://localhost:5173/hub](http://localhost:5173/hub)
+> - ⚙️ **n8n Automations:** [http://localhost:5678](http://localhost:5678)
+> 
 > **Important:** Please open your Supabase project in your browser to monitor database changes and authentication rules.
 
 ## ⏳ Step 6: Initialize Break & Save Guardian (Internal Timer)

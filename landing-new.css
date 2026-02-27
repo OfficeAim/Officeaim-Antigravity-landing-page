@@ -50,7 +50,15 @@
     z-index: 0;
 }
 
-.hero-grid {
+.global-anim-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.global-grid {
     position: absolute;
     inset: 0;
     background-image:
@@ -67,6 +75,7 @@
     height: 600px;
     background: radial-gradient(circle, rgba(255, 122, 24, 0.12) 0%, transparent 70%);
     border-radius: 50%;
+    animation: float-glow 8s ease-in-out infinite alternate;
 }
 
 .hero-glow-right {
@@ -77,6 +86,24 @@
     height: 500px;
     background: radial-gradient(circle, rgba(34, 211, 238, 0.10) 0%, transparent 70%);
     border-radius: 50%;
+    animation: float-glow 11s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes float-glow {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: translate(30px, -30px) scale(1.05);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-20px, 20px) scale(0.95);
+        opacity: 0.8;
+    }
 }
 
 .hero-v2-container {
@@ -580,11 +607,14 @@
 }
 
 .how-connector {
+    position: relative;
     width: 60px;
     height: 2px;
-    background: linear-gradient(90deg, rgba(34, 211, 238, 0.3), rgba(34, 211, 238, 0.05));
+    background: rgba(34, 211, 238, 0.05);
+    /* very faint track */
     margin-top: 3rem;
     align-self: center;
+    overflow: hidden;
 }
 
 /* ============================================================
@@ -642,6 +672,155 @@
     font-weight: 600;
     color: var(--accent-secondary);
     margin-top: 0.5rem;
+}
+
+/* Pricing Teaser Animation Elements */
+.pricing-anim-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.pricing-grid-lines {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(90deg, rgba(34, 211, 238, 0.03) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(34, 211, 238, 0.03) 1px, transparent 1px);
+    background-size: 80px 80px;
+    opacity: 0.6;
+    mask-image: radial-gradient(ellipse at center, white 20%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse at center, white 20%, transparent 80%);
+}
+
+.data-stream {
+    position: absolute;
+    bottom: -20%;
+    width: 2px;
+    height: 150px;
+    background: linear-gradient(0deg, transparent, rgba(34, 211, 238, 0.8), rgba(255, 122, 24, 0.4), transparent);
+    border-radius: 2px;
+    animation: data-flow 4s ease-in-out infinite;
+    opacity: 0;
+}
+
+.stream-1 {
+    left: 20%;
+    animation-delay: 0s;
+    animation-duration: 5s;
+}
+
+.stream-2 {
+    left: 45%;
+    animation-delay: 2s;
+    animation-duration: 4s;
+}
+
+.stream-3 {
+    left: 70%;
+    animation-delay: 1s;
+    animation-duration: 6s;
+}
+
+.stream-4 {
+    left: 85%;
+    animation-delay: 3s;
+    animation-duration: 4.5s;
+}
+
+@keyframes data-flow {
+    0% {
+        transform: translateY(10vh);
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-120vh);
+        opacity: 0;
+    }
+}
+
+.data-stream-h {
+    position: absolute;
+    right: -20%;
+    height: 2px;
+    width: 150px;
+    background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.8), rgba(255, 122, 24, 0.4), transparent);
+    border-radius: 2px;
+    animation: data-flow-h 5s ease-in-out infinite;
+    opacity: 0;
+}
+
+.stream-h-1 {
+    top: 25%;
+    animation-delay: 1s;
+    animation-duration: 6s;
+}
+
+.stream-h-2 {
+    top: 60%;
+    animation-delay: 3s;
+    animation-duration: 4.5s;
+}
+
+.stream-h-3 {
+    top: 75%;
+    animation-delay: 0.5s;
+    animation-duration: 7s;
+}
+
+@keyframes data-flow-h {
+    0% {
+        transform: translateX(10vw);
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(-120vw);
+        opacity: 0;
+    }
+}
+
+.core-pulse {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255, 122, 24, 0.06) 0%, transparent 60%);
+    border-radius: 50%;
+    animation: pulse-core 4s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-core {
+    0% {
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1.1);
+        opacity: 1;
+    }
 }
 
 /* ============================================================
@@ -836,6 +1015,57 @@
     position: relative;
 }
 
+/* Command Deck Animation Elements */
+.final-cta-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.final-cta-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(34, 211, 238, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.5;
+    mask-image: radial-gradient(ellipse at center, white 20%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse at center, white 20%, transparent 70%);
+}
+
+.final-cta-scanner {
+    position: absolute;
+    top: -50%;
+    bottom: -50%;
+    width: 200px;
+    background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.05), rgba(34, 211, 238, 0.2), transparent);
+    transform: skewX(-20deg);
+    animation: scanner-sweep 6s linear infinite;
+}
+
+@keyframes scanner-sweep {
+    0% {
+        left: -20%;
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        left: 120%;
+        opacity: 0;
+    }
+}
+
 /* ============================================================
    RESPONSIVE
    ============================================================ */
@@ -920,4 +1150,17 @@
     .gems-grid-v2 {
         grid-template-columns: 1fr;
     }
+}
+
+/* Footer Icon Fix */
+.footer-logo {
+    width: 140px;
+    height: auto;
+    mix-blend-mode: screen;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.15)) brightness(1.2);
+    transition: filter 0.3s ease;
+}
+
+.footer-logo:hover {
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3)) brightness(1.4);
 }

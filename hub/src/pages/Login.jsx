@@ -83,7 +83,10 @@ const Login = () => {
                         body: JSON.stringify({
                             email,
                             firstName: fullName,
-                            phone
+                            phone,
+                            userAgent: navigator.userAgent,
+                            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                            referrer: document.referrer || 'direct'
                         })
                     });
                     console.log("Welcome webhook triggered successfully");

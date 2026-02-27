@@ -15,8 +15,35 @@ const MascotAssistant = ({ profile }) => {
     const [triageState, setTriageState] = useState('inactive'); // 'inactive', 'q1', 'q2', 'q3'
     const [triageData, setTriageData] = useState({});
 
+    const quotes = [
+        "If you have any questions, you can use this interface.",
+        "AI will not replace you. A person using AI will.",
+        "The real risk with AI isn't malice, but competence.",
+        "We are entering an era where magic becomes technology.",
+        "Intelligence is the ability to adapt to change.",
+        "The best way to predict the future is to invent it."
+    ];
+
+    const [showGreeting, setShowGreeting] = useState(false);
+    const [quoteIndex, setQuoteIndex] = useState(0);
+
     const messagesEndRef = useRef(null);
     const inputRef = useRef(null);
+
+    // Greeting bubble looping logic
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setShowGreeting(prev => {
+                // If it's about to show again, pick the next quote
+                if (!prev) {
+                    setQuoteIndex(i => (i + 1) % quotes.length);
+                }
+                return !prev;
+            });
+        }, 5000); // Toggles true/false every 5 seconds
+
+        return () => clearInterval(interval);
+    }, []);
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -119,12 +146,12 @@ const MascotAssistant = ({ profile }) => {
                     onClick={() => setIsOpen(!isOpen)}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className={`w-full p-3 rounded-2xl border transition-all flex items-center gap-3 ${isOpen
-                        ? 'bg-orange-500/10 border-orange-500/30'
-                        : 'bg-white/[0.02] border-white/10 hover:border-orange-500/20 hover:bg-orange-500/5'
+                    className={`p-3 rounded-2xl border transition-all flex items-center gap-3 ${isOpen
+                        ? 'w-full bg-orange-500/10 border-orange-500/30'
+                        : ((isWidget && !isOpen) ? 'w-auto bg-white/[0.02] border-white/10 hover:border-orange-500/20 hover:bg-orange-500/5 shadow-2xl backdrop-blur-md rounded-2xl mt-auto ml-auto' : 'w-full bg-white/[0.02] border-white/10 hover:border-orange-500/20 hover:bg-orange-500/5')
                         }`}
                 >
-                    <div className="relative shrink-0">
+                    <div className="relative shrink-0 flex items-center justify-center w-12 h-12">
                         <motion.div
                             animate={{ y: [0, -3, 0] }}
                             transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
@@ -132,23 +159,46 @@ const MascotAssistant = ({ profile }) => {
                             <img
                                 src="/hub/mascot_aim.png"
                                 alt="AIM Mascot"
-                                className="h-12 w-12 rounded-xl object-cover"
+                                className="h-20 w-20 rounded-2xl object-cover border-2 border-orange-500/50 shadow-[0_0_15px_rgba(255,122,24,0.4)] hover:shadow-[0_0_25px_rgba(255,122,24,0.8)] transition-all"
                             />
                         </motion.div>
-                        <div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 bg-emerald-400 rounded-full border-2 border-[#0A0F18] animate-pulse" />
+                        <div className="absolute bottom-1 right-1 h-4 w-4 bg-emerald-400 rounded-full border-2 border-[#0A0F18] animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
                     </div>
-                    <div className="text-left flex-grow min-w-0">
-                        <div className="text-[11px] font-black italic text-white">AIM</div>
-                        <div className="text-[9px] text-text-muted italic truncate">
-                            {isOpen ? 'Chat active...' : 'Ask me anything!'}
-                        </div>
-                    </div>
-                    {!isOpen && (
-                        <div className="shrink-0 h-7 w-7 rounded-lg bg-orange-500/10 flex items-center justify-center border border-orange-500/20">
-                            <Send className="h-3 w-3 text-orange-400" />
-                        </div>
+                    {(!isWidget || isOpen) && (
+                        <>
+                            <div className="text-left flex-grow min-w-0">
+                                <div className="text-[11px] font-black italic text-white">AIM</div>
+                                <div className="text-[9px] text-text-muted italic truncate">
+                                    {isOpen ? 'Chat active...' : 'Ask me anything!'}
+                                </div>
+                            </div>
+                            {!isOpen && (
+                                <div className="shrink-0 h-7 w-7 rounded-lg bg-orange-500/10 flex items-center justify-center border border-orange-500/20">
+                                    <Send className="h-3 w-3 text-orange-400" />
+                                </div>
+                            )}
+                        </>
                     )}
                 </motion.button>
+
+                {/* Greeting Bubble */}
+                <AnimatePresence>
+                    {isWidget && !isOpen && showGreeting && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.9 }}
+                            className="absolute bottom-24 right-4 w-48 bg-brand-card backdrop-blur-xl border border-orange-500/30 rounded-2xl rounded-br-none p-3 shadow-2xl pointer-events-none"
+                        >
+                            <div className="flex items-start gap-2">
+                                <Sparkles className="h-4 w-4 text-orange-400 shrink-0 mt-0.5" />
+                                <p className="text-[10px] text-white italic leading-tight font-medium">
+                                    {quotes[quoteIndex]}
+                                </p>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
 
                 {/* Chat Panel */}
                 <AnimatePresence>

@@ -19,7 +19,7 @@ Estimación del tiempo de desarrollo basado en las sesiones de trabajo registrad
 | **25/02/2026** | ~8h 45m | Sprint 1–3: Gems direct links, Gema routing upgrade, Workflow Guide, Lesson 1.4 SQL debug, NotebookLM video |
 | **26/02/2026** | ~3h | Landing page avatar fixes, Admin Dashboard KPI expansion, Financial Command Center, Cost Analysis |
 | **26/02/2026** | ~3.5h | Mascot Bug Triage logic, Chat UI polish, Landing Page Global Widget |
-| **TOTAL** | **~83.75 horas** | **Semana 2–3 de Desarrollo Intenso** |
-
+| **27/02/2026** | ~3h | Landing page visual unification, global animated background, footer logo transparency |
+| **TOTAL** | **~86.75 horas** | **Semana 2–3 de Desarrollo Intenso** |
 ---
 *Nota: Estos tiempos son aproximados basados en la duración de las sesiones de terminal.*

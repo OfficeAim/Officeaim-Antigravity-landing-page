@@ -446,7 +446,7 @@ p {
    7) HERO SECTION
    ============================================================ */
 .hero {
-    padding: var(--spacing-3xl) 0;
+    padding: 20px 0 var(--spacing-3xl);
     position: relative;
     overflow: hidden;
 }
@@ -466,7 +466,8 @@ p {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-xl);
-    align-items: center;
+    align-items: flex-start;
+    /* Align image and text to the top */
 }
 
 .eyebrow {
