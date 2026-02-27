@@ -71,6 +71,26 @@ const Login = () => {
                     options: { data: { full_name: fullName, phone } }
                 });
                 if (error) throw error;
+
+                // Ping n8n webhook for new user registration
+                try {
+                    await fetch('http://localhost:5678/webhook-test/supabase-new-user', {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            email,
+                            firstName: fullName,
+                            phone
+                        })
+                    });
+                    console.log("Welcome webhook triggered successfully");
+                } catch (webhookError) {
+                    console.error("Failed to trigger welcome webhook:", webhookError);
+                }
+
                 setMessage('Success! Check your email for the confirmation link.');
             } else {
                 // SIGN IN
