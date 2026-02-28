@@ -7,7 +7,8 @@ import {
     Map as MapIcon, Mail, FileText, PenTool, Cpu,
     Users, Wrench, Rocket, DollarSign, Gem,
     Target, Brain, Search, TrendingUp, ShieldCheck, Zap,
-    MessageSquare, Lock, Crown, Star, Sparkles, FolderArchive, Download, Lightbulb
+    Target, Brain, Search, TrendingUp, ShieldCheck, Zap,
+    MessageSquare, Lock, Crown, Star, Sparkles, FolderArchive, Download, Lightbulb, Copy, Check
 } from 'lucide-react';
 import { callAgent } from '../services/agentFactory';
 import toast from 'react-hot-toast';
@@ -57,6 +58,9 @@ const ProjectLab = () => {
     const [isSaving, setIsSaving] = useState(false);
     const [isLoadingSession, setIsLoadingSession] = useState(false);
     const [isVaultOpen, setIsVaultOpen] = useState(false);
+    const [prdContext, setPrdContext] = useState(null);
+    const [currentPhase, setCurrentPhase] = useState(1);
+    const [copiedIndex, setCopiedIndex] = useState(null);
 
     const [processingTime, setProcessingTime] = useState(0);
     const messagesEndRef = useRef(null);
@@ -115,6 +119,34 @@ const ProjectLab = () => {
                     .eq('id', user.id)
                     .single();
                 if (profile?.tier) setUserTier(profile.tier.toUpperCase());
+
+                // Fetch Project and PRD Context if current_phase >= 3
+                const { data: projData } = await supabase
+                    .from('student_projects')
+                    .select('id, current_phase, name')
+                    .eq('user_id', user.id)
+                    .eq('is_completed', false)
+                    .order('created_at', { ascending: false })
+                    .limit(1);
+
+                if (projData && projData.length > 0) {
+                    const activeProject = projData[0];
+                    setCurrentPhase(activeProject.current_phase);
+                    if (activeProject.current_phase >= 3) {
+                        const { data: prdData } = await supabase
+                            .from('project_documents')
+                            .select('content')
+                            .eq('project_id', activeProject.id)
+                            .eq('type', 'prd')
+                            .order('created_at', { ascending: false })
+                            .limit(1);
+
+                        if (prdData && prdData.length > 0) {
+                            setPrdContext({ projectName: activeProject.name, content: prdData[0].content });
+                            toast.success('Project PRD Context Loaded', { icon: '🧠' });
+                        }
+                    }
+                }
 
                 const sessionId = searchParams.get('sessionId');
                 if (sessionId) {
@@ -229,8 +261,61 @@ const ProjectLab = () => {
             };
             const agentRole = roleMap[agentId] || 'GHOST-UNIT';
 
-            const result = await callAgent(agentRole, userMsg, messages, userTier);
+            const modeParam = searchParams.get('mode');
+            const result = await callAgent(agentRole, userMsg, messages, userTier, modeParam, prdContext, currentPhase);
             setActiveModel(result.modelUsed);
+
+            let finalText = result.text;
+
+            // PRD Auto-Save Logic
+            if (modeParam === 'prd_generation' && finalText.includes('PRD_GENERATION_COMPLETE')) {
+                finalText = finalText.replace('PRD_GENERATION_COMPLETE', '').trim();
+                try {
+                    const { data: projData } = await supabase
+                        .from('student_projects')
+                        .select('id')
+                        .eq('user_id', user.id)
+                        .eq('is_completed', false)
+                        .order('created_at', { ascending: false })
+                        .limit(1);
+
+                    if (projData && projData.length > 0) {
+                        const projectId = projData[0].id;
+                        await supabase.from('project_documents').insert({
+                            project_id: projectId,
+                            type: 'prd',
+                            content: [...newMessages, { role: 'agent', content: finalText }].map(m => `${m.role}: ${m.content}`).join('\n\n')
+                        });
+                        await supabase.from('student_projects').update({ current_phase: 3 }).eq('id', projectId);
+                        toast.success('PRD Generated & Phase III Unlocked!', { icon: '🚀' });
+                    }
+                } catch (saveErr) {
+                    console.error("Error saving PRD:", saveErr);
+                }
+            }
+
+            // Quality Audit Logic
+            if (modeParam === 'audit' && agentRole === 'QUALITY-CHECKER' && finalText.includes('AUDIT_APPROVED')) {
+                finalText = finalText.replace('AUDIT_APPROVED', '').trim();
+                try {
+                    const { data: projData } = await supabase
+                        .from('student_projects')
+                        .select('id, current_phase')
+                        .eq('user_id', user.id)
+                        .eq('is_completed', false)
+                        .order('created_at', { ascending: false })
+                        .limit(1);
+
+                    if (projData && projData.length > 0 && projData[0].current_phase === 3) {
+                        const projectId = projData[0].id;
+                        await supabase.from('student_projects').update({ current_phase: 4 }).eq('id', projectId);
+                        setCurrentPhase(4);
+                        toast.success('Audit Passed! Phase IV Unlocked.', { icon: '🏆' });
+                    }
+                } catch (saveErr) {
+                    console.error("Error advancing phase:", saveErr);
+                }
+            }
 
             // GLITCH EASTER EGG — detect ghost-unit session and expel after 2 exchanges
             if (isGlitchAgent) {
@@ -239,7 +324,7 @@ const ProjectLab = () => {
 
                 if (newCount >= 2) {
                     // Let the real response through, then send the expulsion message
-                    setMessages(prev => [...prev, { role: 'agent', content: result.text }]);
+                    setMessages(prev => [...prev, { role: 'agent', content: finalText }]);
                     setTimeout(() => {
                         setMessages(prev => [...prev, {
                             role: 'agent',
@@ -251,7 +336,7 @@ const ProjectLab = () => {
                 }
             }
 
-            setMessages(prev => [...prev, { role: 'agent', content: result.text }]);
+            setMessages(prev => [...prev, { role: 'agent', content: finalText }]);
         } catch (err) {
             console.error("Project Error:", err);
             if (err.message.includes('ACCESS_DENIED')) {
@@ -407,17 +492,30 @@ const ProjectLab = () => {
                                             )}
 
                                             <div className="flex flex-col flex-grow">
-                                                <div className="flex items-center gap-2 mb-3">
-                                                    {m.role === 'user' ? (
-                                                        <span className="text-[9px] font-black uppercase tracking-widest text-text-muted italic">Neural Input</span>
-                                                    ) : (
-                                                        <>
-                                                            <agent.icon className={`h-3 w-3 ${agent.color}`} />
-                                                            <span className={`text-[9px] font-black uppercase tracking-widest ${agent.color} italic`}>{agent.name}</span>
-                                                        </>
-                                                    )}
+                                                <div className="flex flex-row justify-between items-start mb-3">
+                                                    <div className="flex items-center gap-2">
+                                                        {m.role === 'user' ? (
+                                                            <span className="text-[9px] font-black uppercase tracking-widest text-text-muted italic">Neural Input</span>
+                                                        ) : (
+                                                            <>
+                                                                <agent.icon className={`h-3 w-3 ${agent.color}`} />
+                                                                <span className={`text-[9px] font-black uppercase tracking-widest ${agent.color} italic`}>{agent.name}</span>
+                                                            </>
+                                                        )}
+                                                    </div>
+                                                    <button
+                                                        onClick={() => {
+                                                            navigator.clipboard.writeText(m.content);
+                                                            setCopiedIndex(idx);
+                                                            setTimeout(() => setCopiedIndex(null), 2000);
+                                                        }}
+                                                        className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-white/10 rounded-md text-text-muted hover:text-white"
+                                                        title="Copy message"
+                                                    >
+                                                        {copiedIndex === idx ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
+                                                    </button>
                                                 </div>
-                                                <div className="text-[13px] leading-relaxed italic font-medium whitespace-pre-wrap">{m.content}</div>
+                                                <div className="text-[13px] leading-relaxed italic font-medium whitespace-pre-wrap pr-4">{m.content}</div>
                                             </div>
                                         </div>
                                     </motion.div>

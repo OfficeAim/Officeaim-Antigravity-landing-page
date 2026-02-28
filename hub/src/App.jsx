@@ -14,6 +14,7 @@ import ModuleViewer from './pages/ModuleViewer';
 import AgentTestConsole from './pages/AgentTestConsole';
 import MyProjects from './pages/MyProjects';
 import Lounge from './pages/Lounge';
+import ProjectPlanner from './pages/ProjectPlanner';
 import MascotAssistant from './components/MascotAssistant';
 import { Toaster } from 'react-hot-toast';
 
@@ -210,6 +211,7 @@ const App = () => {
             <Route path="/hub/agents" element={<AgentHQ />} />
             <Route path="/hub/module/:moduleId" element={<ModuleViewer />} />
             <Route path="/hub/lab/:agentId" element={<ProjectLab />} />
+            <Route path="/hub/planner" element={<ProjectPlanner profile={profile} />} />
             <Route path="/hub/agent-test" element={<AgentTestConsole />} />
             <Route path="/hub/projects" element={<MyProjects />} />
             <Route path="/hub/lounge" element={<Lounge profile={profile} />} />

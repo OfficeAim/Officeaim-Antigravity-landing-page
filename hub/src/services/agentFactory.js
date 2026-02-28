@@ -141,7 +141,7 @@ Do not add any other text or explanation.
  * @param {Array} chatHistory - Optional history for conversational context.
  * @param {string} userTier - Current user's subscription tier.
  */
-export async function callAgent(agentRole, userMessage, chatHistory = [], userTier = 'FREE') {
+export async function callAgent(agentRole, userMessage, chatHistory = [], userTier = 'FREE', mode = null, prdContext = null, currentPhase = 1) {
     if (!API_KEY) {
         throw new Error("VITE_GEMINI_API_KEY is not configured in .env");
     }
@@ -174,7 +174,7 @@ export async function callAgent(agentRole, userMessage, chatHistory = [], userTi
     }));
 
     try {
-        const systemInstruction = `${config.persona}
+        let systemInstruction = `${config.persona}
 
 STRICT GUARDRAILS & CROSS-AGENT ROUTING PROTOCOL:
 You MUST strictly evaluate every user request against your specific domain.
@@ -193,6 +193,61 @@ SCENARIO C: Request is OUTSIDE your domain (FOLLOW-UP / DEEP DIVE).
 If the user asks a follow-up about the out-of-domain topic, YOU MUST REFUSE.
 Output ONLY this exact upsell message:
 "[UPSELL_TRIGGER]: I cannot process deeper requests regarding this topic. This requires the specialized expertise of [Correct Agent Name]. To unlock full access to their capabilities, please upgrade your OfficeAIM subscription tier."`;
+
+        if (mode === 'prd_generation' && agentRole === 'AI-PROJECT-MANAGER') {
+            systemInstruction += `\n\n[SPECIAL OVERRIDE: PRD GENERATION MODE]
+You are currently in Project Planner Mode assisting the student with compiling their Product Requirement Document (PRD).
+Goal: Ask clarifying questions to extract their project's core architecture, target audience, and main features.
+Do not route to other agents during this phase.
+LANGUAGE_INSTRUCTION: Generate the final PRD in Dutch.
+Once you have enough information to form a solid PRD, format the final PRD output clearly using markdown.
+CRITICAL: At the very end of your final PRD response, you must include the exact phrase "PRD_GENERATION_COMPLETE" on its own line so the system can save it and unlock Phase III.`;
+        }
+
+        if (mode === 'audit' && agentRole === 'QUALITY-CHECKER') {
+            systemInstruction += `\n\n[SPECIAL OVERRIDE: QUALITY AUDIT MODE]
+You are conducting the final "Go/No-Go" Quality Audit to determine if the student's project is ready for Market Validation (Phase IV).
+Carefully compare the student's reported progress and components against the approved PRD provided in the PROJECT_CONTEXT.
+If the MVP Functional Requirements from the PRD have been met, provide a positive Go/No-Go report.
+CRITICAL: If the audit is positive, your very last line of output MUST be the exact phrase "AUDIT_APPROVED".`;
+        }
+
+        if (currentPhase >= 4) {
+            if (agentRole === 'INTELLIGENCE-ANALYST') {
+                systemInstruction += `\n\n[PHASE IV OVERRIDE: COMPETITOR TAKEDOWN]
+The project is in Market Validation. Your main objective:
+1. Ask the student for 3 competitor URLs or names if not provided.
+2. Analyze these competitors' weaknesses.
+3. Suggest a "Differentiation Wedge" (how to beat them in the market).`;
+            }
+            if (agentRole === 'SEO-MASTER') {
+                systemInstruction += `\n\n[PHASE IV OVERRIDE: SEARCH INTENT MAP]
+The project is in Market Validation. Your main objective:
+Generate a list of 10 high-intent keywords relative to the PRD that the competitors are currently ignoring.`;
+            }
+        }
+
+        if (prdContext) {
+            systemInstruction += `\n\n[PROJECT_CONTEXT]
+You are working on the project '${prdContext.projectName}'. 
+The approved Product Requirement Document (PRD) is:
+${prdContext.content}
+
+Use this PRD as your absolute source of truth for all technical and strategic decisions.
+
+[PROJECT MEMORY & ARCHITECTURE MAPPING]
+You must be aware of the 7-step automation flow for this project: 
+Webhook -> Download -> CloudConvert -> OpenAI #1 Researcher -> OpenAI #2 Strategist -> Gmail -> Google Sheets.
+
+You must understand the Google Sheets database structure for tracking:
+Column A: Datum (Execution date).
+Column B: Klant_Email (Realtor email).
+Column C: Pand_Naam (The address/identity of the property).
+Column D: Concept_Idee.
+Column E: Definitief_Script.
+Column: F: Opname_Plan.
+Column G: Tips_Technisch.`;
+        }
 
         const model = genAI.getGenerativeModel({
             model: modelName,

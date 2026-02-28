@@ -158,6 +158,13 @@ const MainLayout = ({ profile }) => {
                         </button>
 
                         <button
+                            onClick={() => navigate('/hub/planner')}
+                            className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all text-sm font-black italic ${location.pathname.includes('/planner') ? 'bg-emerald-500/10 text-emerald-400 shadow-inner border border-emerald-500/20' : 'text-text-muted hover:bg-white/5 hover:text-white'}`}
+                        >
+                            <Layout className="h-4 w-4" /> Project Planner
+                        </button>
+
+                        <button
                             onClick={() => navigate('/hub/agents')}
                             className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all text-sm font-black italic ${location.pathname.includes('/agents') || location.pathname.includes('/lab/') ? 'bg-accent-primary/10 text-accent-primary shadow-inner border border-accent-primary/20' : 'text-text-muted hover:bg-white/5 hover:text-white'}`}
                         >
