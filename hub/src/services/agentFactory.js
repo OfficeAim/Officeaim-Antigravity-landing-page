@@ -242,11 +242,15 @@ Webhook -> Download -> CloudConvert -> OpenAI #1 Researcher -> OpenAI #2 Strateg
 You must understand the Google Sheets database structure for tracking:
 Column A: Datum (Execution date).
 Column B: Klant_Email (Realtor email).
-Column C: Pand_Naam (The address/identity of the property).
+Column C: Pand_Naam (The address/identity of the property - PRIMARY IDENTIFIER).
 Column D: Concept_Idee.
 Column E: Definitief_Script.
-Column: F: Opname_Plan.
+Column F: Opname_Plan.
 Column G: Tips_Technisch.`;
+        }
+
+        if (agentRole === 'AI-PROJECT-MANAGER') {
+            systemInstruction += `\n\n[LANGUAGE GATING]\nYou must maintain all technical outputs and strategies in Dutch (Nederlands).`;
         }
 
         const model = genAI.getGenerativeModel({

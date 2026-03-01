@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Layout, BrainCircuit, FileText, Building2, Globe2, ChevronRight, CheckCircle2, Lock, ArrowRight, Activity, Beaker } from 'lucide-react';
+import { Layout, BrainCircuit, FileText, Building2, Globe2, ChevronRight, CheckCircle2, Lock, ArrowRight, Activity, Beaker, Copy, Check } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import toast from 'react-hot-toast';
 
@@ -13,6 +13,16 @@ const ProjectPlanner = ({ profile }) => {
     const [loading, setLoading] = useState(true);
     const [isPrdOpen, setIsPrdOpen] = useState(false);
     const [prdContent, setPrdContent] = useState('');
+    const [copied, setCopied] = useState(false);
+
+    const handleCopyPRD = () => {
+        if (prdContent) {
+            navigator.clipboard.writeText(prdContent);
+            setCopied(true);
+            toast.success("PRD Copied to clipboard!", { icon: '📋' });
+            setTimeout(() => setCopied(false), 2000);
+        }
+    };
     const [checklist, setChecklist] = useState([
         { id: 1, text: 'Core Authentication & Auth Logic', done: false },
         { id: 2, text: 'Database Schema Implementation', done: false },
@@ -219,9 +229,15 @@ const ProjectPlanner = ({ profile }) => {
                                     <FileText className="h-5 w-5 text-blue-400" />
                                     <h2 className="text-xl font-black italic text-white uppercase tracking-wider">Approved PRD</h2>
                                 </div>
-                                <button onClick={() => setIsPrdOpen(false)} className="text-gray-500 hover:text-white transition-colors">
-                                    <ChevronRight className="h-6 w-6" />
-                                </button>
+                                <div className="flex items-center gap-4">
+                                    <button onClick={handleCopyPRD} className="flex items-center gap-2 text-gray-500 hover:text-white transition-colors text-sm italic">
+                                        {copied ? <Check className="h-5 w-5 text-emerald-400" /> : <Copy className="h-5 w-5" />}
+                                        <span className={copied ? "text-emerald-400" : ""}>{copied ? "Copied" : "Copy"}</span>
+                                    </button>
+                                    <button onClick={() => setIsPrdOpen(false)} className="text-gray-500 hover:text-white transition-colors">
+                                        <ChevronRight className="h-6 w-6" />
+                                    </button>
+                                </div>
                             </div>
                             <div className="flex-grow overflow-y-auto p-8 custom-scrollbar">
                                 <div className="prose prose-invert prose-emerald max-w-none prose-sm leading-relaxed whitespace-pre-wrap italic">

@@ -142,7 +142,7 @@ const Dashboard = ({ profile }) => {
                         Welcome back,<br />
                         <span className="text-white">
                             {profile?.role === 'admin'
-                                ? `${(profile?.full_name || 'Rody').split(' ')[0]}.`
+                                ? `Admin`
                                 : `${(profile?.full_name || profile?.email?.split('@')[0] || 'Operador').split(' ')[0]}.`
                             }
                         </span>
@@ -330,31 +330,35 @@ const Dashboard = ({ profile }) => {
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
                             <div className="glass-card p-6 border-emerald-500/20 bg-emerald-900/10 relative overflow-hidden group">
                                 <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 blur-3xl -mr-12 -mt-12"></div>
-                                <div className="text-[10px] text-emerald-400/70 font-black uppercase tracking-widest mb-2 italic">Active Beta Users</div>
+                                <div className="text-[10px] text-emerald-400/70 font-black uppercase tracking-widest mb-2 italic">Video Generation Time</div>
                                 <div className="text-3xl font-black italic text-white flex items-baseline gap-2">
-                                    0 <span className="text-sm text-emerald-400 tracking-widest">/50</span>
+                                    &lt;10 <span className="text-sm text-emerald-400 tracking-widest">min</span>
                                 </div>
+                                <div className="text-[9px] text-emerald-500/50 font-bold mt-1 uppercase tracking-tighter">Prev: 2h</div>
                             </div>
                             <div className="glass-card p-6 border-blue-500/20 bg-blue-900/10 relative overflow-hidden group">
                                 <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 blur-3xl -mr-12 -mt-12"></div>
-                                <div className="text-[10px] text-blue-400/70 font-black uppercase tracking-widest mb-2 italic">Conversion Rate</div>
+                                <div className="text-[10px] text-blue-400/70 font-black uppercase tracking-widest mb-2 italic">Weekly Reels</div>
                                 <div className="text-3xl font-black italic text-white">
-                                    0.0<span className="text-sm text-blue-400">%</span>
+                                    3<span className="text-sm text-blue-400">+</span>
                                 </div>
+                                <div className="text-[9px] text-blue-500/50 font-bold mt-1 uppercase tracking-tighter">Active Target</div>
                             </div>
                             <div className="glass-card p-6 border-purple-500/20 bg-purple-900/10 relative overflow-hidden group">
                                 <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 blur-3xl -mr-12 -mt-12"></div>
-                                <div className="text-[10px] text-purple-400/70 font-black uppercase tracking-widest mb-2 italic">Avg. Session Time</div>
+                                <div className="text-[10px] text-purple-400/70 font-black uppercase tracking-widest mb-2 italic">Audience Reach</div>
                                 <div className="text-3xl font-black italic text-white">
-                                    0<span className="text-sm text-purple-400">m</span>
+                                    +25<span className="text-sm text-purple-400">%</span>
                                 </div>
+                                <div className="text-[9px] text-purple-500/50 font-bold mt-1 uppercase tracking-tighter">MoM Growth Target</div>
                             </div>
                             <div className="glass-card p-6 border-amber-500/20 bg-amber-900/10 relative overflow-hidden group">
                                 <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 blur-3xl -mr-12 -mt-12"></div>
                                 <div className="text-[10px] text-amber-400/70 font-black uppercase tracking-widest mb-2 italic flex items-center gap-2">
-                                    System Status
+                                    Automation Link
                                 </div>
-                                <div className="text-2xl font-black italic text-amber-400">TESTING</div>
+                                <div className="text-2xl font-black italic text-amber-400">ACTIVE</div>
+                                <div className="text-[9px] text-amber-500/50 font-bold mt-1 uppercase tracking-tighter">Make.com Sync</div>
                             </div>
                         </div>
                     </div>
