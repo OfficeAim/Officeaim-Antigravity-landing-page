@@ -102,7 +102,9 @@ const ProjectPlanner = ({ profile }) => {
                         .insert({
                             user_id: profile.id,
                             name: "My First AI Project",
-                            current_phase: 1
+                            current_phase: 1,
+                            agent_role: 'AI-PROJECT-MANAGER', // Required by schema
+                            user_input: 'Initial project setup' // Required by schema
                         })
                         .select();
 
@@ -111,7 +113,7 @@ const ProjectPlanner = ({ profile }) => {
                 }
             } catch (err) {
                 console.error("Error fetching project:", err);
-                toast.error("Failed to load project state.");
+                toast.error(`Project Load Error: ${err.message || 'Check console details.'}`);
             } finally {
                 setLoading(false);
             }
