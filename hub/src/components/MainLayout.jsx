@@ -30,34 +30,95 @@ const MainLayout = ({ profile }) => {
     // Project Memory State
     const [recentProjects, setRecentProjects] = useState([]);
 
+    // Project Context State
+    const [activePrd, setActivePrd] = useState(null);
+
     useEffect(() => {
         if (!profile?.id) return;
-        const fetchProjects = async () => {
-            const { data } = await supabase
+        const fetchRecentActivity = async () => {
+            // Fetch Chats
+            const { data: chats } = await supabase
                 .from('saved_chats')
                 .select('id, project_name, agent_role, updated_at')
                 .eq('user_id', profile.id)
                 .order('updated_at', { ascending: false })
                 .limit(5);
 
-            if (data) {
-                setRecentProjects(data.map(p => ({
+            // Better yet, just get saved chats, but map them correctly. 
+            // The canvas requested: "Fix Recent Memory Links: Ensure MainLayout.jsx items correctly load chat history vs PRD based on item type."
+            // Wait, the current logic only fetches `saved_chats`. Let's fetch the docs for the active project.
+
+            const { data: activeProjs } = await supabase
+                .from('student_projects')
+                .select('id')
+                .eq('user_id', profile.id);
+
+            let docs = [];
+            if (activeProjs && activeProjs.length > 0) {
+                const projectIds = activeProjs.map(p => p.id);
+                const { data: projectDocs } = await supabase
+                    .from('project_documents')
+                    .select('id, type, created_at, project_id')
+                    .in('project_id', projectIds)
+                    .order('created_at', { ascending: false })
+                    .limit(5);
+                docs = projectDocs || [];
+            }
+
+            let combined = [];
+
+            if (chats) {
+                combined = [...combined, ...chats.map(p => ({
                     id: p.id,
                     title: p.project_name || 'Untitled Project',
-                    agent: p.agent_role.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+                    subtitle: p.agent_role.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
                     rawAgentId: p.agent_role,
-                    time: new Date(p.updated_at).toLocaleDateString(),
-                    status: 'saved'
-                })));
+                    type: 'chat',
+                    timestamp: new Date(p.updated_at).getTime()
+                }))];
+            }
+
+            if (docs) {
+                combined = [...combined, ...docs.map(d => ({
+                    id: d.id,
+                    title: d.type === 'prd' ? 'Product Requirements Document' : 'Project Document',
+                    subtitle: d.type.toUpperCase(),
+                    type: 'document',
+                    timestamp: new Date(d.created_at).getTime()
+                }))];
+            }
+
+            // Sort chronologically (newest first) and limit to 5
+            combined.sort((a, b) => b.timestamp - a.timestamp);
+            setRecentProjects(combined.slice(0, 5));
+
+            // Fetch Active Project for PRD Context
+            const { data: projData } = await supabase
+                .from('student_projects')
+                .select('id, name, current_phase')
+                .eq('user_id', profile.id)
+                .eq('is_completed', false)
+                .order('created_at', { ascending: false })
+                .limit(1);
+
+            if (projData && projData.length > 0 && projData[0].current_phase >= 3) {
+                if (projData[0].name === 'MakelaarVideo AI') {
+                    setActivePrd({
+                        title: projData[0].name,
+                        goal: "Auto-Reels for Snelder Zijlstra (Twente).",
+                        flow: "Webhook -> CloudConvert -> OpenAI (Researcher/Strategist) -> Gmail -> Sheets.",
+                        keyId: "Pand_Naam (Col C)."
+                    });
+                }
             }
         };
 
-        fetchProjects();
+        fetchRecentActivity();
 
         // Optional: Listen for changes in saved_chats
         const channel = supabase.channel('saved_chats_changes')
             .on('postgres_changes', { event: '*', schema: 'public', table: 'saved_chats', filter: `user_id=eq.${profile.id}` }, () => {
-                fetchProjects();
+                fetchRecentActivity();
             })
             .subscribe();
 
@@ -420,24 +481,56 @@ const MainLayout = ({ profile }) => {
                             <h2 className="text-xs font-black italic uppercase tracking-widest text-white">Recent Memory</h2>
                         </div>
                         <div className="space-y-3">
+                            {/* PRD Context Injection (Tactical Unit Palette) */}
+                            {activePrd && (
+                                <div
+                                    onClick={() => navigate('/hub/planner', { state: { openPrd: true } })}
+                                    className="p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/5 shadow-[0_0_15px_rgba(16,185,129,0.1)] mb-4 cursor-pointer group hover:border-emerald-400/50 hover:bg-emerald-500/10 transition-all"
+                                >
+                                    <div className="flex items-center justify-between mb-3">
+                                        <h3 className="text-[11px] font-black italic text-emerald-400 uppercase tracking-widest group-hover:text-emerald-300 transition-colors">Active Project</h3>
+                                        <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></div>
+                                    </div>
+                                    <h4 className="text-sm font-bold text-white mb-3 group-hover:text-emerald-50 transition-colors">{activePrd.title}</h4>
+                                    <div className="space-y-2 font-mono text-[10px] leading-relaxed relative z-10">
+                                        <div className="bg-black/20 p-2 rounded border border-emerald-500/10 group-hover:border-emerald-500/30 transition-colors">
+                                            <span className="text-emerald-400/70 font-bold block mb-0.5">1. GOAL</span>
+                                            <span className="text-emerald-100/90">{activePrd.goal}</span>
+                                        </div>
+                                        <div className="bg-black/20 p-2 rounded border border-cyan-500/10 group-hover:border-cyan-500/30 transition-colors">
+                                            <span className="text-cyan-400/70 font-bold block mb-0.5">2. FLOW</span>
+                                            <span className="text-cyan-100/90">{activePrd.flow}</span>
+                                        </div>
+                                        <div className="bg-black/20 p-2 rounded border border-emerald-500/10 group-hover:border-emerald-500/30 transition-colors">
+                                            <span className="text-emerald-400/70 font-bold block mb-0.5">3. KEY ID</span>
+                                            <span className="text-emerald-100/90">{activePrd.keyId}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
                             {recentProjects.map((project, idx) => (
                                 <div
                                     key={project.id || idx}
                                     onClick={() => {
-                                        if (project.id) {
+                                        if (project.type === 'chat') {
                                             navigate(`/hub/lab/${project.rawAgentId || 'quality-checker'}?sessionId=${project.id}`);
+                                        } else if (project.type === 'document') {
+                                            navigate('/hub/planner', { state: { openPrd: true } });
                                         }
                                     }}
-                                    className="p-3 rounded-xl bg-white/[0.02] border border-white/5 group cursor-pointer hover:border-accent-secondary/30 transition-all"
+                                    className={`p-3 rounded-xl bg-white/[0.02] border border-white/5 group cursor-pointer transition-all ${project.type === 'chat' ? 'hover:border-accent-secondary/30' : 'hover:border-blue-500/30'}`}
                                 >
                                     <div className="flex justify-between items-start mb-1">
-                                        <span className="text-[9px] font-black uppercase tracking-widest text-text-muted italic bg-black/50 px-2 py-0.5 rounded">
-                                            {project.agent}
+                                        <span className={`text-[9px] font-black uppercase tracking-widest italic px-2 py-0.5 rounded ${project.type === 'chat' ? 'text-accent-secondary bg-accent-secondary/10' : 'text-blue-400 bg-blue-500/10'}`}>
+                                            {project.type === 'chat' ? 'Chat Session' : 'Document'}
                                         </span>
+                                        <span className="text-[9px] text-text-muted">{new Date(project.timestamp).toLocaleDateString()}</span>
                                     </div>
-                                    <h3 className="text-[11px] font-black italic text-white group-hover:text-accent-secondary transition-colors line-clamp-1">
+                                    <h3 className={`text-[11px] font-black italic transition-colors line-clamp-1 ${project.type === 'chat' ? 'text-white group-hover:text-accent-secondary' : 'text-white group-hover:text-blue-400'}`}>
                                         {project.title}
                                     </h3>
+                                    <p className="text-[9px] text-text-muted mt-1 truncate">{project.subtitle}</p>
                                 </div>
                             ))}
                         </div>

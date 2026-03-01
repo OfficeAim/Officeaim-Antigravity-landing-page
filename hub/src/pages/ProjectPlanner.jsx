@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Layout, BrainCircuit, FileText, Building2, Globe2, ChevronRight, CheckCircle2, Lock, ArrowRight, Activity, Beaker, Copy, Check, Users, Mail, Cpu } from 'lucide-react';
+import { Layout, BrainCircuit, FileText, Building2, Globe2, ChevronRight, CheckCircle2, Lock, ArrowRight, Activity, Beaker, Copy, Check, Users, Mail, Cpu, Star, Loader2, Sparkles, X } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import toast from 'react-hot-toast';
 
 const ProjectPlanner = ({ profile }) => {
     const navigate = useNavigate();
+    const location = useLocation();
 
     // Project State
     const [project, setProject] = useState(null);
@@ -15,6 +16,15 @@ const ProjectPlanner = ({ profile }) => {
     const [prdContent, setPrdContent] = useState('');
     const [copied, setCopied] = useState(false);
     const [isLovableModalOpen, setIsLovableModalOpen] = useState(false);
+    const [selectedStep, setSelectedStep] = useState(null);
+
+    useEffect(() => {
+        if (location.state?.openPrd && prdContent) {
+            setIsPrdOpen(true);
+            // Clear state so it doesn't force open on subsequent navigations within planner
+            window.history.replaceState({}, document.title);
+        }
+    }, [location.state, prdContent]);
 
     const handleCopyPRD = () => {
         if (prdContent) {
@@ -57,20 +67,57 @@ const ProjectPlanner = ({ profile }) => {
             if (!profile?.id) return;
 
             try {
-                // Try to get active project
-                const { data, error } = await supabase
-                    .from('student_projects')
-                    .select('*')
-                    .eq('user_id', profile.id)
-                    .eq('is_completed', false)
-                    .order('created_at', { ascending: false })
-                    .limit(1);
+                const hardcodedId = 'c30b3825-44a8-492f-9148-afb1c1cedb5d';
+                const urlParams = new URLSearchParams(location.search);
+                const savedProjectId = urlParams.get('projectId') || localStorage.getItem('activeProjectId');
+
+                let data, error;
+
+                // 1. Try saved/URL project ID first
+                if (savedProjectId) {
+                    const { data: savedData, error: savedError } = await supabase
+                        .from('student_projects')
+                        .select('*')
+                        .eq('id', savedProjectId)
+                        .limit(1);
+                    data = savedData;
+                    error = savedError;
+                }
+
+                // 2. Try fetching latest incomplete project for user
+                if (!data || data.length === 0) {
+                    const { data: recentData, error: recentError } = await supabase
+                        .from('student_projects')
+                        .select('*')
+                        .eq('user_id', profile.id)
+                        .eq('is_completed', false)
+                        .order('created_at', { ascending: false })
+                        .limit(1);
+                    data = recentData;
+                    error = recentError;
+                }
+
+                // 3. HARDCODED RECOVERY
+                if (!data || data.length === 0) {
+                    const { data: fallbackData } = await supabase
+                        .from('student_projects')
+                        .select('*')
+                        .eq('id', hardcodedId)
+                        .limit(1);
+                    if (fallbackData && fallbackData.length > 0) {
+                        data = fallbackData;
+                        console.warn("Emergency State Recovery: Activated hardcoded project.");
+                    }
+                }
 
                 if (error && error.code !== 'PGRST116') throw error; // Ignoring no rows error assuming it might be empty array
 
                 if (data && data.length > 0) {
                     const currentProject = data[0];
                     let activePhase = currentProject.current_phase || 1;
+
+                    // Persist for future visits
+                    localStorage.setItem('activeProjectId', currentProject.id);
 
                     // FORCE FETCH PRD to check state restoration
                     const { data: prdData } = await supabase
@@ -109,7 +156,10 @@ const ProjectPlanner = ({ profile }) => {
                         .select();
 
                     if (createError) throw createError;
-                    if (newProj && newProj.length > 0) setProject(newProj[0]);
+                    if (newProj && newProj.length > 0) {
+                        setProject(newProj[0]);
+                        localStorage.setItem('activeProjectId', newProj[0].id);
+                    }
                 }
             } catch (err) {
                 console.error("Error fetching project:", err);
@@ -192,9 +242,9 @@ const ProjectPlanner = ({ profile }) => {
     const phases = [
         {
             num: 1,
-            title: "Architecture (Mapas Mentales)",
+            title: "Architecture (Mind Maps)",
             icon: <BrainCircuit className="h-5 w-5" />,
-            desc: "Define la jerarquía de funciones antes de promptear.",
+            desc: "Define the hierarchy of functions before prompting.",
             status: currentPhase > 1 ? "Completed" : "In Progress",
             actionText: "Generate PRD with Gema",
             action: () => handlePhaseAction(1),
@@ -232,7 +282,7 @@ const ProjectPlanner = ({ profile }) => {
         },
         {
             num: 5,
-            title: "Growth Analytics (Dashboard)",
+            title: "Project Analytics & Optimization",
             icon: <Activity className="h-5 w-5" />,
             desc: "Monitor KPIs, Beta User engagement, and system performance.",
             status: currentPhase > 5 ? "Completed" : currentPhase === 5 ? "Active" : "Pending",
@@ -318,40 +368,111 @@ const ProjectPlanner = ({ profile }) => {
             <AnimatePresence>
                 {isLovableModalOpen && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-                        <motion.div initial={{ scale: 0.95 }} animate={{ scale: 1 }} exit={{ scale: 0.95 }} className="w-full max-w-lg bg-[#0B1220] border border-emerald-500/30 shadow-2xl rounded-2xl flex flex-col overflow-hidden">
+                        <motion.div initial={{ scale: 0.95 }} animate={{ scale: 1 }} exit={{ scale: 0.95 }} className="w-full max-w-2xl bg-[#0B1220] border border-emerald-500/30 shadow-2xl rounded-2xl flex flex-col overflow-hidden max-h-[90vh]">
                             <div className="p-6 border-b border-gray-800 flex justify-between items-center bg-emerald-900/10">
                                 <div className="flex items-center gap-3">
                                     <Globe2 className="h-6 w-6 text-emerald-400" />
                                     <h2 className="text-xl font-black italic text-white uppercase tracking-wider">Connect to Lovable</h2>
                                 </div>
-                                <button onClick={() => setIsLovableModalOpen(false)} className="text-gray-500 hover:text-white transition-colors">
+                                <button onClick={() => setIsLovableModalOpen(false)} className="text-gray-500 hover:text-white transition-colors shrink-0">
                                     <ChevronRight className="h-6 w-6" />
                                 </button>
                             </div>
-                            <div className="p-6 space-y-4">
+                            <div className="p-6 overflow-y-auto space-y-6 custom-scrollbar">
                                 <p className="text-sm text-gray-300">Copy these credentials into your Lovable external project to sync progress and database updates in real-time.</p>
 
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase text-emerald-400 tracking-widest">Project ID</label>
-                                    <div className="flex items-center gap-2 bg-gray-950 border border-gray-800 p-3 rounded-lg">
-                                        <code className="text-sm text-gray-300 flex-1 break-all">{project?.id}</code>
-                                        <button onClick={() => { navigator.clipboard.writeText(project?.id); toast.success("Copied!"); }} className="text-emerald-500 hover:text-emerald-400"><Copy className="h-4 w-4" /></button>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black uppercase text-emerald-400 tracking-widest">Project ID</label>
+                                        <div className="flex items-center gap-2 bg-gray-950 border border-gray-800 p-3 rounded-lg">
+                                            <code className="text-xs text-gray-300 flex-1 truncate">{project?.id}</code>
+                                            <button onClick={() => { navigator.clipboard.writeText(project?.id); toast.success("Copied!"); }} className="text-emerald-500 hover:text-emerald-400 shrink-0"><Copy className="h-4 w-4" /></button>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black uppercase text-blue-400 tracking-widest">Supabase URL</label>
+                                        <div className="flex items-center gap-2 bg-gray-950 border border-gray-800 p-3 rounded-lg">
+                                            <code className="text-xs text-gray-300 flex-1 truncate">{import.meta.env.VITE_SUPABASE_URL || 'https://your-project.supabase.co'}</code>
+                                            <button onClick={() => { navigator.clipboard.writeText(import.meta.env.VITE_SUPABASE_URL || 'https://your-project.supabase.co'); toast.success("Copied!"); }} className="text-blue-500 hover:text-blue-400 shrink-0"><Copy className="h-4 w-4" /></button>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black uppercase text-purple-400 tracking-widest">Anon Key</label>
+                                        <div className="flex items-center gap-2 bg-gray-950 border border-gray-800 p-3 rounded-lg">
+                                            <code className="text-xs text-gray-300 flex-1 truncate">{import.meta.env.VITE_SUPABASE_ANON_KEY ? import.meta.env.VITE_SUPABASE_ANON_KEY.substring(0, 10) + '...' : 'eyJhbGciOiJI...'}</code>
+                                            <button onClick={() => { navigator.clipboard.writeText(import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR...'); toast.success("Copied!"); }} className="text-purple-500 hover:text-purple-400 shrink-0"><Copy className="h-4 w-4" /></button>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase text-blue-400 tracking-widest">Supabase URL</label>
-                                    <div className="flex items-center gap-2 bg-gray-950 border border-gray-800 p-3 rounded-lg">
-                                        <code className="text-sm text-gray-300 flex-1 truncate">{import.meta.env.VITE_SUPABASE_URL || 'https://your-project.supabase.co'}</code>
-                                        <button onClick={() => { navigator.clipboard.writeText(import.meta.env.VITE_SUPABASE_URL || 'https://your-project.supabase.co'); toast.success("Copied!"); }} className="text-blue-500 hover:text-blue-400"><Copy className="h-4 w-4" /></button>
-                                    </div>
-                                </div>
+                                {/* Master Dashboard Prompt */}
+                                <div className="space-y-2 pt-4 border-t border-gray-800">
+                                    <div className="flex justify-between items-center mb-2">
+                                        <h4 className="text-sm font-black text-amber-500 uppercase tracking-widest italic flex items-center gap-2">
+                                            <BrainCircuit className="h-4 w-4" /> Master Initialization Prompt
+                                        </h4>
+                                        <button
+                                            onClick={() => {
+                                                const masterPrompt = `Act as an expert React developer. I am building a dashboard for a Real Estate AI automation called "MakelaarVideo AI".
 
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase text-purple-400 tracking-widest">Supabase Anon Key</label>
-                                    <div className="flex items-center gap-2 bg-gray-950 border border-gray-800 p-3 rounded-lg">
-                                        <code className="text-sm text-gray-300 flex-1 truncate">{import.meta.env.VITE_SUPABASE_ANON_KEY ? import.meta.env.VITE_SUPABASE_ANON_KEY.substring(0, 15) + '...' : 'eyJhbGciOiJIUzI1NiIsInR...'}</code>
-                                        <button onClick={() => { navigator.clipboard.writeText(import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR...'); toast.success("Copied!"); }} className="text-purple-500 hover:text-purple-400"><Copy className="h-4 w-4" /></button>
+1. Database Connection (CRITICAL SETUP)
+Alina, to avoid creating a blank database, give Lovable the exact OfficeAIM keys. Do not use the native Supabase integration if it asks to create a new project.
+
+Connect to my existing Supabase project using these exact credentials to fetch my real data:
+Supabase URL: ${import.meta.env.VITE_SUPABASE_URL || 'https://your-project.supabase.co'}
+Supabase Anon Key: ${import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR...'}
+
+2. Core Objective
+Build a professional, dark-mode dashboard in Dutch. The app must connect to the student_projects table and the project_documents table to show the PRD.
+
+3. Data Sync Logic (CRITICAL)
+Use the following PROJECT_ID for all data fetching:
+Project ID: ${project?.id || 'c30b3825-44a8-492f-9148-afb1c1cedb5d'}
+Filter Rule: SELECT * FROM student_projects WHERE id = '${project?.id || 'c30b3825-44a8-492f-9148-afb1c1cedb5d'}'
+
+4. UI Requirements (7-Step Digital Brain)
+Create a visual checklist using the checklist_state JSON column. Labels:
+- Webhook (PDF & Email)
+- HTTP Download
+- CloudConvert (PDF naar Tekst)
+- OpenAI #1 Onderzoeker (Pand_Naam, m2)
+- OpenAI #2 Strateeg (8-sectie script)
+- Gmail Verzending
+- Google Sheets Logboek
+
+5. Visual Style
+Theme: Dark Mode (Slate/Zinc).
+Accents: Emerald Green (#10b981) and Cyan (#06b6d4).
+Language: Dutch (Nederlands).
+
+6. Real-Time Sync
+Implement a listener. If external_deployment_success flips to true in Supabase, show a "Sync Successful 🔄" toast in the Lovable app.
+
+Important: Remember to use the referral link https://lovable.dev/invite/ULPWUI6 to ensure you have enough credits for this build.`;
+                                                navigator.clipboard.writeText(masterPrompt);
+                                                toast.success("Master Dashboard Prompt Copied!");
+                                            }}
+                                            className="bg-amber-500/20 hover:bg-amber-500/30 text-amber-500 px-3 py-1.5 rounded text-xs font-bold transition-colors flex items-center gap-2"
+                                        >
+                                            <Copy className="h-3 w-3" /> Copy Full Prompt
+                                        </button>
+                                    </div>
+                                    <div className="bg-gray-950 border border-gray-800 p-4 rounded-xl relative group">
+                                        <code className="text-xs text-gray-400 block whitespace-pre-wrap leading-relaxed">
+                                            {`Act as an expert React developer. I am building a dashboard for a Real Estate AI automation called "MakelaarVideo AI".
+
+1. Database Connection (CRITICAL SETUP)
+Alina, to avoid creating a blank database, give Lovable the exact OfficeAIM keys. Do not use the native Supabase integration if it asks to create a new project.
+
+Connect to my existing Supabase project using these exact credentials to fetch my real data:
+Supabase URL: [PASTE_OFFICEAIM_URL_HERE]
+Supabase Anon Key: [PASTE_OFFICEAIM_ANON_KEY_HERE]
+
+2. Core Objective
+Build a professional, dark-mode dashboard in Dutch. The app must connect to the student_projects table and the project_documents table to show the PRD.
+
+... (Click Copy to get the full prompt including dynamic credentials) ...`}
+                                        </code>
                                     </div>
                                 </div>
                             </div>
@@ -461,6 +582,22 @@ const ProjectPlanner = ({ profile }) => {
                                             >
                                                 Confirm Launch 🚀
                                             </button>
+
+                                            <div className="bg-purple-900/20 p-5 rounded-xl border border-purple-500/30 text-center relative overflow-hidden mt-4">
+                                                <div className="absolute top-0 right-0 p-2 opacity-10">
+                                                    <Star className="h-16 w-16 text-purple-400" />
+                                                </div>
+                                                <h4 className="text-sm font-black text-white mb-2 relative z-10">Innovation Monitoring</h4>
+                                                <p className="text-xs text-purple-200/70 italic mb-4 relative z-10">
+                                                    OfficeAIM is looking for high-potential projects to integrate into the core ecosystem.
+                                                </p>
+                                                <button
+                                                    onClick={() => toast.success("Project submitted for Innovation Review! The Lead Visionary will be notified.", { icon: '🌟', duration: 5000 })}
+                                                    className="relative z-10 w-full flex items-center justify-center gap-2 py-3 bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 border border-purple-500/30 rounded-xl transition-all font-bold text-sm"
+                                                >
+                                                    <Star className="h-4 w-4" /> Submit for Platform Review
+                                                </button>
+                                            </div>
                                         </div>
                                     )}
 
@@ -484,11 +621,11 @@ const ProjectPlanner = ({ profile }) => {
                                                 <h4 className="text-[10px] uppercase font-black tracking-widest text-text-muted mb-3 italic">Digital Brain Checklist (MakelaarVideo AI)</h4>
                                                 <div className="space-y-2 mb-4">
                                                     {checklist.map(item => (
-                                                        <div key={item.id} onClick={() => handleToggleChecklist(item.id)} className="flex items-start gap-3 cursor-pointer group">
-                                                            <div className={`mt-0.5 shrink-0 h-4 w-4 rounded border flex items-center justify-center transition-colors ${item.done ? 'bg-emerald-500 border-emerald-500 text-gray-900' : 'bg-gray-800 border-gray-700 group-hover:border-emerald-500/50'}`}>
+                                                        <div key={item.id} className="flex items-start gap-3 group">
+                                                            <div onClick={() => handleToggleChecklist(item.id)} className={`mt-0.5 shrink-0 h-4 w-4 rounded border flex items-center justify-center transition-colors cursor-pointer ${item.done ? 'bg-emerald-500 border-emerald-500 text-gray-900' : 'bg-gray-800 border-gray-700 group-hover:border-emerald-500/50'}`}>
                                                                 {item.done && <CheckCircle2 className="h-3 w-3" />}
                                                             </div>
-                                                            <span className={`text-xs italic leading-snug transition-colors ${item.done ? 'text-gray-500 line-through' : 'text-gray-300'}`}>{item.text}</span>
+                                                            <span onClick={() => setSelectedStep(item)} className={`cursor-pointer hover:text-emerald-400 text-xs italic leading-snug transition-colors ${item.done ? 'text-gray-500 line-through hover:text-emerald-500' : 'text-gray-300'}`}>{item.text}</span>
                                                         </div>
                                                     ))}
                                                 </div>
@@ -499,16 +636,63 @@ const ProjectPlanner = ({ profile }) => {
                                             </div>
 
                                             <button
-                                                onClick={() => navigate('/hub/lab/quality-checker?mode=audit')}
+                                                onClick={() => {
+                                                    toast.success("Audit Requested: The Quality Checker is reviewing your architecture.", { icon: '🔍', duration: 4000 });
+                                                    advancePhase(5);
+                                                }}
                                                 className={`w-full flex items-center justify-center gap-2 py-3 border rounded-xl transition-all font-bold text-sm ${checklist.every(i => i.done) ? 'bg-emerald-500 hover:bg-emerald-400 text-gray-900 shadow-[0_0_15px_rgba(16,185,129,0.4)]' : 'bg-gray-800 text-gray-500 border-gray-700 hover:bg-gray-700'}`}
                                             >
                                                 Request Quality Audit <ArrowRight className="h-4 w-4" />
                                             </button>
+
+                                            {checklist.every(i => i.done) && (
+                                                <div className="bg-emerald-900/20 p-5 rounded-xl border border-emerald-500/30 text-center relative overflow-hidden mt-4 animate-pulse">
+                                                    <div className="absolute top-0 right-0 p-2 opacity-10">
+                                                        <Star className="h-16 w-16 text-emerald-400" />
+                                                    </div>
+                                                    <h4 className="text-sm font-black text-white mb-2 relative z-10">Innovation Ready</h4>
+                                                    <p className="text-xs text-emerald-200/70 italic mb-4 relative z-10">
+                                                        Your MakelaarVideo AI integration is fully built. Share it with the Lead Visionary!
+                                                    </p>
+                                                    <button
+                                                        onClick={() => toast.success("Project submitted for Innovation Review! The Lead Visionary will be notified.", { icon: '🌟', duration: 5000 })}
+                                                        className="relative z-10 w-full flex items-center justify-center gap-2 py-3 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/50 rounded-xl transition-all font-bold text-sm shadow-[0_0_15px_rgba(16,185,129,0.4)]"
+                                                    >
+                                                        <Star className="h-4 w-4" /> Submit for Platform Review
+                                                    </button>
+                                                </div>
+                                            )}
                                         </div>
                                     )}
 
                                     {isActive && phase.num === 5 && (
                                         <div className="space-y-4 mt-6">
+                                            {/* The Pivot Engine Placeholder */}
+                                            <div className="bg-gradient-to-br from-indigo-900/40 to-cyan-900/20 p-5 rounded-xl border border-cyan-500/30 text-left relative overflow-hidden group">
+                                                <div className="absolute top-0 right-0 p-2 opacity-10 transition-opacity group-hover:opacity-20">
+                                                    <BrainCircuit className="h-24 w-24 text-cyan-400 rotate-12" />
+                                                </div>
+                                                <h4 className="text-sm font-black text-white mb-4 relative z-10 flex items-center gap-2">
+                                                    <Sparkles className="h-4 w-4 text-cyan-400" /> Gema's Pivot Engine Analysis
+                                                </h4>
+                                                <div className="bg-black/40 border border-cyan-500/20 rounded-lg p-4 mb-4 relative z-10 backdrop-blur-sm space-y-3">
+                                                    <p className="text-xs text-cyan-100/90 leading-relaxed font-medium">
+                                                        "Alina, your MakelaarVideo AI architecture looks solid. I have verified the 7-step Digital Brain integration with Lovable. However, to maximize scalability, I recommend the following pivots:"
+                                                    </p>
+                                                    <ul className="text-xs text-cyan-200/70 space-y-2 list-disc list-inside">
+                                                        <li><strong className="text-cyan-400">Database Optimization:</strong> Index the `student_projects` table on `user_id` for faster lookups as users grow.</li>
+                                                        <li><strong className="text-cyan-400">Error Handling:</strong> Add retry logic to the CloudConvert webhook in Make.com in case of timeout.</li>
+                                                        <li><strong className="text-cyan-400">Prompt Engineering:</strong> Re-evaluate OpenAI #2's temperature settings to ensure real estate scripts remain professional (recommended: 0.4).</li>
+                                                    </ul>
+                                                </div>
+                                                <button
+                                                    onClick={() => toast.success("Pivot recommendations applied to the backlog.", { icon: '✅' })}
+                                                    className="relative z-10 w-full flex items-center justify-center gap-2 py-2 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/50 rounded-lg transition-all font-bold text-xs"
+                                                >
+                                                    <Check className="h-3 w-3" /> Acknowledge & Apply
+                                                </button>
+                                            </div>
+
                                             <div className="bg-emerald-900/20 p-5 rounded-xl border border-emerald-500/30 text-center">
                                                 <Activity className="h-10 w-10 text-emerald-400 mx-auto mb-3" />
                                                 <h4 className="text-sm font-black text-white mb-2">Growth Dashboard Unlocked</h4>
@@ -520,6 +704,22 @@ const ProjectPlanner = ({ profile }) => {
                                                     className="w-full flex items-center justify-center gap-2 py-3 bg-emerald-500 hover:bg-emerald-400 text-gray-900 rounded-xl transition-all font-bold text-sm shadow-[0_0_15px_rgba(16,185,129,0.4)]"
                                                 >
                                                     Go to Analytics Dashboard <ArrowRight className="h-4 w-4" />
+                                                </button>
+                                            </div>
+
+                                            <div className="bg-purple-900/20 p-5 rounded-xl border border-purple-500/30 text-center relative overflow-hidden mt-4">
+                                                <div className="absolute top-0 right-0 p-2 opacity-10">
+                                                    <Star className="h-16 w-16 text-purple-400" />
+                                                </div>
+                                                <h4 className="text-sm font-black text-white mb-2 relative z-10">Innovation Monitoring</h4>
+                                                <p className="text-xs text-purple-200/70 italic mb-4 relative z-10">
+                                                    OfficeAIM is looking for high-potential projects to integrate into the core ecosystem.
+                                                </p>
+                                                <button
+                                                    onClick={() => toast.success("Project submitted for Innovation Review! The Lead Visionary will be notified.", { icon: '🌟', duration: 5000 })}
+                                                    className="relative z-10 w-full flex items-center justify-center gap-2 py-3 bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 border border-purple-500/30 rounded-xl transition-all font-bold text-sm"
+                                                >
+                                                    <Star className="h-4 w-4" /> Submit for Platform Review
                                                 </button>
                                             </div>
                                         </div>
@@ -536,6 +736,62 @@ const ProjectPlanner = ({ profile }) => {
                     })}
                 </div>
             </div>
+
+            {/* Step Detail Modal */}
+            <AnimatePresence>
+                {selectedStep && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+                        <motion.div initial={{ scale: 0.95 }} animate={{ scale: 1 }} exit={{ scale: 0.95 }} className="w-full max-w-2xl bg-[#0B1220] border border-emerald-500/30 shadow-2xl rounded-2xl flex flex-col overflow-hidden max-h-[90vh]">
+                            <div className="p-6 border-b border-gray-800 flex justify-between items-center bg-gray-900/50">
+                                <div className="flex items-center gap-3">
+                                    <span className="bg-emerald-500/20 text-emerald-400 text-xs font-bold px-2 py-1 rounded">Deep Dive</span>
+                                    <h2 className="text-lg font-black italic text-white tracking-wider truncate">{selectedStep.text}</h2>
+                                </div>
+                                <button onClick={() => setSelectedStep(null)} className="text-gray-500 hover:text-white transition-colors shrink-0">
+                                    <X className="h-6 w-6" />
+                                </button>
+                            </div>
+                            <div className="p-6 overflow-y-auto space-y-6 custom-scrollbar">
+                                <div className="space-y-2">
+                                    <h4 className="text-sm font-black text-emerald-400 uppercase tracking-widest italic">Technisch Doel</h4>
+                                    <p className="text-gray-300 text-sm italic border-l-2 border-emerald-500/50 pl-3">
+                                        Configureer de benodigde integratie en logica voor {selectedStep.text.split(':')[1] || selectedStep.text}.
+                                    </p>
+                                </div>
+                                <div className="space-y-2">
+                                    <h4 className="text-sm font-black text-blue-400 uppercase tracking-widest italic flex items-center gap-2">One-Shot Lovable Prompt</h4>
+                                    <div className="bg-gray-950 border border-gray-800 p-4 rounded-xl relative group">
+                                        <button
+                                            onClick={() => {
+                                                const prompt = `Bouw de interface en connecteer de logica voor de stap: ${selectedStep.text.split(':')[1] || selectedStep.text}.\nDit project is 'MakelaarVideo AI'. Zorg ervoor dat je data wegschrijft naar Supabase onder de tabel 'student_projects'. De belangrijkste variabele die gemapte moet worden is 'Pand_Naam' zodat de AI weet om welk object het gaat.`;
+                                                navigator.clipboard.writeText(prompt);
+                                                toast.success("Master Prompt Copied!");
+                                            }}
+                                            className="absolute top-2 right-2 text-gray-500 hover:text-white bg-black/40 p-1.5 rounded transition-colors"
+                                        >
+                                            <Copy className="h-4 w-4" />
+                                        </button>
+                                        <code className="text-xs text-gray-400 block whitespace-pre-wrap leading-relaxed">
+                                            {`Bouw de interface en connecteer de logica voor de stap: ${selectedStep.text.split(':')[1] || selectedStep.text}.\n\nDit project is 'MakelaarVideo AI'. Zorg ervoor dat je data wegschrijft naar Supabase onder de tabel 'student_projects'. De belangrijkste variabele die gemapt moet worden is 'Pand_Naam' zodat de AI weet om welk object het gaat.`}
+                                        </code>
+                                    </div>
+                                    <p className="text-[10px] text-text-muted italic flex gap-1 items-center">
+                                        <Lock className="h-3 w-3 text-amber-500" />
+                                        Copia este prompt maestro y pégalo 1 sola vez en Lovable para conservar tus créditos.
+                                    </p>
+                                </div>
+                                <button
+                                    onClick={() => navigate(`/hub/lab/systems-architect?context=step_${selectedStep.id}`)}
+                                    className="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-600/20 to-cyan-600/20 hover:from-emerald-500/30 hover:to-cyan-500/30 border border-emerald-500/50 text-white font-black italic flex items-center justify-center gap-3 transition-all shadow-[0_0_15px_rgba(16,185,129,0.2)]"
+                                >
+                                    <BrainCircuit className="h-5 w-5 text-emerald-400" />
+                                    Launch Agent (Systems Architect)
+                                </button>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };

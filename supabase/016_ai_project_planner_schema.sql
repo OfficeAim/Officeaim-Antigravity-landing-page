@@ -5,11 +5,21 @@ CREATE TABLE IF NOT EXISTS public.student_projects (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
     name TEXT NOT NULL,
-    current_phase INTEGER DEFAULT 1 CHECK (current_phase BETWEEN 1 AND 4),
+    current_phase INTEGER DEFAULT 1 CHECK (current_phase BETWEEN 1 AND 5),
     is_completed BOOLEAN DEFAULT false,
+    checklist_state JSONB DEFAULT '[]'::jsonb,
+    external_deployment_success BOOLEAN DEFAULT false,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- Note: Add columns if they do not exist already for existing databases
+ALTER TABLE public.student_projects ADD COLUMN IF NOT EXISTS checklist_state JSONB DEFAULT '[]'::jsonb;
+ALTER TABLE public.student_projects ADD COLUMN IF NOT EXISTS external_deployment_success BOOLEAN DEFAULT false;
+
+-- Remove old check constraint and add the new one for phase 5
+ALTER TABLE public.student_projects DROP CONSTRAINT IF EXISTS student_projects_current_phase_check;
+ALTER TABLE public.student_projects ADD CONSTRAINT student_projects_current_phase_check CHECK (current_phase BETWEEN 1 AND 5);
 
 CREATE TABLE IF NOT EXISTS public.project_documents (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),

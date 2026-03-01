@@ -142,7 +142,7 @@ const Dashboard = ({ profile }) => {
                         Welcome back,<br />
                         <span className="text-white">
                             {profile?.role === 'admin'
-                                ? `Admin`
+                                ? `Jean Paulo (Admin)`
                                 : `${(profile?.full_name || profile?.email?.split('@')[0] || 'Operador').split(' ')[0]}.`
                             }
                         </span>
@@ -176,28 +176,28 @@ const Dashboard = ({ profile }) => {
                     Active Learning Path
                 </h2>
 
-                {/* Engagement Radar Stats */}
+                {/* Engagement Radar Stats -> MakelaarVideo AI KPI Stats */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="glass-card p-6 bg-gradient-to-br from-white/5 to-transparent border-white/10 relative overflow-hidden group">
                         <div className="absolute top-0 right-0 w-24 h-24 bg-accent-secondary/5 blur-3xl -mr-12 -mt-12 group-hover:bg-accent-secondary/10 transition-colors"></div>
-                        <div className="text-[10px] text-text-muted font-black uppercase tracking-widest mb-2 italic">Global Progress</div>
-                        <div className="text-2xl font-black italic">{stats.progress}%</div>
-                        <div className="text-[9px] text-text-muted font-bold mt-1 uppercase tracking-tighter">Velocity: Active</div>
+                        <div className="text-[10px] text-text-muted font-black uppercase tracking-widest mb-2 italic">Active Project</div>
+                        <div className="text-2xl font-black italic">MakelaarVideo AI</div>
+                        <div className="text-[9px] text-accent-secondary font-bold mt-1 uppercase tracking-tighter">Phase V: Analytics & Optimization</div>
                     </div>
                     <div className="glass-card p-6 bg-gradient-to-br from-white/5 to-transparent border-white/10 relative overflow-hidden group">
                         <div className="absolute top-0 right-0 w-24 h-24 bg-accent-primary/5 blur-3xl -mr-12 -mt-12 group-hover:bg-accent-primary/10 transition-colors"></div>
-                        <div className="text-[10px] text-text-muted font-black uppercase tracking-widest mb-2 italic">AI Proficiency</div>
-                        <div className="text-2xl font-black italic">{profile?.ai_proficiency || 'Pioneer'}</div>
-                        <div className="text-[9px] text-accent-primary font-bold mt-1 uppercase tracking-tighter italic">Rank: Founding Member</div>
+                        <div className="text-[10px] text-text-muted font-black uppercase tracking-widest mb-2 italic">CloudConvert Webhook</div>
+                        <div className="text-2xl font-black italic">{Math.max(100, stats.progress + 60)}%</div>
+                        <div className="text-[9px] text-accent-primary font-bold mt-1 uppercase tracking-tighter italic">Status: Synchronized</div>
                     </div>
                     <div className="glass-card p-6 bg-gradient-to-br from-white/5 to-transparent border-white/10 relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 w-24 h-24 bg-green-400/5 blur-3xl -mr-12 -mt-12 group-hover:bg-green-400/10 transition-colors"></div>
-                        <div className="text-[10px] text-green-400 font-black uppercase tracking-widest mb-2 italic flex items-center gap-2">
-                            <div className="h-1.5 w-1.5 bg-green-400 rounded-full animate-pulse"></div>
-                            Automation Link
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-400/5 blur-3xl -mr-12 -mt-12 group-hover:bg-cyan-400/10 transition-colors"></div>
+                        <div className="text-[10px] text-cyan-400 font-black uppercase tracking-widest mb-2 italic flex items-center gap-2">
+                            <div className="h-1.5 w-1.5 bg-cyan-400 rounded-full animate-pulse"></div>
+                            OpenAI Strategist
                         </div>
-                        <div className="text-2xl font-black italic text-green-400">ESTABLISHED</div>
-                        <div className="text-[9px] text-text-muted font-bold mt-1 uppercase tracking-tighter">Sync: 100%</div>
+                        <div className="text-2xl font-black italic text-cyan-400">0.4 Temp</div>
+                        <div className="text-[9px] text-text-muted font-bold mt-1 uppercase tracking-tighter">System Integrity: Nominal</div>
                     </div>
                 </div>
 

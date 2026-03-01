@@ -284,7 +284,8 @@ const ProjectLab = () => {
             const agentRole = roleMap[agentId] || 'GHOST-UNIT';
 
             const modeParam = searchParams.get('mode');
-            const result = await callAgent(agentRole, userMsg, messages, userTier, modeParam, prdContext, currentPhase);
+            const stepContext = searchParams.get('context');
+            const result = await callAgent(agentRole, userMsg, messages, userTier, modeParam, prdContext, currentPhase, stepContext);
             setActiveModel(result.modelUsed);
 
             let finalText = result.text;
@@ -613,6 +614,32 @@ const ProjectLab = () => {
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[300px] overflow-y-auto custom-scrollbar pr-2">
+                                {prdContext && (
+                                    <div className="p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/5 hover:border-emerald-500/50 hover:bg-emerald-500/10 transition-all group flex flex-col h-full relative overflow-hidden">
+                                        <div className="absolute top-0 right-0 p-2 opacity-10">
+                                            <FileText className="h-12 w-12 text-emerald-400" />
+                                        </div>
+                                        <div className="flex justify-between items-start mb-2 relative z-10">
+                                            <h4 className="text-[12px] font-bold italic w-3/4 leading-tight">{prdContext.projectName} (Active PRD)</h4>
+                                            <span className="text-[9px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded-sm">
+                                                Generated
+                                            </span>
+                                        </div>
+                                        <p className="text-[10px] text-emerald-200/50 italic mb-4 flex-grow relative z-10 line-clamp-3">{prdContext.content}</p>
+                                        <button onClick={() => {
+                                            const dataStr = "data:text/markdown;charset=utf-8," + encodeURIComponent(prdContext.content);
+                                            const downloadAnchorNode = document.createElement('a');
+                                            downloadAnchorNode.setAttribute("href", dataStr);
+                                            downloadAnchorNode.setAttribute("download", `${prdContext.projectName}_PRD.md`.replace(/\s+/g, '_'));
+                                            document.body.appendChild(downloadAnchorNode);
+                                            downloadAnchorNode.click();
+                                            downloadAnchorNode.remove();
+                                            toast.success('Downloaded PRD');
+                                        }} className="w-full mt-auto relative z-10 flex items-center justify-center gap-2 py-2 rounded-lg bg-emerald-500/10 text-emerald-400 text-[10px] font-black uppercase tracking-widest italic opacity-0 group-hover:opacity-100 transition-opacity border border-emerald-500/20 hover:bg-emerald-500 hover:text-gray-900">
+                                            <Download className="h-3 w-3" /> Download PRD
+                                        </button>
+                                    </div>
+                                )}
                                 {vaultBlueprints.map(bp => (
                                     <div key={bp.id} className="p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:border-accent-secondary/50 hover:bg-white/[0.04] transition-all group flex flex-col h-full">
                                         <div className="flex justify-between items-start mb-2">

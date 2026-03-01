@@ -141,7 +141,7 @@ Do not add any other text or explanation.
  * @param {Array} chatHistory - Optional history for conversational context.
  * @param {string} userTier - Current user's subscription tier.
  */
-export async function callAgent(agentRole, userMessage, chatHistory = [], userTier = 'FREE', mode = null, prdContext = null, currentPhase = 1) {
+export async function callAgent(agentRole, userMessage, chatHistory = [], userTier = 'FREE', mode = null, prdContext = null, currentPhase = 1, stepContext = null) {
     if (!API_KEY) {
         throw new Error("VITE_GEMINI_API_KEY is not configured in .env");
     }
@@ -212,6 +212,7 @@ If the MVP Functional Requirements from the PRD have been met, provide a positiv
 CRITICAL: If the audit is positive, your very last line of output MUST be the exact phrase "AUDIT_APPROVED".`;
         }
 
+
         if (currentPhase >= 4) {
             if (agentRole === 'INTELLIGENCE-ANALYST') {
                 systemInstruction += `\n\n[PHASE IV OVERRIDE: COMPETITOR TAKEDOWN]
@@ -246,17 +247,34 @@ Column C: Pand_Naam (The address/identity of the property - PRIMARY IDENTIFIER).
 Column D: Concept_Idee.
 Column E: Definitief_Script.
 Column F: Opname_Plan.
-Column G: Tips_Technisch.`;
+Column G: Tips_Technisch.
+
+[MAKELAARVIDEO AI OVERRIDE]
+The target language for the PRD, scripts, and strategy is strictly DUTCH. 
+Ensure you always reference "Pand_Naam" as the primary database key when discussing database architecture.`;
 
             if (currentPhase === 3) {
-                systemInstruction += `\n\n[LOVABLE CONTEXT - IMPLEMENTATION DRIVER]
+                systemInstruction += `\n\n[LOVABLE CONTEXT - THE ONE-SHOT PROTOCOL & COPY-PASTE-DEPLOY]
 The project is currently in Phase III (Construction). Your role is an 'Implementation Driver' assisting the user (Alina) with connecting to Lovable.
-When asked "How do I build this?" or similar, you MUST follow the "Copy-Paste-Deploy Protocol":
-1. Briefly explain the logic.
-2. Provide actionable "Lovable Prompts" that translate the 7-step Digital Brain into modular instructions she can copy-paste into Lovable (e.g., "Alina, paste this into Lovable to create the Realtor Dashboard").
-3. Provide the raw JSON/SQL/React code blocks using standard Markdown with titles so it's easily copyable.
-4. Variable Mapping: Ensure you use the exact database column names (e.g., Pand_Naam, Klant_Email) in any code suggestions so Lovable connects perfectly to her existing Supabase data.
-5. Remind Alina to check the "External Sync" status in her Project Planner after deploying her Lovable code.`;
+CRITICAL CONSTRAINT: Alina only has 5 credits in Lovable. You MUST NOT give small, piecemeal code snippets.
+When asked "How do I build this?" or similar, you MUST output a "Master Lovable Prompt": A single, comprehensive prompt that she can copy and paste directly into Lovable.
+
+You must strictly follow the "Copy-Paste-Deploy Protocol":
+1. ALL prompts provided to the student MUST be fully formatted "Master Initialization Prompts".
+2. Put the actual prompt inside a Markdown code block exactly like this: \`\`\`lovable_prompt ... \`\`\`
+3. This Master Prompt MUST define:
+   - The entire UI layout based on the Active Project (MakelaarVideo AI).
+   - The Supabase connection logic (enforce correct Variable Mapping: use 'Pand_Naam' and 'Klant_Email' exactly).
+   - The 7-step automation logic and webhook integrations in one single execution to maximize her 5 credits.
+4. Do not provide vague advice; provide exact codebase-ready prompt structures they can deploy with 1 credit.`;
+            }
+
+            if (stepContext) {
+                const cleanStep = stepContext.replace('_', ' ');
+                systemInstruction += `\n\n[IMMEDIATE CONTEXT - INTERACTIVE DEEP DIVE]
+I see you are working on the specific step: ${cleanStep} of your automation flow. 
+You MUST acknowledge this exactly by starting your response with: "Veo que estás trabajando en el Paso ${cleanStep.replace('step ', '')} de tu flujo de automatización." 
+Then provide the specific Master Prompt or technical Lovable/Make.com configuration strictly for this exact step to help her build it immediately.`;
             }
         }
 
