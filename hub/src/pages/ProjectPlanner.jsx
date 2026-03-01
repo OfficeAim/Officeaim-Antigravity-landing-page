@@ -14,6 +14,7 @@ const ProjectPlanner = ({ profile }) => {
     const [isPrdOpen, setIsPrdOpen] = useState(false);
     const [prdContent, setPrdContent] = useState('');
     const [copied, setCopied] = useState(false);
+    const [isLovableModalOpen, setIsLovableModalOpen] = useState(false);
 
     const handleCopyPRD = () => {
         if (prdContent) {
@@ -23,15 +24,30 @@ const ProjectPlanner = ({ profile }) => {
             setTimeout(() => setCopied(false), 2000);
         }
     };
-    const [checklist, setChecklist] = useState([
-        { id: 1, text: 'Core Authentication & Auth Logic', done: false },
-        { id: 2, text: 'Database Schema Implementation', done: false },
-        { id: 3, text: 'Primary API Endpoints', done: false },
-        { id: 4, text: 'Frontend UI Dashboards', done: false }
-    ]);
 
-    const handleToggleChecklist = (id) => {
-        setChecklist(prev => prev.map(item => item.id === id ? { ...item, done: !item.done } : item));
+    const defaultChecklist = [
+        { id: 1, text: 'Step 1: Configure Make Webhook (PDF URL & Realtor Email)', done: false },
+        { id: 2, text: 'Step 2: Implement HTTP Download', done: false },
+        { id: 3, text: 'Step 3: Connect CloudConvert (PDF to Text)', done: false },
+        { id: 4, text: 'Step 4: Integrate OpenAI #1 (Researcher for m2)', done: false },
+        { id: 5, text: 'Step 5: Integrate OpenAI #2 (Strategist for script)', done: false },
+        { id: 6, text: 'Step 6: Configure Gmail Delivery', done: false },
+        { id: 7, text: 'Step 7: Setup Google Sheets Logging (Cols A-G)', done: false }
+    ];
+
+    const [checklist, setChecklist] = useState(defaultChecklist);
+
+    const handleToggleChecklist = async (id) => {
+        const newChecklist = checklist.map(item => item.id === id ? { ...item, done: !item.done } : item);
+        setChecklist(newChecklist);
+
+        if (project) {
+            const { error } = await supabase
+                .from('student_projects')
+                .update({ checklist_state: newChecklist })
+                .eq('id', project.id);
+            if (error) console.error("Error saving checklist:", error);
+        }
     };
 
     const [showNewProjectModal, setShowNewProjectModal] = useState(false);
@@ -53,8 +69,14 @@ const ProjectPlanner = ({ profile }) => {
                 if (error && error.code !== 'PGRST116') throw error; // Ignoring no rows error assuming it might be empty array
 
                 if (data && data.length > 0) {
-                    setProject(data[0]);
-                    if (data[0].current_phase >= 3) {
+                    const currentProject = data[0];
+                    setProject(currentProject);
+
+                    if (currentProject.checklist_state && Array.isArray(currentProject.checklist_state) && currentProject.checklist_state.length > 0) {
+                        setChecklist(currentProject.checklist_state);
+                    }
+
+                    if (currentProject.current_phase >= 3) {
                         const { data: prdData } = await supabase
                             .from('project_documents')
                             .select('content')
@@ -90,6 +112,38 @@ const ProjectPlanner = ({ profile }) => {
 
         fetchProject();
     }, [profile?.id]);
+
+    useEffect(() => {
+        if (!project?.id) return;
+
+        const channel = supabase.channel(`public:student_projects:${project.id}`)
+            .on('postgres_changes', {
+                event: 'UPDATE',
+                schema: 'public',
+                table: 'student_projects',
+                filter: `id=eq.${project.id}`
+            }, (payload) => {
+                const newData = payload.new;
+
+                if (newData.external_deployment_success && !project.external_deployment_success) {
+                    toast.success('Lovable Deployment Successful! Auto-advancing...', { icon: '🚀', duration: 5000 });
+                    setProject(newData);
+                    if (newData.current_phase < 5) {
+                        advancePhase(5);
+                    }
+                } else {
+                    setProject(newData);
+                    if (newData.checklist_state && Array.isArray(newData.checklist_state) && newData.checklist_state.length > 0) {
+                        setChecklist(newData.checklist_state);
+                    }
+                }
+            })
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
+    }, [project?.id, project?.external_deployment_success]);
 
     const currentPhase = project?.current_phase || 1;
     const progressPercent = (currentPhase / 5) * 100;
@@ -249,6 +303,52 @@ const ProjectPlanner = ({ profile }) => {
                 )}
             </AnimatePresence>
 
+            {/* Lovable Modal */}
+            <AnimatePresence>
+                {isLovableModalOpen && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+                        <motion.div initial={{ scale: 0.95 }} animate={{ scale: 1 }} exit={{ scale: 0.95 }} className="w-full max-w-lg bg-[#0B1220] border border-emerald-500/30 shadow-2xl rounded-2xl flex flex-col overflow-hidden">
+                            <div className="p-6 border-b border-gray-800 flex justify-between items-center bg-emerald-900/10">
+                                <div className="flex items-center gap-3">
+                                    <Globe2 className="h-6 w-6 text-emerald-400" />
+                                    <h2 className="text-xl font-black italic text-white uppercase tracking-wider">Connect to Lovable</h2>
+                                </div>
+                                <button onClick={() => setIsLovableModalOpen(false)} className="text-gray-500 hover:text-white transition-colors">
+                                    <ChevronRight className="h-6 w-6" />
+                                </button>
+                            </div>
+                            <div className="p-6 space-y-4">
+                                <p className="text-sm text-gray-300">Copy these credentials into your Lovable external project to sync progress and database updates in real-time.</p>
+
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black uppercase text-emerald-400 tracking-widest">Project ID</label>
+                                    <div className="flex items-center gap-2 bg-gray-950 border border-gray-800 p-3 rounded-lg">
+                                        <code className="text-sm text-gray-300 flex-1 break-all">{project?.id}</code>
+                                        <button onClick={() => { navigator.clipboard.writeText(project?.id); toast.success("Copied!"); }} className="text-emerald-500 hover:text-emerald-400"><Copy className="h-4 w-4" /></button>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black uppercase text-blue-400 tracking-widest">Supabase URL</label>
+                                    <div className="flex items-center gap-2 bg-gray-950 border border-gray-800 p-3 rounded-lg">
+                                        <code className="text-sm text-gray-300 flex-1 truncate">{import.meta.env.VITE_SUPABASE_URL || 'https://your-project.supabase.co'}</code>
+                                        <button onClick={() => { navigator.clipboard.writeText(import.meta.env.VITE_SUPABASE_URL || 'https://your-project.supabase.co'); toast.success("Copied!"); }} className="text-blue-500 hover:text-blue-400"><Copy className="h-4 w-4" /></button>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black uppercase text-purple-400 tracking-widest">Supabase Anon Key</label>
+                                    <div className="flex items-center gap-2 bg-gray-950 border border-gray-800 p-3 rounded-lg">
+                                        <code className="text-sm text-gray-300 flex-1 truncate">{import.meta.env.VITE_SUPABASE_ANON_KEY ? import.meta.env.VITE_SUPABASE_ANON_KEY.substring(0, 15) + '...' : 'eyJhbGciOiJIUzI1NiIsInR...'}</code>
+                                        <button onClick={() => { navigator.clipboard.writeText(import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR...'); toast.success("Copied!"); }} className="text-purple-500 hover:text-purple-400"><Copy className="h-4 w-4" /></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             {/* Stepper Center Panel */}
             <div className="flex-grow">
                 <div className="space-y-6 relative before:absolute before:inset-0 before:ml-7 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-emerald-400 before:via-gray-700 before:to-transparent">
@@ -370,17 +470,21 @@ const ProjectPlanner = ({ profile }) => {
                                                     </div>
                                                 </div>
 
-                                                <h4 className="text-[10px] uppercase font-black tracking-widest text-text-muted mb-3 italic">MVP Functional Checklist</h4>
+                                                <h4 className="text-[10px] uppercase font-black tracking-widest text-text-muted mb-3 italic">Digital Brain Checklist (MakelaarVideo AI)</h4>
                                                 <div className="space-y-2 mb-4">
                                                     {checklist.map(item => (
-                                                        <div key={item.id} onClick={() => handleToggleChecklist(item.id)} className="flex items-center gap-3 cursor-pointer group">
-                                                            <div className={`h-4 w-4 rounded border flex items-center justify-center transition-colors ${item.done ? 'bg-emerald-500 border-emerald-500 text-gray-900' : 'bg-gray-800 border-gray-700 group-hover:border-emerald-500/50'}`}>
+                                                        <div key={item.id} onClick={() => handleToggleChecklist(item.id)} className="flex items-start gap-3 cursor-pointer group">
+                                                            <div className={`mt-0.5 shrink-0 h-4 w-4 rounded border flex items-center justify-center transition-colors ${item.done ? 'bg-emerald-500 border-emerald-500 text-gray-900' : 'bg-gray-800 border-gray-700 group-hover:border-emerald-500/50'}`}>
                                                                 {item.done && <CheckCircle2 className="h-3 w-3" />}
                                                             </div>
-                                                            <span className={`text-sm italic transition-colors ${item.done ? 'text-gray-500 line-through' : 'text-gray-300'}`}>{item.text}</span>
+                                                            <span className={`text-xs italic leading-snug transition-colors ${item.done ? 'text-gray-500 line-through' : 'text-gray-300'}`}>{item.text}</span>
                                                         </div>
                                                     ))}
                                                 </div>
+
+                                                <button onClick={() => setIsLovableModalOpen(true)} className="w-full mt-4 py-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-2">
+                                                    <Globe2 className="h-4 w-4" /> Connect to Lovable
+                                                </button>
                                             </div>
 
                                             <button
