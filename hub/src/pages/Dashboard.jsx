@@ -318,6 +318,48 @@ const Dashboard = ({ profile }) => {
                     ))}
                 </div>
 
+                {/* GROWTH ANALYTICS (PHASE 5+) */}
+                {projects.some(p => p.current_phase >= 5) && (
+                    <div className="pt-8 border-t border-white/5">
+                        <div className="flex items-center justify-between mb-8">
+                            <h2 className="text-2xl font-black flex items-center gap-3 italic uppercase tracking-tight text-emerald-400">
+                                <Activity className="h-6 w-6" />
+                                Growth Analytics
+                            </h2>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                            <div className="glass-card p-6 border-emerald-500/20 bg-emerald-900/10 relative overflow-hidden group">
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 blur-3xl -mr-12 -mt-12"></div>
+                                <div className="text-[10px] text-emerald-400/70 font-black uppercase tracking-widest mb-2 italic">Active Beta Users</div>
+                                <div className="text-3xl font-black italic text-white flex items-baseline gap-2">
+                                    0 <span className="text-sm text-emerald-400 tracking-widest">/50</span>
+                                </div>
+                            </div>
+                            <div className="glass-card p-6 border-blue-500/20 bg-blue-900/10 relative overflow-hidden group">
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 blur-3xl -mr-12 -mt-12"></div>
+                                <div className="text-[10px] text-blue-400/70 font-black uppercase tracking-widest mb-2 italic">Conversion Rate</div>
+                                <div className="text-3xl font-black italic text-white">
+                                    0.0<span className="text-sm text-blue-400">%</span>
+                                </div>
+                            </div>
+                            <div className="glass-card p-6 border-purple-500/20 bg-purple-900/10 relative overflow-hidden group">
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 blur-3xl -mr-12 -mt-12"></div>
+                                <div className="text-[10px] text-purple-400/70 font-black uppercase tracking-widest mb-2 italic">Avg. Session Time</div>
+                                <div className="text-3xl font-black italic text-white">
+                                    0<span className="text-sm text-purple-400">m</span>
+                                </div>
+                            </div>
+                            <div className="glass-card p-6 border-amber-500/20 bg-amber-900/10 relative overflow-hidden group">
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 blur-3xl -mr-12 -mt-12"></div>
+                                <div className="text-[10px] text-amber-400/70 font-black uppercase tracking-widest mb-2 italic flex items-center gap-2">
+                                    System Status
+                                </div>
+                                <div className="text-2xl font-black italic text-amber-400">TESTING</div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {/* PROJECT INCUBATOR SECTION */}
                 <div className="pt-8 border-t border-white/5">
                     <div className="flex items-center justify-between mb-8">

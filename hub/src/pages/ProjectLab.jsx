@@ -7,7 +7,6 @@ import {
     Map as MapIcon, Mail, FileText, PenTool, Cpu,
     Users, Wrench, Rocket, DollarSign, Gem,
     Target, Brain, Search, TrendingUp, ShieldCheck, Zap,
-    Target, Brain, Search, TrendingUp, ShieldCheck, Zap,
     MessageSquare, Lock, Crown, Star, Sparkles, FolderArchive, Download, Lightbulb, Copy, Check
 } from 'lucide-react';
 import { callAgent } from '../services/agentFactory';
@@ -269,29 +268,40 @@ const ProjectLab = () => {
 
             // PRD Auto-Save Logic
             if (modeParam === 'prd_generation' && finalText.includes('PRD_GENERATION_COMPLETE')) {
+                // Remove the trigger string for the UI display
                 finalText = finalText.replace('PRD_GENERATION_COMPLETE', '').trim();
-                try {
-                    const { data: projData } = await supabase
-                        .from('student_projects')
-                        .select('id')
-                        .eq('user_id', user.id)
-                        .eq('is_completed', false)
-                        .order('created_at', { ascending: false })
-                        .limit(1);
 
-                    if (projData && projData.length > 0) {
-                        const projectId = projData[0].id;
-                        await supabase.from('project_documents').insert({
-                            project_id: projectId,
-                            type: 'prd',
-                            content: [...newMessages, { role: 'agent', content: finalText }].map(m => `${m.role}: ${m.content}`).join('\n\n')
-                        });
-                        await supabase.from('student_projects').update({ current_phase: 3 }).eq('id', projectId);
-                        toast.success('PRD Generated & Phase III Unlocked!', { icon: '🚀' });
+                // Fire and forget the database save
+                (async () => {
+                    try {
+                        const { data: projData } = await supabase
+                            .from('student_projects')
+                            .select('id')
+                            .eq('user_id', user.id)
+                            .eq('is_completed', false)
+                            .order('created_at', { ascending: false })
+                            .limit(1);
+
+                        if (projData && projData.length > 0) {
+                            const projectId = projData[0].id;
+
+                            // Save the actual PRD content
+                            await supabase.from('project_documents').insert({
+                                project_id: projectId,
+                                type: 'prd',
+                                content: finalText // Save the clean finalized text
+                            });
+
+                            // Advance Phase
+                            await supabase.from('student_projects').update({ current_phase: 3 }).eq('id', projectId);
+                            setCurrentPhase(3);
+                            toast.success('PRD Generated & Phase III Unlocked!', { icon: '🚀', duration: 4000 });
+                        }
+                    } catch (saveErr) {
+                        console.error("Error saving PRD:", saveErr);
+                        toast.error('Failed to save PRD to database.');
                     }
-                } catch (saveErr) {
-                    console.error("Error saving PRD:", saveErr);
-                }
+                })();
             }
 
             // Quality Audit Logic

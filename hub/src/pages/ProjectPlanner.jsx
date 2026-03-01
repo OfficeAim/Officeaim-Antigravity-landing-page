@@ -82,7 +82,7 @@ const ProjectPlanner = ({ profile }) => {
     }, [profile?.id]);
 
     const currentPhase = project?.current_phase || 1;
-    const progressPercent = (currentPhase / 4) * 100;
+    const progressPercent = (currentPhase / 5) * 100;
 
     const handleGeneratePRD = () => {
         // We set context_mode and route to Gema (AI Project Manager)
@@ -97,6 +97,8 @@ const ProjectPlanner = ({ profile }) => {
         } else if (phase === 4) {
             // For Scout Agents
             navigate('/hub/agents');
+        } else if (phase === 5) {
+            navigate('/hub/dashboard');
         }
     };
 
@@ -154,6 +156,16 @@ const ProjectPlanner = ({ profile }) => {
             actionText: "Launch Scout",
             action: () => handlePhaseAction(4),
             isLocked: currentPhase < 4
+        },
+        {
+            num: 5,
+            title: "Growth Analytics (Dashboard)",
+            icon: <Activity className="h-5 w-5" />,
+            desc: "Monitor KPIs, Beta User engagement, and system performance.",
+            status: currentPhase > 5 ? "Completed" : currentPhase === 5 ? "Active" : "Pending",
+            actionText: "Open Dashboard",
+            action: () => navigate('/hub/dashboard'), // We re-route to main dash where KPI features apply
+            isLocked: currentPhase < 5
         }
     ];
 
@@ -361,6 +373,24 @@ const ProjectPlanner = ({ profile }) => {
                                             >
                                                 Request Quality Audit <ArrowRight className="h-4 w-4" />
                                             </button>
+                                        </div>
+                                    )}
+
+                                    {isActive && phase.num === 5 && (
+                                        <div className="space-y-4 mt-6">
+                                            <div className="bg-emerald-900/20 p-5 rounded-xl border border-emerald-500/30 text-center">
+                                                <Activity className="h-10 w-10 text-emerald-400 mx-auto mb-3" />
+                                                <h4 className="text-sm font-black text-white mb-2">Growth Dashboard Unlocked</h4>
+                                                <p className="text-xs text-emerald-200/70 italic mb-4">
+                                                    Your project is live! Now monitor real-time tracking, setup your n8n workflows for automated lead capture, and measure your KPIs.
+                                                </p>
+                                                <button
+                                                    onClick={() => navigate('/hub/dashboard')}
+                                                    className="w-full flex items-center justify-center gap-2 py-3 bg-emerald-500 hover:bg-emerald-400 text-gray-900 rounded-xl transition-all font-bold text-sm shadow-[0_0_15px_rgba(16,185,129,0.4)]"
+                                                >
+                                                    Go to Analytics Dashboard <ArrowRight className="h-4 w-4" />
+                                                </button>
+                                            </div>
                                         </div>
                                     )}
 
