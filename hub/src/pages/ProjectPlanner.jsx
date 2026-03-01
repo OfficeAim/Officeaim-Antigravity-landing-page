@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Layout, BrainCircuit, FileText, Building2, Globe2, ChevronRight, CheckCircle2, Lock, ArrowRight, Activity, Beaker, Copy, Check } from 'lucide-react';
+import { Layout, BrainCircuit, FileText, Building2, Globe2, ChevronRight, CheckCircle2, Lock, ArrowRight, Activity, Beaker, Copy, Check, Users, Mail, Cpu } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import toast from 'react-hot-toast';
 
@@ -244,8 +244,10 @@ const ProjectPlanner = ({ profile }) => {
 
     if (loading) {
         return (
-            <div className="h-full w-full flex items-center justify-center p-8">
-                <Activity className="h-8 w-8 text-emerald-400 animate-spin" />
+            <div className="h-full w-full flex flex-col items-center justify-center p-8 bg-[#0B1220]">
+                <Activity className="h-12 w-12 text-emerald-400 animate-spin mb-4" />
+                <h2 className="text-xl font-black italic text-emerald-400 uppercase tracking-widest animate-pulse">Neural Sync in Progress</h2>
+                <p className="text-text-muted text-sm italic mt-2">Restoring project state...</p>
             </div>
         );
     }
