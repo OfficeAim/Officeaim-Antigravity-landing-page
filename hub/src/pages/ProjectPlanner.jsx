@@ -70,23 +70,30 @@ const ProjectPlanner = ({ profile }) => {
 
                 if (data && data.length > 0) {
                     const currentProject = data[0];
-                    setProject(currentProject);
+                    let activePhase = currentProject.current_phase || 1;
+
+                    // FORCE FETCH PRD to check state restoration
+                    const { data: prdData } = await supabase
+                        .from('project_documents')
+                        .select('content')
+                        .eq('project_id', currentProject.id)
+                        .eq('type', 'prd')
+                        .order('created_at', { ascending: false })
+                        .limit(1);
+
+                    if (prdData && prdData.length > 0) {
+                        setPrdContent(prdData[0].content);
+                        if (activePhase < 3) {
+                            activePhase = 3;
+                            // Optionally silently update the DB
+                            supabase.from('student_projects').update({ current_phase: 3 }).eq('id', currentProject.id).then();
+                        }
+                    }
+
+                    setProject({ ...currentProject, current_phase: activePhase });
 
                     if (currentProject.checklist_state && Array.isArray(currentProject.checklist_state) && currentProject.checklist_state.length > 0) {
                         setChecklist(currentProject.checklist_state);
-                    }
-
-                    if (currentProject.current_phase >= 3) {
-                        const { data: prdData } = await supabase
-                            .from('project_documents')
-                            .select('content')
-                            .eq('project_id', data[0].id)
-                            .eq('type', 'prd')
-                            .order('created_at', { ascending: false })
-                            .limit(1);
-                        if (prdData && prdData.length > 0) {
-                            setPrdContent(prdData[0].content);
-                        }
                     }
                 } else {
                     // Create a new default project

@@ -247,6 +247,12 @@ Column D: Concept_Idee.
 Column E: Definitief_Script.
 Column F: Opname_Plan.
 Column G: Tips_Technisch.`;
+
+            if (currentPhase === 3) {
+                systemInstruction += `\n\n[LOVABLE CONTEXT - IMPLEMENTATION DRIVER]
+The project is currently in Phase III (Construction). Your role is an 'Implementation Driver'.
+When asked for code, you MUST provide actionable "Lovable Prompts" that translate the 7-step Digital Brain into modular code blocks that the user can directly copy-paste into Lovable. Ensure these prompts specify UI components mapped to the tracking data points (e.g., Pand_Naam). Use markdown code blocks marked explicitly for copying.`;
+            }
         }
 
         if (agentRole === 'AI-PROJECT-MANAGER') {

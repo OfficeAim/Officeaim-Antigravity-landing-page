@@ -97,6 +97,29 @@ const ProjectLab = () => {
         { id: 4, title: 'AI Content Repurposer', desc: 'Watches YouTube RSS, transcribes video, generates blog post, and drafts social media tweets.', value: '$1,200' }
     ];
 
+    const handleDownloadJSON = (bp) => {
+        const mockGraph = {
+            "name": "MakelaarVideo AI - 7 Step Digital Brain",
+            "nodes": [
+                { "name": "1. Webhook (PDF & Email)" },
+                { "name": "2. HTTP Download" },
+                { "name": "3. CloudConvert (PDF to Text)" },
+                { "name": "4. OpenAI #1 (Researcher - m2 & technical)" },
+                { "name": "5. OpenAI #2 (Strategist - Script generation)" },
+                { "name": "6. Gmail Delivery" },
+                { "name": "7. Google Sheets Logging" }
+            ]
+        };
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(mockGraph, null, 2));
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", bp.title.replace(/\s+/g, '_') + ".json");
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+        toast.success(`Downloaded: ${bp.title}`);
+    };
+
     const [userTier, setUserTier] = useState('FREE');
     const [activeModel, setActiveModel] = useState(null);
     const [glitchMessageCount, setGlitchMessageCount] = useState(0);
@@ -599,7 +622,7 @@ const ProjectLab = () => {
                                             </span>
                                         </div>
                                         <p className="text-[10px] text-text-muted italic mb-4 flex-grow">{bp.desc}</p>
-                                        <button className="w-full mt-auto flex items-center justify-center gap-2 py-2 rounded-lg bg-accent-secondary/10 text-accent-secondary text-[10px] font-black uppercase tracking-widest italic opacity-0 group-hover:opacity-100 transition-opacity border border-accent-secondary/20 hover:bg-accent-secondary hover:text-white">
+                                        <button onClick={() => handleDownloadJSON(bp)} className="w-full mt-auto flex items-center justify-center gap-2 py-2 rounded-lg bg-accent-secondary/10 text-accent-secondary text-[10px] font-black uppercase tracking-widest italic opacity-0 group-hover:opacity-100 transition-opacity border border-accent-secondary/20 hover:bg-accent-secondary hover:text-white">
                                             <Download className="h-3 w-3" /> Download JSON
                                         </button>
                                     </div>
