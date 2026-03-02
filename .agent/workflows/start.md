@@ -20,9 +20,10 @@ cd "/Users/rodyfigueroa/Movies/OFICEAIM/Officeaim Antigravity landing page"
 
 Before writing any new code, read the core project tracking files to understand where we left off.
 
-1. Read `IMPLEMENTATION_PLAN.md` to see the current architectural step.
-2. Read the most recent entry in `TIMELOG.md` to see what was last completed.
-3. Review `SESSION_SUMMARY.md` if it was recently modified.
+1. **MANDATORY FIRST ACTION**: Read `session_handoff.md` to confirm the active project context and Phase.
+2. Read `IMPLEMENTATION_PLAN.md` to see the current architectural step.
+3. Read the most recent entry in `TIMELOG.md` to see what was last completed.
+4. Review `SESSION_SUMMARY.md` if it was recently modified.
 
 *Agent Action: Provide the user with a 2-3 sentence summary of the immediate next objective.*
 
@@ -36,7 +37,17 @@ npm run dev
 ```
 *Note: The app will run on http://localhost:5173*
 
-## 🔄 Step 4: Check if n8n is Needed
+## 🌐 Step 4: Open Workspace
+
+// turbo
+Automatically open the landing page and the dashboard in your default browser:
+```bash
+open "file:///Users/rodyfigueroa/Movies/OFICEAIM/Officeaim Antigravity landing page/index.html"
+sleep 2
+open "http://localhost:5173/hub"
+```
+
+## 🔄 Step 5: Check if n8n is Needed
 
 Ask the user: *"Are we working on automations today?"*
 
@@ -49,7 +60,7 @@ docker run -it --rm \
   n8nio/n8n
 ```
 
-## 🔔 Step 5: Essential Reminders
+## 🔔 Step 6: Essential Reminders
 
 Output the following message clearly to the user:
 > **🚀 Your environment is starting!** 
@@ -61,7 +72,7 @@ Output the following message clearly to the user:
 > 
 > **Important:** Please open your Supabase project in your browser to monitor database changes and authentication rules.
 
-## ⏳ Step 6: Initialize Break & Save Guardian (Internal Timer)
+## ⏳ Step 7: Initialize Break & Save Guardian (Internal Timer)
 
 Agent, you must now start internally tracking the session time based on the timestamp of the user's first prompt.
 

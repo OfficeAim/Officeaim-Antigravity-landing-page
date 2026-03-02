@@ -146,9 +146,9 @@ const MascotAssistant = ({ profile }) => {
                     onClick={() => setIsOpen(!isOpen)}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className={`p-3 rounded-2xl border transition-all flex items-center gap-3 ${isOpen
-                        ? 'w-full bg-orange-500/10 border-orange-500/30'
-                        : ((isWidget && !isOpen) ? 'w-auto bg-white/[0.02] border-white/10 hover:border-orange-500/20 hover:bg-orange-500/5 shadow-2xl backdrop-blur-md rounded-2xl mt-auto ml-auto' : 'w-full bg-white/[0.02] border-white/10 hover:border-orange-500/20 hover:bg-orange-500/5')
+                    className={`p-3 rounded-2xl border transition-all duration-300 ease-out flex items-center gap-3 ${isOpen
+                        ? 'w-full bg-orange-500/10 border-orange-500/40 shadow-[0_0_20px_rgba(255,122,24,0.15)]'
+                        : ((isWidget && !isOpen) ? 'w-auto bg-[#070A12]/80 border-white/10 hover:border-orange-500/40 hover:bg-orange-500/10 shadow-[0_8px_32px_rgba(255,122,24,0.2)] backdrop-blur-xl rounded-2xl mt-auto ml-auto' : 'w-full bg-white/[0.02] border-white/10 hover:border-orange-500/30 hover:bg-orange-500/5 hover:shadow-[0_0_15px_rgba(255,122,24,0.1)]')
                         }`}
                 >
                     <div className="relative shrink-0 flex items-center justify-center w-12 h-12">
@@ -159,21 +159,21 @@ const MascotAssistant = ({ profile }) => {
                             <img
                                 src="/hub/mascot_aim.png"
                                 alt="AIM Mascot"
-                                className="h-20 w-20 rounded-2xl object-cover border-2 border-orange-500/50 shadow-[0_0_15px_rgba(255,122,24,0.4)] hover:shadow-[0_0_25px_rgba(255,122,24,0.8)] transition-all"
+                                className="h-20 w-20 rounded-2xl object-cover border-2 border-orange-500/40 shadow-[0_0_15px_rgba(255,122,24,0.5)] hover:shadow-[0_0_30px_rgba(255,122,24,0.9)] transition-all duration-500"
                             />
                         </motion.div>
-                        <div className="absolute bottom-1 right-1 h-4 w-4 bg-emerald-400 rounded-full border-2 border-[#0A0F18] animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
+                        <div className="absolute bottom-1 right-1 h-4 w-4 bg-emerald-400 rounded-full border-2 border-[#0A0F18] animate-pulse shadow-[0_0_12px_rgba(52,211,153,0.9)]" />
                     </div>
                     {(!isWidget || isOpen) && (
                         <>
                             <div className="text-left flex-grow min-w-0">
-                                <div className="text-[11px] font-black italic text-white">AIM</div>
+                                <div className="text-[11px] font-black italic text-white tracking-wide">AIM</div>
                                 <div className="text-[9px] text-text-muted italic truncate">
                                     {isOpen ? 'Chat active...' : 'Ask me anything!'}
                                 </div>
                             </div>
                             {!isOpen && (
-                                <div className="shrink-0 h-7 w-7 rounded-lg bg-orange-500/10 flex items-center justify-center border border-orange-500/20">
+                                <div className="shrink-0 h-7 w-7 rounded-lg bg-orange-500/15 flex items-center justify-center border border-orange-500/30 shadow-[0_0_10px_rgba(255,122,24,0.2)]">
                                     <Send className="h-3 w-3 text-orange-400" />
                                 </div>
                             )}
@@ -188,11 +188,11 @@ const MascotAssistant = ({ profile }) => {
                             initial={{ opacity: 0, y: 10, scale: 0.9 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.9 }}
-                            className="absolute bottom-24 right-4 w-48 bg-brand-card backdrop-blur-xl border border-orange-500/30 rounded-2xl rounded-br-none p-3 shadow-2xl pointer-events-none"
+                            className="absolute bottom-24 right-4 w-48 bg-[#070A12]/90 backdrop-blur-2xl border border-orange-500/40 rounded-2xl rounded-br-none p-4 shadow-[0_10px_40px_rgba(255,122,24,0.15)] pointer-events-none"
                         >
                             <div className="flex items-start gap-2">
-                                <Sparkles className="h-4 w-4 text-orange-400 shrink-0 mt-0.5" />
-                                <p className="text-[10px] text-white italic leading-tight font-medium">
+                                <Sparkles className="h-4 w-4 text-orange-400 shrink-0 mt-0.5 animate-pulse" />
+                                <p className="text-[10px] text-white/90 italic leading-relaxed font-medium">
                                     {quotes[quoteIndex]}
                                 </p>
                             </div>
@@ -204,29 +204,29 @@ const MascotAssistant = ({ profile }) => {
                 <AnimatePresence>
                     {isOpen && (
                         <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.3 }}
+                            initial={{ opacity: 0, height: 0, y: 10 }}
+                            animate={{ opacity: 1, height: 'auto', y: 0 }}
+                            exit={{ opacity: 0, height: 0, y: 10 }}
+                            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                             className="overflow-hidden"
                         >
-                            <div className="mt-2 rounded-2xl bg-[#060910] border border-white/10 overflow-hidden">
+                            <div className="mt-2 rounded-2xl bg-[#060910]/95 backdrop-blur-2xl border border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.5)] overflow-hidden">
                                 {/* Chat Header */}
-                                <div className="px-3 py-2 border-b border-white/5 flex items-center justify-between">
+                                <div className="px-4 py-3 border-b border-white/5 flex items-center justify-between bg-gradient-to-r from-white/[0.02] to-transparent">
                                     <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 bg-emerald-400 rounded-full animate-pulse" />
-                                        <span className="text-[9px] font-black uppercase tracking-widest text-text-muted italic">Live Chat</span>
+                                        <div className="h-2 w-2 bg-emerald-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.6)]" />
+                                        <span className="text-[9px] font-black uppercase tracking-widest text-[#a1a1aa] italic">Live Chat</span>
                                     </div>
                                     <button
                                         onClick={() => setIsOpen(false)}
-                                        className="h-5 w-5 rounded-md bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
+                                        className="h-6 w-6 rounded-lg bg-white/5 flex items-center justify-center hover:bg-white/15 hover:scale-105 transition-all text-white/60 hover:text-white"
                                     >
-                                        <X className="h-3 w-3 text-text-muted" />
+                                        <X className="h-3.5 w-3.5" />
                                     </button>
                                 </div>
 
                                 {/* Messages */}
-                                <div className="h-[240px] overflow-y-auto scrollbar-hide p-3 space-y-3">
+                                <div className="h-[250px] overflow-y-auto scrollbar-hide p-4 space-y-4">
                                     {messages.map((msg, idx) => (
                                         <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                                             <div className={`max-w-[90%] px-3 py-2 rounded-xl text-[11px] leading-relaxed ${msg.role === 'user'
