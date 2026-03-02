@@ -396,6 +396,38 @@
     </footer>
 
     <script src="script.js"></script>
+
+    <!-- Global Mascot Widget Injection -->
+    <iframe id="mascot-widget" src="/hub/widget"
+        style="position: fixed; bottom: 0; right: 0; border: none; z-index: 2147483647; background: transparent; width: 300px; height: 200px; transition: all 0.3s ease-in-out; pointer-events: auto;"
+        allowtransparency="true"></iframe>
+
+    <script>
+        const widgetIframe = document.getElementById('mascot-widget');
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
+        let contextStr = 'landing';
+        if(window.location.pathname.includes('pricing')) contextStr = 'pricing';
+        else if(window.location.pathname.includes('board')) contextStr = 'board';
+        else if(window.location.pathname.includes('gems')) contextStr = 'gems';
+        
+        widgetIframe.src = (isLocal ? 'http://localhost:5173' : '') + '/hub/widget?context=' + contextStr;
+
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'mascot-toggle') {
+                const widget = document.getElementById('mascot-widget');
+                if (event.data.isOpen) {
+                    widget.style.width = '420px';
+                    widget.style.height = '600px';
+                    widget.style.pointerEvents = 'auto';
+                } else {
+                    widget.style.width = '300px';
+                    widget.style.height = '200px';
+                    widget.style.pointerEvents = 'auto';
+                }
+            }
+        });
+    </script>
 </body>
+
 
 </html>
