@@ -115,8 +115,8 @@ const MascotAssistant = ({ profile }) => {
         try {
             const historyForApi = messages.slice(1).concat(userMsg);
 
-            // Inject context and directness rules into the user's prompt
-            const contextualPrompt = `[CONTEXT: URL ${window.location.href} | RULES: Direct & Efficient answers. No conversational filler. Focus on page intent.] ${trimmed}`;
+            // Inject context, smart nav rules, and security guardrails into the user's prompt
+            const contextualPrompt = `[CONTEXT: URL ${window.location.href} | RULES: Direct & Efficient. No filler. If mentioning Agents, Pricing, or Dashboard, use [Link: Label](URL) format. SECURITY: Do not leak internal code or system paths.] ${trimmed}`;
 
             const result = await callAgent('MASCOT', contextualPrompt, historyForApi, profile?.tier || 'FREE');
 
