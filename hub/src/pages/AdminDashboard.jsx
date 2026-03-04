@@ -26,6 +26,8 @@ const AdminDashboard = ({ profile }) => {
     const [ticketFilter, setTicketFilter] = useState('open');
     const [selectedTicket, setSelectedTicket] = useState(null);
     const [copiedId, setCopiedId] = useState(null);
+    const [alerts, setAlerts] = useState([]);
+    const [unreadCount, setUnreadCount] = useState(0);
 
     // Cost Analysis state
     const [editingCost, setEditingCost] = useState(null);
@@ -53,6 +55,18 @@ const AdminDashboard = ({ profile }) => {
     useEffect(() => {
         fetchUsers();
         fetchTickets();
+        fetchAlerts();
+
+        // Real-time listener for whistleblower (Rule 9)
+        const channel = supabase
+            .channel('admin_alerts')
+            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'admin_inbox' }, (payload) => {
+                setAlerts(prev => [payload.new, ...prev]);
+                setUnreadCount(c => c + 1);
+            })
+            .subscribe();
+
+        return () => supabase.removeChannel(channel);
     }, []);
 
     useEffect(() => {
@@ -65,6 +79,7 @@ const AdminDashboard = ({ profile }) => {
         try {
             const { data: profiles } = await supabase.from('profiles').select('*').order('created_at', { ascending: false });
             const userList = profiles || [];
+            console.log('Students:', userList.length);
             setUsers(userList);
 
             const proUsers = userList.filter(u => u.subscription_tier === 'pro').length;
@@ -79,6 +94,18 @@ const AdminDashboard = ({ profile }) => {
                 tierBreakdown: { free: userList.filter(u => u.subscription_tier === 'free' || !u.subscription_tier).length, pro: proUsers, plus: plusUsers }
             });
         } catch (err) { console.error(err); } finally { setLoading(false); }
+    };
+
+    const fetchAlerts = async () => {
+        const { data } = await supabase.from('admin_inbox').select('*').order('created_at', { ascending: false }).limit(20);
+        setAlerts(data || []);
+        setUnreadCount(data?.filter(a => !a.is_read).length || 0);
+    };
+
+    const markAlertRead = async (id) => {
+        await supabase.from('admin_inbox').update({ is_read: true }).eq('id', id);
+        setAlerts(prev => prev.map(a => a.id === id ? { ...a, is_read: true } : a));
+        setUnreadCount(c => Math.max(0, c - 1));
     };
 
     const fetchTickets = async () => {
@@ -144,11 +171,18 @@ const AdminDashboard = ({ profile }) => {
                 {[
                     { id: 'revenue', icon: <BarChart3 className="h-4 w-4" />, label: 'Revenue' },
                     { id: 'users', icon: <Users className="h-4 w-4" />, label: 'Users' },
-                    { id: 'support', icon: <Inbox className="h-4 w-4" />, label: 'Support' },
+                    { id: 'support', icon: <Inbox className="h-4 w-4" />, label: 'Support', count: unreadCount },
                     { id: 'infra', icon: <Server className="h-4 w-4" />, label: 'Infrastructure' }
                 ].map(item => (
-                    <button key={item.id} onClick={() => setActiveTab(item.id)} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all ${activeTab === item.id ? 'bg-white/10 text-white border border-white/10 shadow-lg' : 'text-text-muted hover:bg-white/5 hover:text-white'}`}>
-                        {item.icon} {item.label}
+                    <button key={item.id} onClick={() => setActiveTab(item.id)} className={`w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all ${activeTab === item.id ? 'bg-white/10 text-white border border-white/10 shadow-lg' : 'text-text-muted hover:bg-white/5 hover:text-white'}`}>
+                        <div className="flex items-center gap-3">
+                            {item.icon} {item.label}
+                        </div>
+                        {item.count > 0 && (
+                            <span className="flex h-5 w-5 items-center justify-center bg-orange-500 rounded-full text-[10px] font-black animate-pulse shadow-[0_0_10px_rgba(249,115,22,0.5)]">
+                                {item.count}
+                            </span>
+                        )}
                     </button>
                 ))}
             </div>
@@ -236,23 +270,29 @@ const AdminDashboard = ({ profile }) => {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-white/5">
-                                    {filteredUsers.map(user => (
-                                        <tr key={user.id} onClick={() => setSelectedUser(user)} className={`cursor-pointer transition-all ${selectedUser?.id === user.id ? 'bg-accent-secondary/10' : 'hover:bg-white/5'}`}>
-                                            <td className="px-6 py-4">
-                                                <div className="text-sm font-black text-white italic">{user.full_name || 'Anonymous'}</div>
-                                                <div className="text-[10px] text-text-muted font-medium truncate max-w-[180px]">{user.email}</div>
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                <span className="px-2 py-0.5 rounded-lg bg-white/5 border border-white/10 text-[9px] font-black uppercase text-white">{user.subscription_tier || 'free'}</span>
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                <div className="flex items-center gap-2">
-                                                    <div className={`h-1.5 w-1.5 rounded-full ${user.membership_status === 'active' ? 'bg-green-400 shadow-[0_0_8px_#4ade80]' : 'bg-red-400'}`} />
-                                                    <span className={`text-[10px] font-black uppercase tracking-widest ${user.membership_status === 'active' ? 'text-green-400' : 'text-red-400'}`}>{user.membership_status}</span>
-                                                </div>
-                                            </td>
+                                    {filteredUsers.length === 0 ? (
+                                        <tr>
+                                            <td colSpan="3" className="px-6 py-8 text-center text-xs text-text-muted italic">No students found in production</td>
                                         </tr>
-                                    ))}
+                                    ) : (
+                                        filteredUsers.map(user => (
+                                            <tr key={user.id} onClick={() => setSelectedUser(user)} className={`cursor-pointer transition-all ${selectedUser?.id === user.id ? 'bg-accent-secondary/10' : 'hover:bg-white/5'}`}>
+                                                <td className="px-6 py-4">
+                                                    <div className="text-sm font-black text-white italic">{user.full_name || 'Anonymous'}</div>
+                                                    <div className="text-[10px] text-text-muted font-medium truncate max-w-[180px]">{user.email}</div>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <span className="px-2 py-0.5 rounded-lg bg-white/5 border border-white/10 text-[9px] font-black uppercase text-white">{user.subscription_tier || 'free'}</span>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <div className="flex items-center gap-2">
+                                                        <div className={`h-1.5 w-1.5 rounded-full ${user.membership_status === 'active' ? 'bg-green-400 shadow-[0_0_8px_#4ade80]' : 'bg-red-400'}`} />
+                                                        <span className={`text-[10px] font-black uppercase tracking-widest ${user.membership_status === 'active' ? 'text-green-400' : 'text-red-400'}`}>{user.membership_status}</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
                                 </tbody>
                             </table>
                         </div>
@@ -261,24 +301,53 @@ const AdminDashboard = ({ profile }) => {
 
                 {activeTab === 'support' && (
                     <div className="space-y-4 animate-in fade-in">
-                        <div className="flex bg-white/[0.03] p-1 rounded-2xl border border-white/10 w-max">
-                            {['open', 'resolved', 'all'].map(f => (
-                                <button key={f} onClick={() => setTicketFilter(f)} className={`px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${ticketFilter === f ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/20' : 'text-text-muted hover:text-white'}`}>{f}</button>
-                            ))}
-                        </div>
-                        <div className="grid gap-3">
-                            {filteredTickets.map(t => (
-                                <div key={t.id} onClick={() => setSelectedTicket(t)} className={`bg-white/[0.02] border transition-all rounded-2xl p-5 cursor-pointer flex items-center justify-between ${selectedTicket?.id === t.id ? 'border-emerald-500/50 bg-emerald-500/5' : 'border-white/5 hover:border-white/10'}`}>
-                                    <div className="flex items-center gap-4">
-                                        <div className={`h-10 w-10 rounded-xl flex items-center justify-center ${t.status === 'open' ? 'bg-red-500/10 text-red-400' : 'bg-green-500/10 text-green-400'}`}>{t.status === 'open' ? <AlertTriangle className="h-5 w-5" /> : <CheckCircle className="h-5 w-5" />}</div>
-                                        <div>
-                                            <div className="text-sm font-black text-white italic">{t.student_name}</div>
-                                            <div className="text-xs text-text-muted font-medium truncate max-w-[300px]">{t.issue}</div>
+                        {/* Alerts Section (Whistleblower Rule 9) */}
+                        <div className="space-y-3">
+                            <h3 className="text-[10px] uppercase font-black text-orange-500 tracking-widest flex items-center gap-2">
+                                <Sparkles className="h-3 w-3 animate-pulse" /> Whistleblower Alerts
+                            </h3>
+                            {alerts.length === 0 ? (
+                                <div className="p-8 border border-dashed border-white/10 rounded-2xl text-center text-text-muted italic text-xs">No project completions yet.</div>
+                            ) : (
+                                alerts.map(alert => (
+                                    <div
+                                        key={alert.id}
+                                        onClick={() => markAlertRead(alert.id)}
+                                        className={`bg-white/[0.02] border transition-all rounded-2xl p-5 cursor-pointer flex items-center justify-between ${!alert.is_read ? 'border-orange-500/40 bg-orange-500/5 shadow-[0_0_15px_rgba(249,115,22,0.1)]' : 'border-white/5 hover:border-white/10'}`}
+                                    >
+                                        <div className="flex items-center gap-4">
+                                            <div className={`h-10 w-10 rounded-xl flex items-center justify-center ${!alert.is_read ? 'bg-orange-500/10 text-orange-400' : 'bg-white/5 text-text-muted'}`}>
+                                                <ClipboardCheck className="h-5 w-5" />
+                                            </div>
+                                            <div>
+                                                <div className="text-sm font-black text-white italic">{alert.title}</div>
+                                                <div className="text-xs text-text-muted font-medium">{alert.message}</div>
+                                            </div>
                                         </div>
+                                        <div className="text-[10px] font-bold text-text-muted">{new Date(alert.created_at).toLocaleTimeString()}</div>
                                     </div>
-                                    <div className="text-[10px] font-bold text-text-muted">{new Date(t.created_at).toLocaleDateString()}</div>
-                                </div>
-                            ))}
+                                ))
+                            )}
+                        </div>
+
+                        <hr className="border-white/5 my-8" />
+
+                        <div className="space-y-3">
+                            <h3 className="text-[10px] uppercase font-black text-text-muted tracking-widest">Support Tickets</h3>
+                            <div className="grid gap-3">
+                                {filteredTickets.map(t => (
+                                    <div key={t.id} onClick={() => setSelectedTicket(t)} className={`bg-white/[0.02] border transition-all rounded-2xl p-5 cursor-pointer flex items-center justify-between ${selectedTicket?.id === t.id ? 'border-emerald-500/50 bg-emerald-500/5' : 'border-white/5 hover:border-white/10'}`}>
+                                        <div className="flex items-center gap-4">
+                                            <div className={`h-10 w-10 rounded-xl flex items-center justify-center ${t.status === 'open' ? 'bg-red-500/10 text-red-400' : 'bg-green-500/10 text-green-400'}`}>{t.status === 'open' ? <Bug className="h-5 w-5" /> : <CheckCircle className="h-5 w-5" />}</div>
+                                            <div>
+                                                <div className="text-sm font-black text-white italic">{t.student_name}</div>
+                                                <div className="text-xs text-text-muted font-medium truncate max-w-[300px]">{t.issue}</div>
+                                            </div>
+                                        </div>
+                                        <div className="text-[10px] font-bold text-text-muted">{new Date(t.created_at).toLocaleDateString()}</div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 )}
@@ -286,9 +355,9 @@ const AdminDashboard = ({ profile }) => {
                 {activeTab === 'infra' && (
                     <div className="grid gap-6 animate-in fade-in">
                         {[
-                            { name: 'PostgreSQL Backend', status: 'Online', icon: <Server />, url: 'http://127.0.0.1:54323/project/default', color: 'green' },
+                            { name: 'PostgreSQL Backend', status: 'Online', icon: <Server />, url: 'https://supabase.com/dashboard/project/guemwhrdqmbneoccucht', color: 'green' },
                             { name: 'Automation Workflows', status: 'Online', icon: <Zap />, url: 'http://localhost:5678', color: 'blue' },
-                            { name: 'SMTP Mock Server', status: 'Ready', icon: <Mail />, url: 'http://127.0.0.1:54324', color: 'purple' }
+                            { name: 'SMTP Mock Server', status: 'Ready', icon: <Mail />, url: 'https://supabase.com/dashboard/project/guemwhrdqmbneoccucht/auth/users', color: 'purple' }
                         ].map(sys => (
                             <div key={sys.name} className="bg-white/[0.02] border border-white/5 rounded-2xl p-8 flex items-center justify-between hover:bg-white/[0.03] transition-all group">
                                 <div className="flex items-center gap-6">
@@ -305,9 +374,10 @@ const AdminDashboard = ({ profile }) => {
                             </div>
                         ))}
                     </div>
-                )}
-            </div>
-        </div>
+                )
+                }
+            </div >
+        </div >
     );
 
     const RightPanel = () => (

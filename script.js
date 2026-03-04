@@ -431,43 +431,45 @@ templateCards.forEach(card => {
 // ============================================================
 // 5) PROMPT GENERATION
 // ============================================================
-generateBtn.addEventListener('click', () => {
-    const template = promptTemplates[currentTemplate];
-    const formData = {};
-    let isValid = true;
+if (generateBtn) {
+    generateBtn.addEventListener('click', () => {
+        const template = promptTemplates[currentTemplate];
+        const formData = {};
+        let isValid = true;
 
-    // Collect form data
-    template.fields.forEach(field => {
-        const element = document.getElementById(field.name);
-        if (element && element.value.trim() === '') {
-            isValid = false;
-            element.style.borderColor = 'var(--accent-primary)';
-        } else if (element) {
-            formData[field.name] = element.value;
-            element.style.borderColor = '';
+        // Collect form data
+        template.fields.forEach(field => {
+            const element = document.getElementById(field.name);
+            if (element && element.value.trim() === '') {
+                isValid = false;
+                element.style.borderColor = 'var(--accent-primary)';
+            } else if (element) {
+                formData[field.name] = element.value;
+                element.style.borderColor = '';
+            }
+        });
+
+        if (!isValid) {
+            alert('Please fill in all required fields');
+            return;
         }
+
+        // Generate prompt
+        const tone = toneSelector.value;
+        const lang = languageOutput.value;
+        const generatedPrompt = template.generate(formData, tone, lang);
+
+        // Display output
+        outputContent.textContent = generatedPrompt;
+        outputArea.style.display = 'block';
+        outputArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
-
-    if (!isValid) {
-        alert('Please fill in all required fields');
-        return;
-    }
-
-    // Generate prompt
-    const tone = toneSelector.value;
-    const lang = languageOutput.value;
-    const generatedPrompt = template.generate(formData, tone, lang);
-
-    // Display output
-    outputContent.textContent = generatedPrompt;
-    outputArea.style.display = 'block';
-    outputArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-});
+}
 
 // ============================================================
 // 6) COPY FUNCTIONALITY
 // ============================================================
-copyBtn.addEventListener('click', async () => {
+if (copyBtn) copyBtn.addEventListener('click', async () => {
     const text = outputContent.textContent;
 
     try {
@@ -499,7 +501,7 @@ copyBtn.addEventListener('click', async () => {
 // ============================================================
 // 7) RESET FUNCTIONALITY
 // ============================================================
-resetBtn.addEventListener('click', () => {
+if (resetBtn) resetBtn.addEventListener('click', () => {
     renderForm(currentTemplate);
     outputArea.style.display = 'none';
     toneSelector.value = 'professional';
@@ -510,7 +512,7 @@ resetBtn.addEventListener('click', () => {
 // 8) NEWSLETTER FORM
 // ============================================================
 if (newsletterForm) {
-    newsletterForm.addEventListener('submit', (e) => {
+    if (newsletterForm) newsletterForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const email = newsletterForm.querySelector('input[type="email"]').value;
 
@@ -524,7 +526,7 @@ if (newsletterForm) {
 // 9) MOBILE MENU TOGGLE
 // ============================================================
 if (mobileMenuToggle) {
-    mobileMenuToggle.addEventListener('click', () => {
+    if (mobileMenuToggle) mobileMenuToggle.addEventListener('click', () => {
         const navLinks = document.querySelector('.nav-links');
         navLinks.classList.toggle('active');
 

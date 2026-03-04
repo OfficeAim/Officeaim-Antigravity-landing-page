@@ -19,7 +19,7 @@ import MascotAssistant from './components/MascotAssistant';
 import { Toaster } from 'react-hot-toast';
 
 // Hardcoded admin whitelist — these users always get admin access
-const KNOWN_ADMINS = ['b2283a40-d51e-4bd2-ba46-262465a83d95'];
+const KNOWN_ADMINS = ['8c08e8dc-7250-4c78-8638-46b2e78e7e3f'];
 
 // AdminGuard: re-checks role from DB on every visit to /hub/admin
 const AdminGuard = ({ session, profile, setProfile }) => {

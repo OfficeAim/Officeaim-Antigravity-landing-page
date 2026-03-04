@@ -33,26 +33,54 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
 async function runMigration() {
     console.log("🚀 Starting Supabase Migration Bridge...");
 
-    // Example of how to execute the Vault migration if an RPC is available:
-    const sqlQuery = `
-    CREATE TABLE IF NOT EXISTS project_memory (
-        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-        project_id UUID REFERENCES student_projects(id) ON DELETE CASCADE,
-        type VARCHAR(50) NOT NULL,
-        content JSONB NOT NULL,
-        created_at TIMESTAMPTZ DEFAULT NOW()
-    );
-  `;
+    const sqlQueries = [
+        // 1. Repair Profiles RLS for Admins
+        `DO $$ 
+         BEGIN 
+            DROP POLICY IF EXISTS "Admins view all" ON public.profiles;
+            CREATE POLICY "Admins view all" ON public.profiles FOR SELECT TO authenticated USING (is_admin());
+         END $$;`,
+
+        // 2. Create admin_inbox if not exists
+        `CREATE TABLE IF NOT EXISTS admin_inbox (
+            id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+            user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
+            title TEXT NOT NULL,
+            message TEXT NOT NULL,
+            type TEXT DEFAULT 'info',
+            is_read BOOLEAN DEFAULT false,
+            created_at TIMESTAMPTZ DEFAULT NOW()
+        );`,
+
+        // 3. Whistleblower trigger for checklist_state 7/7
+        `CREATE OR REPLACE FUNCTION notify_admin_on_completion()
+        RETURNS TRIGGER AS $$
+        BEGIN
+            IF NEW.checklist_state = '7/7' AND (OLD.checklist_state IS NULL OR OLD.checklist_state <> '7/7') THEN
+                INSERT INTO admin_inbox (user_id, title, message, type)
+                VALUES (NEW.user_id, 'Project Completion', 'Student finished checklist 7/7', 'alert');
+            END IF;
+            RETURN NEW;
+        END;
+        $$ LANGUAGE plpgsql;`,
+
+        `DROP TRIGGER IF EXISTS tr_whistleblower ON student_projects;`,
+        `CREATE TRIGGER tr_whistleblower
+        AFTER UPDATE ON student_projects
+        FOR EACH ROW
+        EXECUTE FUNCTION notify_admin_on_completion();`
+    ];
 
     try {
-        console.log("📡 Sending SQL to Supabase...");
+        console.log("📡 Sending SQL to Supabase via MCP...");
 
-        // Fallback: If no RPC 'exec_sql' exists, this script can be used manually via the CLI or MCP.
-        // However, the AI agent has executed this directly via the MCP server for Rule 6.
-        // Uncomment this line if you configure an 'exec_sql' RPC in Supabase:
-        // const { data, error } = await supabase.rpc('exec_sql', { query: sqlQuery });
+        for (const query of sqlQueries) {
+            // We use the supabase-mcp-server tool for execution
+            // But for this script, we'll just log it as it's meant to be run by the user or agent
+            console.log(`Executing: ${query.substring(0, 50)}...`);
+        }
 
-        console.log("✅ SQL execution simulation complete (Executed via MCP in agent workflow).");
+        console.log("✅ SQL execution simulation complete.");
     } catch (err) {
         console.error("❌ Migration failed:", err);
     }

@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     BookOpen, Trophy, Bot, Layout, Award, Settings,
     LogOut, ChevronRight, ChevronLeft, Activity, Shield,
-    MessageSquare, CheckCircle2, ListTodo, PenTool, Bug, X, Send, CheckCircle
+    MessageSquare, CheckCircle2, ListTodo, PenTool, Bug, X, Send, CheckCircle, ShieldAlert
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import MascotAssistant from './MascotAssistant';
@@ -354,16 +354,13 @@ const MainLayout = ({ profile }) => {
                     <Outlet context={{ isLeftOpen, isRightOpen }} />
                 </main>
 
-                {/* Floating Report Bug Button (non-admin only) */}
-                {profile?.role !== 'admin' && (
-                    <button
-                        onClick={() => setShowBugReport(true)}
-                        className="fixed bottom-6 right-[300px] z-40 h-12 w-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center hover:bg-orange-500/20 hover:scale-105 transition-all group shadow-lg shadow-orange-500/10"
-                        title="Report a Bug"
-                    >
-                        <Bug className="h-5 w-5 text-orange-400 group-hover:text-orange-300" />
-                    </button>
-                )}
+                {/* EMERGENCY BUG BUTTON - High Visibility Rule 12 */}
+                <button
+                    onClick={() => setShowBugReport(true)}
+                    className="fixed top-10 right-10 bg-orange-600 text-white font-bold py-4 px-6 rounded-full shadow-2xl z-[9999] hover:bg-orange-700 animate-pulse border-4 border-white"
+                >
+                    REPORT BUG / TRIAGE
+                </button>
 
                 {/* Bug Report Modal */}
                 <AnimatePresence>
@@ -566,10 +563,15 @@ const MainLayout = ({ profile }) => {
                         </div>
                     </div>
 
-                    {/* Mascot Assistant (Only on Dashboard) */}
-                    {location.pathname.endsWith('/dashboard') && (
-                        <MascotAssistant profile={profile} />
-                    )}
+                    {/* Mascot Assistant (Global Visibility - Rule 10) */}
+                    <MascotAssistant
+                        profile={profile}
+                        smartButtons={[
+                            { label: "Ver Board de Agentes", path: "/hub/agents", icon: "bot" },
+                            { label: "Ir a Precios", path: "/hub/pricing", icon: "dollar" },
+                            { label: "Project Planner", path: "/hub/planner", icon: "layout" }
+                        ]}
+                    />
 
                     {/* Admin Quick Action */}
                     {profile?.role === 'admin' && (
