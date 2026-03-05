@@ -4,3 +4,7 @@
 node_modules/
 dist/
 .DS_Store
+
+Modulos gratis/
+*.zip
+*.mov
