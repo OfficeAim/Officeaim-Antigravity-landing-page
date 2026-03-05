@@ -38,15 +38,15 @@ const AdminDashboard = ({ profile }) => {
     const [editValue, setEditValue] = useState('');
     const [costs, setCosts] = useState({
         fixed: [
-            { id: 'supabase', name: 'Supabase', plan: 'Pro', cost: 25, icon: 'server', color: 'green', url: 'https://supabase.com/dashboard/org/_/billing' },
-            { id: 'vercel', name: 'Vercel', plan: 'Pro', cost: 20, icon: 'globe', color: 'blue', url: 'https://vercel.com/dashboard/settings/billing' },
-            { id: 'google_ai', name: 'Google AI', plan: 'Pro', cost: 20, icon: 'sparkles', color: 'purple', url: 'https://one.google.com/ai-premium' },
-            { id: 'domain', name: 'Domain', plan: 'Annual', cost: 1, icon: 'globe', color: 'cyan', url: 'https://domains.google.com/registrar' },
+            { id: 'supabase', name: 'Supabase', plan: 'Pro', cost: 25, icon: 'server', color: 'green', url: 'https://supabase.com/dashboard/project/guemwhrdqmbneoccucht' },
+            { id: 'vercel', name: 'Vercel', plan: 'Pro', cost: 20, icon: 'globe', color: 'blue', url: 'https://vercel.com/rody-figueroa-quijanos-projects/vite-react' },
+            { id: 'google_ai', name: 'Google AI', plan: 'Pro', cost: 20, icon: 'sparkles', color: 'purple', url: 'https://aistudio.google.com/spend' },
+            { id: 'domain', name: 'Domain', plan: 'Annual', cost: 1, icon: 'globe', color: 'cyan', url: 'https://www.porkbun.com' },
         ],
         variable: [
-            { id: 'gemini_api', name: 'Gemini API', plan: 'Usage-based', cost: 5, icon: 'cpu', color: 'orange', url: 'https://aistudio.google.com/billing' },
-            { id: 'n8n', name: 'n8n', plan: 'Not active', cost: 0, icon: 'zap', color: 'yellow', url: 'https://app.n8n.cloud/account/billing' },
-            { id: 'email', name: 'Email Service', plan: 'Not active', cost: 0, icon: 'mail', color: 'pink', url: 'https://resend.com/billing' },
+            { id: 'gemini_api', name: 'Gemini API', plan: 'Usage-based', cost: 5, icon: 'cpu', color: 'orange', url: 'https://aistudio.google.com/spend' },
+            { id: 'n8n', name: 'n8n', plan: 'Not active', cost: 0, icon: 'zap', color: 'yellow', url: 'http://localhost:5678/home/workflows' },
+            { id: 'email', name: 'Email Service', plan: 'Not active', cost: 0, icon: 'mail', color: 'pink', url: 'https://resend.com/emails' },
         ]
     });
 
