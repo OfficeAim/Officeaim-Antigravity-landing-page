@@ -54,6 +54,7 @@ const MainLayout = ({ profile }) => {
                 .eq('user_id', profile.id);
 
             let docs = [];
+            let memories = [];
             if (activeProjs && activeProjs.length > 0) {
                 const projectIds = activeProjs.map(p => p.id);
                 const { data: projectDocs } = await supabase
@@ -63,6 +64,14 @@ const MainLayout = ({ profile }) => {
                     .order('created_at', { ascending: false })
                     .limit(5);
                 docs = projectDocs || [];
+
+                const { data: projectMemories } = await supabase
+                    .from('project_memory')
+                    .select('id, type, content, created_at, project_id')
+                    .in('project_id', projectIds)
+                    .order('created_at', { ascending: false })
+                    .limit(5);
+                memories = projectMemories || [];
             }
 
             let combined = [];
@@ -85,6 +94,16 @@ const MainLayout = ({ profile }) => {
                     subtitle: d.type.toUpperCase(),
                     type: 'document',
                     timestamp: new Date(d.created_at).getTime()
+                }))];
+            }
+
+            if (memories) {
+                combined = [...combined, ...memories.map(m => ({
+                    id: m.id,
+                    title: m.content?.status || 'Vault Item',
+                    subtitle: m.type.toUpperCase(),
+                    type: 'memory',
+                    timestamp: new Date(m.created_at).getTime()
                 }))];
             }
 
@@ -122,7 +141,18 @@ const MainLayout = ({ profile }) => {
             })
             .subscribe();
 
-        return () => supabase.removeChannel(channel);
+        const memoryChannel = supabase.channel('project_memory_changes')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'project_memory' }, () => {
+                fetchRecentActivity();
+            })
+            .subscribe();
+
+        return () => {
+            channel.unsubscribe();
+            memoryChannel.unsubscribe();
+            supabase.removeChannel(channel);
+            supabase.removeChannel(memoryChannel);
+        };
     }, [profile?.id]);
 
     const [notes, setNotes] = useState("");
