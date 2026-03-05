@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     BookOpen, Trophy, Bot, Layout, Award, Settings,
     LogOut, ChevronRight, ChevronLeft, Activity, Shield,
-    MessageSquare, CheckCircle2, ListTodo, PenTool, Bug, X, Send, CheckCircle, ShieldAlert
+    MessageSquare, CheckCircle2, ListTodo, PenTool, Bug, X, Send, CheckCircle
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import MascotAssistant from './MascotAssistant';
@@ -54,7 +54,6 @@ const MainLayout = ({ profile }) => {
                 .eq('user_id', profile.id);
 
             let docs = [];
-            let memories = [];
             if (activeProjs && activeProjs.length > 0) {
                 const projectIds = activeProjs.map(p => p.id);
                 const { data: projectDocs } = await supabase
@@ -64,14 +63,6 @@ const MainLayout = ({ profile }) => {
                     .order('created_at', { ascending: false })
                     .limit(5);
                 docs = projectDocs || [];
-
-                const { data: projectMemories } = await supabase
-                    .from('project_memory')
-                    .select('id, type, content, created_at, project_id')
-                    .in('project_id', projectIds)
-                    .order('created_at', { ascending: false })
-                    .limit(5);
-                memories = projectMemories || [];
             }
 
             let combined = [];
@@ -94,16 +85,6 @@ const MainLayout = ({ profile }) => {
                     subtitle: d.type.toUpperCase(),
                     type: 'document',
                     timestamp: new Date(d.created_at).getTime()
-                }))];
-            }
-
-            if (memories) {
-                combined = [...combined, ...memories.map(m => ({
-                    id: m.id,
-                    title: m.content?.status || 'Vault Item',
-                    subtitle: m.type.toUpperCase(),
-                    type: 'memory',
-                    timestamp: new Date(m.created_at).getTime()
                 }))];
             }
 
@@ -141,18 +122,7 @@ const MainLayout = ({ profile }) => {
             })
             .subscribe();
 
-        const memoryChannel = supabase.channel('project_memory_changes')
-            .on('postgres_changes', { event: '*', schema: 'public', table: 'project_memory' }, () => {
-                fetchRecentActivity();
-            })
-            .subscribe();
-
-        return () => {
-            channel.unsubscribe();
-            memoryChannel.unsubscribe();
-            supabase.removeChannel(channel);
-            supabase.removeChannel(memoryChannel);
-        };
+        return () => supabase.removeChannel(channel);
     }, [profile?.id]);
 
     const [notes, setNotes] = useState("");
@@ -354,13 +324,16 @@ const MainLayout = ({ profile }) => {
                     <Outlet context={{ isLeftOpen, isRightOpen }} />
                 </main>
 
-                {/* EMERGENCY BUG BUTTON - High Visibility Rule 12 */}
-                <button
-                    onClick={() => setShowBugReport(true)}
-                    className="fixed top-10 right-10 bg-orange-600 text-white font-bold py-4 px-6 rounded-full shadow-2xl z-[9999] hover:bg-orange-700 animate-pulse border-4 border-white"
-                >
-                    REPORT BUG / TRIAGE
-                </button>
+                {/* Floating Report Bug Button (non-admin only) */}
+                {profile?.role !== 'admin' && (
+                    <button
+                        onClick={() => setShowBugReport(true)}
+                        className="fixed bottom-6 right-[300px] z-40 h-12 w-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center hover:bg-orange-500/20 hover:scale-105 transition-all group shadow-lg shadow-orange-500/10"
+                        title="Report a Bug"
+                    >
+                        <Bug className="h-5 w-5 text-orange-400 group-hover:text-orange-300" />
+                    </button>
+                )}
 
                 {/* Bug Report Modal */}
                 <AnimatePresence>
@@ -563,15 +536,10 @@ const MainLayout = ({ profile }) => {
                         </div>
                     </div>
 
-                    {/* Mascot Assistant (Global Visibility - Rule 10) */}
-                    <MascotAssistant
-                        profile={profile}
-                        smartButtons={[
-                            { label: "Ver Board de Agentes", path: "/hub/agents", icon: "bot" },
-                            { label: "Ir a Precios", path: "/hub/pricing", icon: "dollar" },
-                            { label: "Project Planner", path: "/hub/planner", icon: "layout" }
-                        ]}
-                    />
+                    {/* Mascot Assistant (Only on Dashboard) */}
+                    {location.pathname.endsWith('/dashboard') && (
+                        <MascotAssistant profile={profile} />
+                    )}
 
                     {/* Admin Quick Action */}
                     {profile?.role === 'admin' && (
