@@ -354,16 +354,15 @@ const MainLayout = ({ profile }) => {
                     <Outlet context={{ isLeftOpen, isRightOpen }} />
                 </main>
 
-                {/* Floating Report Bug Button (non-admin only) */}
-                {profile?.role !== 'admin' && (
-                    <button
-                        onClick={() => setShowBugReport(true)}
-                        className="fixed bottom-6 right-[300px] z-40 h-12 w-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center hover:bg-orange-500/20 hover:scale-105 transition-all group shadow-lg shadow-orange-500/10"
-                        title="Report a Bug"
-                    >
-                        <Bug className="h-5 w-5 text-orange-400 group-hover:text-orange-300" />
-                    </button>
-                )}
+                {/* Floating Report Bug Button — Guardian Protocol: ALWAYS VISIBLE */}
+                <button
+                    id="bug-report-btn"
+                    onClick={() => setShowBugReport(true)}
+                    className="fixed top-10 right-10 z-[9999] bg-orange-600 text-white p-4 rounded-full shadow-2xl hover:bg-orange-500 hover:scale-110 active:scale-95 transition-all duration-200 flex items-center justify-center"
+                    title="Report a Bug"
+                >
+                    <Bug className="h-5 w-5" />
+                </button>
 
                 {/* Bug Report Modal */}
                 <AnimatePresence>

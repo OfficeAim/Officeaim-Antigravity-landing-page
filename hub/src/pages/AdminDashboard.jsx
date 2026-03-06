@@ -132,6 +132,7 @@ const AdminDashboard = ({ profile }) => {
 
             const userList = data || [];
             setUsers(userList);
+            console.log('Students:', userList.length, '| Profiles:', userList.map(u => u.full_name || u.email));
 
             const active = userList.filter(u => ['active', 'beta'].includes(u.membership_status)).length;
             const canceled = userList.filter(u => u.membership_status === 'canceled').length;
