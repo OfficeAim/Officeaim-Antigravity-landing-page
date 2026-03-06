@@ -174,9 +174,10 @@ const ProjectLab = () => {
                 if (sessionId) {
                     restoreSession(sessionId);
                 } else {
+                    const determinedTier = profile?.tier ? profile.tier.toUpperCase() : 'FREE';
                     setMessages([{
                         role: 'agent',
-                        content: `**Neural Bridge Established: ${agent.name}**\n\nI am your ${agent.role}. My core operational parameters are defined as:\n\n*${agent.description || 'Providing specialized strategic intelligence and execution.'}*\n\nProvide your initial briefing to begin our session.`
+                        content: `**Neural Bridge Established: ${agent.name}**\n\n*[System Log: Access Level ${determinedTier} Verified]*\n\nI am your ${agent.role}. My core operational parameters are defined as:\n\n*${agent.description || 'Providing specialized strategic intelligence and execution.'}*\n\nProvide your initial briefing to begin our session.`
                     }]);
                     setProjectTitle('');
                 }

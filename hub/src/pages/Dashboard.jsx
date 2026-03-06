@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase';
 import { BookOpen, Trophy, Clock, Play, ChevronRight, TrendingUp, Bot, Users, Loader2, LogOut, Shield } from 'lucide-react';
 
 import { useNavigate } from 'react-router-dom';
+import InterestTest from '../components/InterestTest';
 
 const Dashboard = ({ profile }) => {
     const navigate = useNavigate();
@@ -26,6 +27,7 @@ const Dashboard = ({ profile }) => {
     const [certificates, setCertificates] = useState([]);
     const [selectedCert, setSelectedCert] = useState(null);
     const [loadingCourses, setLoadingCourses] = useState(true);
+    const [activeTab, setActiveTab] = useState('overview');
 
     useEffect(() => {
         if (profile) {
@@ -170,272 +172,317 @@ const Dashboard = ({ profile }) => {
                 </div>
             </motion.div>
 
-            <div className="max-w-4xl mx-auto space-y-12 pb-12">
-                <h2 className="text-2xl font-black flex items-center gap-3 italic uppercase tracking-tight">
-                    <BookOpen className="text-accent-secondary h-6 w-6" />
-                    Active Learning Path
-                </h2>
-
-                {/* Engagement Radar Stats -> MakelaarVideo AI KPI Stats */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="glass-card p-6 bg-gradient-to-br from-white/5 to-transparent border-white/10 relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 w-24 h-24 bg-accent-secondary/5 blur-3xl -mr-12 -mt-12 group-hover:bg-accent-secondary/10 transition-colors"></div>
-                        <div className="text-[10px] text-text-muted font-black uppercase tracking-widest mb-2 italic">Active Project</div>
-                        <div className="text-2xl font-black italic">MakelaarVideo AI</div>
-                        <div className="text-[9px] text-accent-secondary font-bold mt-1 uppercase tracking-tighter">Phase V: Analytics & Optimization</div>
-                    </div>
-                    <div className="glass-card p-6 bg-gradient-to-br from-white/5 to-transparent border-white/10 relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 w-24 h-24 bg-accent-primary/5 blur-3xl -mr-12 -mt-12 group-hover:bg-accent-primary/10 transition-colors"></div>
-                        <div className="text-[10px] text-text-muted font-black uppercase tracking-widest mb-2 italic">CloudConvert Webhook</div>
-                        <div className="text-2xl font-black italic">{Math.max(100, stats.progress + 60)}%</div>
-                        <div className="text-[9px] text-accent-primary font-bold mt-1 uppercase tracking-tighter italic">Status: Synchronized</div>
-                    </div>
-                    <div className="glass-card p-6 bg-gradient-to-br from-white/5 to-transparent border-white/10 relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-400/5 blur-3xl -mr-12 -mt-12 group-hover:bg-cyan-400/10 transition-colors"></div>
-                        <div className="text-[10px] text-cyan-400 font-black uppercase tracking-widest mb-2 italic flex items-center gap-2">
-                            <div className="h-1.5 w-1.5 bg-cyan-400 rounded-full animate-pulse"></div>
-                            OpenAI Strategist
-                        </div>
-                        <div className="text-2xl font-black italic text-cyan-400">0.4 Temp</div>
-                        <div className="text-[9px] text-text-muted font-bold mt-1 uppercase tracking-tighter">System Integrity: Nominal</div>
-                    </div>
-                </div>
-
-                {/* Trial Agent Spotlight */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="glass-card p-1 bg-gradient-to-r from-accent-primary/20 to-accent-secondary/20 rounded-3xl overflow-hidden mb-12"
+            {/* TAB NAVIGATION */}
+            <div className="max-w-4xl mx-auto flex items-center gap-6 mb-8 border-b border-white/5 pb-4">
+                <button
+                    onClick={() => setActiveTab('overview')}
+                    className={`text-[11px] font-black uppercase tracking-widest italic transition-all ${activeTab === 'overview' ? 'text-accent-secondary border-b-2 border-accent-secondary pb-4 -mb-[18px]' : 'text-text-muted hover:text-white'}`}
                 >
-                    <div className="bg-[#0B1220]/90 backdrop-blur-xl p-8 rounded-[22px] flex flex-col md:flex-row items-center gap-8 border border-white/5">
-                        <div className="h-20 w-20 rounded-2xl border border-accent-primary/20 shrink-0 relative overflow-hidden bg-accent-primary/10">
-                            <img
-                                src="https://lh3.googleusercontent.com/d/1qVeSx1suf01TU01h_SGecwfbieBrotw6"
-                                alt="Gema — AI Project Manager"
-                                className="h-full w-full object-cover"
-                                referrerPolicy="no-referrer"
-                                crossOrigin="anonymous"
-                                onError={(e) => {
-                                    e.target.style.display = 'none';
-                                    e.target.parentElement.innerHTML = '<div class="h-full w-full flex items-center justify-center text-3xl">📋</div>';
-                                }}
-                            />
-                        </div>
-                        <div className="flex-grow text-center md:text-left">
-                            <span className="text-[10px] font-black text-accent-primary uppercase tracking-widest mb-1 block italic">Neural Link Ready</span>
-                            <h3 className="text-2xl font-black italic mb-2">Connect with Gema: Your AI Project Manager</h3>
-                            <p className="text-xs text-text-muted italic max-w-xl">Direct access to the central orchestrator of your OfficeAIM workflow. Gema manages all other agents and keeps your project roadmap on track.</p>
-                        </div>
-                        <button
-                            onClick={() => navigate('/hub/lab/ai-project-manager')}
-                            className="px-8 py-4 bg-white text-black font-black uppercase tracking-widest text-[10px] rounded-xl hover:bg-accent-primary hover:text-white transition-all italic shrink-0 shadow-2xl"
-                        >
-                            Launch AI Manager
-                        </button>
-                    </div>
-                </motion.div>
+                    Overview
+                </button>
+                <button
+                    onClick={() => setActiveTab('diagnostic')}
+                    className={`text-[11px] font-black uppercase tracking-widest italic transition-all ${activeTab === 'diagnostic' ? 'text-accent-secondary border-b-2 border-accent-secondary pb-4 -mb-[18px]' : 'text-text-muted hover:text-white'}`}
+                >
+                    Diagnostic Test
+                </button>
+            </div>
 
-                <div className="space-y-8">
-                    {loadingCourses ? (
-                        <div className="glass-card p-12 text-center">
-                            <Loader2 className="h-8 w-8 animate-spin text-accent-secondary mx-auto mb-4" />
-                            <p className="text-xs font-black uppercase tracking-widest text-text-muted italic">Syncing Curriculums...</p>
+            {activeTab === 'overview' ? (
+                <div className="max-w-4xl mx-auto space-y-12 pb-12">
+                    <h2 className="text-2xl font-black flex items-center gap-3 italic uppercase tracking-tight">
+                        <BookOpen className="text-accent-secondary h-6 w-6" />
+                        Active Learning Path
+                    </h2>
+
+                    {/* Engagement Radar Stats -> MakelaarVideo AI KPI Stats */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="glass-card p-6 bg-gradient-to-br from-white/5 to-transparent border-white/10 relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 w-24 h-24 bg-accent-secondary/5 blur-3xl -mr-12 -mt-12 group-hover:bg-accent-secondary/10 transition-colors"></div>
+                            <div className="text-[10px] text-text-muted font-black uppercase tracking-widest mb-2 italic">Active Project</div>
+                            <div className="text-2xl font-black italic">MakelaarVideo AI</div>
+                            <div className="text-[9px] text-accent-secondary font-bold mt-1 uppercase tracking-tighter">Phase V: Analytics & Optimization</div>
                         </div>
-                    ) : courses.length === 0 ? (
-                        <div className="glass-card p-12 text-center border-dashed border-white/10">
-                            <p className="text-sm text-text-muted italic">No active courses found. Contact admin for enrollment.</p>
+                        <div className="glass-card p-6 bg-gradient-to-br from-white/5 to-transparent border-white/10 relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 w-24 h-24 bg-accent-primary/5 blur-3xl -mr-12 -mt-12 group-hover:bg-accent-primary/10 transition-colors"></div>
+                            <div className="text-[10px] text-text-muted font-black uppercase tracking-widest mb-2 italic">CloudConvert Webhook</div>
+                            <div className="text-2xl font-black italic">{Math.max(100, stats.progress + 60)}%</div>
+                            <div className="text-[9px] text-accent-primary font-bold mt-1 uppercase tracking-tighter italic">Status: Synchronized</div>
                         </div>
-                    ) : courses.map((course, idx) => (
-                        <motion.div
-                            key={course.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: idx * 0.1 }}
-                            className={`glass-card p-8 flex flex-col md:flex-row gap-8 group cursor-pointer border-white/5 hover:border-accent-secondary/30 transition-all ${course.status === 'Locked' ? 'opacity-50 grayscale' : ''}`}
-                            onClick={() => course.status !== 'Locked' && navigate(`/hub/module/${course.id}`)}
-                        >
-                            <div className="w-full md:w-64 h-44 rounded-2xl overflow-hidden relative flex-shrink-0 border border-white/10 shadow-2xl bg-[#0B1220]">
+                        <div className="glass-card p-6 bg-gradient-to-br from-white/5 to-transparent border-white/10 relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-400/5 blur-3xl -mr-12 -mt-12 group-hover:bg-cyan-400/10 transition-colors"></div>
+                            <div className="text-[10px] text-cyan-400 font-black uppercase tracking-widest mb-2 italic flex items-center gap-2">
+                                <div className="h-1.5 w-1.5 bg-cyan-400 rounded-full animate-pulse"></div>
+                                OpenAI Strategist
+                            </div>
+                            <div className="text-2xl font-black italic text-cyan-400">0.4 Temp</div>
+                            <div className="text-[9px] text-text-muted font-bold mt-1 uppercase tracking-tighter">System Integrity: Nominal</div>
+                        </div>
+                    </div>
+
+                    {/* Trial Agent Spotlight */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="glass-card p-1 bg-gradient-to-r from-accent-primary/20 to-accent-secondary/20 rounded-3xl overflow-hidden mb-12"
+                    >
+                        <div className="bg-[#0B1220]/90 backdrop-blur-xl p-8 rounded-[22px] flex flex-col md:flex-row items-center gap-8 border border-white/5">
+                            <div className="h-20 w-20 rounded-2xl border border-accent-primary/20 shrink-0 relative overflow-hidden bg-accent-primary/10">
                                 <img
-                                    src={course.image}
-                                    alt={course.title}
-                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                    src="https://lh3.googleusercontent.com/d/1qVeSx1suf01TU01h_SGecwfbieBrotw6"
+                                    alt="Gema — AI Project Manager"
+                                    className="h-full w-full object-cover"
+                                    referrerPolicy="no-referrer"
+                                    crossOrigin="anonymous"
                                     onError={(e) => {
-                                        e.target.src = 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800'; // AI-themed fallback
+                                        e.target.style.display = 'none';
+                                        e.target.parentElement.innerHTML = '<div class="h-full w-full flex items-center justify-center text-3xl">📋</div>';
                                     }}
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
+                            </div>
+                            <div className="flex-grow text-center md:text-left">
+                                <span className="text-[10px] font-black text-accent-primary uppercase tracking-widest mb-1 block italic">Neural Link Ready</span>
+                                <h3 className="text-2xl font-black italic mb-2">Connect with Gema: Your AI Project Manager</h3>
+                                <p className="text-xs text-text-muted italic max-w-xl">Direct access to the central orchestrator of your OfficeAIM workflow. Gema manages all other agents and keeps your project roadmap on track.</p>
+                            </div>
+                            <button
+                                onClick={() => navigate('/hub/lab/ai-project-manager')}
+                                className="px-8 py-4 bg-white text-black font-black uppercase tracking-widest text-[10px] rounded-xl hover:bg-accent-primary hover:text-white transition-all italic shrink-0 shadow-2xl"
+                            >
+                                Launch AI Manager
+                            </button>
+                        </div>
+                    </motion.div>
 
-                                {/* Module Label Overlay */}
-                                <div className="absolute top-4 left-4 z-20">
-                                    <div className="px-3 py-1 bg-black/40 backdrop-blur-md border border-white/10 rounded-lg">
-                                        <span className="text-[10px] font-black uppercase tracking-[0.2em] italic text-white/90">
-                                            Module {course.order_index || idx + 1}
-                                        </span>
-                                    </div>
-                                </div>
+                    <div className="space-y-8">
+                        {loadingCourses ? (
+                            <div className="glass-card p-12 text-center">
+                                <Loader2 className="h-8 w-8 animate-spin text-accent-secondary mx-auto mb-4" />
+                                <p className="text-xs font-black uppercase tracking-widest text-text-muted italic">Syncing Curriculums...</p>
+                            </div>
+                        ) : courses.length === 0 ? (
+                            <div className="glass-card p-12 text-center border-dashed border-white/10">
+                                <p className="text-sm text-text-muted italic">No active courses found. Contact admin for enrollment.</p>
+                            </div>
+                        ) : courses.map((course, idx) => (
+                            <motion.div
+                                key={course.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: idx * 0.1 }}
+                                className={`glass-card p-8 flex flex-col md:flex-row gap-8 group cursor-pointer border-white/5 hover:border-accent-secondary/30 transition-all ${course.status === 'Locked' ? 'opacity-50 grayscale' : ''}`}
+                                onClick={() => course.status !== 'Locked' && navigate(`/hub/module/${course.id}`)}
+                            >
+                                <div className="w-full md:w-64 h-44 rounded-2xl overflow-hidden relative flex-shrink-0 border border-white/10 shadow-2xl bg-[#0B1220]">
+                                    <img
+                                        src={course.image}
+                                        alt={course.title}
+                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                        onError={(e) => {
+                                            e.target.src = 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800'; // AI-themed fallback
+                                        }}
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
 
-                                {course.status === 'Locked' && (
-                                    <div className="absolute inset-0 bg-black/80 flex items-center justify-center backdrop-blur-md z-30">
-                                        <div className="text-center">
-                                            <Clock className="text-white h-8 w-8 mx-auto mb-2 opacity-50" />
-                                            <span className="text-[10px] font-black uppercase tracking-widest text-white/50 italic">Upgrade for Early Access</span>
+                                    {/* Module Label Overlay */}
+                                    <div className="absolute top-4 left-4 z-20">
+                                        <div className="px-3 py-1 bg-black/40 backdrop-blur-md border border-white/10 rounded-lg">
+                                            <span className="text-[10px] font-black uppercase tracking-[0.2em] italic text-white/90">
+                                                Module {course.order_index || idx + 1}
+                                            </span>
                                         </div>
                                     </div>
-                                )}
-                            </div>
 
-                            <div className="flex-grow flex flex-col justify-between py-2">
-                                <div>
-                                    <div className="flex items-center gap-3 mb-4">
-                                        <span className="px-3 py-1 bg-accent-secondary/20 text-accent-secondary rounded-lg text-[10px] font-black tracking-widest uppercase italic border border-accent-secondary/30">{course.badge}</span>
-                                    </div>
-                                    <h3 className="text-3xl font-black mb-6 leading-tight group-hover:text-accent-secondary transition-colors italic">{course.title}</h3>
-
-                                    {course.status !== 'Locked' && (
-                                        <div className="space-y-5 max-w-sm">
-                                            <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
-                                                <motion.div
-                                                    initial={{ width: 0 }}
-                                                    animate={{ width: `${course.progress}%` }}
-                                                    className="h-full bg-gradient-to-r from-accent-primary to-accent-secondary shadow-[0_0_15px_rgba(255,122,24,0.3)]"
-                                                ></motion.div>
-                                            </div>
-                                            <div className="flex justify-between text-[10px] text-text-muted font-black uppercase tracking-widest italic">
-                                                <span>{course.progress}% Completed</span>
-                                                <span>{course.lessons} Lessons</span>
+                                    {course.status === 'Locked' && (
+                                        <div className="absolute inset-0 bg-black/80 flex items-center justify-center backdrop-blur-md z-30">
+                                            <div className="text-center">
+                                                <Clock className="text-white h-8 w-8 mx-auto mb-2 opacity-50" />
+                                                <span className="text-[10px] font-black uppercase tracking-widest text-white/50 italic">Upgrade for Early Access</span>
                                             </div>
                                         </div>
                                     )}
                                 </div>
 
-                                <div className={`mt-8 inline-flex items-center gap-2 font-black text-sm uppercase italic tracking-widest ${course.status === 'Locked' ? 'text-text-muted' : 'text-white group-hover:text-accent-secondary transition-all'}`}>
-                                    {course.status === 'Locked' ? 'Unlock Premium Access' : 'Continue Sprint'}
-                                    {course.status !== 'Locked' && <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />}
-                                    {course.status === 'Locked' && <Trophy className="h-3 w-3 ml-2 text-accent-secondary" />}
-                                </div>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
+                                <div className="flex-grow flex flex-col justify-between py-2">
+                                    <div>
+                                        <div className="flex items-center gap-3 mb-4">
+                                            <span className="px-3 py-1 bg-accent-secondary/20 text-accent-secondary rounded-lg text-[10px] font-black tracking-widest uppercase italic border border-accent-secondary/30">{course.badge}</span>
+                                        </div>
+                                        <h3 className="text-3xl font-black mb-6 leading-tight group-hover:text-accent-secondary transition-colors italic">{course.title}</h3>
 
-                {/* GROWTH ANALYTICS (PHASE 5+) */}
-                {projects.some(p => p.current_phase >= 5) && (
-                    <div className="pt-8 border-t border-white/5">
-                        <div className="flex items-center justify-between mb-8">
-                            <h2 className="text-2xl font-black flex items-center gap-3 italic uppercase tracking-tight text-emerald-400">
-                                <Activity className="h-6 w-6" />
-                                Growth Analytics
-                            </h2>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-                            <div className="glass-card p-6 border-emerald-500/20 bg-emerald-900/10 relative overflow-hidden group">
-                                <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 blur-3xl -mr-12 -mt-12"></div>
-                                <div className="text-[10px] text-emerald-400/70 font-black uppercase tracking-widest mb-2 italic">Video Generation Time</div>
-                                <div className="text-3xl font-black italic text-white flex items-baseline gap-2">
-                                    &lt;10 <span className="text-sm text-emerald-400 tracking-widest">min</span>
-                                </div>
-                                <div className="text-[9px] text-emerald-500/50 font-bold mt-1 uppercase tracking-tighter">Prev: 2h</div>
-                            </div>
-                            <div className="glass-card p-6 border-blue-500/20 bg-blue-900/10 relative overflow-hidden group">
-                                <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 blur-3xl -mr-12 -mt-12"></div>
-                                <div className="text-[10px] text-blue-400/70 font-black uppercase tracking-widest mb-2 italic">Weekly Reels</div>
-                                <div className="text-3xl font-black italic text-white">
-                                    3<span className="text-sm text-blue-400">+</span>
-                                </div>
-                                <div className="text-[9px] text-blue-500/50 font-bold mt-1 uppercase tracking-tighter">Active Target</div>
-                            </div>
-                            <div className="glass-card p-6 border-purple-500/20 bg-purple-900/10 relative overflow-hidden group">
-                                <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 blur-3xl -mr-12 -mt-12"></div>
-                                <div className="text-[10px] text-purple-400/70 font-black uppercase tracking-widest mb-2 italic">Audience Reach</div>
-                                <div className="text-3xl font-black italic text-white">
-                                    +25<span className="text-sm text-purple-400">%</span>
-                                </div>
-                                <div className="text-[9px] text-purple-500/50 font-bold mt-1 uppercase tracking-tighter">MoM Growth Target</div>
-                            </div>
-                            <div className="glass-card p-6 border-amber-500/20 bg-amber-900/10 relative overflow-hidden group">
-                                <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 blur-3xl -mr-12 -mt-12"></div>
-                                <div className="text-[10px] text-amber-400/70 font-black uppercase tracking-widest mb-2 italic flex items-center gap-2">
-                                    Automation Link
-                                </div>
-                                <div className="text-2xl font-black italic text-amber-400">ACTIVE</div>
-                                <div className="text-[9px] text-amber-500/50 font-bold mt-1 uppercase tracking-tighter">Make.com Sync</div>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {/* PROJECT INCUBATOR SECTION */}
-                <div className="pt-8 border-t border-white/5">
-                    <div className="flex items-center justify-between mb-8">
-                        <h2 className="text-2xl font-black flex items-center gap-3 italic uppercase tracking-tight">
-                            <Bot className="text-accent-primary h-6 w-6" />
-                            My Neural Vault
-                        </h2>
-                        <button onClick={() => navigate('/hub/projects')} className="text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-white transition-all italic">
-                            View Full Gallery →
-                        </button>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {projects.length === 0 ? (
-                            <div className="col-span-2 glass-card p-8 border-dashed border-white/10 text-center">
-                                <p className="text-sm text-text-muted italic mb-4">No saved neural sessions yet. Visit Agent HQ to consult your board.</p>
-                                <button onClick={() => navigate('/hub/agents')} className="px-6 py-3 bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all italic">Launch Agent HQ</button>
-                            </div>
-                        ) : projects.slice(0, 2).map((project, idx) => (
-                            <motion.div
-                                key={project.id}
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: idx * 0.1 }}
-                                className="glass-card p-6 border-white/5 hover:border-accent-secondary/30 transition-all cursor-pointer group"
-                                onClick={() => navigate(`/hub/lab/${project.agent_role}?sessionId=${project.id}`)}
-                            >
-                                <div className="flex justify-between items-start mb-4">
-                                    <div className="px-2 py-1 bg-white/5 rounded text-[9px] font-black uppercase tracking-widest text-text-muted italic border border-white/5">
-                                        {project.agent_role?.replace(/-/g, ' ').toUpperCase()}
+                                        {course.status !== 'Locked' && (
+                                            <div className="space-y-5 max-w-sm">
+                                                <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                                                    <motion.div
+                                                        initial={{ width: 0 }}
+                                                        animate={{ width: `${course.progress}%` }}
+                                                        className="h-full bg-gradient-to-r from-accent-primary to-accent-secondary shadow-[0_0_15px_rgba(255,122,24,0.3)]"
+                                                    ></motion.div>
+                                                </div>
+                                                <div className="flex justify-between text-[10px] text-text-muted font-black uppercase tracking-widest italic">
+                                                    <span>{course.progress}% Completed</span>
+                                                    <span>{course.lessons} Lessons</span>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
-                                    <div className="h-2 w-2 rounded-full bg-green-400"></div>
-                                </div>
-                                <h3 className="text-lg font-black italic text-white mb-2 line-clamp-1 group-hover:text-accent-secondary transition-colors">{project.project_name}</h3>
-                                <p className="text-[10px] text-text-muted line-clamp-2 italic mb-6">
-                                    {project.chat_history[project.chat_history.length - 1]?.content || "Continuing analysis..."}
-                                </p>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-[9px] font-bold text-text-muted uppercase tracking-widest italic">{new Date(project.created_at).toLocaleDateString()}</span>
-                                    <span className="text-[9px] font-black text-white uppercase tracking-widest italic group-hover:translate-x-1 transition-transform">Restore Session →</span>
+
+                                    <div className={`mt-8 inline-flex items-center gap-2 font-black text-sm uppercase italic tracking-widest ${course.status === 'Locked' ? 'text-text-muted' : 'text-white group-hover:text-accent-secondary transition-all'}`}>
+                                        {course.status === 'Locked' ? 'Unlock Premium Access' : 'Continue Sprint'}
+                                        {course.status !== 'Locked' && <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />}
+                                        {course.status === 'Locked' && <Trophy className="h-3 w-3 ml-2 text-accent-secondary" />}
+                                    </div>
                                 </div>
                             </motion.div>
                         ))}
                     </div>
-                </div>
 
-                {/* Agent HQ Card */}
-                <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    onClick={() => navigate('/hub/agents')}
-                    className="glass-card p-10 border-accent-primary/20 bg-accent-primary/[0.03] cursor-pointer group relative overflow-hidden"
-                >
-                    <div className="absolute bottom-0 right-0 w-32 h-32 bg-accent-primary/5 blur-[60px] rounded-full -mr-16 -mb-16"></div>
-                    <div className="flex items-center justify-between mb-8">
-                        <div className="flex items-center gap-3">
-                            <Bot className="text-accent-primary h-6 w-6" />
-                            <h3 className="text-xl font-black italic uppercase tracking-tight">Agent HQ</h3>
+                    {/* GROWTH ANALYTICS (PHASE 5+) */}
+                    {projects.some(p => p.current_phase >= 5) && (
+                        <div className="pt-8 border-t border-white/5">
+                            <div className="flex items-center justify-between mb-8">
+                                <h2 className="text-2xl font-black flex items-center gap-3 italic uppercase tracking-tight text-emerald-400">
+                                    <Activity className="h-6 w-6" />
+                                    Growth Analytics
+                                </h2>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                                <div className="glass-card p-6 border-emerald-500/20 bg-emerald-900/10 relative overflow-hidden group">
+                                    <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 blur-3xl -mr-12 -mt-12"></div>
+                                    <div className="text-[10px] text-emerald-400/70 font-black uppercase tracking-widest mb-2 italic">Video Generation Time</div>
+                                    <div className="text-3xl font-black italic text-white flex items-baseline gap-2">
+                                        &lt;10 <span className="text-sm text-emerald-400 tracking-widest">min</span>
+                                    </div>
+                                    <div className="text-[9px] text-emerald-500/50 font-bold mt-1 uppercase tracking-tighter">Prev: 2h</div>
+                                </div>
+                                <div className="glass-card p-6 border-blue-500/20 bg-blue-900/10 relative overflow-hidden group">
+                                    <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 blur-3xl -mr-12 -mt-12"></div>
+                                    <div className="text-[10px] text-blue-400/70 font-black uppercase tracking-widest mb-2 italic">Weekly Reels</div>
+                                    <div className="text-3xl font-black italic text-white">
+                                        3<span className="text-sm text-blue-400">+</span>
+                                    </div>
+                                    <div className="text-[9px] text-blue-500/50 font-bold mt-1 uppercase tracking-tighter">Active Target</div>
+                                </div>
+                                <div className="glass-card p-6 border-purple-500/20 bg-purple-900/10 relative overflow-hidden group">
+                                    <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 blur-3xl -mr-12 -mt-12"></div>
+                                    <div className="text-[10px] text-purple-400/70 font-black uppercase tracking-widest mb-2 italic">Audience Reach</div>
+                                    <div className="text-3xl font-black italic text-white">
+                                        +25<span className="text-sm text-purple-400">%</span>
+                                    </div>
+                                    <div className="text-[9px] text-purple-500/50 font-bold mt-1 uppercase tracking-tighter">MoM Growth Target</div>
+                                </div>
+                                <div className="glass-card p-6 border-amber-500/20 bg-amber-900/10 relative overflow-hidden group">
+                                    <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 blur-3xl -mr-12 -mt-12"></div>
+                                    <div className="text-[10px] text-amber-400/70 font-black uppercase tracking-widest mb-2 italic flex items-center gap-2">
+                                        Automation Link
+                                    </div>
+                                    <div className="text-2xl font-black italic text-amber-400">ACTIVE</div>
+                                    <div className="text-[9px] text-amber-500/50 font-bold mt-1 uppercase tracking-tighter">Make.com Sync</div>
+                                </div>
+                            </div>
                         </div>
-                        <ChevronRight className="h-5 w-5 text-accent-primary group-hover:translate-x-2 transition-transform" />
-                    </div>
-                    <p className="text-sm text-text-muted leading-relaxed mb-8 italic font-medium">Access your 8-agent expert team for dynamic course strategy, SEO, and behavioral insights.</p>
-                    <div className="flex items-center justify-between">
-                        <div className="flex -space-x-3">
-                            {[1, 2, 3, 4, 5].map(i => (
-                                <div key={i} className="h-10 w-10 rounded-full border-2 border-brand-bg bg-accent-primary/20 flex items-center justify-center text-[10px] font-black shadow-lg">AI</div>
+                    )}
+
+                    {/* PROJECT INCUBATOR SECTION */}
+                    <div className="pt-8 border-t border-white/5">
+                        <div className="flex items-center justify-between mb-8">
+                            <h2 className="text-2xl font-black flex items-center gap-3 italic uppercase tracking-tight">
+                                <Bot className="text-accent-primary h-6 w-6" />
+                                My Neural Vault
+                            </h2>
+                            <button onClick={() => navigate('/hub/projects')} className="text-[10px] font-black uppercase tracking-widest text-text-muted hover:text-white transition-all italic">
+                                View Full Gallery →
+                            </button>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {projects.length === 0 ? (
+                                <div className="col-span-2 glass-card p-8 border-dashed border-white/10 text-center">
+                                    <p className="text-sm text-text-muted italic mb-4">No saved neural sessions yet. Visit Agent HQ to consult your board.</p>
+                                    <button onClick={() => navigate('/hub/agents')} className="px-6 py-3 bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all italic">Launch Agent HQ</button>
+                                </div>
+                            ) : projects.slice(0, 2).map((project, idx) => (
+                                <motion.div
+                                    key={project.id}
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ delay: idx * 0.1 }}
+                                    className="glass-card p-6 border-white/5 hover:border-accent-secondary/30 transition-all cursor-pointer group"
+                                    onClick={() => navigate(`/hub/lab/${project.agent_role}?sessionId=${project.id}`)}
+                                >
+                                    <div className="flex justify-between items-start mb-4">
+                                        <div className="px-2 py-1 bg-white/5 rounded text-[9px] font-black uppercase tracking-widest text-text-muted italic border border-white/5">
+                                            {project.agent_role?.replace(/-/g, ' ').toUpperCase()}
+                                        </div>
+                                        <div className="h-2 w-2 rounded-full bg-green-400"></div>
+                                    </div>
+                                    <h3 className="text-lg font-black italic text-white mb-2 line-clamp-1 group-hover:text-accent-secondary transition-colors">{project.project_name}</h3>
+                                    <p className="text-[10px] text-text-muted line-clamp-2 italic mb-6">
+                                        {project.chat_history[project.chat_history.length - 1]?.content || "Continuing analysis..."}
+                                    </p>
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-[9px] font-bold text-text-muted uppercase tracking-widest italic">{new Date(project.created_at).toLocaleDateString()}</span>
+                                        <span className="text-[9px] font-black text-white uppercase tracking-widest italic group-hover:translate-x-1 transition-transform">Restore Session →</span>
+                                    </div>
+                                </motion.div>
                             ))}
-                            <div className="h-10 w-10 rounded-full border-2 border-brand-bg bg-white/5 flex items-center justify-center text-[10px] font-black text-text-muted">8+</div>
                         </div>
-                        <span className="text-[10px] font-black uppercase tracking-widest text-accent-primary italic">Enter Lab →</span>
                     </div>
-                </motion.div>
-            </div>
+
+                    {/* Agent HQ Card */}
+                    <motion.div
+                        whileHover={{ scale: 1.02 }}
+                        onClick={() => navigate('/hub/agents')}
+                        className="glass-card p-10 border-accent-primary/20 bg-accent-primary/[0.03] cursor-pointer group relative overflow-hidden"
+                    >
+                        <div className="absolute bottom-0 right-0 w-32 h-32 bg-accent-primary/5 blur-[60px] rounded-full -mr-16 -mb-16"></div>
+                        <div className="flex items-center justify-between mb-8">
+                            <div className="flex items-center gap-3">
+                                <Bot className="text-accent-primary h-6 w-6" />
+                                <h3 className="text-xl font-black italic uppercase tracking-tight">Agent HQ</h3>
+                            </div>
+                            <ChevronRight className="h-5 w-5 text-accent-primary group-hover:translate-x-2 transition-transform" />
+                        </div>
+                        <p className="text-sm text-text-muted leading-relaxed mb-8 italic font-medium">Access your 8-agent expert team for dynamic course strategy, SEO, and behavioral insights.</p>
+                        <div className="flex items-center justify-between">
+                            <div className="flex -space-x-3">
+                                {[1, 2, 3, 4, 5].map(i => (
+                                    <div key={i} className="h-10 w-10 rounded-full border-2 border-brand-bg bg-accent-primary/20 flex items-center justify-center text-[10px] font-black shadow-lg">AI</div>
+                                ))}
+                                <div className="h-10 w-10 rounded-full border-2 border-brand-bg bg-white/5 flex items-center justify-center text-[10px] font-black text-text-muted">8+</div>
+                            </div>
+                            <span className="text-[10px] font-black uppercase tracking-widest text-accent-primary italic">Enter Lab →</span>
+                        </div>
+                    </motion.div>
+                </div>
+            ) : (
+                <div className="max-w-4xl mx-auto pb-12">
+                    <InterestTest
+                        onComplete={async (res) => {
+                            console.log("Diagnostic complete:", res);
+                            if (profile?.id && res.tier) {
+                                // Map string "Essential" -> "FREE", "Pro" -> "PRO", "Plus" -> "PLUS"
+                                const tierMap = {
+                                    'Essential': 'FREE',
+                                    'Pro': 'PRO',
+                                    'Plus': 'PLUS'
+                                };
+                                const dbTier = tierMap[res.tier] || 'FREE';
+
+                                try {
+                                    await supabase
+                                        .from('profiles')
+                                        .update({ tier: dbTier })
+                                        .eq('id', profile.id);
+                                    console.log("Profile tier successfully updated to:", dbTier);
+                                } catch (error) {
+                                    console.error("Failed to update profile tier:", error);
+                                }
+                            }
+                        }}
+                    />
+                </div>
+            )}
 
             {/* Certificate Modal (kept outside the main content flow as it's an overlay) */}
             <AnimatePresence>
