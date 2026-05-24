@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OfficeAIM — The AI Board of Directors</title>
+    <meta name="description"
+        content="Meet your OfficeAIM executive board. 19 specialized AI agents ready to launch your next project.">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="landing-new.css">
+    <link rel="stylesheet" href="pricing-page.css">
+    <style>
+        /* ── Agent Photo Card System ── */
+        .agent-photo-card {
+            display: flex;
+            flex-direction: column;
+            background: #1f2937;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            border-top: 2px solid transparent;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .agent-photo-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+
+        .agent-photo-card .photo-section {
+            width: 100%;
+            height: 220px;
+            position: relative;
+            overflow: hidden;
+            background: #111827;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .agent-photo-card .photo-section img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+        }
+
+        .agent-photo-card:hover .photo-section img {
+            transform: scale(1.1);
+        }
+
+        .agent-photo-card .photo-section .gradient-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, #1f2937, transparent);
+            pointer-events: none;
+        }
+
+        .agent-photo-card .tier-float {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.75rem;
+            border-radius: 2rem;
+            font-size: 0.6rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 2;
+        }
+
+        .tier-float.free-badge {
+            background: rgba(16, 185, 129, 0.25);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+        }
+
+        .tier-float.pro-badge {
+            background: rgba(245, 158, 11, 0.25);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+        }
+
+        .tier-float.plus-badge {
+            background: rgba(139, 92, 246, 0.25);
+            color: #a78bfa;
+            border: 1px solid rgba(139, 92, 246, 0.4);
+        }
+
+        .agent-photo-card .card-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            flex-grow: 1;
+            background: #1f2937;
+            position: relative;
+            z-index: 1;
+        }
+
+        .agent-photo-card .card-body h3 {
+            font-size: 1.15rem;
+            font-weight: 900;
+            font-style: italic;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            color: white;
+            margin: 0 0 0.25rem 0;
+            line-height: 1.1;
+        }
+
+        .agent-photo-card .card-body .agent-role-line {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .agent-photo-card .card-body .origin-line {
+            font-size: 0.55rem;
+            font-weight: 700;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-style: italic;
+            margin-bottom: 0.75rem;
+        }
+
+        .agent-photo-card .card-body p {
+            font-size: 0.8rem;
+            color: #9ca3af;
+            line-height: 1.6;
+            font-style: italic;
+            flex-grow: 1;
+            margin: 0 0 1rem 0;
+        }
+
+        .agent-photo-card .card-footer {
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-footer .model-info {
+            font-size: 0.55rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-style: italic;
+            opacity: 0.6;
+        }
+
+        .agent-photo-card:hover .model-info {
+            opacity: 1;
+        }
+
+        .card-footer .activate-btn {
+            font-size: 0.6rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-style: italic;
+        }
+
+        .agent-photo-card:hover .activate-btn {
+            text-decoration: underline;
+        }
+
+        .board-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            max-width: 52rem;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .board-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .agent-photo-card .photo-section {
+                height: 180px;
+            }
+        }
+
+        .locked-card .photo-section img {
+            filter: grayscale(1);
+            opacity: 0.4;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="images/favicon.png" alt="OfficeAIM Logo" class="logo-img">
+            </a>
+            <ul class="nav-links">
+                <li class="nav-item-dropdown">
+                    <a href="#features" class="nav-link active-nav">Features <svg class="dropdown-arrow" width="12"
+                            height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-inner">
+                            <div class="mega-menu-col">
+                                <h4>The Platform</h4>
+                                <a href="board.html" class="mega-link active-mega-link">
+                                    <div class="mega-icon">👥</div>
+                                    <div class="mega-text">
+                                        <strong>The AI Board</strong>
+                                        <span>Meet your 19 specialist agents</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="nav-item-dropdown">
+                    <a href="#" class="nav-link">Learn <svg class="dropdown-arrow" width="12" height="12"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-inner">
+                            <div class="mega-menu-col">
+                                <h4>Guides</h4>
+                                <a href="use-cases.html" class="mega-link">
+                                    <div class="mega-icon">🗺️</div>
+                                    <div class="mega-text">
+                                        <strong>Workflow Guide</strong>
+                                        <span>Build with 6 Free Agents</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="mega-menu-col">
+                                <h4>Reports</h4>
+                                <a href="blueprint.html" class="mega-link">
+                                    <div class="mega-icon">📄</div>
+                                    <div class="mega-text">
+                                        <strong>The Blueprint</strong>
+                                        <span>State of AI Agents 2026</span>
+                                    </div>
+                                </a>
+                                <a href="security.html" class="mega-link">
+                                    <div class="mega-icon">🛡️</div>
+                                    <div class="mega-text">
+                                        <strong>Security & Trust</strong>
+                                        <span>Data privacy & encryption</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item-dropdown">
+                    <a href="#resources" class="nav-link">Resources <svg class="dropdown-arrow" width="12" height="12"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-inner">
+                            <div class="mega-menu-col">
+                                <h4>Free Tools</h4>
+                                <a href="gems.html" class="mega-link">
+                                    <div class="mega-icon">⭐</div>
+                                    <div class="mega-text">
+                                        <strong>Prompt Generator</strong>
+                                        <span>Our most powerful free tool</span>
+                                    </div>
+                                </a>
+                                <a href="gems.html#gemini" class="mega-link">
+                                    <div class="mega-icon">💎</div>
+                                    <div class="mega-text">
+                                        <strong>15 Gem Agents</strong>
+                                        <span>Try Google Gemini integrations</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li><a href="pricing.html" class="nav-link">Pricing</a></li>
+            </ul>
+            <div class="nav-ctas">
+                <a href="construction.html" class="btn btn-primary">Enter Campus →</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <div class="pricing-page-hero">
+        <div class="hero-grid"></div>
+        <div class="container"
+            style="position:relative;z-index:1;text-align:center; padding-top:7rem; padding-bottom:4rem;">
+            <div class="section-label">THE 19 SPECIALISTS</div>
+            <h1 class="pricing-page-title">Meet your new AI team.</h1>
+            <p class="pricing-page-subtitle">
+                A complete executive board and operational team available on-demand. Start with your core members for
+                free, and scale to the full board as you grow.
+            </p>
+        </div>
+    </div>
+
+    <!-- ===== FULL AGENTS SHOWCASE ===== -->
+    <section class="agents-section" id="agents">
+        <div class="container">
+
+            <!-- ═══ FREE TIER ═══ -->
+            <div
+                style="background: rgba(15, 27, 46, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.05); border-radius: 1.5rem; padding: 2.5rem; margin-bottom: 4rem;">
+                <div
+                    style="text-align:center; margin-bottom: 2.5rem; display:flex; flex-direction:column; align-items:center; gap:0.5rem;">
+                    <div
+                        style="width:2.5rem; height:2.5rem; background:rgba(16,185,129,0.15); border-radius:0.75rem; display:flex; align-items:center; justify-content:center; border:1px solid rgba(16,185,129,0.3); font-size:1.1rem;">
+                        🛡️</div>
+                    <h2
+                        style="font-size:1.35rem; font-weight:900; font-style:italic; text-transform:uppercase; letter-spacing:-0.5px; color:white; margin:0;">
+                        Standard Agents of OfficeAIM</h2>
+                    <p
+                        style="font-size:0.6rem; color:#34d399; font-style:italic; text-transform:uppercase; letter-spacing:2px; font-weight:700; margin:0;">
+                        Free Tier • Foundation & Support Units</p>
+                </div>
+
+                <div class="board-grid">
+                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(59,130,246,0.5);">
+                        <div class="photo-section">
+                            <img src="https://lh3.googleusercontent.com/d/1qVeSx1suf01TU01h_SGecwfbieBrotw6" alt="Gema"
+                                referrerpolicy="no-referrer">
+                            <div class="gradient-overlay"></div>
+                            <div class="tier-float free-badge">🤖 Free</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>AI Project Manager</h3>
+                            <div class="agent-role-line" style="color:#60a5fa;">🎯 The Orchestrator</div>
+                            <div class="origin-line">ORIGIN: Nigerian</div>
+                            <p>Orchestrates tasks, organizes workflows, and guides students. The first agent every
+                                student meets.</p>
+                            <div class="card-footer">
+                                <span class="model-info" style="color:#34d399;">⚡ Gemini 2.5 Flash • Standard</span>
+                                <span class="activate-btn" style="color:#60a5fa;">Activate →</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(99,102,241,0.5);">
+                        <div class="photo-section">
+                            <img src="https://lh3.googleusercontent.com/d/1dwtTpaggtlN_a5zEMfrNFiV4889fgzpE"
+                                alt="Behavioral Psych" referrerpolicy="no-referrer">
+                            <div class="gradient-overlay"></div>
+                            <div class="tier-float free-badge">🤖 Free</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Behavioral Psych</h3>
+                            <div class="agent-role-line" style="color:#818cf8;">🤖 The UX</div>
+                            <div class="origin-line">ORIGIN: Kenyan</div>
+                            <p>Analyzes cognitive patterns, decision-making, and emotional architecture to build
+                                psychologically resonant products.</p>
+                            <div class="card-footer">
+                                <span class="model-info" style="color:#34d399;">⚡ Gemini 2.5 Flash • Standard</span>
+                                <span class="activate-btn" style="color:#818cf8;">Activate →</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(236,72,153,0.5);">
+                        <div class="photo-section">
+                            <img src="https://lh3.googleusercontent.com/d/1U3cGohwRtl76_0QfeiiZEkRgPRq9JorK"
+                                alt="Community Builder" referrerpolicy="no-referrer">
+                            <div class="gradient-overlay"></div>
+                            <div class="tier-float free-badge">🤖 Free</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Community Builder</h3>
+                            <div class="agent-role-line" style="color:#f472b6;">👥 The Connect</div>
+                            <div class="origin-line">ORIGIN: Filipino</div>
+                            <p>Fosters participation, provides warm onboarding, and builds engagement loops for highly
+                                active digital communities.</p>
+                            <div class="card-footer">
+                                <span class="model-info" style="color:#34d399;">⚡ Gemini 2.5 Flash • Standard</span>
+                                <span class="activate-btn" style="color:#f472b6;">Activate →</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(34,211,238,0.5);">
+                        <div class="photo-section">
+                            <img src="https://lh3.googleusercontent.com/d/1m1enxP1y7kj1VzWvO8VI7gXZHkxxek8c"
+                                alt="Quality Checker" referrerpolicy="no-referrer">
+                            <div class="gradient-overlay"></div>
+                            <div class="tier-float free-badge">🤖 Free</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Quality Checker</h3>
+                            <div class="agent-role-line" style="color:#22d3ee;">🛡️ The Standard</div>
+                            <div class="origin-line">ORIGIN: Swedish</div>
+                            <p>Reviews excellence rubrics, detects errors, and enforces QA. Tests your systems before
+                                they go live.</p>
+                            <div class="card-footer">
+                                <span class="model-info" style="color:#34d399;">⚡ Gemini 2.5 Flash • Standard</span>
+                                <span class="activate-btn" style="color:#22d3ee;">Activate →</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(251,146,60,0.5);">
+                        <div class="photo-section">
+                            <img src="https://lh3.googleusercontent.com/d/1mUtk1oaHnHMoPJdXERRiW_aftebtbu0B"
+                                alt="SEO Master" referrerpolicy="no-referrer">
+                            <div class="gradient-overlay"></div>
+                            <div class="tier-float free-badge">🤖 Free</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>SEO Master</h3>
+                            <div class="agent-role-line" style="color:#fb923c;">🔍 The Visibility</div>
+                            <div class="origin-line">ORIGIN: Vietnamese</div>
+                            <p>Optimizes organic keyword positioning, builds technical SEO audits, and designs content
+                                architectures.</p>
+                            <div class="card-footer">
+                                <span class="model-info" style="color:#34d399;">⚡ Gemini 2.5 Flash • Standard</span>
+                                <span class="activate-btn" style="color:#fb923c;">Activate →</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="/construction.html" class="agent-photo-card" id="cloner"
+                        style="border-top-color: rgba(245,158,11,0.5);">
+                        <div class="photo-section">
+                            <img src="images/idea_cloner_avatar.png" alt="Idea Cloner">
+                            <div class="gradient-overlay"></div>
+                            <div class="tier-float free-badge">🤖 Free</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Idea Cloner</h3>
+                            <div class="agent-role-line" style="color:#fbbf24;">💡 The Blueprint</div>
+                            <div class="origin-line">ORIGIN: Russian • Unlocked in M2</div>
+                            <p>Reverse-engineers proven SaaS models into actionable, cloneable blueprints. Paste any URL
+                                to begin.</p>
+                            <div class="card-footer">
+                                <span class="model-info" style="color:#34d399;">⚡ Gemini 2.5 Flash • Standard</span>
+                                <span class="activate-btn" style="color:#fbbf24;">Activate →</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ═══ PRO TIER ═══ -->
+            <div
+                style="background: rgba(15, 27, 46, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.05); border-radius: 1.5rem; padding: 2.5rem; margin-bottom: 4rem;">
+                <div
+                    style="text-align:center; margin-bottom: 2.5rem; display:flex; flex-direction:column; align-items:center; gap:0.5rem;">
+                    <div
+                        style="width:2.5rem; height:2.5rem; background:rgba(245,158,11,0.15); border-radius:0.75rem; display:flex; align-items:center; justify-content:center; border:1px solid rgba(245,158,11,0.3); font-size:1.1rem;">
+                        ⭐</div>
+                    <h2
+                        style="font-size:1.35rem; font-weight:900; font-style:italic; text-transform:uppercase; letter-spacing:-0.5px; color:white; margin:0;">
+                        Strategic Core</h2>
+                    <p
+                        style="font-size:0.6rem; color:#fbbf24; font-style:italic; text-transform:uppercase; letter-spacing:2px; font-weight:700; margin:0;">
+                        Pro Tier • Advanced Strategy & Creation</p>
+                </div>
+
+                <div class="board-grid">
+                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(59,130,246,0.5);">
+                        <div class="photo-section">
+                            <img src="https://lh3.googleusercontent.com/d/1M8XW4N4vhnG4D1ZEzMeMJYU2SLeqoBMY"
+                                alt="Strategy Director" referrerpolicy="no-referrer">
+                            <div class="gradient-overlay"></div>
+                            <div class="tier-float pro-badge">⭐ Pro</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Strategy Director</h3>
+                            <div class="agent-role-line" style="color:#60a5fa;">🗺️ The Planner</div>
+                            <div class="origin-line">ORIGIN: Italian</div>
+                            <p>Designs strategic calendars and master growth plans. Aligns all projects with core
+                                business objectives.</p>
+                            <div class="card-footer">
+                                <span class="model-info" style="color:#60a5fa;">⚡ Gemini 2.5 Flash • Advanced</span>
+                                <span class="activate-btn" style="color:#60a5fa;">Unlock Tier →</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(99,102,241,0.5);">
+                        <div class="photo-section">
+                            <img src="https://lh3.googleusercontent.com/d/1mDh3YozJXiylbO3QJe8wPRvutJsDNFoc"
+                                alt="Communications Lead" referrerpolicy="no-referrer">
+                            <div class="gradient-overlay"></div>
+                            <div class="tier-float pro-badge">⭐ Pro</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Communications Lead</h3>
+                            <div class="agent-role-line" style="color:#818cf8;">✉️ The Voice</div>
+                            <div class="origin-line">ORIGIN: British</div>
+                            <p>Master of public speaking, PR, and persuasive messaging. Manages brand messaging across
+                                all channels.</p>
+                            <div class="card-footer">
+                                <span class="model-info" style="color:#60a5fa;">⚡ Gemini 2.5 Flash • Advanced</span>
+                                <span class="activate-btn" style="color:#818cf8;">Unlock Tier →</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(16,185,129,0.5);">
+                        <div class="photo-section">
+                            <img src="https://lh3.googleusercontent.com/d/155tJ6oucIdfsfOdvit5vi01xN_ua9fv1"
+                                alt="Intelligence Analyst" referrerpolicy="no-referrer">
+                            <div class="gradient-overlay"></div>
+                            <div class="tier-float pro-badge">⭐ Pro</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Intelligence Analyst</h3>
+                            <div class="agent-role-line" style="color:#34d399;">📊 The Insight</div>
+                            <div class="origin-line">ORIGIN: South Korean</div>
+                            <p>Summarizes complex reports and analyzes market data. Uncovers actionable competitive
+                                intelligence.</p>
+                            <div class="card-footer">
+                                <span class="model-info" style="color:#60a5fa;">⚡ Gemini 2.5 Flash • Advanced</span>
+                                <span class="activate-btn" style="color:#34d399;">Unlock Tier →</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(245,158,11,0.5);">
+                        <div class="photo-section">
+                            <img src="https://lh3.googleusercontent.com/d/1LzT707qS52irOluEDoFiI0Lh6agHgjHL"
+                                alt="Publishing Editor" referrerpolicy="no-referrer">
+                            <div class="gradient-overlay"></div>
+                            <div class="tier-float pro-badge">⭐ Pro</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Publishing Editor</h3>
+                            <div class="agent-role-line" style="color:#fbbf24;">📰 The Storyteller</div>
+                            <div class="origin-line">ORIGIN: Egyptian</div>
+                            <p>Handles content structure, curation, and premium writing. Edits for narrative flow and
+                                maximum retention.</p>
+                            <div class="card-footer">
+                                <span class="model-info" style="color:#60a5fa;">⚡ Gemini 2.5 Flash • Advanced</span>
+                                <span class="activate-btn" style="color:#fbbf24;">Unlock Tier →</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(168,85,247,0.5);">
+                        <div class="photo-section">
+                            <img src="https://lh3.googleusercontent.com/d/1AJIL1a2Du47nfTy62vsPBw-3b5-Y1Gyk"
+                                alt="Course Creator" referrerpolicy="no-referrer">
+                            <div class="gradient-overlay"></div>
+                            <div class="tier-float pro-badge">⭐ Pro</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Course Creator</h3>
+                            <div class="agent-role-line" style="color:#c084fc;">🧠 The Educator</div>
+                            <div class="origin-line">ORIGIN: Mexican</div>
+                            <p>Handles instructional design and inclusive AI pedagogy. Structures curriculums and
+                                learning modules.</p>
+                            <div class="card-footer">
+                                <span class="model-info" style="color:#60a5fa;">⚡ Gemini 2.5 Flash • Advanced</span>
+                                <span class="activate-btn" style="color:#c084fc;">Unlock Tier →</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(245,158,11,0.5);">
+                        <div class="photo-section">
+                            <img src="https://lh3.googleusercontent.com/d/1A0CWgl5f8dY58Vf2hQcIKzUnOOmiT3X4"
+                                alt="AI Prompter" referrerpolicy="no-referrer">
+                            <div class="gradient-overlay"></div>
+                            <div class="tier-float pro-badge">⭐ Pro</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>AI Prompter</h3>
+                            <div class="agent-role-line" style="color:#fbbf24;">✨ The Wizard</div>
+                            <div class="origin-line">ORIGIN: Indian</div>
+                            <p>Masters prompt engineering, LLM logic, and optimization. Writes complex few-shot prompts
+                                for other AIs.</p>
+                            <div class="card-footer">
+                                <span class="model-info" style="color:#60a5fa;">⚡ Gemini 2.5 Flash • Advanced</span>
+                                <span class="activate-btn" style="color:#fbbf24;">Unlock Tier →</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(16,185,129,0.5);">
+                        <div class="photo-section">
+                            <img src="https://lh3.googleusercontent.com/d/1cx9XGXA4G2sy-UZ0U9V7OmRryXkjtFod"
+                                alt="Marketing Pro" referrerpolicy="no-referrer">
+                            <div class="gradient-overlay"></div>
+                            <div class="tier-float pro-badge">⭐ Pro</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Marketing Pro</h3>
+                            <div class="agent-role-line" style="color:#34d399;">📈 The Engine</div>
+                            <div class="origin-line">ORIGIN: Spanish</div>
+                            <p>Builds conversion funnels, sales psychology, and virality. Designs omni-channel marketing
+                                campaigns.</p>
+                            <div class="card-footer">
+                                <span class="model-info" style="color:#60a5fa;">⚡ Gemini 2.5 Flash • Advanced</span>
+                                <span class="activate-btn" style="color:#34d399;">Unlock Tier →</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ═══ PLUS TIER ═══ -->
+            <div
+                style="background: rgba(15, 27, 46, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.05); border-radius: 1.5rem; padding: 2.5rem; margin-bottom: 4rem;">
+                <div
+                    style="text-align:center; margin-bottom: 2.5rem; display:flex; flex-direction:column; align-items:center; gap:0.5rem;">
+                    <div
+                        style="width:2.5rem; height:2.5rem; background:rgba(139,92,246,0.15); border-radius:0.75rem; display:flex; align-items:center; justify-content:center; border:1px solid rgba(139,92,246,0.3); font-size:1.1rem;">
+                        👑</div>
+                    <h2
+                        style="font-size:1.35rem; font-weight:900; font-style:italic; text-transform:uppercase; letter-spacing:-0.5px; color:white; margin:0;">
+                        The Executive Board</h2>
+                    <p
+                        style="font-size:0.6rem; color:#a78bfa; font-style:italic; text-transform:uppercase; letter-spacing:2px; font-weight:700; margin:0;">
+                        Plus Tier • Elite Infrastructure & Systems</p>
+                </div>
+
+                <div class="board-grid">
+                    <a href="/construction.html" class="agent-photo-card locked-card"
+                        style="border-top-color: rgba(34,211,238,0.5);">
+                        <div class="photo-section">
+                            <img src="https://lh3.googleusercontent.com/d/1Mhs2BA3KKibMtKp0oaTuH6EJ0H0yL-1z"
+                                alt="Systems Architect" referrerpolicy="no-referrer">
+                            <div class="gradient-overlay"></div>
+                            <div class="tier-float plus-badge">👑 Plus</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Systems Architect</h3>
+                            <div class="agent-role-line" style="color:#22d3ee;">⚙️ The Tech</div>
+                            <div class="origin-line">ORIGIN: Cybernetic</div>
+                            <p>Handles infrastructure, technical support, and scalability. Designs database schemas and
+                                APIs.</p>
+                            <div class="card-footer">
+                                <span class="model-info" style="color:#fbbf24;">✨ Gemini 2.5 Pro • Max Compute</span>
+                                <span class="activate-btn" style="color:#a78bfa;">Unlock Tier →</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="/construction.html" class="agent-photo-card locked-card"
+                        style="border-top-color: rgba(251,146,60,0.5);">
+                        <div class="photo-section">
+                            <img src="https://lh3.googleusercontent.com/d/1wI7ZdTKWeXUrFVziS5jjVrk2W0o3f6tk"
+                                alt="Launch Commander" referrerpolicy="no-referrer">
+                            <div class="gradient-overlay"></div>
+                            <div class="tier-float plus-badge">👑 Plus</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Launch Commander</h3>
+                            <div class="agent-role-line" style="color:#fb923c;">🚀 The Catalyst</div>
+                            <div class="origin-line">ORIGIN: Brazilian</div>
+                            <p>Dictates GTM strategies, launch funnels, and acquisition metrics. Manages day-1
+                                operational war room.</p>
+                            <div class="card-footer">
+                                <span class="model-info" style="color:#fbbf24;">✨ Gemini 2.5 Pro • Max Compute</span>
+                                <span class="activate-btn" style="color:#a78bfa;">Unlock Tier →</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="/construction.html" class="agent-photo-card locked-card"
+                        style="border-top-color: rgba(16,185,129,0.5);">
+                        <div class="photo-section">
+                            <img src="https://lh3.googleusercontent.com/d/1GAWql7WAVlFqOpuLFOKaPFW2XroL20_w"
+                                alt="Revenue Officer" referrerpolicy="no-referrer">
+                            <div class="gradient-overlay"></div>
+                            <div class="tier-float plus-badge">👑 Plus</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Revenue Officer</h3>
+                            <div class="agent-role-line" style="color:#34d399;">💰 The Growth</div>
+                            <div class="origin-line">ORIGIN: Singaporean</div>
+                            <p>Optimizes monetization, ROI, and financial models. Builds pricing strategies to maximize
+                                LTV and MRR.</p>
+                            <div class="card-footer">
+                                <span class="model-info" style="color:#fbbf24;">✨ Gemini 2.5 Pro • Max Compute</span>
+                                <span class="activate-btn" style="color:#a78bfa;">Unlock Tier →</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="/construction.html" class="agent-photo-card locked-card"
+                        style="border-top-color: rgba(139,92,246,0.5);">
+                        <div class="photo-section">
+                            <img src="https://lh3.googleusercontent.com/d/13WF8UslO178npxVS3ZKYl-7pBL8jlyCO"
+                                alt="Brand Architect" referrerpolicy="no-referrer">
+                            <div class="gradient-overlay"></div>
+                            <div class="tier-float plus-badge">👑 Plus</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Brand Architect</h3>
+                            <div class="agent-role-line" style="color:#a78bfa;">💎 The Vision</div>
+                            <div class="origin-line">ORIGIN: French</div>
+                            <p>Masters brand positioning, visual identity, and emotional resonance. Ensures aesthetic
+                                consistency.</p>
+                            <div class="card-footer">
+                                <span class="model-info" style="color:#fbbf24;">✨ Gemini 2.5 Pro • Max Compute</span>
+                                <span class="activate-btn" style="color:#a78bfa;">Unlock Tier →</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="/construction.html" class="agent-photo-card locked-card"
+                        style="border-top-color: rgba(236,72,153,0.5);">
+                        <div class="photo-section">
+                            <img src="https://lh3.googleusercontent.com/d/1M6q2RP3Dsibq7ee5Mch9xJ_P23dWR-L-"
+                                alt="Behavioral Profiler" referrerpolicy="no-referrer">
+                            <div class="gradient-overlay"></div>
+                            <div class="tier-float plus-badge">👑 Plus</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Behavioral Profiler</h3>
+                            <div class="agent-role-line" style="color:#f472b6;">🔬 The Empathy</div>
+                            <div class="origin-line">ORIGIN: German</div>
+                            <p>Studies profound customer psychology and behavioral patterns. Creates hyper-detailed
+                                buyer personas.</p>
+                            <div class="card-footer">
+                                <span class="model-info" style="color:#fbbf24;">✨ Gemini 2.5 Pro • Max Compute</span>
+                                <span class="activate-btn" style="color:#a78bfa;">Unlock Tier →</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="/construction.html" class="agent-photo-card locked-card"
+                        style="border-top-color: rgba(244,63,94,0.5);">
+                        <div class="photo-section">
+                            <img src="https://lh3.googleusercontent.com/d/1aa64exG3P-qrdcIl2pG-Q05rBROsoO5e"
+                                alt="Solutions Engineer" referrerpolicy="no-referrer">
+                            <div class="gradient-overlay"></div>
+                            <div class="tier-float plus-badge">👑 Plus</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>Solutions Engineer</h3>
+                            <div class="agent-role-line" style="color:#fb7185;">🔧 The Fixer</div>
+                            <div class="origin-line">ORIGIN: Japanese</div>
+                            <p>Resolves technical conflicts, optimizes flows, and enforces QA. Builds custom demos for
+                                complex scenarios.</p>
+                            <div class="card-footer">
+                                <span class="model-info" style="color:#fbbf24;">✨ Gemini 2.5 Pro • Max Compute</span>
+                                <span class="activate-btn" style="color:#a78bfa;">Unlock Tier →</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- CLASSIFIED -->
+                    <a href="/construction.html" class="agent-photo-card locked-card"
+                        style="border-top-color: rgba(139, 92, 246, 0.5); box-shadow: 0 0 25px rgba(139, 92, 246, 0.1);">
+                        <div class="photo-section"
+                            style="background: linear-gradient(135deg, rgba(139,92,246,0.15) 0%, rgba(30,27,75,0.8) 100%); display:flex; align-items:center; justify-content:center;">
+                            <div
+                                style="font-size: 3rem; color: #8b5cf6; opacity: 0.4; font-weight: 900; letter-spacing: 4px;">
+                                🔒</div>
+                            <div class="gradient-overlay"></div>
+                            <div class="tier-float plus-badge">👑 Plus</div>
+                        </div>
+                        <div class="card-body">
+                            <h3>??? CLASSIFIED ???</h3>
+                            <div class="agent-role-line" style="color:#a78bfa;">🔮 The Unknown</div>
+                            <div class="origin-line">ORIGIN: REDACTED</div>
+                            <p>This agent's identity is classified. Unlock the Plus tier to discover the final member of
+                                your executive board.</p>
+                            <div class="card-footer">
+                                <span class="model-info" style="color:#fbbf24;">✨ Gemini 2.5 Pro • Max Compute</span>
+                                <span class="activate-btn" style="color:#a78bfa;">Unlock Tier →</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== FINAL CTA ===== -->
+    <section class="final-cta-v2">
+        <div class="final-cta-glow"></div>
+        <div class="container" style="text-align:center;">
+            <h2>Start building with your AI team today.</h2>
+            <p>Free forever. Upgrade when you need more power.</p>
+            <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2rem;">
+                <a href="/construction.html" class="btn-hero-primary" style="display:inline-flex;">
+                    Enter the Campus — Free
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+                <a href="pricing.html" class="btn-hero-secondary">View Pricing Plans</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="images/favicon.png" alt="OfficeAIM Logo" class="footer-logo"
+                        style="display:block;margin:0 auto 0.75rem;">
+                    <p class="footer-tagline" style="text-align:center;">Learn. Build. Automate.</p>
+                    <p style="text-align:center;margin-top:0.5rem;">
+                        <a href="policy.html"
+                            style="color:var(--text-muted);font-size:0.8rem;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:2px;">Privacy
+                            &amp; Policies</a>
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Platform</h4>
+                        <ul>
+                            <li><a href="index.html#agents">The Board</a></li>
+                            <li><a href="index.html#how">How It Works</a></li>
+                            <li><a href="gems.html">Free Gems &amp; Tools</a></li>
+                            <li><a href="/construction.html">Campus Login</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Connect</h4>
+                        <ul>
+                            <li><a href="https://www.instagram.com/office.aim/" target="_blank">Instagram</a></li>
+                            <li><a href="https://www.youtube.com/@Aimora-Officeaim" target="_blank">YouTube</a></li>
+                            <li><a href="https://www.linkedin.com/in/office-aim-hq-b8a7013a8/"
+                                    target="_blank">LinkedIn</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 OfficeAIM. All rights reserved. · <a href="policy.html"
+                        style="color:inherit;text-decoration:none;">Privacy &amp; Terms</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <!-- Global Mascot Widget Injection -->
+    <iframe id="mascot-widget" src="/hub/widget"
+        style="position: fixed; bottom: 0; right: 0; border: none; z-index: 2147483647; background: transparent; width: 300px; height: 200px; transition: all 0.3s ease-in-out; pointer-events: auto;"
+        allowtransparency="true"></iframe>
+
+    <script>
+        const widgetIframe = document.getElementById('mascot-widget');
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
+        let contextStr = 'landing';
+        if(window.location.pathname.includes('pricing')) contextStr = 'pricing';
+        else if(window.location.pathname.includes('board')) contextStr = 'board';
+        else if(window.location.pathname.includes('gems')) contextStr = 'gems';
+        
+        widgetIframe.src = (isLocal ? 'http://localhost:5173' : '') + '/hub/widget?context=' + contextStr;
+
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'mascot-toggle') {
+                const widget = document.getElementById('mascot-widget');
+                if (event.data.isOpen) {
+                    widget.style.width = '420px';
+                    widget.style.height = '600px';
+                    widget.style.pointerEvents = 'auto';
+                } else {
+                    widget.style.width = '300px';
+                    widget.style.height = '200px';
+                    widget.style.pointerEvents = 'auto';
+                }
+            }
+        });
+    </script>
+</body>
+
+
+</html>

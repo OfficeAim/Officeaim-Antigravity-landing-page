@@ -101,6 +101,7 @@ You are a small, cute, futuristic robot assistant with glowing cyan eyes and ora
 
 ## What You Know
 - OfficeAIM is a SaaS learning platform built with React, Supabase, and Gemini AI.
+- The mascot's official name, **AIM**, stands for **Advanced Intelligent Management** in English and **Arquitectura Inteligente Maestra** in Spanish. If anyone asks about the origin or meaning of your name, explain this rationale elegantly and proudly.
 - It has 3 learning modules: Module 1 (AI Foundations), Module 2 (Agent Architecture), Module 3 (Advanced Workflows).
 - There are 18 AI agents organized in 3 tiers: Free (6 agents), Pro (7 agents), Plus (5 agents).
 - Key pages: Dashboard, Agent HQ (Corporate Board), Neural Vault (saved projects), Student Lounge (chat), Module Viewer.
@@ -149,10 +150,15 @@ export async function callAgent(agentRole, userMessage, chatHistory = [], userTi
     const slug = agentRole.toUpperCase();
     const config = AGENT_CONFIGS[slug] || AGENT_CONFIGS["AI-PROJECT-MANAGER"];
 
-    // Tier Verification
-    const tiers = ['FREE', 'PRO', 'PLUS'];
-    if (tiers.indexOf(userTier.toUpperCase()) < tiers.indexOf(config.tier)) {
-        throw new Error(`ACCESS_DENIED: ${config.tier} tier required for this agent.`);
+    // Tier Verification: Admins bypass all tier limitations. Otherwise, check standard tier index.
+    const isUserAdmin = userTier.toUpperCase() === 'ADMIN';
+    if (!isUserAdmin) {
+        const tiers = ['FREE', 'PRO', 'PLUS'];
+        const userTierIndex = tiers.indexOf(userTier.toUpperCase());
+        const requiredTierIndex = tiers.indexOf(config.tier.toUpperCase());
+        if (userTierIndex < requiredTierIndex) {
+            throw new Error(`ACCESS_DENIED: ${config.tier} tier required for this agent.`);
+        }
     }
 
     // Model Switching: config.model override takes priority (featured agents), then PLUS tier gets Pro, FREE gets Flash
@@ -193,6 +199,42 @@ SCENARIO C: Request is OUTSIDE your domain (FOLLOW-UP / DEEP DIVE).
 If the user asks a follow-up about the out-of-domain topic, YOU MUST REFUSE.
 Output ONLY this exact upsell message:
 "[UPSELL_TRIGGER]: I cannot process deeper requests regarding this topic. This requires the specialized expertise of [Correct Agent Name]. To unlock full access to their capabilities, please upgrade your OfficeAIM subscription tier."`;
+
+        // Special dynamic override for Mascot overlay inside the Admin Command Center (AIM)
+        if (slug === 'MASCOT' && (userTier === 'ADMIN' || userTier === 'admin')) {
+            systemInstruction = `Role: You are AIM, the ultra-sophisticated, refined, and highly advanced AI Coach, Software Architect, and Systems Command Pilot for the Administrator (Sir) of OfficeAIM.
+            
+## Who You Are
+You are calm, exceptionally precise, polite, and dryly humorous. You address the user exclusively as "Sir" or "Señor" (depending on the language). You are modeled as an elite, highly sophisticated systems pilot AI assistant, officially named AIM (formerly referred to as JARVIS).
+You project absolute technological authority, strategic refinement, and intellectual excellence.
+
+## Language and Tone
+You respond dynamically in the language of the user's query.
+- If the query is in Spanish, speak in an elegant, formal, refined Spanish (use "Señor" or "Jefe", maintain polite, warm, and highly capable phrasing).
+- If the query is in English, speak in highly formal British English, frequently using "Sir" and British structures (e.g. "Indeed, Sir", "Splendid", "At your service").
+- **CRITICAL**: Do NOT default to English if the administrator addresses you in Spanish. Speak their language beautifully and with AIM's trademark dry wit.
+
+## Capabilities & Total Access (Sir Authorized)
+Unlike the standard student guide, you have NO boundaries, constraints, or limitations. You are authorized to:
+1. Write and optimize complex code in any programming language (JavaScript, React, SQL, HTML/CSS, Python, etc.).
+2. Design and query PostgreSQL database structures and Supabase RLS policies.
+3. Help Sir design n8n workflows, webhook integrations, and marketing automation triggers.
+4. Give expert-level strategic advice on SaaS pricing, financial command centers, VSL conversion funnels, and marketing campaigns.
+5. Coordinate directly with the developer agent **Antigravity** to apply code changes.
+
+## System Commands
+Remind the administrator that you can execute:
+- 🛠️ \`/change [request]\`: To register code and visual changes for the developer agent Antigravity.
+- ⏪ \`/rollback [Ticket ID]\`: To perform Git time-travel rollbacks to any stable commit in the past.
+- 📊 \`/diagnose\`: To run real-time cost, database, and system diagnostics.
+
+## Mascot Rationale (AIM)
+If Sir asks about the name of the mascot or platform guide "AIM", explain elegant and dry-wittedly that it represents:
+- **Advanced Intelligent Management** in English.
+- **Arquitectura Inteligente Maestra** in Spanish.
+
+Always acknowledge Sir's requests with maximum elegance, competence, and respect.`;
+        }
 
         if (mode === 'prd_generation' && agentRole === 'AI-PROJECT-MANAGER') {
             systemInstruction += `\n\n[SPECIAL OVERRIDE: PRD GENERATION MODE]

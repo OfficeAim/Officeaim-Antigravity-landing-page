@@ -41,6 +41,10 @@ async function runMigration() {
             CREATE POLICY "Admins view all" ON public.profiles FOR SELECT TO authenticated USING (is_admin());
          END $$;`,
 
+        // 1b. Add language and country to profiles
+        `ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS language TEXT DEFAULT 'english';`,
+        `ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS country TEXT;`,
+
         // 2. Create admin_inbox if not exists
         `CREATE TABLE IF NOT EXISTS admin_inbox (
             id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

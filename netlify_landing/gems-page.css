@@ -1,0 +1,498 @@
+/* ============================================================
+   GEMS PAGE + AGENT CARD V3 STYLES
+   Additional to landing-new.css
+   ============================================================ */
+
+/* ---- Active nav link ---- */
+.active-nav {
+    color: var(--accent-secondary) !important;
+}
+
+/* ============================================================
+   AGENT CARDS V3 — Vertical, Centered
+   ============================================================ */
+.agents-single-line {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 3rem;
+    line-height: 1.6;
+}
+
+.agents-grid-v3 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.agent-card-v3 {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 1.2rem;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 220px;
+    flex-shrink: 0;
+    gap: 0.6rem;
+    transition: border-color 0.3s, transform 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Ensure <a> tags using this class behave as flex containers (not inline) */
+a.agent-card-v3 {
+    display: flex;
+    text-decoration: none;
+    color: inherit;
+}
+
+.agent-card-v3::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.35), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.agent-card-v3:hover {
+    border-color: rgba(34, 211, 238, 0.2);
+    transform: translateY(-5px);
+}
+
+.agent-card-v3:hover::before {
+    opacity: 1;
+}
+
+.agent-card-v3.card-featured {
+    border-color: rgba(255, 122, 24, 0.25);
+    background: linear-gradient(160deg, rgba(255, 122, 24, 0.06), var(--bg-card));
+}
+
+.agent-card-v3.card-featured::before {
+    background: linear-gradient(90deg, transparent, rgba(255, 122, 24, 0.4), transparent);
+    opacity: 1;
+}
+
+.agent-avatar-v3 {
+    width: 96px;
+    height: 96px;
+    border-radius: 1.1rem;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+    margin-bottom: 0.4rem;
+}
+
+.agent-avatar-v3 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.agent-card-v3 .agent-tag {
+    margin: 0 auto;
+}
+
+.agent-card-v3 h3 {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.agent-card-v3 .agent-role {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+}
+
+.agent-card-v3 p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+}
+
+/* ============================================================
+   GEMS TEASER ON INDEX.HTML
+   ============================================================ */
+.gems-teaser-section {
+    padding: 5rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: linear-gradient(135deg, rgba(34, 211, 238, 0.03), transparent 50%, rgba(255, 122, 24, 0.03));
+}
+
+.gems-teaser-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.gems-teaser-text {
+    flex: 1;
+    min-width: 280px;
+}
+
+.gems-teaser-actions {
+    text-align: center;
+}
+
+/* ============================================================
+   PAGE HERO (gems.html)
+   ============================================================ */
+.page-hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 320px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.page-hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.page-hero-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+}
+
+.page-hero-title em {
+    font-style: italic;
+    background: linear-gradient(135deg, var(--accent-primary) 0%, #ffb347 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.page-hero-desc {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    max-width: 540px;
+    line-height: 1.7;
+}
+
+/* ============================================================
+   FULL GEMS GRID (15 agents, 4 cols)
+   ============================================================ */
+.gems-full-section {
+    padding: 5rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.gems-full-section .section-desc {
+    margin: 0 auto 3rem;
+    max-width: 100%;
+}
+
+.gems-full-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+}
+
+
+
+/* ============================================================
+   GEMS JOIN CTA
+   ============================================================ */
+.gems-join-cta {
+    padding: 5rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background: linear-gradient(135deg, rgba(255, 122, 24, 0.04), transparent 60%, rgba(34, 211, 238, 0.04));
+}
+
+.gems-join-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.gems-join-text h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.gems-join-text p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* ============================================================
+   RESPONSIVE ADDITIONS
+   ============================================================ */
+@media (max-width: 1100px) {
+    .gems-full-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .agents-single-line {
+        white-space: normal;
+        text-align: center;
+    }
+
+    .agents-grid-v3 {
+        gap: 1rem;
+    }
+
+    .agent-card-v3 {
+        width: calc(50% - 0.5rem);
+    }
+
+    .gems-full-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .gems-teaser-inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .gems-join-inner {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .agent-card-v3 {
+        width: 100%;
+    }
+
+    .gems-full-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================================
+   GEMINI BADGE — index.html gems teaser section
+   ============================================================ */
+.gems-teaser-visual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 300px;
+}
+
+.gemini-badge {
+    background: linear-gradient(135deg, rgba(66, 133, 244, 0.08), rgba(139, 92, 246, 0.06));
+    border: 1px solid rgba(139, 92, 246, 0.25);
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 360px;
+}
+
+.gemini-badge-inner {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.gemini-star-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.gemini-badge-text strong {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.35rem;
+}
+
+.gemini-badge-text em {
+    font-style: normal;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+}
+
+.gemini-gem-icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.gemini-gem-icons span {
+    font-size: 1.3rem;
+    filter: drop-shadow(0 0 4px rgba(139, 92, 246, 0.4));
+}
+
+.gems-more {
+    font-size: 0.78rem !important;
+    color: var(--accent-secondary) !important;
+    font-family: var(--font-body);
+    filter: none !important;
+}
+
+/* Pricing teaser on index.html */
+.pricing-teaser-section {
+    padding: 5rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background: linear-gradient(160deg, rgba(255, 122, 24, 0.03), transparent 50%, rgba(139, 92, 246, 0.03));
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.pricing-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 1.25rem;
+    padding: 2rem 1.5rem;
+    position: relative;
+}
+
+.featured-pricing {
+    border-color: rgba(255, 122, 24, 0.3);
+    background: linear-gradient(160deg, rgba(255, 122, 24, 0.05), var(--bg-card) 40%);
+}
+
+.plus-pricing {
+    border-color: rgba(139, 92, 246, 0.25);
+    background: linear-gradient(160deg, rgba(139, 92, 246, 0.05), var(--bg-card) 40%);
+}
+
+.pricing-popular {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--accent-primary), #ff9a4a);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    border-radius: 2rem;
+    padding: 0.25rem 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.pricing-tier-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.pricing-price {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.pricing-price span {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--text-muted);
+}
+
+.pricing-tagline {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.25rem;
+}
+
+.pricing-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.75rem;
+}
+
+.pricing-features li {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    padding: 0.35rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    line-height: 1.45;
+}
+
+.pricing-features li:last-child {
+    border-bottom: none;
+}
+
+.pricing-cta-btn {
+    display: block;
+    text-align: center;
+    padding: 0.8rem;
+    border-radius: 0.75rem;
+    font-size: 0.87rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.pricing-cta-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.free-btn {
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.pro-btn {
+    background: linear-gradient(135deg, var(--accent-primary), #ff9a4a);
+    color: #fff;
+}
+
+.plus-btn {
+    background: linear-gradient(135deg, #7C3AED, #8B5CF6);
+    color: #fff;
+}
+
+@media (max-width: 900px) {
+    .pricing-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .gems-teaser-visual {
+        min-width: unset;
+        width: 100%;
+    }
+
+    .gemini-badge {
+        max-width: 100%;
+    }
+}

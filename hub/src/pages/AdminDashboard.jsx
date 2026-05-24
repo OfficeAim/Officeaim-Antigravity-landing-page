@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Users, Shield, ShieldCheck, Power, Search, AlertTriangle, TrendingUp, Bot, Sparkles, RefreshCcw, BookOpen, Clock, MessageSquare, Send, ChevronRight, X, Activity, Award, HeadphonesIcon, DollarSign, Cpu, BarChart3, Wallet, Pencil, Check, ChevronDown, ChevronUp, Globe, Server, Zap, Mail, ExternalLink, Copy, CheckCircle, Inbox, Bug, ClipboardCheck } from 'lucide-react';
+import MascotAssistant from '../components/MascotAssistant';
 
 const AdminDashboard = ({ profile }) => {
     const [users, setUsers] = useState([]);
@@ -130,7 +131,13 @@ const AdminDashboard = ({ profile }) => {
                 .from('lessons')
                 .select('*', { count: 'exact', head: true });
 
-            const userList = data || [];
+            const dataList = data || [];
+            const localFallback = JSON.parse(localStorage.getItem('officeaim_profiles_fallback') || '{}');
+            const userList = dataList.map(u => ({
+                ...u,
+                language: u.language || localFallback[u.id]?.language || 'english',
+                country: u.country || localFallback[u.id]?.country || ''
+            }));
             setUsers(userList);
             console.log('Students:', userList.length, '| Profiles:', userList.map(u => u.full_name || u.email));
 
@@ -225,6 +232,35 @@ const AdminDashboard = ({ profile }) => {
             await fetchUsers();
         } catch (err) {
             alert("Error updating status: " + err.message);
+        }
+    };
+
+    const updateStudentLanguageAndCountry = async (userId, newLang, newCountry) => {
+        try {
+            const { error } = await supabase
+                .from('profiles')
+                .update({ language: newLang, country: newCountry })
+                .eq('id', userId);
+
+            if (error) {
+                console.warn("Database update failed (could be missing columns). Applying local storage fallback.", error.message);
+                const localFallback = JSON.parse(localStorage.getItem('officeaim_profiles_fallback') || '{}');
+                localFallback[userId] = { language: newLang, country: newCountry };
+                localStorage.setItem('officeaim_profiles_fallback', JSON.stringify(localFallback));
+                
+                setUsers(prev => prev.map(u => u.id === userId ? { ...u, language: newLang, country: newCountry } : u));
+                if (selectedUser && selectedUser.id === userId) {
+                    setSelectedUser(prev => ({ ...prev, language: newLang, country: newCountry }));
+                }
+                return;
+            }
+            
+            await fetchUsers();
+            if (selectedUser && selectedUser.id === userId) {
+                setSelectedUser(prev => ({ ...prev, language: newLang, country: newCountry }));
+            }
+        } catch (err) {
+            console.error("Error updating profile language/country:", err);
         }
     };
 
@@ -414,6 +450,39 @@ const AdminDashboard = ({ profile }) => {
                                         </div>
                                     )}
                                 </div>
+                                {/* Preferred Language & Location */}
+                                <div className="mb-6 pt-4 border-t border-white/5">
+                                    <h3 className="text-xs font-black text-white uppercase tracking-widest mb-3 italic flex items-center gap-2">
+                                        <Globe className="h-3 w-3 text-accent-secondary" /> Localization (Onboarding Preview)
+                                    </h3>
+                                    <div className="grid grid-cols-2 gap-4 bg-white/[0.01] p-4 rounded-xl border border-white/5">
+                                        <div>
+                                            <label className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Preferred Language</label>
+                                            <select 
+                                                value={selectedUser.language || 'english'} 
+                                                onChange={(e) => updateStudentLanguageAndCountry(selectedUser.id, e.target.value, selectedUser.country || '')}
+                                                className="w-full bg-[#070A12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-accent-secondary/50"
+                                            >
+                                                <option value="english">English 🇬🇧</option>
+                                                <option value="spanish">Spanish 🇪🇸</option>
+                                                <option value="dutch">Dutch 🇳🇱</option>
+                                                <option value="portuguese">Portuguese 🇧🇷</option>
+                                                <option value="french">French 🇫🇷</option>
+                                                <option value="german">German 🇩🇪</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="text-[9px] font-black text-text-muted uppercase tracking-wider block mb-1">Country / Location</label>
+                                            <input 
+                                                type="text" 
+                                                value={selectedUser.country || ''} 
+                                                onChange={(e) => updateStudentLanguageAndCountry(selectedUser.id, selectedUser.language || 'english', e.target.value)}
+                                                placeholder="e.g. Netherlands, Spain"
+                                                className="w-full bg-[#070A12] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-accent-secondary/50 placeholder:text-white/20"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
                                 {/* Actions */}
                                 <div className="pt-4 border-t border-white/10 flex gap-3">
                                     <button onClick={() => toggleStatus(selectedUser.id, selectedUser.membership_status)} className={`flex-1 py-2.5 border rounded-xl text-[9px] font-black uppercase tracking-widest transition-all italic ${selectedUser.membership_status === 'active' ? 'border-red-500/30 text-red-500 hover:bg-red-500/10' : 'border-green-500/30 text-green-400 hover:bg-green-500/10'}`}>
@@ -433,7 +502,7 @@ const AdminDashboard = ({ profile }) => {
                         <div className="h-7 w-7 rounded-xl bg-gradient-to-br from-accent-secondary to-accent-primary flex items-center justify-center">
                             <Shield className="h-3.5 w-3.5 text-white" />
                         </div>
-                        <h1 className="text-lg font-black tracking-tight text-white italic">InmoCMS</h1>
+                        <h1 className="text-md font-black tracking-tight text-white italic uppercase">AIM Command Center</h1>
                     </div>
                 </div>
 
@@ -715,6 +784,8 @@ const AdminDashboard = ({ profile }) => {
                 </div>
             </div>
 
+            {/* Mascot Assistant as Admin Coach */}
+            <MascotAssistant profile={profile} isAdminDashboard={true} />
         </div>
     );
 };

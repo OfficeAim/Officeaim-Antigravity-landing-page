@@ -19,7 +19,22 @@ import MascotAssistant from './components/MascotAssistant';
 import { Toaster } from 'react-hot-toast';
 
 // Hardcoded admin whitelist — these users always get admin access
-const KNOWN_ADMINS = ['b2283a40-d51e-4bd2-ba46-262465a83d95'];
+const KNOWN_ADMINS = [
+  'b2283a40-d51e-4bd2-ba46-262465a83d95', // rody@officeaim.com
+  '8c08e8dc-7250-4c78-8638-46b2e78e7e3f'  // rodyf81@yahoo.es
+];
+
+const KNOWN_ADMIN_EMAILS = [
+  'officeaim.hq@gmail.com',
+  'rody@officeaim.com',
+  'rodyf81@yahoo.es',
+  'rodyf81@gmail.com'
+];
+
+// Helper to determine if a user session/identity represents an administrator
+const isWhitelistedAdmin = (userId, userEmail) => {
+  return KNOWN_ADMINS.includes(userId) || KNOWN_ADMIN_EMAILS.includes(userEmail);
+};
 
 // AdminGuard: re-checks role from DB on every visit to /hub/admin
 const AdminGuard = ({ session, profile, setProfile }) => {
@@ -31,7 +46,8 @@ const AdminGuard = ({ session, profile, setProfile }) => {
     const checkAdmin = async () => {
       if (!session) { console.log('AdminGuard: No session'); setChecking(false); return; }
       const userId = session.user.id;
-      const isWhitelisted = KNOWN_ADMINS.includes(userId);
+      const userEmail = session.user.email;
+      const isWhitelisted = isWhitelistedAdmin(userId, userEmail);
       try {
         const { data, error } = await supabase
           .from('profiles')
@@ -40,7 +56,7 @@ const AdminGuard = ({ session, profile, setProfile }) => {
           .maybeSingle();
         if (data) {
           // Override role if user is in whitelist
-          const adminProfile = isWhitelisted ? { ...data, role: 'admin' } : data;
+          const adminProfile = (isWhitelisted || data.role === 'admin') ? { ...data, role: 'admin' } : data;
           setFreshProfile(adminProfile);
           setProfile(adminProfile);
           setIsAdmin(adminProfile.role === 'admin');
@@ -91,7 +107,7 @@ const App = () => {
         setError(error.message);
       }
       setSession(session);
-      if (session) fetchProfile(session.user.id);
+      if (session) fetchProfile(session.user);
       else setLoading(false);
     });
 
@@ -99,7 +115,7 @@ const App = () => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       console.log("Auth event:", _event, session?.user?.email);
       setSession(session);
-      if (session) fetchProfile(session.user.id);
+      if (session) fetchProfile(session.user);
       else {
         setProfile(null);
         setLoading(false);
@@ -109,44 +125,47 @@ const App = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const fetchProfile = async (userId) => {
+  const fetchProfile = async (user) => {
     try {
-      console.log("Fetching profile for:", userId);
+      const userId = user.id;
+      const userEmail = user.email;
+      console.log("Fetching profile for:", userId, userEmail);
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', userId)
         .maybeSingle(); // Use maybeSingle to avoid 406 error on empty result
 
+      const isWhitelisted = isWhitelistedAdmin(userId, userEmail);
+
       if (error) {
         console.warn("Profile fetch error:", error.message);
         // Try to get name from user metadata
-        const { data: { user } } = await supabase.auth.getUser();
         const metaName = user?.user_metadata?.full_name || 'Student';
         setProfile({
           id: userId,
-          role: 'student',
+          role: isWhitelisted ? 'admin' : 'student',
           membership_status: 'active',
           full_name: metaName
         });
       } else if (!data) {
         console.log("No profile found, using guest defaults");
-        const { data: { user } } = await supabase.auth.getUser();
         const metaName = user?.user_metadata?.full_name || 'Student';
         setProfile({
           id: userId,
-          role: 'student',
+          role: isWhitelisted ? 'admin' : 'student',
           membership_status: 'active',
           full_name: metaName
         });
       } else {
         // Override role for whitelisted admins
-        const profileData = KNOWN_ADMINS.includes(userId) ? { ...data, role: 'admin' } : data;
+        const profileData = (isWhitelisted || data.role === 'admin') ? { ...data, role: 'admin' } : data;
         setProfile(profileData);
       }
     } catch (err) {
       console.error("Critical Profile Fetch Error:", err);
-      setProfile({ id: userId, role: 'student', membership_status: 'active' });
+      const isWhitelisted = isWhitelistedAdmin(user.id, user.email);
+      setProfile({ id: user.id, role: isWhitelisted ? 'admin' : 'student', membership_status: 'active' });
     } finally {
       setLoading(false);
     }
