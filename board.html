@@ -285,11 +285,18 @@
                         <div class="mega-menu-inner">
                             <div class="mega-menu-col">
                                 <h4>Free Tools</h4>
+                                <a href="resources/website-creator.html" class="mega-link">
+                                    <div class="mega-icon">🎨</div>
+                                    <div class="mega-text">
+                                        <strong>AI SVG Logo Lab</strong>
+                                        <span>Bespoke vector design &amp; web coach</span>
+                                    </div>
+                                </a>
                                 <a href="gems.html" class="mega-link">
                                     <div class="mega-icon">⭐</div>
                                     <div class="mega-text">
-                                        <strong>Prompt Generator</strong>
-                                        <span>Our most powerful free tool</span>
+                                        <strong>Prompt Creator</strong>
+                                        <span>Create emails and prompts for your site</span>
                                     </div>
                                 </a>
                                 <a href="gems.html#gemini" class="mega-link">
@@ -863,6 +870,7 @@
 
     <script src="script.js"></script>
 
+    
     <!-- Global Mascot Widget Injection -->
     <iframe id="mascot-widget" src="/hub/widget"
         style="position: fixed; bottom: 0; right: 0; border: none; z-index: 2147483647; background: transparent; width: 300px; height: 200px; transition: all 0.3s ease-in-out; pointer-events: auto;"
@@ -871,12 +879,44 @@
     <script>
         const widgetIframe = document.getElementById('mascot-widget');
         const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
-        let contextStr = 'landing';
-        if(window.location.pathname.includes('pricing')) contextStr = 'pricing';
-        else if(window.location.pathname.includes('board')) contextStr = 'board';
-        else if(window.location.pathname.includes('gems')) contextStr = 'gems';
         
-        widgetIframe.src = (isLocal ? 'http://localhost:5173' : '') + '/hub/widget?context=' + contextStr;
+        let contextStr = 'landing';
+        const path = window.location.pathname;
+        if(path.includes('pricing')) contextStr = 'pricing';
+        else if(path.includes('board')) contextStr = 'board';
+        else if(path.includes('gems')) contextStr = 'gems';
+        else if(path.includes('security')) contextStr = 'security';
+        else if(path.includes('use-cases')) contextStr = 'use-cases';
+        else if(path.includes('classroom')) contextStr = 'classroom';
+        else if(path.includes('courses')) contextStr = 'courses';
+        else if(path.includes('blueprint')) contextStr = 'blueprint';
+        else if(path.includes('construction')) contextStr = 'construction';
+        
+        let activeViteUrl = "http://localhost:5174"; // default fallback (port 5174 is active)
+        
+        if (isLocal) {
+            // Dynamically discover which port is serving the Vite app (5173, 5174, 5175)
+            const ports = [5173, 5174, 5175];
+            let detected = false;
+            
+            Promise.any(ports.map(port => 
+                fetch(`http://localhost:${port}/hub/logo_officeaim.png`)
+                    .then(res => {
+                        if (!res.ok) throw new Error("Not our server");
+                        if (!detected) {
+                            detected = true;
+                            activeViteUrl = `http://localhost:${port}`;
+                            widgetIframe.src = activeViteUrl + '/hub/widget?context=' + contextStr;
+                            console.log("[Mascot Port Auto-Discovery]: Connected to active dev server on port", port);
+                        }
+                    })
+            )).catch(() => {
+                // absolute fallback
+                widgetIframe.src = activeViteUrl + '/hub/widget?context=' + contextStr;
+            });
+        } else {
+            widgetIframe.src = '/hub/widget?context=' + contextStr;
+        }
 
         window.addEventListener('message', (event) => {
             if (event.data && event.data.type === 'mascot-toggle') {
@@ -894,6 +934,7 @@
         });
     </script>
 </body>
+
 
 
 </html>

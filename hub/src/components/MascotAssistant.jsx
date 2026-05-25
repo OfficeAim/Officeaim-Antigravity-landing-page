@@ -5,6 +5,10 @@ import { callAgent } from '../services/agentFactory';
 import { supabase } from '../lib/supabase';
 
 const MascotAssistant = ({ profile, isAdminDashboard = false }) => {
+    // Read context query parameter from window location
+    const queryParams = new URLSearchParams(window.location.search);
+    const context = queryParams.get('context') || '';
+
     const [isOpen, setIsOpen] = useState(false);
     // Multi-language translation tables for the Mascot Guide
     const greetings = {
@@ -207,12 +211,16 @@ const MascotAssistant = ({ profile, isAdminDashboard = false }) => {
             setMessages([
                 { role: 'agent', content: "Buenas, Jefe. **AIM** en línea. Todo listo en el Command Center. Pedime cualquier cambio de código, base de datos o lógica que necesites en el campus. También podés tirar `/rollback` para revertir a un estado anterior o `/diagnose` para auditar la salud del sistema. Estoy a tus órdenes. ¿Qué hacemos hoy?" }
             ]);
+        } else if (context === 'website-creator') {
+            setMessages([
+                { role: 'agent', content: "Hello! 👋 I'm **AIM**, your design co-pilot. I'm here to help you architect your website's technical blueprint step-by-step.\n\nComplete the 3-phase form: we will define your brand identity, site architecture, and call-to-action routing (WhatsApp or Custom Webhooks). In the background, I'll compile the developer prompts and sync them to your dashboard. If you have questions about form fields, platform costs, or our results-driven partnership, feel free to ask me in any language!" }
+            ]);
         } else {
             setMessages([
                 { role: 'agent', content: greetings[lang] || greetings.english }
             ]);
         }
-    }, [profile, profile?.language, isAdminDashboard]);
+    }, [profile, profile?.language, isAdminDashboard, context]);
 
     const [showGreeting, setShowGreeting] = useState(false);
     const [quoteIndex, setQuoteIndex] = useState(0);
@@ -257,6 +265,293 @@ const MascotAssistant = ({ profile, isAdminDashboard = false }) => {
             setTimeout(() => inputRef.current?.focus(), 300);
         }
     }, [isOpen]);
+
+    // Listen for parent logo generation requests
+    useEffect(() => {
+        const handleParentMessages = async (event) => {
+            if (event.data && event.data.type === 'generate-logo-svg') {
+                const { businessName, initials, vibe, description } = event.data;
+                setIsOpen(true);
+                setIsTyping(true);
+                
+                // Formulate the prompt query for Gemini
+                const initialsText = initials || (businessName ? businessName[0] : 'W');
+                const promptQuery = `✨ GENERATE LOGO REQUEST: Make a modern minimal typographic SVG logo for the brand '${businessName}' with the initials '${initialsText}' and design vibe '${vibe}'. User description: '${description || 'Clean aesthetic typography'}'.`;
+                
+                // Add automated temporary indicator
+                setMessages(prev => [...prev, { 
+                    role: 'agent', 
+                    content: `Sure thing, Sir! Designing a bespoke vector SVG logo for **${businessName}** [Vibe: *${vibe}*]... Please hold on, I am currently architecting the geometric paths and compiling the raw SVG nodes! 🎨` 
+                }]);
+                
+                try {
+                    const result = await callAgent('MASCOT', promptQuery, [], 'WEBSITE-CREATOR');
+                    
+                    // Extract the raw SVG block from the response
+                    const svgMatch = result.text.match(/<svg[\s\S]*?<\/svg>/i);
+                    if (svgMatch) {
+                        const svgCode = svgMatch[0];
+                        // Send the SVG back to parent
+                        window.parent.postMessage({ type: 'logo-svg-generated', svg: svgCode }, '*');
+                        
+                        setMessages(prev => [...prev, { 
+                            role: 'agent', 
+                            content: `Splendid! I have successfully generated a gorgeous, responsive vector SVG logo for **${businessName}** and sent it directly to your website creator's SVG Logo Lab. You can now download the raw asset or lock it to automatically inject it inline inside the Lovable blueprint! 🚀` 
+                        }]);
+                    } else {
+                        setMessages(prev => [...prev, { 
+                            role: 'agent', 
+                            content: `Sir, I generated the logo design but had difficulty formatting the XML nodes properly. Would you mind clicking the generate button again to re-compile?` 
+                        }]);
+                    }
+                } catch (err) {
+                    console.warn("Mascot logo bridge API call failed, initiating premium client-side vector fallback:", err);
+                    
+                    // Client-Side Premium Vector Generator Engine (Fallback)
+                    const text = initialsText.toUpperCase();
+                    const cleanName = businessName || 'OfficeAIM Brand';
+                    let svgContent = "";
+                    
+                    if (vibe.includes('Minimal Tech')) {
+                        svgContent = `<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="techGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f97316" />
+      <stop offset="50%" stop-color="#fb923c" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#f97316" />
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#06b6d4" flood-opacity="0.4"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <filter id="coreGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#f97316" flood-opacity="0.5"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  <rect width="200" height="200" rx="36" fill="#030712" stroke="rgba(255,255,255,0.05)" stroke-width="1.5"/>
+  <!-- Decorative background circuit lines -->
+  <path d="M 25,60 H 45 L 60,75 V 125 L 45,140 H 25" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1" />
+  <path d="M 175,60 H 155 L 140,75 V 125 L 155,140 H 175" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1" />
+  
+  <!-- Glowing double tech orbits in 3D perspective -->
+  <ellipse cx="100" cy="95" rx="76" ry="24" fill="none" stroke="url(#glowGrad)" stroke-width="1" stroke-opacity="0.15" transform="rotate(-28 100 95)" />
+  <ellipse cx="100" cy="95" rx="76" ry="24" fill="none" stroke="url(#glowGrad)" stroke-width="1.5" stroke-opacity="0.25" stroke-dasharray="8 4" transform="rotate(28 100 95)" />
+  
+  <!-- Outer glowing ring -->
+  <circle cx="100" cy="95" r="62" fill="none" stroke="url(#techGrad)" stroke-opacity="0.08" stroke-width="6"/>
+  <circle cx="100" cy="95" r="62" fill="none" stroke="url(#techGrad)" stroke-opacity="0.3" stroke-width="1" stroke-dasharray="150 10 30 10"/>
+  
+  <!-- Hexagonal central tech shield -->
+  <polygon points="100,34 152,64 152,126 100,156 48,126 48,64" fill="none" stroke="url(#techGrad)" stroke-width="3" filter="url(#glow)"/>
+  <polygon points="100,42 144,68 144,122 100,148 56,122 56,68" fill="#080e1b" stroke="rgba(255,255,255,0.06)" stroke-width="1.5" />
+  
+  <!-- Circuit micro-traces inside shield -->
+  <path d="M 100,42 V 58 M 100,148 V 132 M 56,68 L 70,78 M 144,68 L 130,78" fill="none" stroke="url(#techGrad)" stroke-width="1" stroke-opacity="0.4" />
+  
+  <!-- Glowing neon LED nodes -->
+  <circle cx="100" cy="34" r="3.5" fill="#06b6d4" filter="url(#coreGlow)"/>
+  <circle cx="100" cy="156" r="3.5" fill="#f97316" filter="url(#coreGlow)"/>
+  <circle cx="48" cy="95" r="2.5" fill="#ffffff" filter="url(#coreGlow)"/>
+  <circle cx="152" cy="95" r="2.5" fill="#ffffff" filter="url(#coreGlow)"/>
+  
+  <!-- Central letters with glowing bottom-layer shadow -->
+  <text x="100" y="103" font-family="'Outfit', 'Inter', sans-serif" font-weight="900" font-size="44" fill="#06b6d4" text-anchor="middle" letter-spacing="-1.5" dominant-baseline="central" filter="url(#glow)" opacity="0.45">${text}</text>
+  <text x="100" y="100" font-family="'Outfit', 'Inter', sans-serif" font-weight="900" font-size="44" fill="#ffffff" text-anchor="middle" letter-spacing="-1.5" dominant-baseline="central">${text}</text>
+  
+  <!-- Bottom Brand Text with glow -->
+  <text x="100" y="186" font-family="'Outfit', 'Inter', sans-serif" font-weight="800" font-size="8" fill="url(#techGrad)" text-anchor="middle" letter-spacing="4" dominant-baseline="central" filter="url(#coreGlow)">${cleanName.toUpperCase()}</text>
+</svg>`;
+                    } else if (vibe.includes('Sleek Modern Serif')) {
+                        svgContent = `<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde047" />
+      <stop offset="30%" stop-color="#eab308" />
+      <stop offset="70%" stop-color="#ca8a04" />
+      <stop offset="100%" stop-color="#854d0e" />
+    </linearGradient>
+    <linearGradient id="silverGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="50%" stop-color="#e5e7eb" />
+      <stop offset="100%" stop-color="#9ca3af" />
+    </linearGradient>
+    <filter id="nobleGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#eab308" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="200" height="200" rx="36" fill="#050505" stroke="url(#goldGrad)" stroke-opacity="0.1" stroke-width="1.5"/>
+  
+  <!-- Laurel branch leaves (Left) -->
+  <g fill="url(#goldGrad)" opacity="0.6">
+    <path d="M 46,95 C 40,88 42,75 42,75 C 42,75 51,80 50,88 Z" />
+    <path d="M 44,115 C 38,108 40,95 40,95 C 40,95 49,100 48,108 Z" />
+    <path d="M 48,75 C 44,68 48,58 48,58 C 48,58 55,65 52,70 Z" />
+  </g>
+  <!-- Laurel branch leaves (Right) -->
+  <g fill="url(#goldGrad)" opacity="0.6" transform="translate(200, 0) scale(-1, 1)">
+    <path d="M 46,95 C 40,88 42,75 42,75 C 42,75 51,80 50,88 Z" />
+    <path d="M 44,115 C 38,108 40,95 40,95 C 40,95 49,100 48,108 Z" />
+    <path d="M 48,75 C 44,68 48,58 48,58 C 48,58 55,65 52,70 Z" />
+  </g>
+
+  <!-- Imperial Crown heraldry floating -->
+  <path d="M 90,38 L 82,28 L 92,31 L 100,22 L 108,31 L 118,28 L 110,38 Z" fill="url(#goldGrad)" filter="url(#nobleGlow)" />
+  <circle cx="100" cy="21" r="1.5" fill="#ffffff" />
+  <circle cx="82" cy="27" r="1.2" fill="#ffffff" />
+  <circle cx="118" cy="27" r="1.2" fill="#ffffff" />
+  <rect x="88" y="39" width="24" height="2.5" rx="1" fill="url(#goldGrad)" />
+  
+  <!-- Majestic Heraldic Shield of Trust -->
+  <path d="M 58,48 L 142,48 C 142,105 125,142 100,158 C 75,142 58,105 58,48 Z" fill="none" stroke="url(#goldGrad)" stroke-width="2.5" stroke-linecap="round" filter="url(#nobleGlow)"/>
+  <path d="M 64,54 L 136,54 C 136,101 121,133 100,147 C 79,133 64,101 64,54 Z" fill="#0b0b0e" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+  
+  <!-- Classic luxurious Serif Initials -->
+  <text x="100" y="94" font-family="'Playfair Display', 'Georgia', serif" font-weight="700" font-size="44" fill="url(#silverGrad)" text-anchor="middle" font-style="italic" dominant-baseline="central">${text}</text>
+  
+  <!-- Delicate Gold divider -->
+  <path d="M 80,122 C 90,125 110,125 120,122" fill="none" stroke="url(#goldGrad)" stroke-width="1.2" opacity="0.7" stroke-linecap="round"/>
+  
+  <!-- Brand text under shield -->
+  <text x="100" y="140" font-family="'Outfit', sans-serif" font-weight="600" font-size="7.5" fill="url(#goldGrad)" text-anchor="middle" letter-spacing="4" dominant-baseline="central">${cleanName.toUpperCase()}</text>
+</svg>`;
+                    } else if (vibe.includes('Abstract Monogram')) {
+                        svgContent = `<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="monoGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c084fc" />
+      <stop offset="50%" stop-color="#db2777" />
+      <stop offset="100%" stop-color="#f43f5e" />
+    </linearGradient>
+    <linearGradient id="monoGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#a855f7" />
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#db2777" flood-opacity="0.35"/>
+    </filter>
+    <filter id="glowOnly" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  <rect width="200" height="200" rx="36" fill="#06030c" stroke="rgba(255,255,255,0.04)" stroke-width="1.5"/>
+  
+  <!-- Technical outer alignment circles -->
+  <circle cx="100" cy="95" r="68" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1" stroke-dasharray="4, 12"/>
+  <circle cx="100" cy="95" r="60" fill="none" stroke="url(#monoGrad2)" stroke-opacity="0.15" stroke-width="1"/>
+  <circle cx="100" cy="95" r="52" fill="none" stroke="rgba(255,255,255,0.02)" stroke-width="1.5" />
+  
+  <!-- Floating background particles -->
+  <circle cx="50" cy="65" r="1.5" fill="#38bdf8" opacity="0.6" filter="url(#glowOnly)" />
+  <circle cx="150" cy="65" r="2" fill="#db2777" opacity="0.5" filter="url(#glowOnly)" />
+  <circle cx="70" cy="140" r="1" fill="#c084fc" opacity="0.8" />
+  <circle cx="130" cy="140" r="1.8" fill="#38bdf8" opacity="0.4" filter="url(#glowOnly)" />
+
+  <!-- Overlapping 3D Infinity Interlocking Loop Monogram -->
+  <path d="M 62,95 C 62,72 98,72 100,95 C 102,118 138,118 138,95 C 138,72 102,72 100,95 C 98,118 62,118 62,95 Z" 
+        fill="none" stroke="url(#monoGrad1)" stroke-width="5" filter="url(#shadow)" stroke-linecap="round"/>
+  <path d="M 62,95 C 62,72 98,72 100,95 C 102,118 138,118 138,95" 
+        fill="none" stroke="url(#monoGrad2)" stroke-width="2.5" stroke-opacity="0.8" stroke-linecap="round"/>
+        
+  <!-- Interlocking overlay highlighting arcs -->
+  <path d="M 72,82 C 85,76 96,86 100,95" fill="none" stroke="#ffffff" stroke-width="1" stroke-opacity="0.3" stroke-linecap="round" />
+  <path d="M 128,108 C 115,114 104,104 100,95" fill="none" stroke="#ffffff" stroke-width="1" stroke-opacity="0.3" stroke-linecap="round" />
+  
+  <!-- Concentric core core elements -->
+  <circle cx="78" cy="95" r="4.5" fill="#06030c" stroke="url(#monoGrad2)" stroke-width="1.5" />
+  <circle cx="122" cy="95" r="4.5" fill="#06030c" stroke="url(#monoGrad1)" stroke-width="1.5" />
+
+  <!-- Typography elements in high quality Outfit font -->
+  <text x="100" y="94" font-family="'Outfit', 'Inter', sans-serif" font-weight="900" font-size="38" fill="#ffffff" text-anchor="middle" letter-spacing="-1.5" filter="url(#shadow)" dominant-baseline="central">${text}</text>
+  
+  <!-- Brand caption -->
+  <text x="100" y="166" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" letter-spacing="3" dominant-baseline="central">${cleanName.toUpperCase()}</text>
+</svg>`;
+                    } else {
+                        svgContent = `<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cyberGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f2fe" />
+      <stop offset="50%" stop-color="#7c3aed" />
+      <stop offset="100%" stop-color="#ec4899" />
+    </linearGradient>
+    <filter id="neon" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feDropShadow dx="0" dy="5" stdDeviation="10" flood-color="#00f2fe" flood-opacity="0.45"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <pattern id="dotGrid" width="12" height="12" patternUnits="userSpaceOnUse">
+      <circle cx="1.5" cy="1.5" r="1" fill="rgba(0, 242, 254, 0.04)" />
+    </pattern>
+  </defs>
+  <rect width="200" height="200" rx="36" fill="#02040a" stroke="#00f2fe" stroke-opacity="0.1" stroke-width="1.5"/>
+  <rect width="200" height="200" rx="36" fill="url(#dotGrid)"/>
+  
+  <!-- Cybernetic tech HUD corner brackets with micro notches -->
+  <g stroke="#00f2fe" stroke-width="2" fill="none" opacity="0.8">
+    <!-- Top-Left -->
+    <path d="M 24,46 V 24 H 46" stroke-linecap="square" />
+    <rect x="28" y="28" width="4" height="4" fill="#00f2fe" stroke="none" />
+    <!-- Top-Right -->
+    <path d="M 176,46 V 24 H 154" stroke-linecap="square" />
+    <rect x="168" y="28" width="4" height="4" fill="#00f2fe" stroke="none" />
+    <!-- Bottom-Left -->
+    <path d="M 24,144 V 166 H 46" stroke-linecap="square" />
+    <rect x="28" y="158" width="4" height="4" fill="#00f2fe" stroke="none" />
+    <!-- Bottom-Right -->
+    <path d="M 176,144 V 166 H 154" stroke-linecap="square" />
+    <rect x="168" y="158" width="4" height="4" fill="#00f2fe" stroke="none" />
+  </g>
+  
+  <!-- System Diagnostic mini parameters (simulated data) -->
+  <text x="54" y="32" font-family="'Courier New', monospace" font-size="5" fill="rgba(0, 242, 254, 0.3)" font-weight="bold">SYS.LOCKED // 0A2F</text>
+  <text x="146" y="164" font-family="'Courier New', monospace" font-size="5" fill="rgba(0, 242, 254, 0.3)" font-weight="bold" text-anchor="end">INIT.SEQ_2026</text>
+
+  <!-- Tactical Target crosshairs in background -->
+  <line x1="100" y1="26" x2="100" y2="40" stroke="rgba(0, 242, 254, 0.15)" stroke-width="1"/>
+  <line x1="100" y1="150" x2="100" y2="164" stroke="rgba(0, 242, 254, 0.15)" stroke-width="1"/>
+  <line x1="26" y1="95" x2="40" y2="95" stroke="rgba(0, 242, 254, 0.15)" stroke-width="1"/>
+  <line x1="160" y1="95" x2="174" y2="95" stroke="rgba(0, 242, 254, 0.15)" stroke-width="1"/>
+
+  <!-- Core Glowing Cybernetic Shield / Cog ring -->
+  <circle cx="100" cy="95" r="48" fill="none" stroke="rgba(0, 242, 254, 0.05)" stroke-width="6" />
+  <circle cx="100" cy="95" r="48" fill="none" stroke="url(#cyberGrad)" stroke-width="3" filter="url(#neon)" />
+  <!-- Inner cog teeth -->
+  <circle cx="100" cy="95" r="41" fill="none" stroke="rgba(0, 242, 254, 0.4)" stroke-width="1" stroke-dasharray="2 6" />
+  
+  <!-- Central letter with glowing cyan / magenta glitch shadow offset -->
+  <text x="101" y="94" font-family="'Outfit', 'Courier New', monospace" font-weight="900" font-size="34" fill="#ec4899" text-anchor="middle" letter-spacing="1" filter="url(#neon)" opacity="0.6" dominant-baseline="central">${text}</text>
+  <text x="98" y="92" font-family="'Outfit', 'Courier New', monospace" font-weight="900" font-size="34" fill="#00f2fe" text-anchor="middle" letter-spacing="1" filter="url(#neon)" opacity="0.6" dominant-baseline="central">${text}</text>
+  <text x="100" y="93" font-family="'Outfit', 'Courier New', monospace" font-weight="900" font-size="34" fill="#ffffff" text-anchor="middle" letter-spacing="1" dominant-baseline="central">${text}</text>
+  
+  <!-- Cyberpunk Brackets Tag Name -->
+  <text x="100" y="156" font-family="'Courier New', monospace" font-weight="900" font-size="8" fill="#00f2fe" text-anchor="middle" letter-spacing="3" filter="url(#neon)" dominant-baseline="central">&lt; ${cleanName.toUpperCase()} &gt;</text>
+</svg>`;
+                    }
+                    
+                    // Dispatch the local vector back to the parent page
+                    window.parent.postMessage({ type: 'logo-svg-generated', svg: svgContent }, '*');
+                    
+                    setMessages(prev => [...prev, { 
+                        role: 'agent', 
+                        content: `Excellent! Since Gemini is experiencing minor connection limits, I have successfully initiated our **Local SVG Vector Engine** to compile a premium typographic logo for **${businessName}**. The vector SVG has been injected directly into your SVG Logo Lab! You can download it or lock it for prompt-injection. 🚀` 
+                    }]);
+                } finally {
+                    setIsTyping(false);
+                }
+            }
+        };
+
+        window.addEventListener('message', handleParentMessages);
+        return () => window.removeEventListener('message', handleParentMessages);
+    }, [profile, context]);
 
     const handleSend = async () => {
         const trimmed = input.trim();
@@ -435,7 +730,7 @@ const MascotAssistant = ({ profile, isAdminDashboard = false }) => {
         try {
             const historyForApi = messages.slice(1).concat(userMsg);
             // If we are in the admin dashboard, we pass 'ADMIN' to trigger the AIM admin persona override in the factory
-            const userTier = isAdminDashboard ? 'ADMIN' : (profile?.tier || 'FREE');
+            const userTier = isAdminDashboard ? 'ADMIN' : (context === 'website-creator' ? 'WEBSITE-CREATOR' : (profile?.tier || 'FREE'));
             const result = await callAgent('MASCOT', trimmed, historyForApi, userTier);
 
             // Intercept Triage Trigger
