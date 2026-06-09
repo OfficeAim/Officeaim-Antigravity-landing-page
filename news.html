@@ -129,100 +129,112 @@
         </div>
     </nav>
 
-    <!-- Page Header -->
-    <div class="policy-page-header">
-        <div class="container">
-            <p class="policy-breadcrumb"><a href="index.html">Home</a> → Security &amp; Trust</p>
-            <h1>Security &amp; Privacy at OfficeAIM</h1>
-            <p class="policy-last-updated">Enterprise-grade protection for your AI-powered workflows.</p>
+    <!-- ===== HERO SECTION ===== -->
+    <section class="security-hero" style="padding-top: 150px; padding-bottom: 80px;">
+        <div class="container text-center">
+            <h1 class="hero-v2-title" style="font-size: 3rem; margin-bottom: 20px;">
+                OfficeAIM <span style="color: var(--accent-primary);">News & Vlogs</span>
+            </h1>
+            <p class="hero-v2-subtitle" style="margin: 0 auto 40px; max-width: 600px;">
+                Stay updated with the latest AI trends, platform updates, and strategic insights directly from our engineering and marketing teams.
+            </p>
         </div>
-    </div>
+    </section>
 
-                        <h2>Protecting Your Business Intelligence</h2>
-                        <div class="policy-block">
-                            <p>At OfficeAIM, protecting your proprietary data, business ideas, and workflows is our top priority. We provide a highly available and secure environment so you can build, automate, and scale with confidence. This document outlines our security-by-design architecture.</p>
-                        </div>
-                    </section>
-
-                    <div class="policy-divider"></div>
-
-                    <section>
-                        <h2>AI &amp; LLM Data Privacy (Zero-Training Policy)</h2>
-                        <div class="policy-block">
-                            <p>The most critical aspect of enterprise AI is data privacy. OfficeAIM connects to advanced Large Language Models (LLMs) via secure, enterprise-grade APIs.</p>
-                            <ul>
-                                <li><strong>Your Data is Yours:</strong> The prompts, data, and context you provide to our AI Agents are never used to train public foundational models (such as public versions of Gemini or OpenAI).</li>
-                                <li><strong>Ephemeral Processing:</strong> Data sent to the AI is processed strictly to return your generated response and is not permanently stored by the LLM providers.</li>
-                            </ul>
-                        </div>
-                    </section>
-                    
-                    <div class="policy-divider"></div>
-
-                    <section>
-                        <h2>Infrastructure &amp; Data Encryption</h2>
-                        <div class="policy-block">
-                            <p>We partner with industry-leading infrastructure providers to ensure your data is safe at rest and in transit.</p>
-                            <ul>
-                                <li><strong>Database Engine:</strong> OfficeAIM utilizes Supabase (powered by PostgreSQL) as our core database engine.</li>
-                                <li><strong>Encryption:</strong> All customer data is encrypted at rest using AES-256 encryption. Data in transit between your browser, our servers, and our AI nodes is encrypted using HTTPS and TLS 1.2+ protocols.</li>
-                                <li><strong>Cloud Hosting:</strong> Our architecture is hosted on secure cloud infrastructure, ensuring high availability, redundancy, and automated backups.</li>
-                            </ul>
-                        </div>
-                    </section>
-
-                    <div class="policy-divider"></div>
-
-                    <section>
-                        <h2>Workflow Automation Security</h2>
-                        <div class="policy-block">
-                            <p>Our automation node processes your business logic with strict isolation.</p>
-                            <ul>
-                                <li><strong>Secure Webhooks:</strong> All data routed through our automation nodes (via n8n) relies on authenticated, encrypted webhook endpoints.</li>
-                                <li><strong>Credential Management:</strong> API keys and external integrations are securely hashed and stored. They are only injected at runtime to execute your specific workflows.</li>
-                            </ul>
-                        </div>
-                    </section>
-                    
-                    <div class="policy-divider"></div>
-
-                    <section>
-                        <h2>Access Control &amp; Identity</h2>
-                        <div class="policy-block">
-                            <p>OfficeAIM employs strict Role-Based Access Control (RBAC).</p>
-                            <ul>
-                                <li><strong>Workspace Isolation:</strong> Student and Admin workspaces are strictly isolated. No user can access the prompts, history, or generated assets of another user.</li>
-                                <li><strong>Authentication:</strong> We use secure session tokens and JWT (JSON Web Tokens) to continuously validate your identity during active sessions.</li>
-                            </ul>
-                        </div>
-                    </section>
-
-                    <div class="policy-divider"></div>
-
-                    <section>
-                        <h2>Data Retention &amp; Deletion</h2>
-                        <div class="policy-block">
-                            <p>You maintain full control over your data.</p>
-                            <ul>
-                                <li><strong>Active Vault:</strong> Your generated assets are stored in your personal Vault for as long as your account is active.</li>
-                                <li><strong>Right to Erasure:</strong> Upon request, or upon account deletion, all personal data and generated assets are permanently wiped from our active databases and automation nodes in compliance with global privacy standards.</li>
-                            </ul>
-                        </div>
-                    </section>
-
-                    <div class="policy-divider"></div>
-
-                    <section>
-                        <h2>Shared Responsibility</h2>
-                        <div class="policy-block">
-                            <p>While OfficeAIM secures the platform and infrastructure, customers are responsible for maintaining the confidentiality of their login credentials and ensuring the appropriateness of the data they input into the prompt generators. Please avoid inputting highly sensitive personal health information (PHI) or unencrypted cardholder data (CHD) into the AI agents.</p>
-                        </div>
-                    </section>
-
-                </article>
+    <!-- ===== NEWS GRID ===== -->
+    <section class="container" style="padding-bottom: 80px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
             
+            <!-- Vlog Card 1 -->
+            <div class="glass-card" style="padding: 0; overflow: hidden; border-radius: 24px;">
+                <div style="height: 200px; background: rgba(0, 242, 254, 0.1); display: flex; align-items: center; justify-content: center; position: relative;">
+                    <div style="position: absolute; top: 15px; right: 15px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: var(--accent-primary); border: 1px solid rgba(0, 242, 254, 0.3);">
+                        AI Agents
+                    </div>
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-primary); opacity: 0.5;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                </div>
+                <div style="padding: 24px;">
+                    <h3 style="font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 10px;">How to deploy an AI Support Agent in 5 minutes</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Learn how to connect your knowledge base to our autonomous AI agents to handle 80% of your customer support automatically.</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.8rem;">
+                        <span>10 min watch</span>
+                        <span>May 20, 2026</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vlog Card 2 -->
+            <div class="glass-card" style="padding: 0; overflow: hidden; border-radius: 24px;">
+                <div style="height: 200px; background: rgba(249, 115, 22, 0.1); display: flex; align-items: center; justify-content: center; position: relative;">
+                    <div style="position: absolute; top: 15px; right: 15px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: var(--accent-secondary); border: 1px solid rgba(249, 115, 22, 0.3);">
+                        Marketing
+                    </div>
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-secondary); opacity: 0.5;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                </div>
+                <div style="padding: 24px;">
+                    <h3 style="font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 10px;">Maximizing conversion rates with Behavioral Psych</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Deep dive into the psychological triggers embedded in the OfficeAIM Behavioral Profiler agent that boost SaaS signups.</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.8rem;">
+                        <span>15 min watch</span>
+                        <span>May 15, 2026</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vlog Card 3 -->
+            <div class="glass-card" style="padding: 0; overflow: hidden; border-radius: 24px;">
+                <div style="height: 200px; background: rgba(236, 72, 153, 0.1); display: flex; align-items: center; justify-content: center; position: relative;">
+                    <div style="position: absolute; top: 15px; right: 15px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: #ec4899; border: 1px solid rgba(236, 72, 153, 0.3);">
+                        Updates
+                    </div>
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #ec4899; opacity: 0.5;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                </div>
+                <div style="padding: 24px;">
+                    <h3 style="font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 10px;">OfficeAIM v2.5 Launch: Introducing the Command Deck</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">A tour of our newly revamped UI, faster LLM routing, and the introduction of 3 new Pro-tier specialized agents.</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.8rem;">
+                        <span>8 min watch</span>
+                        <span>May 05, 2026</span>
+                    </div>
+                </div>
+            </div>
         </div>
-    </main>
+
+        <!-- Incoming Transmission -->
+        <div class="glass-card text-center" style="margin-top: 40px; padding: 60px; border-radius: 24px; border: 1px dashed rgba(255,255,255,0.1);">
+            <div style="width: 48px; height: 48px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
+            </div>
+            <h3 style="font-size: 1rem; font-weight: 700; color: white; margin-bottom: 8px;">Incoming Transmission</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">Our AI engine is synthesizing the next news vlog. Stay connected.</p>
+        </div>
+        
+    </section>
+
+    <!-- ===== NEWSLETTER ===== -->
+    <section class="container" style="padding-bottom: 100px;">
+        <div class="glass-card text-center" style="padding: 60px 40px; border-radius: 32px; border: 1px solid rgba(0,242,254,0.3); box-shadow: 0 0 50px rgba(0,242,254,0.1); position: relative; overflow: hidden; max-width: 800px; margin: 0 auto;">
+            <!-- Glow background -->
+            <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100%; height: 50%; background: rgba(0,242,254,0.1); filter: blur(50px); z-index: 0; border-radius: 50%;"></div>
+            
+            <div style="position: relative; z-index: 1;">
+                <div style="display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: rgba(0,242,254,0.1); border: 1px solid rgba(0,242,254,0.3); color: var(--accent-primary); margin-bottom: 24px;">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </div>
+                <h3 style="font-size: 2rem; font-weight: 900; color: white; margin-bottom: 16px;">OfficeAIM Insider</h3>
+                <p style="font-size: 1rem; color: var(--text-muted); margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">Join our newsletter to receive the latest updates on Artificial Intelligence, OfficeAIM features, and exclusive strategies directly in your inbox.</p>
+                
+                <form style="display: flex; gap: 12px; max-width: 500px; margin: 0 auto;" onsubmit="event.preventDefault(); alert('Thanks for subscribing! You\'ll receive our latest news soon.');">
+                    <input type="email" placeholder="Your email address..." required
+                        style="flex: 1; background: #0a0f1c; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px 20px; color: white; outline: none; font-family: 'Inter', sans-serif; transition: border-color 0.3s;"
+                        onfocus="this.style.borderColor='var(--accent-primary)'"
+                        onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+                    <button type="submit" class="btn btn-primary" style="border-radius: 12px; padding: 14px 30px; font-weight: 900; letter-spacing: 1px;">SUBSCRIBE</button>
+                </form>
+                <p style="font-size: 0.7rem; color: rgba(255,255,255,0.3); margin-top: 20px; text-transform: uppercase; letter-spacing: 1px;">No spam. Only high-value data transmissions.</p>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer class="footer">
