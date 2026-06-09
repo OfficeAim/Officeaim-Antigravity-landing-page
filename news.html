@@ -147,54 +147,61 @@
             
             <!-- Vlog Card 1 -->
             <div class="glass-card" style="padding: 0; overflow: hidden; border-radius: 24px;">
-                <div style="height: 200px; background: rgba(0, 242, 254, 0.1); display: flex; align-items: center; justify-content: center; position: relative;">
+                <div onclick="openVideoModal('https://www.youtube.com/embed/0YObx03xkSo?autoplay=1')" style="height: 200px; background: rgba(0, 242, 254, 0.1) url('images/newsletter-bg.png') center/cover; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                     <div style="position: absolute; top: 15px; right: 15px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: var(--accent-primary); border: 1px solid rgba(0, 242, 254, 0.3);">
-                        AI Agents
+                        Startups & MVP
                     </div>
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-primary); opacity: 0.5;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    <!-- Play Button -->
+                    <div style="width: 60px; height: 60px; background: rgba(0,0,0,0.5); border: 2px solid var(--accent-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--accent-primary)" stroke="var(--accent-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    </div>
                 </div>
                 <div style="padding: 24px;">
-                    <h3 style="font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 10px;">How to deploy an AI Support Agent in 5 minutes</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Learn how to connect your knowledge base to our autonomous AI agents to handle 80% of your customer support automatically.</p>
+                    <h3 style="font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 10px;">Building an AI MVP in Days (OfficeAIM News)</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">The traditional lifecycle is dead. See how startups use AI APIs, n8n, and Supabase to launch MVPs in record time.</p>
                     <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.8rem;">
-                        <span>10 min watch</span>
-                        <span>May 20, 2026</span>
+                        <span>4 min watch</span>
+                        <span>June 09, 2026</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Vlog Card 2 -->
+            <!-- Vlog Card 2 (Curated News Placeholder) -->
             <div class="glass-card" style="padding: 0; overflow: hidden; border-radius: 24px;">
-                <div style="height: 200px; background: rgba(249, 115, 22, 0.1); display: flex; align-items: center; justify-content: center; position: relative;">
+                <div onclick="alert('Este video se generará en la próxima edición semanal.')" style="height: 200px; background: rgba(249, 115, 22, 0.1); display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                     <div style="position: absolute; top: 15px; right: 15px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: var(--accent-secondary); border: 1px solid rgba(249, 115, 22, 0.3);">
-                        Marketing
+                        Apple Intelligence
                     </div>
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-secondary); opacity: 0.5;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    <div style="width: 60px; height: 60px; background: rgba(0,0,0,0.5); border: 2px solid var(--accent-secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--accent-secondary)" stroke="var(--accent-secondary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    </div>
                 </div>
                 <div style="padding: 24px;">
-                    <h3 style="font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 10px;">Maximizing conversion rates with Behavioral Psych</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Deep dive into the psychological triggers embedded in the OfficeAIM Behavioral Profiler agent that boost SaaS signups.</p>
+                    <h3 style="font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 10px;">Siri's Evolution & Gemini Integration</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Analysis of the latest announcements: How iOS is integrating local models and where Gemini fits into the Apple ecosystem.</p>
                     <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.8rem;">
-                        <span>15 min watch</span>
-                        <span>May 15, 2026</span>
+                        <span>Coming Soon</span>
+                        <span>Curated News</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Vlog Card 3 -->
+            <!-- Vlog Card 3 (Curated News Placeholder) -->
             <div class="glass-card" style="padding: 0; overflow: hidden; border-radius: 24px;">
-                <div style="height: 200px; background: rgba(236, 72, 153, 0.1); display: flex; align-items: center; justify-content: center; position: relative;">
+                <div onclick="alert('Este video se generará en la próxima edición semanal.')" style="height: 200px; background: rgba(236, 72, 153, 0.1); display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                     <div style="position: absolute; top: 15px; right: 15px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: #ec4899; border: 1px solid rgba(236, 72, 153, 0.3);">
                         Updates
                     </div>
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #ec4899; opacity: 0.5;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    <div style="width: 60px; height: 60px; background: rgba(0,0,0,0.5); border: 2px solid #ec4899; border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="#ec4899" stroke="#ec4899" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    </div>
                 </div>
                 <div style="padding: 24px;">
-                    <h3 style="font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 10px;">OfficeAIM v2.5 Launch: Introducing the Command Deck</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">A tour of our newly revamped UI, faster LLM routing, and the introduction of 3 new Pro-tier specialized agents.</p>
+                    <h3 style="font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 10px;">The New AI Tooling Landscape</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">A look into the newest productivity extensions and AI tools curated this week to boost your workflows.</p>
                     <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.8rem;">
-                        <span>8 min watch</span>
-                        <span>May 05, 2026</span>
+                        <span>Coming Soon</span>
+                        <span>Curated News</span>
                     </div>
                 </div>
             </div>
@@ -212,6 +219,34 @@
     </section>
 
     <!-- ===== NEWSLETTER ===== -->
+    
+    <!-- Video Modal -->
+    <div id="videoModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
+        <div style="position: relative; width: 90%; max-width: 1000px; aspect-ratio: 16/9; background: #000; border-radius: 12px; border: 1px solid rgba(0,242,254,0.3); box-shadow: 0 0 50px rgba(0,242,254,0.1);">
+            <button onclick="closeVideoModal()" style="position: absolute; top: -40px; right: 0; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; font-weight: 200;">&times;</button>
+            <iframe id="modalVideo" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width: 100%; height: 100%; border-radius: 12px; outline: none;"></iframe>
+        </div>
+    </div>
+    
+    <script>
+        function openVideoModal(videoUrl) {
+            const modal = document.getElementById('videoModal');
+            const video = document.getElementById('modalVideo');
+            video.src = videoUrl;
+            modal.style.display = 'flex';
+            // Disable body scroll when modal is open
+            document.body.style.overflow = 'hidden';
+        }
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const video = document.getElementById('modalVideo');
+            video.src = '';
+            modal.style.display = 'none';
+            // Restore body scroll
+            document.body.style.overflow = 'auto';
+        }
+    </script>
+
     <section class="container" style="padding-bottom: 100px;">
         <div class="glass-card text-center" style="padding: 60px 40px; border-radius: 32px; border: 1px solid rgba(0,242,254,0.3); box-shadow: 0 0 50px rgba(0,242,254,0.1); position: relative; overflow: hidden; max-width: 800px; margin: 0 auto;">
             <!-- Glow background -->
