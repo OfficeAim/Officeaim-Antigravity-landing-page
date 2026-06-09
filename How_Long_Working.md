@@ -29,6 +29,12 @@ Estimación del tiempo de desarrollo basado en las sesiones de trabajo registrad
 | **04/03/2026** | ~3.25h | Bug Fixes (Admin UUID in React, event listeners in script.js) |
 | **05/03/2026** | ~2.75h | Admin Dashboard CRM redesign, sidebar nav funcional, git history cleanup (2.2G→159M), GitHub push exitoso |
 | **06/03/2026** | ~1.5h | Subscriber Interest Test & Post-Diagnostic Integration Plan |
-| **TOTAL** | **~105.25 horas** | **Semana 3 de Desarrollo Intenso** |
+| **28/04/2026** | ~1 hora | Landing Page Construction Transition & Widget Integration |
+| **23/05/2026** | ~1.1 horas | Restored Supabase, updated cookies.txt, implemented interactive SaaS LMS premium dashboard tabs in localhost. |
+| **24/05/2026** | ~5.3 horas | Multilingual onboarding, STT/TTS in Mascot, Admin Coach integration, unified AIM branding & HUD refinements. |
+| **30/05/2026** | ~3.2h | Robust Mascant Widget Improvement (border, timeout, fallback) |
+| **09/06/2026** | ~3.6h | Mascot SDK fix and news.html integration |
+| **TOTAL** | **~119.45 horas** | **Semana 4 de Desarrollo Intenso** |
 ---
 *Nota: Estos tiempos son aproximados basados en la duración de las sesiones de terminal.*
+

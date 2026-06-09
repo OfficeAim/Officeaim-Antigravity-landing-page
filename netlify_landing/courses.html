@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OfficeAim Campus — Learn AI Step by Step</title>
+    <meta name="description"
+        content="Welcome to the OfficeAim Campus. Your personalized learning dashboard for mastering AI in the workplace.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Campus Specific Styles */
+        :root {
+            --campus-bg: #05070A;
+            --campus-card: rgba(15, 27, 46, 0.6);
+        }
+
+        body {
+            background-color: var(--campus-bg);
+        }
+
+        .campus-header {
+            padding: 120px 0 60px;
+            background: radial-gradient(circle at top right, rgba(34, 211, 238, 0.05), transparent 40%),
+                radial-gradient(circle at bottom left, rgba(255, 122, 24, 0.05), transparent 40%);
+        }
+
+        .welcome-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            background: rgba(255, 122, 24, 0.1);
+            border: 1px solid rgba(255, 122, 24, 0.2);
+            border-radius: 100px;
+            color: var(--accent-primary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .learning-path {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .course-progress-card {
+            background: var(--campus-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 32px;
+            display: flex;
+            gap: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .course-progress-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(34, 211, 238, 0.2);
+        }
+
+        .course-progress-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, transparent, rgba(34, 211, 238, 0.03));
+            pointer-events: none;
+        }
+
+        .thumb-wrapper {
+            width: 180px;
+            height: 120px;
+            border-radius: 12px;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .thumb-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .course-info {
+            flex-grow: 1;
+        }
+
+        .course-meta {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-secondary);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .course-title-sub {
+            font-size: 1.25rem;
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .progress-bar-container {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin: 16px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-primary), #FFB17A);
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+
+        .status-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .sidebar-campus {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .campus-widget {
+            background: var(--campus-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 24px;
+        }
+
+        .widget-title {
+            font-size: 1rem;
+            color: white;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .resource-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .resource-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            transition: background 0.2s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .resource-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        .resource-icon {
+            font-size: 1.2rem;
+        }
+
+        .locked-module {
+            opacity: 0.6;
+            filter: grayscale(1);
+            cursor: not-allowed;
+        }
+
+        .lock-overlay {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 992px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .course-progress-card {
+                flex-direction: column;
+            }
+
+            .thumb-wrapper {
+                width: 100%;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sticky Navigation -->
+    <nav class="navbar scrolled">
+        <div class="container nav-container">
+            <div class="logo">
+                <a href="index.html"><img src="images/logo.png" alt="OfficeAim Logo" class="logo-img"></a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Main Site</a></li>
+                <li><a href="index.html#toolkit">Toolkit</a></li>
+                <li><a href="#support">Support</a></li>
+            </ul>
+            <div class="nav-ctas">
+                <div class="user-profile">
+                    <span style="color: var(--text-muted); font-size: 0.9rem; margin-right: 15px;">Welcome back,
+                        User</span>
+                    <a href="#" class="btn btn-secondary btn-sm"
+                        style="padding: 6px 15px; font-size: 0.8rem;">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="campus-header">
+        <div class="container">
+            <div class="welcome-badge">OFFICEAIM CAMPUS ACCESS</div>
+            <h1 class="hero-title" style="margin-bottom: 20px;">Your Learning Dashboard</h1>
+            <p class="hero-subtitle">Master AI workflows at your own pace. Start where you left off.</p>
+        </div>
+    </header>
+
+    <main class="campus-main section-padding" style="padding-top: 0;">
+        <div class="container">
+            <div class="dashboard-grid">
+                <!-- Main Learning Content -->
+                <div class="learning-path">
+                    <h2 class="section-title" style="text-align: left; margin-bottom: 24px; font-size: 1.5rem;">
+                        OfficeAIM Curriculum</h2>
+
+                    <!-- Course A: AI Fear Buster (Active) -->
+                    <div class="course-progress-card">
+                        <div class="thumb-wrapper">
+                            <img src="images/course_module1.webp" alt="AI Fear Buster">
+                        </div>
+                        <div class="course-info">
+                            <span class="course-meta">Introductory Course • Free</span>
+                            <h3 class="course-title-sub">AI Fear Buster: From Anxiety to Confidence</h3>
+                            <div class="progress-bar-container">
+                                <div class="progress-fill" style="width: 10%;"></div>
+                            </div>
+                            <div class="status-labels">
+                                <span>1 Lesson Viewed</span>
+                                <span>Total 9 Lessons</span>
+                            </div>
+                            <a href="classroom.html" class="btn btn-primary" style="margin-top: 20px;">Start Learning
+                                (Lesson 1.1)</a>
+                        </div>
+                    </div>
+
+                    <!-- Course B: The AI Productivity Sprint (Locked) -->
+                    <div class="course-progress-card locked-module">
+                        <div class="lock-overlay">🔒</div>
+                        <div class="thumb-wrapper">
+                            <img src="images/why_1.webp" alt="The AI Productivity Sprint">
+                        </div>
+                        <div class="course-info">
+                            <span class="course-meta">Pilot Course • Premium</span>
+                            <h3 class="course-title-sub">The AI Productivity Sprint</h3>
+                            <p class="text-muted" style="font-size: 0.9rem;">Upgrade your skills for significant
+                                productivity gains and career advancement.</p>
+                            <a href="#" class="btn btn-secondary" style="margin-top: 20px; pointer-events: none;">Coming
+                                Soon (Join Waitlist)</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar Content -->
+                <div class="sidebar-campus">
+                    <!-- Resource Widget -->
+                    <div class="campus-widget">
+                        <h3 class="widget-title">Quick Resources ⚡</h3>
+                        <div class="resource-list">
+                            <a href="#" class="resource-item">
+                                <span class="resource-icon">📑</span>
+                                <span>Founding Member Cheat Sheet</span>
+                            </a>
+                            <a href="#" class="resource-item">
+                                <span class="resource-icon">🛠️</span>
+                                <span>Prompt Builder Access</span>
+                            </a>
+                            <a href="#" class="resource-item">
+                                <span class="resource-icon">📅</span>
+                                <span>Office Hours Calendar</span>
+                            </a>
+                            <a href="#" class="resource-item">
+                                <span class="resource-icon">💬</span>
+                                <span>Private Slack Channel</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Membership Status -->
+                    <div class="campus-widget"
+                        style="background: linear-gradient(135deg, rgba(255, 122, 24, 0.05), rgba(34, 211, 238, 0.05)); border: 1px solid rgba(255, 122, 24, 0.1);">
+                        <h3 class="widget-title">Membership Status 💎</h3>
+                        <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 12px;">Plan: <strong>Founding
+                                Member</strong></p>
+                        <p class="text-muted" style="font-size: 0.8rem;">Lifetime access to all future core modules
+                            enabled.</p>
+                        <a href="#" class="btn btn-secondary btn-sm"
+                            style="margin-top: 15px; width: 100%; font-size: 0.8rem;">Billing & Account</a>
+                    </div>
+
+                    <!-- 8-Agent Team Widget -->
+                    <div class="campus-widget">
+                        <h3 class="widget-title">Your AI Support Team 🤖</h3>
+                        <p class="text-muted" style="font-size: 0.8rem; margin-bottom: 15px;">Powered by our unique
+                            8-agent strategy to ensure your success.</p>
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+                            <div title="AI Project Manager" style="text-align: center; font-size: 1.2rem;">👔</div>
+                            <div title="Course Creator" style="text-align: center; font-size: 1.2rem;">🎓</div>
+                            <div title="AI Prompter" style="text-align: center; font-size: 1.2rem;">✨</div>
+                            <div title="Marketing Pro" style="text-align: center; font-size: 1.2rem;">📢</div>
+                            <div title="Community Builder" style="text-align: center; font-size: 1.2rem;">👥</div>
+                            <div title="Quality Checker" style="text-align: center; font-size: 1.2rem;">✅</div>
+                            <div title="SEO Master" style="text-align: center; font-size: 1.2rem;">🔍</div>
+                            <div title="UX Strategist" style="text-align: center; font-size: 1.2rem;">🧠</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 30px;">
+                <p>&copy; 2026 OfficeAim Campus. All rights reserved.</p>
+                <div class="footer-social" style="margin-top: 15px; justify-content: center;">
+                    <a href="index.html"
+                        style="color: var(--text-muted); font-size: 0.8rem; margin: 0 10px; text-decoration: none;">Main
+                        Landing Page</a>
+                    <a href="#"
+                        style="color: var(--text-muted); font-size: 0.8rem; margin: 0 10px; text-decoration: none;">Privacy
+                        Policy</a>
+                    <a href="#"
+                        style="color: var(--text-muted); font-size: 0.8rem; margin: 0 10px; text-decoration: none;">Campus
+                        Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

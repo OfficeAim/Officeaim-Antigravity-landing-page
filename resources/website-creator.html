@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Creator Blueprint Generator | OfficeAIM</title>
+    <meta name="description" content="Design and structure your next website's technical blueprint. Generate AI-optimized developer prompts with integrated payment gateways and webhooks.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        outfit: ['Outfit', 'sans-serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#070A12',
+                            card: '#0c101c',
+                            orange: '#f97316',
+                            cyan: '#06b6d4',
+                            emerald: '#10b981',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS Styles -->
+    <style>
+        body {
+            background-color: #070A12;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* Glassmorphism Classes */
+        .glass-card {
+            background: rgba(12, 16, 28, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-input {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-input:focus {
+            border-color: #f97316;
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 15px rgba(249, 115, 22, 0.15);
+            outline: none;
+        }
+
+        /* Glowing Gradients */
+        .glow-orange {
+            box-shadow: 0 0 40px rgba(249, 115, 22, 0.15);
+        }
+
+        .glow-cyan {
+            box-shadow: 0 0 40px rgba(6, 182, 214, 0.15);
+        }
+
+        /* Animation & Transition helpers */
+        .step-phase {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hidden-phase {
+            opacity: 0;
+            transform: translateX(30px);
+            pointer-events: none;
+            position: absolute;
+            width: 100%;
+        }
+
+        .active-phase {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+            position: relative;
+        }
+
+        /* Custom Scrollbar for Terminal block */
+        .terminal-scroll::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .terminal-scroll::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.2);
+        }
+        .terminal-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+        .terminal-scroll::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body class="min-h-screen relative antialiased selection:bg-brand-orange selection:text-white">
+
+    <!-- Glowing Background Atmosphere elements -->
+    <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-brand-orange/5 blur-[120px] pointer-events-none z-0"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-brand-cyan/5 blur-[120px] pointer-events-none z-0"></div>
+    <div class="absolute top-[35%] left-[40%] w-[30vw] h-[30vw] rounded-full bg-brand-emerald/3 blur-[120px] pointer-events-none z-0"></div>
+
+    <!-- Header Navigation -->
+    <header class="relative z-10 w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between border-b border-white/[0.04]">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-orange to-brand-orange/40 flex items-center justify-center shadow-[0_0_20px_rgba(249,115,22,0.3)] hover:scale-105 transition-transform">
+                <span class="font-outfit font-black text-xl italic tracking-tighter text-white">AIM</span>
+            </div>
+            <div>
+                <span class="font-outfit font-black uppercase tracking-widest text-xs text-white leading-none">OfficeAIM</span>
+                <p class="text-[9px] text-brand-orange font-bold uppercase tracking-wider leading-none mt-0.5">Website Creator</p>
+            </div>
+        </div>
+        
+        <a href="../index.html" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.03] border border-white/10 hover:bg-white/[0.08] hover:border-white/20 transition-all text-xs font-bold italic tracking-wide text-white/80 hover:text-white">
+            <svg class="w-4 h-4 text-brand-orange shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Return to Home
+        </a>
+    </header>
+
+    <!-- Main Container -->
+    <main class="relative z-10 w-full max-w-7xl mx-auto px-6 py-12">
+        
+        <!-- Header Text -->
+        <div class="max-w-3xl mb-12 text-left">
+            <h1 class="text-3xl md:text-5xl font-outfit font-black tracking-tight italic uppercase text-white leading-tight">
+                Web <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">Blueprint Generator</span> for Your Site
+            </h1>
+            <p class="mt-4 text-sm md:text-base text-gray-400 font-medium leading-relaxed">
+                Design your website's architecture, configure booking paths, and generate a technical prompt optimized for AI code compilers (like Lovable, v0, or Cursor). <span class="text-white">Everything is transparent, under your control, with $0 hidden markup costs.</span>
+            </p>
+        </div>
+
+        <!-- Desktop Grid Grid Layout -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+            
+            <!-- Left Side: Interactive Wizard Form -->
+            <section class="md:col-span-8 glass-card rounded-3xl p-6 md:p-8 relative overflow-hidden" id="wizard-section">
+                
+                <!-- Wizard Status / Progress Bar Header -->
+                <div class="mb-8 border-b border-white/[0.05] pb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-brand-orange/15 border border-brand-orange/30 flex items-center justify-center shrink-0">
+                            <span class="font-outfit font-black text-brand-orange text-lg" id="step-number-indicator">01</span>
+                        </div>
+                        <div>
+                            <span class="text-[9px] uppercase tracking-widest font-black text-brand-orange italic leading-none block">Active Phase</span>
+                            <span class="text-sm font-bold text-white tracking-wide" id="step-title-indicator">Brand Identity</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Bullet Progress Line -->
+                    <div class="flex items-center gap-2">
+                        <div class="h-2 w-16 md:w-24 rounded-full bg-brand-orange shadow-[0_0_8px_rgba(249,115,22,0.5)] transition-all duration-500" id="progress-bar-1"></div>
+                        <div class="h-2 w-16 md:w-24 rounded-full bg-white/10 transition-all duration-500" id="progress-bar-2"></div>
+                        <div class="h-2 w-16 md:w-24 rounded-full bg-white/10 transition-all duration-500" id="progress-bar-3"></div>
+                    </div>
+                </div>
+
+                <!-- FORM ELEMENT -->
+                <form id="creator-wizard-form" class="relative min-h-[350px]">
+
+                    <!-- ============================================ -->
+                    <!-- PHASE 1: BRAND IDENTITY -->
+                    <!-- ============================================ -->
+                    <div class="step-phase active-phase" id="phase-1">
+                        <h2 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                            <span class="text-brand-orange">1.</span> Define Your Brand Core
+                        </h2>
+                        
+                        <div class="space-y-6">
+                            <!-- Business Name Field -->
+                            <div class="flex flex-col gap-2">
+                                <label for="business-name" class="text-xs font-bold uppercase tracking-wider text-gray-400">Business / Brand Name</label>
+                                <input type="text" id="business-name" name="businessName" placeholder="E.g., Rioplatense Realty, Alpha Fitness, etc." required
+                                    class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white placeholder:text-white/20">
+                            </div>
+
+                            <!-- Target Language Dropdown -->
+                            <div class="flex flex-col gap-2">
+                                <label for="target-language" class="text-xs font-bold uppercase tracking-wider text-gray-400">Target Website Language</label>
+                                <div class="relative">
+                                    <select id="target-language" name="targetLanguage" required
+                                        class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white appearance-none cursor-pointer bg-brand-card">
+                                        <option value="English" selected>English</option>
+                                        <option value="Español">Español (Spanish)</option>
+                                        <option value="Nederlands">Nederlands (Dutch)</option>
+                                        <option value="Français">Français (French)</option>
+                                        <option value="Deutsch">Deutsch (German)</option>
+                                    </select>
+                                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-brand-orange">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Logo Status Dropdown -->
+                            <div class="flex flex-col gap-2">
+                                <label for="logo-status" class="text-xs font-bold uppercase tracking-wider text-gray-400">Your Logo Assets</label>
+                                <div class="relative">
+                                    <select id="logo-status" name="logoStatus" required
+                                        class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white appearance-none cursor-pointer bg-brand-card">
+                                        <option value="I have a logo ready">I have a logo ready (High-res images)</option>
+                                        <option value="Create a modern text/SVG placeholder logo" selected>Create a modern minimal typographic SVG logo</option>
+                                    </select>
+                                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-brand-orange">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SVG LOGO LAB SUB-PANEL CONTAINER -->
+                            <div id="svg-logo-lab-container" class="mt-4 p-5 rounded-2xl border border-white/5 bg-white/[0.02] flex flex-col gap-4">
+                                <!-- SVG Logo Lab Title & Info -->
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-black uppercase text-brand-orange tracking-widest italic flex items-center gap-1.5">
+                                        <svg class="w-4 h-4 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                                        SVG Logo Lab
+                                    </span>
+                                    <span class="text-[9px] text-gray-500 font-bold uppercase tracking-wider font-mono">Powered by AIM & Gemini</span>
+                                </div>
+                                
+                                <!-- Inputs Row: Initials & Vibe Selection -->
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <!-- Logo Initials -->
+                                    <div class="flex flex-col gap-1.5">
+                                        <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Logo Text / Initials</label>
+                                        <input type="text" id="logo-text-input" placeholder="E.g., RR" maxlength="10"
+                                            class="glass-input w-full px-3 py-2 rounded-xl text-xs text-white">
+                                    </div>
+                                    <!-- Vibe Select -->
+                                    <div class="flex flex-col gap-1.5">
+                                        <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Design Concept Vibe</label>
+                                        <div class="relative">
+                                            <select id="logo-vibe-select" class="glass-input w-full px-3 py-2 rounded-xl text-xs text-white bg-brand-card appearance-none">
+                                                <option value="Minimal Tech Geometric" selected>Minimal Tech (Geometric, neon accents)</option>
+                                                <option value="Sleek Modern Serif">Sleek Modern Serif (Classic, luxury, high-contrast)</option>
+                                                <option value="Abstract Monogram">Abstract Monogram (Interlocking lines)</option>
+                                                <option value="Futuristic Cyberpunk">Futuristic Cyber (Glowing nodes, sharp angles)</option>
+                                            </select>
+                                            <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-brand-orange">
+                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Description or Prompt Area -->
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Describe Your Custom Logo Idea (Optional)</label>
+                                    <textarea id="logo-prompt-description" placeholder="E.g. A sleek geometric crown integrated with a bolt of lightning, orange and black accents..." rows="2"
+                                        class="glass-input w-full px-3 py-2 rounded-xl text-xs text-white resize-none"></textarea>
+                                </div>
+
+                                <!-- Reference File Uploader -->
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Upload Reference Image or Logo Sketch (Optional)</label>
+                                    <div class="relative flex items-center justify-center border border-dashed border-white/10 rounded-xl p-3 bg-white/[0.01] hover:bg-white/[0.03] transition-all cursor-pointer group">
+                                        <input type="file" id="logo-ref-uploader" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
+                                        <div class="flex items-center gap-2 text-center pointer-events-none">
+                                            <svg class="w-4 h-4 text-brand-orange group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                            <span class="text-[10px] text-gray-400 font-medium" id="logo-uploader-label">Drag & drop or click to upload reference</span>
+                                        </div>
+                                    </div>
+                                    <div id="logo-preview-img-container" class="hidden relative w-16 h-16 rounded-xl border border-white/10 overflow-hidden bg-brand-card mt-2">
+                                        <img id="logo-ref-preview" class="w-full h-full object-cover">
+                                        <button type="button" id="btn-remove-ref-logo" class="absolute top-0.5 right-0.5 p-0.5 bg-brand-dark/80 rounded-full border border-white/10 text-red-400 hover:text-red-300">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Google Gemini Flow Image Generator Promotion -->
+                                <div class="p-4 rounded-xl bg-brand-cyan/5 border border-brand-cyan/15 text-[9.5px] text-gray-300 leading-relaxed flex flex-col gap-2">
+                                    <div>
+                                        <span class="font-bold text-brand-cyan uppercase tracking-wider block mb-0.5">🚀 Generate Image Logos with Google Gemini Flow</span>
+                                        <span class="text-[9px] text-gray-400">Since your client will have a dedicated Gmail account, they get 100% free access to Google Gemini Flow. Copy this optimized image generator prompt, paste it in Gemini to create a stunning high-res brand logo, download it, and upload it in the reference field above!</span>
+                                    </div>
+                                    <!-- Optimized Prompt Box -->
+                                    <div class="relative bg-black/45 rounded-lg p-2.5 font-mono text-[8.5px] text-gray-400 select-all pr-10 border border-white/5 whitespace-pre-wrap leading-normal" id="gemini-flow-logo-prompt">
+                                        <!-- Will be dynamically populated by JS -->
+                                    </div>
+                                    <!-- Copy button for Flow Prompt -->
+                                    <button type="button" id="btn-copy-flow-prompt" class="self-start px-3 py-1.5 rounded-lg bg-brand-cyan/15 border border-brand-cyan/30 hover:bg-brand-cyan/25 transition-all text-[8px] font-black uppercase text-brand-cyan flex items-center gap-1.5 active:scale-95">
+                                        <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                                        Copy Gemini Flow Prompt
+                                    </button>
+                                </div>
+
+                                <!-- Free External Generator Recommendation Section -->
+                                <div class="p-3 rounded-xl bg-black/45 border border-white/5 text-[9.5px] text-gray-400 leading-relaxed">
+                                    <span class="font-bold text-white block mb-1">💡 Pro Tip: Need a custom logo creator platform without sign-up?</span>
+                                    We recommend <a href="https://cooltext.com" target="_blank" class="text-brand-orange hover:underline font-bold">CoolText.com</a> or <a href="https://logomakr.com" target="_blank" class="text-brand-cyan hover:underline font-bold font-mono">LogoMakr.com</a>. They are 100% free, require no login, and allow direct image downloads. Create your logo there, download it, and upload it here so we can inject it into the website prompt!
+                                </div>
+
+                                <!-- Antigravity AI Custom Injection Panel -->
+                                <div id="antigravity-injector-panel" class="hidden mt-3 p-4 rounded-xl border border-brand-cyan/20 bg-brand-cyan/[0.03] flex-col gap-2">
+                                    <div class="flex items-center gap-2 text-brand-cyan">
+                                        <svg class="w-4 h-4 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                        <span class="text-[10px] font-black uppercase tracking-wider font-outfit">Bespoke Design Injected by Antigravity</span>
+                                    </div>
+                                    <p class="text-[9px] text-gray-400">Your AI agent Antigravity has compiled a custom high-end vector logo. Click below to load it into your Logo Lab!</p>
+                                    <button type="button" id="btn-load-antigravity-logo" class="w-full py-1.5 px-3 rounded-lg text-[10px] font-bold text-white bg-gradient-to-r from-brand-cyan to-blue-600 hover:from-cyan-500 hover:to-blue-500 transition-all flex items-center justify-center gap-1.5 shadow-lg shadow-cyan-500/10 active:scale-95">
+                                        ✨ Import Antigravity Custom Design
+                                    </button>
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <div class="flex gap-3">
+                                    <button type="button" id="btn-generate-svg-logo"
+                                        class="flex-grow flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-brand-orange to-amber-500 hover:from-brand-orange hover:to-amber-600 transition-all font-bold text-xs text-white shadow-[0_0_15px_rgba(249,115,22,0.2)] active:scale-95">
+                                        <span id="logo-spinner" class="hidden w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                        <span id="logo-btn-text">✨ Generate SVG Logo with AIM</span>
+                                    </button>
+                                </div>
+
+                                <!-- Interactive Glowing Logo Preview Card -->
+                                <div id="logo-preview-card-container" class="hidden flex flex-col gap-3">
+                                    <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Live Vector Logo Preview</label>
+                                    <div id="logo-preview-card" class="h-32 rounded-2xl border border-white/10 flex items-center justify-center relative overflow-hidden transition-all bg-gradient-to-tr from-[#0a0f18]/90 to-white/[0.02] p-6" style="box-shadow: 0 0 30px rgba(249,115,22,0.05);">
+                                        <div id="logo-preview-placeholder" class="text-xs text-gray-500 italic">Rendered Vector SVG appears here</div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col sm:flex-row gap-2">
+                                        <button type="button" id="btn-download-svg-logo"
+                                            class="flex-grow flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all text-xs font-bold text-white">
+                                            <svg class="w-3.5 h-3.5 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                            Download SVG
+                                        </button>
+                                        <button type="button" id="btn-use-svg-logo"
+                                            class="flex-grow flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-brand-cyan/15 border border-brand-cyan/30 hover:bg-brand-cyan/25 transition-all text-xs font-bold text-brand-cyan">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                            Lock & Inject Logo
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Color & Aesthetic Dropdown -->
+                            <div class="flex flex-col gap-2">
+                                <label for="color-aesthetic" class="text-xs font-bold uppercase tracking-wider text-gray-400">Color Palette & Vibe Aesthetic</label>
+                                <div class="relative">
+                                    <select id="color-aesthetic" name="colorAesthetic" required
+                                        class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white appearance-none cursor-pointer bg-brand-card">
+                                        <option value="Modern Dark Tech" selected>Modern Dark Tech (Dark theme, neon cyan/orange glows)</option>
+                                        <option value="Clean Corporate Blue">Clean Corporate Blue (White theme, trustful slate-blues)</option>
+                                        <option value="Warm Organic Earth">Warm Organic Earth (Warm tones, forest green, organic sand)</option>
+                                        <option value="Vibrant & Creative">Vibrant & Creative (Lively gradients, purple-pink flow, creative look)</option>
+                                    </select>
+                                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-brand-orange">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- ============================================ -->
+                    <!-- PHASE 2: ARCHITECTURE & CONTENT -->
+                    <!-- ============================================ -->
+                    <div class="step-phase hidden-phase" id="phase-2">
+                        <h2 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                            <span class="text-brand-orange">2.</span> Architecture & Sections
+                        </h2>
+                        
+                        <div class="space-y-6">
+                            <!-- Project Type (Interactive Cards) -->
+                            <div class="flex flex-col gap-3">
+                                <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Project Layout Type</span>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <!-- Landing Page Card -->
+                                    <label class="relative cursor-pointer">
+                                        <input type="radio" name="projectType" value="Landing Page" checked class="sr-only peer">
+                                        <div class="p-4 rounded-xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.04] peer-checked:border-brand-orange peer-checked:bg-brand-orange/5 peer-checked:shadow-[0_0_15px_rgba(249,115,22,0.1)] transition-all flex flex-col gap-2 h-full">
+                                            <div class="w-8 h-8 rounded-lg bg-brand-orange/10 flex items-center justify-center text-brand-orange">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                            </div>
+                                            <span class="text-xs font-black uppercase text-white">Landing Page</span>
+                                            <p class="text-[10px] text-gray-400 leading-tight">Single-page layout heavily optimized for lightning conversions.</p>
+                                        </div>
+                                    </label>
+
+                                    <!-- Business Website Card -->
+                                    <label class="relative cursor-pointer">
+                                        <input type="radio" name="projectType" value="Business Website" class="sr-only peer">
+                                        <div class="p-4 rounded-xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.04] peer-checked:border-brand-orange peer-checked:bg-brand-orange/5 peer-checked:shadow-[0_0_15px_rgba(249,115,22,0.1)] transition-all flex flex-col gap-2 h-full">
+                                            <div class="w-8 h-8 rounded-lg bg-brand-cyan/10 flex items-center justify-center text-brand-cyan">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                            </div>
+                                            <span class="text-xs font-black uppercase text-white">Business Site</span>
+                                            <p class="text-[10px] text-gray-400 leading-tight">Multi-page corporate setup mapping services and sections.</p>
+                                        </div>
+                                    </label>
+
+                                    <!-- E-Commerce Store Card -->
+                                    <label class="relative cursor-pointer">
+                                        <input type="radio" name="projectType" value="E-Commerce Store" class="sr-only peer">
+                                        <div class="p-4 rounded-xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.04] peer-checked:border-brand-orange peer-checked:bg-brand-orange/5 peer-checked:shadow-[0_0_15px_rgba(249,115,22,0.1)] transition-all flex flex-col gap-2 h-full">
+                                            <div class="w-8 h-8 rounded-lg bg-brand-emerald/10 flex items-center justify-center text-brand-emerald">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                                            </div>
+                                            <span class="text-xs font-black uppercase text-white">Online Store</span>
+                                            <p class="text-[10px] text-gray-400 leading-tight">Product catalog with fully integrated shopping cart & checkout flows.</p>
+                                        </div>
+                                    </label>
+
+                                    <!-- Custom Web App Card -->
+                                    <label class="relative cursor-pointer">
+                                        <input type="radio" name="projectType" value="Custom Web App" class="sr-only peer">
+                                        <div class="p-4 rounded-xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.04] peer-checked:border-brand-orange peer-checked:bg-brand-orange/5 peer-checked:shadow-[0_0_15px_rgba(249,115,22,0.1)] transition-all flex flex-col gap-2 h-full">
+                                            <div class="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-400">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                                            </div>
+                                            <span class="text-xs font-black uppercase text-white">Web Application</span>
+                                            <p class="text-[10px] text-gray-400 leading-tight">Advanced logic, databases, backend triggers, and heavy user states.</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Core Pages Checkboxes -->
+                            <div class="flex flex-col gap-3">
+                                <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Required Pages / Sections</span>
+                                <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                    <label class="flex items-center gap-3 p-3 rounded-lg border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] cursor-pointer">
+                                        <input type="checkbox" name="corePages" value="Home" checked class="rounded border-white/10 text-brand-orange focus:ring-brand-orange bg-[#0A0F18] w-4 h-4">
+                                        <span class="text-xs font-semibold text-white">Home</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 p-3 rounded-lg border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] cursor-pointer">
+                                        <input type="checkbox" name="corePages" value="About Us" checked class="rounded border-white/10 text-brand-orange focus:ring-brand-orange bg-[#0A0F18] w-4 h-4">
+                                        <span class="text-xs font-semibold text-white">About Us</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 p-3 rounded-lg border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] cursor-pointer">
+                                        <input type="checkbox" name="corePages" value="Services/Catalog" checked class="rounded border-white/10 text-brand-orange focus:ring-brand-orange bg-[#0A0F18] w-4 h-4">
+                                        <span class="text-xs font-semibold text-white">Services / Catalog</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 p-3 rounded-lg border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] cursor-pointer">
+                                        <input type="checkbox" name="corePages" value="Reviews" class="rounded border-white/10 text-brand-orange focus:ring-brand-orange bg-[#0A0F18] w-4 h-4">
+                                        <span class="text-xs font-semibold text-white">Testimonials / Reviews</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 p-3 rounded-lg border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] cursor-pointer">
+                                        <input type="checkbox" name="corePages" value="Contact Form" checked class="rounded border-white/10 text-brand-orange focus:ring-brand-orange bg-[#0A0F18] w-4 h-4">
+                                        <span class="text-xs font-semibold text-white">Contact Form</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Description Textarea -->
+                            <div class="flex flex-col gap-2">
+                                <label for="project-details" class="text-xs font-bold uppercase tracking-wider text-gray-400">Core Features / Project Details</label>
+                                <textarea id="project-details" name="projectDetails" rows="4" required
+                                    placeholder="Describe your core services, booking schedules, premium products, or explain how the main interactive section of your website should behave..."
+                                    class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white placeholder:text-white/20 resize-y"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- ============================================ -->
+                    <!-- PHASE 3: ACTION & CORE LOGIC -->
+                    <!-- ============================================ -->
+                    <div class="step-phase hidden-phase" id="phase-3">
+                        <h2 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                            <span class="text-brand-orange">3.</span> Logic & Business Rules
+                        </h2>
+                        
+                        <div class="space-y-6">
+                            <!-- Primary CTA Dropdown -->
+                            <div class="flex flex-col gap-2">
+                                <label for="primary-cta" class="text-xs font-bold uppercase tracking-wider text-gray-400">Primary Call-to-Action (CTA)</label>
+                                <div class="relative">
+                                    <select id="primary-cta" name="primaryCta" required
+                                        class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white appearance-none cursor-pointer bg-brand-card">
+                                        <option value="Direct to WhatsApp" selected>Direct click-to-chat WhatsApp Redirection</option>
+                                        <option value="Submit Form to Email">Submit Contact Form securely to Email</option>
+                                        <option value="Submit Booking to Custom Webhook">Secure Booking Dispatch to custom Automation Webhook (Make/n8n)</option>
+                                    </select>
+                                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-brand-orange">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Conditional Field: WhatsApp Number -->
+                            <div class="flex flex-col gap-2 transition-all duration-300 ease-out" id="whatsapp-number-container">
+                                <label for="whatsapp-number" class="text-xs font-bold uppercase tracking-wider text-gray-400">WhatsApp Contact Number (Include country code)</label>
+                                <input type="tel" id="whatsapp-number" name="whatsappNumber" placeholder="E.g., +15551234567"
+                                    class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white placeholder:text-white/20">
+                            </div>
+
+                            <!-- Conditional Field: Custom Webhook URL -->
+                            <div class="flex flex-col gap-2 transition-all duration-300 ease-out hidden" id="webhook-url-container">
+                                <label for="webhook-url" class="text-xs font-bold uppercase tracking-wider text-gray-400">Your custom Make/n8n Automation Webhook URL</label>
+                                <input type="url" id="webhook-url" name="webhookUrl" placeholder="E.g., https://hook.us1.make.com/..."
+                                    class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white placeholder:text-white/20">
+                            </div>
+
+                            <!-- Timeline Dropdown -->
+                            <div class="flex flex-col gap-2">
+                                <label for="launch-timeline" class="text-xs font-bold uppercase tracking-wider text-gray-400">Desired Launch Timeline</label>
+                                <div class="relative">
+                                    <select id="launch-timeline" name="launchTimeline" required
+                                        class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white appearance-none cursor-pointer bg-brand-card">
+                                        <option value="ASAP" selected>ASAP (Urgent Launch)</option>
+                                        <option value="Within 1 Month">Within 1 Month (Planned)</option>
+                                        <option value="Just Planning">Just Planning / Exploratory</option>
+                                    </select>
+                                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-brand-orange">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+                <!-- Navigation Controls -->
+                <div class="mt-8 border-t border-white/[0.05] pt-6 flex items-center justify-between">
+                    <button type="button" id="prev-btn" class="hidden px-6 py-3 rounded-xl bg-white/[0.02] border border-white/10 hover:bg-white/[0.05] transition-all text-xs font-bold uppercase tracking-wider text-white">
+                        Back
+                    </button>
+                    
+                    <button type="button" id="next-btn" class="ml-auto px-6 py-3 rounded-xl bg-gradient-to-r from-brand-orange to-amber-500 hover:from-brand-orange hover:to-brand-orange transition-all duration-300 text-xs font-black uppercase tracking-wider text-white shadow-[0_4px_20px_rgba(249,115,22,0.2)] hover:shadow-[0_4px_25px_rgba(249,115,22,0.4)] flex items-center gap-2">
+                        <span>Continue</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+
+                <!-- SUCCESS PANEL (Overlay Code Display) -->
+                <div class="absolute inset-0 bg-[#070A12] z-20 flex flex-col p-6 md:p-8 transition-all duration-500 transform translate-y-full opacity-0 overflow-y-auto" id="success-panel">
+                    
+                    <!-- Success Header -->
+                    <div class="flex items-start justify-between border-b border-white/[0.05] pb-4 mb-4">
+                        <div>
+                            <span class="text-[9px] font-black uppercase tracking-widest text-brand-orange italic">Blueprint Compiled Successfully</span>
+                            <h3 class="text-xl font-outfit font-black text-white mt-0.5 uppercase italic" id="success-title">This is how your site will look</h3>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-brand-emerald/10 border border-brand-emerald/30 flex items-center justify-center text-brand-emerald shrink-0">
+                            <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                    </div>
+
+                    <!-- Explanatory note -->
+                    <p class="text-[10px] text-gray-400 leading-normal mb-5 font-semibold" id="success-subtitle">
+                        Your structure has been compiled! Based on your brand identity, pages, and active CTAs, here is an interactive layout preview showing how your custom site elements will render:
+                    </p>
+
+                    <!-- ============================================ -->
+                    <!-- BROWSER SIMULATOR CONTAINER (MOCK VIEW) -->
+                    <!-- ============================================ -->
+                    <div class="relative w-full rounded-2xl border border-white/10 overflow-hidden shadow-2xl mb-5 flex flex-col min-h-[380px] transition-all duration-500" id="browser-simulator">
+                        <!-- Browser Header Top Bar -->
+                        <div class="px-4 py-2 bg-[#0d1222] border-b border-white/[0.06] flex items-center justify-between select-none">
+                            <div class="flex items-center gap-1.5 shrink-0">
+                                <span class="w-2 h-2 rounded-full bg-red-500/60 block"></span>
+                                <span class="w-2 h-2 rounded-full bg-yellow-500/60 block"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500/60 block"></span>
+                            </div>
+                            <!-- Address Bar -->
+                            <div class="bg-black/35 rounded-lg px-6 py-1 text-[9px] font-mono text-gray-400 w-1/2 text-center truncate" id="browser-url-bar">
+                                https://www.your-business.com
+                            </div>
+                            <div class="w-10"></div> <!-- spacing balance -->
+                        </div>
+                        
+                        <!-- Simulated Website Body Content -->
+                        <div class="flex-grow flex flex-col transition-all duration-500 p-0 text-white min-h-[330px]" id="simulated-website-body">
+                            
+                            <!-- Navbar -->
+                            <nav class="px-5 py-3 flex items-center justify-between border-b border-white/5 bg-black/10 select-none">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded-lg bg-gradient-to-tr from-brand-orange to-amber-500 flex items-center justify-center font-outfit font-black text-xs text-white" id="mock-nav-logo-icon">M</div>
+                                    <span class="font-outfit font-black text-xs text-white tracking-wide uppercase" id="mock-nav-brand-name">BrandName</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-[9px] text-gray-400 font-bold uppercase tracking-wider" id="mock-nav-links">
+                                    <!-- Dynamic page elements -->
+                                </div>
+                                <button type="button" class="px-3 py-1.5 rounded-lg bg-brand-orange text-[8px] font-black uppercase text-white shadow-md" id="mock-nav-cta">Book Now</button>
+                            </nav>
+                            
+                            <!-- Simulated Website Main Content (Hero) -->
+                            <div class="flex-grow flex flex-col justify-center items-center text-center px-6 py-10 relative overflow-hidden select-none">
+                                <!-- Background glowing dot inside browser -->
+                                <div class="absolute w-40 h-40 rounded-full bg-brand-orange/5 blur-3xl pointer-events-none" id="mock-hero-glow"></div>
+                                
+                                <h4 class="text-lg md:text-2xl font-outfit font-black uppercase italic tracking-tight text-white max-w-md leading-tight" id="mock-hero-title">
+                                    Your Premier Choice
+                                </h4>
+                                <p class="mt-2 text-[10px] text-gray-400 max-w-sm font-medium leading-relaxed" id="mock-hero-desc">
+                                    Loading details...
+                                </p>
+                                
+                                <!-- DYNAMIC CTA INTERACTIVE WORK AREA -->
+                                <div class="mt-6 w-full flex justify-center" id="mock-hero-cta-container">
+                                    <!-- Specific interactive UI injected by JS -->
+                                </div>
+                            </div>
+                            
+                            <!-- Simulated Website Footer -->
+                            <footer class="px-5 py-2.5 border-t border-white/5 bg-black/15 text-center text-[7.5px] text-gray-500 font-medium select-none">
+                                <span id="mock-footer-copyright">© 2026 BrandName. All rights reserved.</span>
+                            </footer>
+                            
+                        </div>
+                    </div>
+
+                    <!-- ============================================ -->
+                    <!-- WEBMASTER EXPANDABLE ACCORDION (COLLAPSIBLE) -->
+                    <!-- ============================================ -->
+                    <div class="border border-white/10 rounded-2xl overflow-hidden bg-black/25 mb-4 shrink-0">
+                        <button type="button" id="webmaster-accordion-toggle" class="w-full px-4 py-3 bg-[#0d1222]/50 hover:bg-[#0d1222] transition-colors flex items-center justify-between text-[9px] font-black uppercase tracking-widest text-brand-orange italic select-none">
+                            <span>⚙️ Webmaster Panel: AI Developer Prompt (Lovable / Cursor)</span>
+                            <svg class="w-4 h-4 text-brand-orange transform transition-transform duration-300" id="accordion-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        
+                        <!-- Collapsible Body content -->
+                        <div class="hidden flex-col p-4 border-t border-white/5 bg-black/15" id="webmaster-accordion-content">
+                            <!-- Explanatory note for the Webmaster -->
+                            <p class="text-[9.5px] text-gray-400 leading-normal mb-3 font-medium">
+                                This technical developer prompt has already been securely sent to your sheets via webhook. Use it in Lovable to build a connected application:
+                            </p>
+                            
+                            <!-- Terminal Code Area -->
+                            <div class="relative w-full h-[140px] bg-[#020408]/95 rounded-xl border border-white/[0.06] p-3 flex flex-col font-mono text-[9px] text-brand-cyan/90 overflow-hidden shadow-inner">
+                                <!-- Terminal Bar -->
+                                <div class="flex items-center justify-between pb-2 border-b border-white/5 mb-2 select-none text-[8px] text-gray-500 uppercase font-black tracking-widest">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-red-500/50 block"></span>
+                                        <span class="w-1.5 h-1.5 rounded-full bg-yellow-500/50 block"></span>
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500/50 block"></span>
+                                        <span class="ml-2 font-mono text-[8px]">blueprint_prompt.md</span>
+                                    </div>
+                                    <span class="text-gray-500 font-bold">React Dev Engine</span>
+                                </div>
+                                
+                                <!-- Terminal Text Display -->
+                                <div class="flex-grow overflow-y-auto terminal-scroll pr-2 leading-relaxed text-gray-300 font-normal whitespace-pre-wrap select-all select-text" id="compiled-prompt-output">
+                                    <!-- JS Inject target -->
+                                </div>
+                            </div>
+                            
+                            <!-- Copy button inside accordion -->
+                            <div class="mt-3 flex">
+                                <button type="button" id="copy-prompt-btn" class="px-4 py-2 rounded-lg bg-brand-orange hover:bg-brand-orange/90 transition-all text-[9px] font-black uppercase tracking-wider text-white shadow-md flex items-center gap-2">
+                                    <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="copy-btn-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                                    <span id="copy-btn-text">Copy Technical Prompt</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="mt-2 flex flex-col sm:flex-row gap-3 shrink-0">
+                        <button type="button" id="restart-btn" class="px-6 py-3 rounded-xl bg-white/[0.03] border border-white/10 hover:bg-white/[0.08] hover:border-white/20 transition-all text-xs font-bold uppercase tracking-wider text-white text-center">
+                            Generate another
+                        </button>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Right Side: Platform Cost & Partnership Info -->
+            <aside class="md:col-span-4 space-y-6">
+                
+                <!-- Transparent Cost Panel -->
+                <div class="glass-card rounded-3xl p-6 border-brand-cyan/20 glow-cyan">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-brand-cyan/10 flex items-center justify-center text-brand-cyan shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z"></path></svg>
+                        </div>
+                        <h3 class="font-outfit font-black uppercase text-xs tracking-wider text-white">Transparent Costs</h3>
+                    </div>
+                    
+                    <p class="text-[11px] text-gray-400 leading-relaxed mb-6 font-medium">
+                        Zero hidden markups. You pay third-party cloud infrastructure providers directly with a credit card under your name.
+                    </p>
+
+                    <!-- Cost Items List -->
+                    <div class="space-y-4">
+                        <!-- Hosting -->
+                        <div class="flex justify-between items-start gap-2 border-b border-white/[0.04] pb-3">
+                            <div>
+                                <span class="text-xs font-bold text-white block">Hosting</span>
+                                <span class="text-[10px] text-gray-500 font-mono">Vercel or Netlify</span>
+                            </div>
+                            <span class="text-xs font-black text-brand-emerald bg-brand-emerald/10 px-2.5 py-0.5 rounded-full">$0 USD</span>
+                        </div>
+
+                        <!-- Database -->
+                        <div class="flex justify-between items-start gap-2 border-b border-white/[0.04] pb-3">
+                            <div>
+                                <span class="text-xs font-bold text-white block">Database & Auth</span>
+                                <span class="text-[10px] text-gray-500 font-mono">Supabase Postgres</span>
+                            </div>
+                            <span class="text-xs font-black text-brand-emerald bg-brand-emerald/10 px-2.5 py-0.5 rounded-full">$0 USD</span>
+                        </div>
+
+                        <!-- Webhooks -->
+                        <div class="flex justify-between items-start gap-2 border-b border-white/[0.04] pb-3">
+                            <div>
+                                <span class="text-xs font-bold text-white block">Automations</span>
+                                <span class="text-[10px] text-gray-500 font-mono">Make (1k ops free)</span>
+                            </div>
+                            <span class="text-xs font-black text-brand-emerald bg-brand-emerald/10 px-2.5 py-0.5 rounded-full">$0 USD</span>
+                        </div>
+
+                        <!-- AI Engine -->
+                        <div class="flex justify-between items-start gap-2 border-b border-white/[0.04] pb-3">
+                            <div>
+                                <span class="text-xs font-bold text-white block">AI Generator / Dev</span>
+                                <span class="text-[10px] text-gray-500 font-mono">Lovable.dev / Gemini</span>
+                            </div>
+                            <span class="text-xs font-black text-gray-400 bg-white/5 px-2 py-0.5 rounded-full text-[10px]">Free / Pro Tiers</span>
+                        </div>
+
+                        <!-- Domain -->
+                        <div class="flex justify-between items-start gap-2">
+                            <div>
+                                <span class="text-xs font-bold text-white block">Custom Domain (.com)</span>
+                                <span class="text-[10px] text-gray-500 font-mono">Namecheap / GoDaddy</span>
+                            </div>
+                            <span class="text-xs font-black text-brand-orange bg-brand-orange/10 px-2 py-0.5 rounded-full text-[10px]">~$12 /year</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Revenue Share Partnership info panel -->
+                <div class="glass-card rounded-3xl p-6 border-brand-orange/20 glow-orange">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-brand-orange/10 flex items-center justify-center text-brand-orange shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        </div>
+                        <h3 class="font-outfit font-black uppercase text-xs tracking-wider text-white">Results Partnership</h3>
+                    </div>
+                    
+                    <div class="space-y-3 text-[11px] text-gray-300 leading-relaxed font-medium">
+                        <p>
+                            🤝 <strong class="text-white">Zero Upfront Labor Costs:</strong> We design and build your initial application code for $0 upfront software development fee.
+                        </p>
+                        <p>
+                            📈 <strong class="text-white">Performance-Based:</strong> We only receive a small agreed commission (e.g. a small fee per verified booking) when your first customer books and pays through the system.
+                        </p>
+                        <p>
+                            🤖 <strong class="text-white">Real-Time Auditing:</strong> An integrated webhook triggers encrypted alerts to our tech support on every payment, assuring complete, automatic auditing.
+                        </p>
+                    </div>
+                </div>
+
+            </aside>
+
+        </div>
+
+    </main>
+
+    <!-- Global Mascot Widget Injection (AIM Mascot Widget Bridge) -->
+    <iframe id="mascot-widget" src="/hub/widget"
+        style="position: fixed; bottom: 0; right: 0; border: none; z-index: 2147483647; background: transparent; width: 300px; height: 200px; transition: all 0.3s ease-in-out; pointer-events: auto;"
+        allowtransparency="true"></iframe>
+
+    <!-- Core Javascript Code -->
+    <script>
+        // Mascot Widget context setup & dynamic port auto-discovery
+        const widgetIframe = document.getElementById('mascot-widget');
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
+        
+        let activeViteUrl = "http://localhost:5173"; // default fallback
+        
+        if (isLocal) {
+            // Ping ports dynamically in background to connect to the active dev server instance
+            const ports = [5173, 5174, 5175];
+            let detected = false;
+            
+            Promise.any(ports.map(port => 
+                fetch(`http://localhost:${port}/hub/logo_officeaim.png`)
+                    .then(res => {
+                        if (!res.ok) throw new Error("Not our server");
+                        if (!detected) {
+                            detected = true;
+                            activeViteUrl = `http://localhost:${port}`;
+                            widgetIframe.src = activeViteUrl + '/hub/widget?context=website-creator';
+                            console.log("[Mascot Port Auto-Discovery]: Connected to active dev server on port", port);
+                        }
+                    })
+            )).catch(() => {
+                // absolute fallback
+                widgetIframe.src = activeViteUrl + '/hub/widget?context=website-creator';
+            });
+        } else {
+            widgetIframe.src = '/hub/widget?context=website-creator';
+        }
+
+        // Listen for mascot toggles and adjust Iframe container size
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'mascot-toggle') {
+                const widget = document.getElementById('mascot-widget');
+                if (event.data.isOpen) {
+                    widget.style.width = '420px';
+                    widget.style.height = '600px';
+                } else {
+                    widget.style.width = '300px';
+                    widget.style.height = '200px';
+                }
+            }
+        });
+
+        // ===================================================
+        // SVG LOGO LAB CONTROLLER LOGIC
+        // ===================================================
+        let generatedSvgLogo = ""; // Stores locked SVG vector string
+        let uploadedLogoBase64 = ""; // Stores reference image base64 if uploaded
+
+        // --- Antigravity Agent Logo Override System ---
+        // Antigravity (your AI agent) can write directly to this variable or load from external source!
+                let antigravityInjectedLogo = `<!-- ANTIGRAVITY_INJECT_START -->
+<svg width="250" height="250" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Tropical Sun & Gold Gradient -->
+    <linearGradient id="vietnamGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="60%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#b45309" />
+    </linearGradient>
+    
+    <!-- Vietnam Emerald Water & Deep Nature Gradient -->
+    <linearGradient id="emeraldWater" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="50%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#34d399" />
+    </linearGradient>
+    
+    <!-- Halong Bay Mist Gradient (Fondo profundo) -->
+    <radialGradient id="mistBackground" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#0b1329" />
+      <stop offset="60%" stop-color="#070a13" />
+      <stop offset="100%" stop-color="#030408" />
+    </radialGradient>
+    
+    <!-- Custom soft atmospheric glow filter -->
+    <filter id="vietnamGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#f59e0b" flood-opacity="0.3"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  
+  <!-- Premium dark background card -->
+  <rect width="200" height="200" rx="38" fill="url(#mistBackground)" stroke="rgba(255,255,255,0.06)" stroke-width="1.5"/>
+  
+  <!-- Outer Compass Ring (Travel theme) -->
+  <circle cx="100" cy="90" r="66" fill="none" stroke="rgba(255, 255, 255, 0.02)" stroke-width="2"/>
+  <circle cx="100" cy="90" r="62" fill="none" stroke="url(#vietnamGold)" stroke-opacity="0.2" stroke-width="1" stroke-dasharray="6 8"/>
+  <circle cx="100" cy="90" r="58" fill="none" stroke="url(#emeraldWater)" stroke-opacity="0.1" stroke-width="1.5"/>
+  
+  <!-- Compass Cardinal ticks -->
+  <line x1="100" y1="24" x2="100" y2="29" stroke="url(#vietnamGold)" stroke-width="2" opacity="0.6"/>
+  <line x1="100" y1="151" x2="100" y2="156" stroke="url(#vietnamGold)" stroke-width="2" opacity="0.6"/>
+  <line x1="34" y1="90" x2="39" y2="90" stroke="url(#vietnamGold)" stroke-width="2" opacity="0.6"/>
+  <line x1="161" y1="90" x2="166" y2="90" stroke="url(#vietnamGold)" stroke-width="2" opacity="0.6"/>
+  
+  <!-- Halong Bay stylized geometric Mountain peaks (North Vietnam) -->
+  <!-- Back golden mountain -->
+  <polygon points="100,50 145,115 55,115" fill="url(#vietnamGold)" fill-opacity="0.15" />
+  <path d="M 100,50 L 125,85" stroke="url(#vietnamGold)" stroke-width="0.75" opacity="0.3" />
+  
+  <!-- Front emerald mountain -->
+  <polygon points="76,64 122,120 30,120" fill="url(#emeraldWater)" fill-opacity="0.2" />
+  <!-- Third technical mountain -->
+  <polygon points="126,72 170,124 82,124" fill="url(#vietnamGold)" fill-opacity="0.12" />
+
+  <!-- The Golden Sun (Vietnamese warmth & hospitality) -->
+  <circle cx="100" cy="62" r="16" fill="url(#vietnamGold)" filter="url(#vietnamGlow)" opacity="0.8"/>
+  <!-- Sun rays (subtle lines) -->
+  <circle cx="100" cy="62" r="22" fill="none" stroke="url(#vietnamGold)" stroke-width="0.5" stroke-opacity="0.2" stroke-dasharray="2 4" />
+
+  <!-- River / Sea Waves flowing under mountains (Halong bay) -->
+  <path d="M 45,116 C 65,112 80,122 100,116 C 120,110 135,120 155,116" fill="none" stroke="url(#emeraldWater)" stroke-width="2.5" stroke-linecap="round" opacity="0.85"/>
+  <path d="M 52,122 C 72,118 85,128 100,122 C 115,116 128,126 148,122" fill="none" stroke="url(#vietnamGold)" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+  <path d="M 60,128 C 76,125 88,133 100,128 C 112,123 124,131 140,128" fill="none" stroke="url(#emeraldWater)" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+
+  <!-- Glowing central monogram initials HTNV (Happy Tours North Vietnam) -->
+  <text x="101" y="93" font-family="'Outfit', 'Inter', sans-serif" font-weight="900" font-size="34" fill="#000000" text-anchor="middle" letter-spacing="-1.5" dominant-baseline="central" opacity="0.2" />
+  <text x="100" y="92" font-family="'Outfit', 'Inter', sans-serif" font-weight="900" font-size="34" fill="#ffffff" text-anchor="middle" letter-spacing="-1.5" dominant-baseline="central" filter="url(#vietnamGlow)">HT</text>
+  
+  <!-- Beautiful typography tag name at the bottom -->
+  <rect x="25" y="166" width="150" height="15" rx="4" fill="#080e1b" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+  <text x="100" y="174" font-family="'Outfit', 'Inter', sans-serif" font-weight="800" font-size="6.5" fill="url(#vietnamGold)" text-anchor="middle" letter-spacing="3" dominant-baseline="central">HAPPY TOURS</text>
+</svg>
+<!-- ANTIGRAVITY_INJECT_END -->`;
+
+        // --- Google Gemini Flow Prompt Auto-compiler ---
+        const flowPromptContainer = document.getElementById('gemini-flow-logo-prompt');
+        const btnCopyFlowPrompt = document.getElementById('btn-copy-flow-prompt');
+        
+        function updateGeminiFlowPrompt() {
+            const businessNameVal = document.getElementById('business-name').value || '[Your Brand Name]';
+            const initialsVal = document.getElementById('logo-text-input').value || (businessNameVal ? businessNameVal[0] : 'W');
+            const vibeVal = document.getElementById('logo-vibe-select').value;
+            const descVal = document.getElementById('logo-prompt-description').value || '';
+            
+            let promptText = `Create a professional, modern, and minimal typographic brand logo for a business named "${businessNameVal}".
+- Design style: Sleek vector layout matching a ${vibeVal} aesthetic.
+- Color Vibe: Dark interface optimized. Include custom neon accents matching the brand style.
+- Visual details: Beautiful typographic alignment with letters "${initialsVal}". Keep it centered, isolated on a solid dark background for clear contrast. ${descVal ? `Integrate concept: ${descVal}.` : ''}
+- Format: Flat 2D vector style, no complex photorealistic shadows, optimized as a premium logo emblem.`;
+            
+            flowPromptContainer.innerText = promptText;
+        }
+        
+        document.getElementById('business-name').addEventListener('input', updateGeminiFlowPrompt);
+        document.getElementById('logo-text-input').addEventListener('input', updateGeminiFlowPrompt);
+        document.getElementById('logo-vibe-select').addEventListener('change', updateGeminiFlowPrompt);
+        document.getElementById('logo-prompt-description').addEventListener('input', updateGeminiFlowPrompt);
+        
+        updateGeminiFlowPrompt(); // initialize
+        
+        btnCopyFlowPrompt.addEventListener('click', () => {
+            navigator.clipboard.writeText(flowPromptContainer.innerText)
+                .then(() => {
+                    showToast("Gemini Flow prompt copied to clipboard!");
+                    btnCopyFlowPrompt.innerHTML = `
+                        <svg class="w-3 h-3 text-brand-emerald" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        Prompt Copied!
+                    `;
+                    setTimeout(() => {
+                        btnCopyFlowPrompt.innerHTML = `
+                            <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                            Copy Gemini Flow Prompt
+                        `;
+                    }, 2000);
+                });
+        });
+        
+        const logoStatusSelect = document.getElementById('logo-status');
+        const logoLabContainer = document.getElementById('svg-logo-lab-container');
+        
+        // Show/hide subpanel based on selection
+        function toggleLogoLab() {
+            if (logoStatusSelect.value === 'Create a modern text/SVG placeholder logo') {
+                logoLabContainer.classList.remove('hidden');
+                logoLabContainer.classList.add('flex');
+            } else {
+                logoLabContainer.classList.add('hidden');
+                logoLabContainer.classList.remove('flex');
+            }
+        }
+        
+        logoStatusSelect.addEventListener('change', toggleLogoLab);
+        toggleLogoLab(); // run initially
+        
+        // --- Reference Image Uploader ---
+        const refUploader = document.getElementById('logo-ref-uploader');
+        const uploaderLabel = document.getElementById('logo-uploader-label');
+        const previewContainer = document.getElementById('logo-preview-img-container');
+        const refPreviewImg = document.getElementById('logo-ref-preview');
+        const btnRemoveRef = document.getElementById('btn-remove-ref-logo');
+        
+        refUploader.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    uploadedLogoBase64 = event.target.result;
+                    refPreviewImg.src = uploadedLogoBase64;
+                    previewContainer.classList.remove('hidden');
+                    uploaderLabel.innerText = `File selected: ${file.name}`;
+                    showToast("Reference logo loaded!");
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        btnRemoveRef.addEventListener('click', () => {
+            refUploader.value = '';
+            uploadedLogoBase64 = '';
+            refPreviewImg.src = '';
+            previewContainer.classList.add('hidden');
+            uploaderLabel.innerText = "Drag & drop or click to upload reference";
+            showToast("Reference logo removed");
+        });
+        
+        // --- Antigravity Agent Logo Uploader Handler ---
+        const antigravityPanel = document.getElementById('antigravity-injector-panel');
+        const btnLoadAntigravityLogo = document.getElementById('btn-load-antigravity-logo');
+        
+        function initAntigravityInjector() {
+            // Check if antigravityInjectedLogo contains an SVG between comments
+            const match = antigravityInjectedLogo.match(/<!-- ANTIGRAVITY_INJECT_START -->([\s\S]*?)<!-- ANTIGRAVITY_INJECT_END -->/);
+            if (match && match[1].trim().includes('<svg')) {
+                const cleanedSvg = match[1].trim();
+                antigravityPanel.classList.remove('hidden');
+                antigravityPanel.classList.add('flex');
+                
+                btnLoadAntigravityLogo.addEventListener('click', () => {
+                    generatedSvgLogo = cleanedSvg;
+                    
+                    // Render SVG inside glowing card preview
+                    const logoPreviewCard = document.getElementById('logo-preview-card');
+                    const logoPreviewCardContainer = document.getElementById('logo-preview-card-container');
+                    
+                    logoPreviewCard.innerHTML = cleanedSvg;
+                    logoPreviewCardContainer.classList.remove('hidden');
+                    
+                    showToast("Bespoke Antigravity Logo loaded into Lab! 🚀");
+                    
+                    // Trigger dynamic preview highlight
+                    logoPreviewCard.classList.add('ring-2', 'ring-brand-cyan/50');
+                    setTimeout(() => logoPreviewCard.classList.remove('ring-2', 'ring-brand-cyan/50'), 1500);
+                });
+            } else {
+                antigravityPanel.classList.add('hidden');
+                antigravityPanel.classList.remove('flex');
+            }
+        }
+        
+        // Run injection check initially
+        initAntigravityInjector();
+        
+        // --- postMessage Bridge with AIM Mascot ---
+        const btnGenerateLogo = document.getElementById('btn-generate-svg-logo');
+        const logoSpinner = document.getElementById('logo-spinner');
+        const logoBtnText = document.getElementById('logo-btn-text');
+        const logoPreviewCardContainer = document.getElementById('logo-preview-card-container');
+        const logoPreviewCard = document.getElementById('logo-preview-card');
+        const btnDownloadSvg = document.getElementById('btn-download-svg-logo');
+        const btnUseSvg = document.getElementById('btn-use-svg-logo');
+        
+        btnGenerateLogo.addEventListener('click', () => {
+            const businessNameVal = document.getElementById('business-name').value;
+            if (!businessNameVal) {
+                document.getElementById('business-name').focus();
+                document.getElementById('business-name').reportValidity();
+                showToast("Please define Business Name first!");
+                return;
+            }
+            
+            const initialsVal = document.getElementById('logo-text-input').value;
+            const vibeVal = document.getElementById('logo-vibe-select').value;
+            const descVal = document.getElementById('logo-prompt-description').value;
+            
+            // Show loader
+            logoSpinner.classList.remove('hidden');
+            logoBtnText.innerText = "AIM is designing your logo...";
+            btnGenerateLogo.disabled = true;
+            
+            // Dispatch postMessage payload to Mascot Iframe
+            const widget = document.getElementById('mascot-widget');
+            widget.contentWindow.postMessage({
+                type: 'generate-logo-svg',
+                businessName: businessNameVal,
+                initials: initialsVal,
+                vibe: vibeVal,
+                description: descVal
+            }, '*');
+            
+            showToast("Design request sent to AIM!");
+        });
+        
+        // Intercept completed SVG logo posted back from Mascot
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'logo-svg-generated') {
+                const rawSvg = event.data.svg;
+                generatedSvgLogo = rawSvg;
+                
+                // Render SVG inside glowing card preview
+                logoPreviewCard.innerHTML = rawSvg;
+                logoPreviewCardContainer.classList.remove('hidden');
+                
+                // Reset button loader states
+                logoSpinner.classList.add('hidden');
+                logoBtnText.innerText = "✨ Regenerate SVG Logo with AIM";
+                btnGenerateLogo.disabled = false;
+                
+                showToast("Bespoke SVG Logo compiled!");
+            }
+        });
+        
+        // --- Download SVG Logo ---
+        btnDownloadSvg.addEventListener('click', () => {
+            if (!generatedSvgLogo) return;
+            const businessNameVal = document.getElementById('business-name').value || 'officeaim';
+            const blob = new Blob([generatedSvgLogo], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${businessNameVal.toLowerCase().replace(/\s+/g, '_')}_logo.svg`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast("Bespoke SVG logo downloaded!");
+        });
+        
+        // --- Lock & Inject in Code ---
+        btnUseSvg.addEventListener('click', () => {
+            if (!generatedSvgLogo) return;
+            showToast("SVG Locked & injected in Lovable prompt!");
+            // Pulsing highlight effect to simulate lock success
+            btnUseSvg.classList.remove('bg-brand-cyan/15', 'text-brand-cyan');
+            btnUseSvg.classList.add('bg-brand-emerald/20', 'text-brand-emerald', 'border-brand-emerald/40');
+            btnUseSvg.innerHTML = `
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                Logo Locked!
+            `;
+            setTimeout(() => {
+                btnUseSvg.classList.add('bg-brand-cyan/15', 'text-brand-cyan');
+                btnUseSvg.classList.remove('bg-brand-emerald/20', 'text-brand-emerald', 'border-brand-emerald/40');
+                btnUseSvg.innerHTML = `
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    Lock & Inject Logo
+                `;
+            }, 2500);
+        });
+        
+        // Custom elegant toast notification system
+        function showToast(message) {
+            if (window.toast) {
+                window.toast.success(message);
+            } else {
+                console.log("[Toast Notification]:", message);
+                // Create native fallback floating glass toast
+                const toast = document.createElement('div');
+                toast.className = "fixed top-5 right-5 z-50 glass-card px-4 py-2.5 rounded-xl border-brand-orange/30 text-xs font-bold text-white shadow-lg shadow-brand-orange/10 transform translate-y-[-20px] opacity-0 transition-all duration-300";
+                toast.innerText = message;
+                document.body.appendChild(toast);
+                setTimeout(() => {
+                    toast.classList.remove('translate-y-[-20px]', 'opacity-0');
+                }, 50);
+                setTimeout(() => {
+                    toast.classList.add('translate-y-[-20px]', 'opacity-0');
+                    setTimeout(() => document.body.removeChild(toast), 300);
+                }, 3000);
+            }
+        }
+
+        // ===================================================
+        // WIZARD ACCORDION COLLAPSE CONTROL
+        // ===================================================
+        const webmasterToggle = document.getElementById('webmaster-accordion-toggle');
+        const webmasterContent = document.getElementById('webmaster-accordion-content');
+        const accordionArrow = document.getElementById('accordion-arrow');
+
+        webmasterToggle.addEventListener('click', () => {
+            const isHidden = webmasterContent.classList.contains('hidden');
+            if (isHidden) {
+                webmasterContent.classList.remove('hidden');
+                webmasterContent.classList.add('flex');
+                accordionArrow.classList.add('rotate-180');
+            } else {
+                webmasterContent.classList.add('hidden');
+                webmasterContent.classList.remove('flex');
+                accordionArrow.classList.remove('rotate-180');
+            }
+        });
+
+        // ===================================================
+        // STEP WIZARD LOGIC
+        // ===================================================
+        let currentPhase = 1;
+        const totalPhases = 3;
+        
+        const phase1 = document.getElementById('phase-1');
+        const phase2 = document.getElementById('phase-2');
+        const phase3 = document.getElementById('phase-3');
+        
+        const nextBtn = document.getElementById('next-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        
+        const stepNumIndicator = document.getElementById('step-number-indicator');
+        const stepTitleIndicator = document.getElementById('step-title-indicator');
+        
+        const progressBar1 = document.getElementById('progress-bar-1');
+        const progressBar2 = document.getElementById('progress-bar-2');
+        const progressBar3 = document.getElementById('progress-bar-3');
+
+        // Form Fields
+        const primaryCta = document.getElementById('primary-cta');
+        const whatsappContainer = document.getElementById('whatsapp-number-container');
+        const webhookContainer = document.getElementById('webhook-url-container');
+        const whatsappNumberInput = document.getElementById('whatsapp-number');
+        const webhookUrlInput = document.getElementById('webhook-url');
+
+        // Conditional rendering for Phase 3 inputs
+        primaryCta.addEventListener('change', () => {
+            const val = primaryCta.value;
+            
+            if (val === 'Direct to WhatsApp') {
+                whatsappContainer.classList.remove('hidden');
+                webhookContainer.classList.add('hidden');
+                whatsappNumberInput.setAttribute('required', 'true');
+                webhookUrlInput.removeAttribute('required');
+            } else if (val === 'Submit Booking to Custom Webhook') {
+                whatsappContainer.classList.add('hidden');
+                webhookContainer.classList.remove('hidden');
+                whatsappNumberInput.removeAttribute('required');
+                webhookUrlInput.setAttribute('required', 'true');
+            } else {
+                whatsappContainer.classList.add('hidden');
+                whatsappContainer.classList.add('hidden');
+                whatsappNumberInput.removeAttribute('required');
+                webhookUrlInput.removeAttribute('required');
+            }
+        });
+
+        // Initialize validations
+        whatsappNumberInput.setAttribute('required', 'true');
+
+        // Navigation Handlers
+        nextBtn.addEventListener('click', () => {
+            // Check form validation for active phase fields before moving
+            if (!validatePhaseInputs()) {
+                // Focus first invalid element
+                const activeEl = document.getElementById(`phase-${currentPhase}`);
+                const invalidInput = activeEl.querySelector(':invalid');
+                if (invalidInput) {
+                    invalidInput.focus();
+                    invalidInput.reportValidity();
+                }
+                return;
+            }
+
+            if (currentPhase < totalPhases) {
+                goToPhase(currentPhase + 1);
+            } else {
+                // Compile and generate Blueprint prompt!
+                generateBlueprint();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentPhase > 1) {
+                goToPhase(currentPhase - 1);
+            }
+        });
+
+        function validatePhaseInputs() {
+            const activeEl = document.getElementById(`phase-${currentPhase}`);
+            const inputs = activeEl.querySelectorAll('input, select, textarea');
+            let isValid = true;
+            inputs.forEach(input => {
+                if (!input.checkValidity()) {
+                    isValid = false;
+                }
+            });
+            return isValid;
+        }
+
+        function goToPhase(target) {
+            // Hide all phases
+            phase1.className = "step-phase hidden-phase";
+            phase2.className = "step-phase hidden-phase";
+            phase3.className = "step-phase hidden-phase";
+            
+            // Show target phase
+            const targetEl = document.getElementById(`phase-${target}`);
+            targetEl.className = "step-phase active-phase";
+            
+            currentPhase = target;
+            
+            // Update Header status info
+            stepNumIndicator.innerText = target < 10 ? `0${target}` : target;
+            if (target === 1) {
+                stepTitleIndicator.innerText = "Brand Identity";
+                progressBar1.className = "h-2 w-16 md:w-24 rounded-full bg-brand-orange shadow-[0_0_8px_rgba(249,115,22,0.5)] transition-all duration-500";
+                progressBar2.className = "h-2 w-16 md:w-24 rounded-full bg-white/10 transition-all duration-500";
+                progressBar3.className = "h-2 w-16 md:w-24 rounded-full bg-white/10 transition-all duration-500";
+                prevBtn.classList.add('hidden');
+                nextBtn.querySelector('span').innerText = "Continue";
+                nextBtn.querySelector('svg').classList.remove('hidden');
+            } else if (target === 2) {
+                stepTitleIndicator.innerText = "Architecture & Content";
+                progressBar1.className = "h-2 w-16 md:w-24 rounded-full bg-brand-orange/40 transition-all duration-500";
+                progressBar2.className = "h-2 w-16 md:w-24 rounded-full bg-brand-orange shadow-[0_0_8px_rgba(249,115,22,0.5)] transition-all duration-500";
+                progressBar3.className = "h-2 w-16 md:w-24 rounded-full bg-white/10 transition-all duration-500";
+                prevBtn.classList.remove('hidden');
+                nextBtn.querySelector('span').innerText = "Continue";
+                nextBtn.querySelector('svg').classList.remove('hidden');
+            } else if (target === 3) {
+                stepTitleIndicator.innerText = "Actions & Rules";
+                progressBar1.className = "h-2 w-16 md:w-24 rounded-full bg-brand-orange/40 transition-all duration-500";
+                progressBar2.className = "h-2 w-16 md:w-24 rounded-full bg-brand-orange/40 transition-all duration-500";
+                progressBar3.className = "h-2 w-16 md:w-24 rounded-full bg-brand-orange shadow-[0_0_8px_rgba(249,115,22,0.5)] transition-all duration-500";
+                prevBtn.classList.remove('hidden');
+                nextBtn.querySelector('span').innerText = "Generate Blueprint";
+                nextBtn.querySelector('svg').classList.add('hidden');
+            }
+        }
+
+        // ===================================================
+        // PROMPT COMPILER & DATA DISPATCH ENGINE
+        // ===================================================
+        const form = document.getElementById('creator-wizard-form');
+        const successPanel = document.getElementById('success-panel');
+        const promptOutput = document.getElementById('compiled-prompt-output');
+        const copyBtn = document.getElementById('copy-prompt-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        
+        let compiledPromptString = "";
+
+        function generateBlueprint() {
+            // Read form values
+            const businessName = document.getElementById('business-name').value;
+            const targetLanguage = document.getElementById('target-language').value;
+            const logoStatus = document.getElementById('logo-status').value;
+            const colorAesthetic = document.getElementById('color-aesthetic').value;
+            
+            // Get selected radio project type
+            const projectType = form.querySelector('input[name="projectType"]:checked').value;
+            
+            // Get core pages list
+            const checkedPages = [];
+            form.querySelectorAll('input[name="corePages"]:checked').forEach(cb => {
+                checkedPages.push(cb.value);
+            });
+            const pagesListString = checkedPages.join(', ');
+
+            const projectDetails = document.getElementById('project-details').value;
+            const ctaValue = primaryCta.value;
+            const whatsappNumber = whatsappNumberInput.value;
+            const webhookUrl = webhookUrlInput.value;
+            const launchTimeline = document.getElementById('launch-timeline').value;
+
+            // Formulate CTA instructions
+            let ctaInstructionText = "";
+            let webhookPromptLine = "";
+            if (ctaValue === 'Direct to WhatsApp') {
+                ctaInstructionText = `Integrate a direct click-to-chat action redirecting the student or customer straight to WhatsApp using the contact number: ${whatsappNumber}.`;
+            } else if (ctaValue === 'Submit Form to Email') {
+                ctaInstructionText = `Build a premium glassmorphic email contact form sending leads securely to standard email handlers.`;
+            } else if (ctaValue === 'Submit Booking to Custom Webhook') {
+                ctaInstructionText = `Integrate a complete booking dispatch script sending the transactional metadata to the customer's custom automation Webhook.`;
+                webhookPromptLine = `\n- When a booking or contact form is submitted, execute a fetch POST request sending the form fields as a clean JSON payload directly to the client's custom webhook endpoint: "${webhookUrl}". Handle loading and success states gracefully.`;
+            }
+
+            // Logo Branding instruction
+            let logoInstruction = "";
+            let logoXmlInjection = "";
+            if (logoStatus === 'I have a logo ready') {
+                logoInstruction = 'Design beautiful visual slots for holding premium client logos.';
+                if (uploadedLogoBase64) {
+                    logoInstruction += ' The user has supplied a reference logo image. Plan an outstanding logo layout slot keeping in mind the structure of a premium logo asset.';
+                }
+            } else {
+                logoInstruction = 'Design a beautiful, minimal typographic layout with modern custom SVG shapes for the logo branding.';
+                if (generatedSvgLogo) {
+                    logoInstruction = 'Use the exact inline vector SVG logo provided below for all logo branding. Render this SVG inline in the navigation header, the mobile navbar, and the footer brand section.';
+                    logoXmlInjection = `\n\nOFFICIAL VECTOR SVG LOGO TO INJECT IN CODE:\n\`\`\`xml\n${generatedSvgLogo}\n\`\`\`\n`;
+                }
+            }
+
+            // Compile structural prompt template
+            compiledPromptString = `Act as an expert full-stack React developer and premium UI/UX designer. Create a fully functional, highly responsive, and pixel-perfect ${projectType} application named "${businessName}" using Vite, React, Tailwind CSS, and Lucide React icons.
+
+CRITICAL REQUIREMENTS:
+1. Language: Every single piece of user-visible text, navigation, titles, button text, and placeholder copywriting MUST be natively written in ${targetLanguage}.
+2. UI Aesthetics: Apply a theme utilizing ${colorAesthetic}. Ensure sophisticated layout card container designs, excellent padding, and balanced whitespace.
+3. Logo Branding: ${logoInstruction}
+
+APPLICATION ARCHITECTURE & LOGIC:
+- Build a beautiful navigation header displaying core sections (${pagesListString}) and a detailed footer.
+- The core interactive section of the app must showcase: ${projectDetails}.
+- Functional Workflow: ${ctaInstructionText} ${webhookPromptLine}${logoXmlInjection}
+
+Proceed to assemble the clean component hierarchy and deliver a production-ready interface layout.`;
+
+            // 1. Display in hidden success panel terminal
+            promptOutput.innerText = compiledPromptString;
+            
+            // 2. BUILD THE PREMIUM DYNAMIC INTERACTIVE WEBSITE MOCK PREVIEW FOR CLIENT!
+            buildWebsiteMock({
+                businessName,
+                targetLanguage,
+                colorAesthetic,
+                projectType,
+                corePages: checkedPages,
+                projectDetails,
+                ctaValue,
+                whatsappNumber,
+                webhookUrl
+            });
+
+            // Show Success Panel overlay
+            successPanel.classList.remove('translate-y-full');
+            successPanel.classList.remove('opacity-0');
+            successPanel.classList.add('translate-y-0');
+            successPanel.classList.add('opacity-100');
+
+            // Dispatch Lead data to external Webhook for automated logging (e.g. Google Sheets via Make)
+            dispatchLeadData({
+                businessName,
+                targetLanguage,
+                logoStatus,
+                colorAesthetic,
+                projectType,
+                corePages: checkedPages,
+                projectDetails,
+                primaryCta: ctaValue,
+                whatsappNumber: ctaValue === 'Direct to WhatsApp' ? whatsappNumber : null,
+                webhookUrl: ctaValue === 'Submit Booking to Custom Webhook' ? webhookUrl : null,
+                launchTimeline,
+                compiledPrompt: compiledPromptString
+            });
+        }
+
+        // ===================================================
+        // INTERACTIVE WEBSITE MOCK BUILDER
+        // ===================================================
+        function buildWebsiteMock(config) {
+            const {
+                businessName,
+                targetLanguage,
+                colorAesthetic,
+                projectType,
+                corePages,
+                projectDetails,
+                ctaValue,
+                whatsappNumber,
+                webhookUrl
+            } = config;
+
+            // Element anchors
+            const urlBar = document.getElementById('browser-url-bar');
+            const mockBody = document.getElementById('simulated-website-body');
+            const logoIcon = document.getElementById('mock-nav-logo-icon');
+            const brandName = document.getElementById('mock-nav-brand-name');
+            const navLinksContainer = document.getElementById('mock-nav-links');
+            const navCtaBtn = document.getElementById('mock-nav-cta');
+            const heroTitle = document.getElementById('mock-hero-title');
+            const heroDesc = document.getElementById('mock-hero-desc');
+            const ctaWorkContainer = document.getElementById('mock-hero-cta-container');
+            const footerCopyright = document.getElementById('mock-footer-copyright');
+
+            // URL bar simulation
+            const sanitizedUrl = businessName.toLowerCase().replace(/[^a-z0-9]/g, '');
+            urlBar.innerText = `https://www.${sanitizedUrl || 'your-business'}.com`;
+
+            // Reset layouts/styles to blank canvas
+            mockBody.className = "flex-grow flex flex-col transition-all duration-500 p-0 text-white min-h-[330px]";
+            logoIcon.className = "w-6 h-6 rounded-lg flex items-center justify-center font-outfit font-black text-xs text-white shrink-0";
+            navCtaBtn.className = "px-3 py-1.5 rounded-lg text-[8px] font-black uppercase text-white shadow-md hover:scale-105 transition-transform";
+            heroTitle.className = "text-lg md:text-2xl font-outfit font-black uppercase italic tracking-tight max-w-md leading-tight transition-all duration-300";
+            heroDesc.className = "mt-2 text-[10px] max-w-sm font-medium leading-relaxed transition-all duration-300";
+            
+            // Map logo letters and brand
+            if (generatedSvgLogo && logoStatusSelect.value === 'Create a modern text/SVG placeholder logo') {
+                logoIcon.innerHTML = generatedSvgLogo;
+                // Remove generic color badges to fit the bespoke vector design
+                logoIcon.className = "w-8 h-8 flex items-center justify-center bg-transparent border-none shrink-0 overflow-hidden";
+            } else {
+                logoIcon.innerText = (businessName[0] || 'W').toUpperCase();
+            }
+            brandName.innerText = businessName;
+
+            // Map nav links
+            navLinksContainer.innerHTML = '';
+            corePages.forEach(page => {
+                const link = document.createElement('span');
+                link.innerText = translatePageName(page, targetLanguage);
+                link.className = "cursor-pointer hover:text-white transition-colors duration-300 text-[8px] sm:text-[9px]";
+                navLinksContainer.appendChild(link);
+            });
+
+            // Translate CTA text
+            const ctaText = translateCTAText(ctaValue, targetLanguage);
+            navCtaBtn.innerText = ctaText;
+
+            // Theme Styling logic mapping
+            if (colorAesthetic === 'Modern Dark Tech') {
+                mockBody.classList.add('bg-[#0c101c]', 'text-white', 'border-cyan-500/20');
+                logoIcon.classList.add('bg-gradient-to-tr', 'from-brand-orange', 'to-amber-500', 'shadow-[0_0_10px_rgba(249,115,22,0.4)]');
+                navCtaBtn.classList.add('bg-brand-orange', 'hover:bg-brand-orange/95');
+                heroTitle.classList.add('text-white');
+                heroDesc.classList.add('text-gray-400');
+            } else if (colorAesthetic === 'Clean Corporate Blue') {
+                mockBody.classList.add('bg-[#f8fafc]', 'text-slate-800');
+                logoIcon.classList.add('bg-blue-600', 'shadow-[0_0_10px_rgba(37,99,235,0.3)]');
+                navCtaBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                heroTitle.classList.add('text-slate-800');
+                heroDesc.classList.add('text-slate-500');
+            } else if (colorAesthetic === 'Warm Organic Earth') {
+                mockBody.classList.add('bg-[#FAF7F2]', 'text-[#2c2620]');
+                logoIcon.classList.add('bg-emerald-800', 'shadow-[0_0_10px_rgba(6,95,70,0.3)]');
+                navCtaBtn.classList.add('bg-emerald-800', 'hover:bg-emerald-950');
+                heroTitle.classList.add('text-[#2c2620]');
+                heroDesc.classList.add('text-[#615446]');
+            } else if (colorAesthetic === 'Vibrant & Creative') {
+                mockBody.classList.add('bg-gradient-to-b', 'from-[#13072e]', 'to-[#070311]', 'text-white');
+                logoIcon.classList.add('bg-gradient-to-tr', 'from-purple-600', 'to-pink-500', 'shadow-[0_0_10px_rgba(168,85,247,0.4)]');
+                navCtaBtn.classList.add('bg-gradient-to-r', 'from-purple-600', 'to-pink-500');
+                heroTitle.classList.add('text-white');
+                heroDesc.classList.add('text-gray-400');
+            }
+
+            // Inject Hero Title text mapped to language
+            heroTitle.innerText = translateHeroTitle(businessName, targetLanguage);
+            heroDesc.innerText = projectDetails;
+
+            // Inject interactive CTA widget
+            ctaWorkContainer.innerHTML = '';
+            
+            if (ctaValue === 'Direct to WhatsApp') {
+                // Render green pulsing WhatsApp button
+                const btn = document.createElement('a');
+                btn.href = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}`;
+                btn.target = "_blank";
+                btn.className = "px-5 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 transition-all duration-300 font-bold text-[10px] tracking-wide uppercase text-white shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 flex items-center gap-2 hover:scale-105";
+                btn.innerHTML = `
+                    <svg class="w-4 h-4 shrink-0 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.73-1.45L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.963C16.59 1.981 14.117.954 11.487.955c-5.447 0-9.873 4.372-9.877 9.802-.001 1.777.469 3.511 1.36 5.084L1.874 21.68l6.006-1.55c.34-.18.34-.18.767-.976z"></path></svg>
+                    <span>${targetLanguage === 'Español' ? 'Reservar por WhatsApp' : 'Book on WhatsApp'}</span>
+                `;
+                ctaWorkContainer.appendChild(btn);
+            } else if (ctaValue === 'Submit Form to Email') {
+                // Render fully simulated Leads Form
+                const formCard = document.createElement('div');
+                formCard.className = "w-full max-w-sm rounded-xl p-4 border border-white/10 bg-white/[0.02] backdrop-blur-md flex flex-col gap-3 text-left";
+                formCard.innerHTML = `
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[8px] font-bold uppercase tracking-wider text-gray-400">Email</label>
+                        <input type="email" placeholder="client@email.com" readonly class="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-[10px] text-white focus:outline-none">
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[8px] font-bold uppercase tracking-wider text-gray-400">${targetLanguage === 'Español' ? 'Mensaje' : 'Message'}</label>
+                        <textarea rows="2" placeholder="${targetLanguage === 'Español' ? 'Hola! Me interesa...' : 'Hello! I am interested...'}" readonly class="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-[10px] text-white focus:outline-none resize-none"></textarea>
+                    </div>
+                    <button type="button" id="mock-form-submit-btn" class="w-full py-2 rounded-lg transition-all font-bold text-[9px] uppercase tracking-wider text-white shadow-md"></button>
+                `;
+                
+                // Colorize simulated form submit button based on selected theme
+                const btn = formCard.querySelector('#mock-form-submit-btn');
+                btn.innerText = targetLanguage === 'Español' ? 'Enviar Mensaje' : 'Send Message';
+                if (colorAesthetic === 'Modern Dark Tech') btn.className += " bg-brand-orange hover:bg-brand-orange/90";
+                else if (colorAesthetic === 'Clean Corporate Blue') btn.className += " bg-blue-600 hover:bg-blue-700";
+                else if (colorAesthetic === 'Warm Organic Earth') btn.className += " bg-emerald-800 hover:bg-emerald-950";
+                else if (colorAesthetic === 'Vibrant & Creative') btn.className += " bg-gradient-to-r from-purple-600 to-pink-500";
+                
+                // Form submit simulation
+                btn.addEventListener('click', () => {
+                    btn.innerText = targetLanguage === 'Español' ? '¡Mensaje Enviado!' : 'Message Sent!';
+                    btn.classList.remove('bg-brand-orange', 'bg-blue-600', 'bg-emerald-800', 'from-purple-600');
+                    btn.classList.add('bg-brand-emerald');
+                    
+                    setTimeout(() => {
+                        btn.innerText = targetLanguage === 'Español' ? 'Enviar Mensaje' : 'Send Message';
+                        btn.classList.remove('bg-brand-emerald');
+                        if (colorAesthetic === 'Modern Dark Tech') btn.classList.add('bg-brand-orange');
+                        else if (colorAesthetic === 'Clean Corporate Blue') btn.classList.add('bg-blue-600');
+                        else if (colorAesthetic === 'Warm Organic Earth') btn.classList.add('bg-emerald-800');
+                        else if (colorAesthetic === 'Vibrant & Creative') btn.classList.add('from-purple-600');
+                    }, 2000);
+                });
+                
+                ctaWorkContainer.appendChild(formCard);
+            } else if (ctaValue === 'Submit Booking to Custom Webhook') {
+                // Render an incredibly interactive booking calendar!
+                const bookingCard = document.createElement('div');
+                bookingCard.className = "w-full max-w-sm rounded-xl p-4 border border-white/10 bg-white/[0.02] backdrop-blur-md flex flex-col gap-4 text-left";
+                
+                const headlineText = targetLanguage === 'Español' ? 'Reservá tu turno' : 'Book your session';
+                bookingCard.innerHTML = `
+                    <div>
+                        <span class="text-[9px] font-black uppercase tracking-wider text-brand-orange italic">${headlineText}</span>
+                        <div class="grid grid-cols-4 gap-2 mt-2" id="mock-booking-hours">
+                            <button type="button" class="hour-btn px-2 py-1.5 bg-white/5 border border-white/10 rounded-lg text-[9px] font-bold text-center hover:bg-brand-orange/20 transition-all">09:00 AM</button>
+                            <button type="button" class="hour-btn px-2 py-1.5 bg-white/5 border border-white/10 rounded-lg text-[9px] font-bold text-center hover:bg-brand-orange/20 transition-all">11:30 AM</button>
+                            <button type="button" class="hour-btn px-2 py-1.5 bg-white/5 border border-white/10 rounded-lg text-[9px] font-bold text-center hover:bg-brand-orange/20 transition-all">03:00 PM</button>
+                            <button type="button" class="hour-btn px-2 py-1.5 bg-white/5 border border-white/10 rounded-lg text-[9px] font-bold text-center hover:bg-brand-orange/20 transition-all">05:30 PM</button>
+                        </div>
+                    </div>
+                    <button type="button" id="mock-booking-confirm-btn" disabled class="w-full py-2 rounded-lg transition-all font-bold text-[9px] uppercase tracking-wider text-white shadow-md disabled:opacity-30 disabled:pointer-events-none"></button>
+                `;
+
+                // Add hour selection toggle
+                let selectedHour = null;
+                const confirmBtn = bookingCard.querySelector('#mock-booking-confirm-btn');
+                confirmBtn.innerText = targetLanguage === 'Español' ? 'Seleccionar horario' : 'Select a slot';
+                
+                // Colorize simulated confirm button
+                if (colorAesthetic === 'Modern Dark Tech') confirmBtn.className += " bg-brand-orange";
+                else if (colorAesthetic === 'Clean Corporate Blue') confirmBtn.className += " bg-blue-600";
+                else if (colorAesthetic === 'Warm Organic Earth') confirmBtn.className += " bg-emerald-800";
+                else if (colorAesthetic === 'Vibrant & Creative') confirmBtn.className += " bg-gradient-to-r from-purple-600 to-pink-500";
+
+                const hourBtns = bookingCard.querySelectorAll('.hour-btn');
+                hourBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        // Reset all buttons
+                        hourBtns.forEach(b => b.className = "hour-btn px-2 py-1.5 bg-white/5 border border-white/10 rounded-lg text-[9px] font-bold text-center hover:bg-brand-orange/20 transition-all");
+                        
+                        // Select current button
+                        selectedHour = btn.innerText;
+                        
+                        // Apply orange active highlights
+                        if (colorAesthetic === 'Modern Dark Tech') btn.className = "hour-btn px-2 py-1.5 bg-brand-orange/20 border border-brand-orange rounded-lg text-[9px] font-bold text-center text-brand-orange transition-all shadow-[0_0_10px_rgba(249,115,22,0.15)]";
+                        else if (colorAesthetic === 'Clean Corporate Blue') btn.className = "hour-btn px-2 py-1.5 bg-blue-600/20 border border-blue-500 rounded-lg text-[9px] font-bold text-center text-blue-400 transition-all";
+                        else if (colorAesthetic === 'Warm Organic Earth') btn.className = "hour-btn px-2 py-1.5 bg-emerald-800/20 border border-emerald-600 rounded-lg text-[9px] font-bold text-center text-emerald-400 transition-all";
+                        else if (colorAesthetic === 'Vibrant & Creative') btn.className = "hour-btn px-2 py-1.5 bg-purple-600/20 border border-purple-500 rounded-lg text-[9px] font-bold text-center text-purple-300 transition-all";
+
+                        confirmBtn.removeAttribute('disabled');
+                        confirmBtn.innerText = targetLanguage === 'Español' ? `Confirmar reserva para las ${selectedHour}` : `Confirm booking for ${selectedHour}`;
+                    });
+                });
+
+                // Simulate booking submission and fire CUSTOM CLIENT WEBHOOK in real-time!
+                confirmBtn.addEventListener('click', () => {
+                    confirmBtn.innerText = targetLanguage === 'Español' ? 'Procesando reserva...' : 'Processing booking...';
+                    confirmBtn.setAttribute('disabled', 'true');
+                    
+                    // Dispatch the transaction metadata to the client's custom webhook in real-time
+                    if (webhookUrl) {
+                        console.log("[Client Custom Webhook POST] Dispatching Booking Lead...", {
+                            businessName,
+                            event: 'booking_created',
+                            customerEmail: 'demo_client@officeaim.com',
+                            serviceRequested: projectDetails.substring(0, 100),
+                            timeSelected: selectedHour,
+                            transactionValue: '45.00',
+                            maintenanceFee: '2.25'
+                        });
+
+                        fetch(webhookUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                businessName,
+                                event: 'booking_created',
+                                customerName: 'John Doe (Demo)',
+                                customerEmail: 'demo_client@officeaim.com',
+                                serviceRequested: projectDetails,
+                                timeSelected: selectedHour,
+                                transactionValue: '45.00',
+                                maintenanceFee: '2.25'
+                            })
+                        }).catch(e => console.warn("Simulated webhook post error:", e));
+                    }
+
+                    setTimeout(() => {
+                        confirmBtn.innerText = targetLanguage === 'Español' ? '¡Reserva Confirmada!' : 'Booking Confirmed!';
+                        confirmBtn.classList.remove('bg-brand-orange', 'bg-blue-600', 'bg-emerald-800', 'from-purple-600');
+                        confirmBtn.classList.add('bg-brand-emerald');
+                        confirmBtn.removeAttribute('disabled');
+                        
+                        setTimeout(() => {
+                            if (selectedHour) {
+                                confirmBtn.innerText = targetLanguage === 'Español' ? `Confirmar reserva para las ${selectedHour}` : `Confirm booking for ${selectedHour}`;
+                            } else {
+                                confirmBtn.innerText = targetLanguage === 'Español' ? 'Seleccionar horario' : 'Select a slot';
+                                confirmBtn.setAttribute('disabled', 'true');
+                            }
+                            confirmBtn.classList.remove('bg-brand-emerald');
+                            if (colorAesthetic === 'Modern Dark Tech') confirmBtn.classList.add('bg-brand-orange');
+                            else if (colorAesthetic === 'Clean Corporate Blue') confirmBtn.classList.add('bg-blue-600');
+                            else if (colorAesthetic === 'Warm Organic Earth') confirmBtn.classList.add('bg-emerald-800');
+                            else if (colorAesthetic === 'Vibrant & Creative') confirmBtn.classList.add('from-purple-600');
+                        }, 2500);
+                    }, 1200);
+                });
+
+                ctaWorkContainer.appendChild(bookingCard);
+            }
+
+            // Map footer Copyright
+            footerCopyright.innerText = `© 2026 ${businessName}. ${targetLanguage === 'Español' ? 'Todos los derechos reservados.' : 'All rights reserved.'} Powered by OfficeAIM.`;
+        }
+
+        // Translation helper for navbar page list
+        function translatePageName(pageName, targetLanguage) {
+            const pageMap = {
+                'Home': {
+                    'Español': 'Inicio', 'English': 'Home', 'Nederlands': 'Home', 'Français': 'Accueil', 'Deutsch': 'Startseite'
+                },
+                'About Us': {
+                    'Español': 'Nosotros', 'English': 'About', 'Nederlands': 'Over ons', 'Français': 'À Propos', 'Deutsch': 'Über uns'
+                },
+                'Services/Catalog': {
+                    'Español': 'Servicios', 'English': 'Services', 'Nederlands': 'Diensten', 'Français': 'Services', 'Deutsch': 'Dienstleistungen'
+                },
+                'Reviews': {
+                    'Español': 'Reseñas', 'English': 'Reviews', 'Nederlands': 'Reviews', 'Français': 'Avis', 'Deutsch': 'Bewertungen'
+                },
+                'Contact Form': {
+                    'Español': 'Contacto', 'English': 'Contact', 'Nederlands': 'Contact', 'Français': 'Contact', 'Deutsch': 'Kontakt'
+                }
+            };
+            return pageMap[pageName]?.[targetLanguage] || pageName;
+        }
+
+        // Translation helper for active CTA text in navbar
+        function translateCTAText(ctaValue, targetLanguage) {
+            if (ctaValue === 'Direct to WhatsApp') {
+                return targetLanguage === 'Español' ? 'WhatsApp' : 'WhatsApp';
+            } else if (ctaValue === 'Submit Form to Email') {
+                return targetLanguage === 'Español' ? 'Contacto' : 'Contact';
+            } else if (ctaValue === 'Submit Booking to Custom Webhook') {
+                return targetLanguage === 'Español' ? 'Reservar' : 'Book Now';
+            }
+            return 'Action';
+        }
+
+        // Translation helper for Hero Headline
+        function translateHeroTitle(businessName, targetLanguage) {
+            const titleMap = {
+                'Español': `El futuro de ${businessName}`,
+                'English': `The Future of ${businessName}`,
+                'Nederlands': `De toekomst van ${businessName}`,
+                'Français': `L'avenir de ${businessName}`,
+                'Deutsch': `Die Zukunft von ${businessName}`
+            };
+            return titleMap[targetLanguage] || `The Future of ${businessName}`;
+        }
+
+        // Fetch POST Lead dispatcher to external webhook (Make/Zapier bridge)
+        function dispatchLeadData(payload) {
+            // Easily customizable placeholder endpoint URL
+            const dispatcherWebhookUrl = "https://hook.us1.make.com/your-unique-webhook-id";
+            
+            console.log("[OfficeAIM Webhook Dispatch] Sending payload...", payload);
+            
+            // Only fire if the URL is updated by the developer; otherwise, log to console safely
+            if (!dispatcherWebhookUrl.includes("your-unique-webhook-id")) {
+                fetch(dispatcherWebhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(response => {
+                    console.log("[Webhook Success]", response);
+                })
+                .catch(err => {
+                    console.warn("[Webhook Dispatch Error]", err);
+                });
+            }
+        }
+
+        // Copy Clipboard utility
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(compiledPromptString).then(() => {
+                const btnText = document.getElementById('copy-btn-text');
+                const btnIcon = document.getElementById('copy-btn-icon');
+                
+                // Swap layout state for absolute visual feedback
+                btnText.innerText = "Copied!";
+                copyBtn.classList.remove('bg-brand-orange');
+                copyBtn.classList.add('bg-brand-emerald');
+                btnIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>`;
+                
+                setTimeout(() => {
+                    btnText.innerText = "Copy Technical Prompt";
+                    copyBtn.add('bg-brand-orange');
+                    copyBtn.classList.remove('bg-brand-emerald');
+                    btnIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>`;
+                }, 2000);
+            }).catch(err => {
+                console.error("Failed to copy prompt:", err);
+            });
+        });
+
+        // Restart / Reset Wizard
+        restartBtn.addEventListener('click', () => {
+            // Reset form fields
+            form.reset();
+            
+            // Trigger conditional visibility checks
+            primaryCta.dispatchEvent(new Event('change'));
+            
+            // Hide Success panel overlay
+            successPanel.classList.add('translate-y-full');
+            successPanel.classList.add('opacity-0');
+            successPanel.classList.remove('translate-y-0');
+            successPanel.classList.remove('opacity-100');
+            
+            // Reset Webmaster accordion to collapsed state
+            webmasterContent.classList.add('hidden');
+            webmasterContent.classList.remove('flex');
+            accordionArrow.classList.remove('rotate-180');
+            
+            // Return to step 1
+            goToPhase(1);
+        });
+
+    </script>
+
+    <!-- Global Mascot Widget Injection -->
+    <iframe id="mascot-widget" src="/hub/widget"
+        style="position: fixed; bottom: 0; right: 0; border: none; z-index: 2147483647; background: transparent; width: 300px; height: 200px; transition: all 0.3s ease-in-out; pointer-events: auto;"
+        allowtransparency="true" allow="microphone"></iframe>
+
+    <script>
+        const widgetIframe = document.getElementById('mascot-widget');
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
+        
+        let contextStr = 'website-creator';
+        
+        let activeViteUrl = "http://localhost:5174"; // default fallback (port 5174 is active)
+        
+        if (isLocal) {
+            // Dynamically discover which port is serving the Vite app (5173, 5174, 5175)
+            const ports = [5173, 5174, 5175];
+            let detected = false;
+            
+            Promise.any(ports.map(port => 
+                fetch(`http://localhost:${port}/hub/logo_officeaim.png`)
+                    .then(res => {
+                        if (!res.ok) throw new Error("Not our server");
+                        if (!detected) {
+                            detected = true;
+                            activeViteUrl = `http://localhost:${port}`;
+                            widgetIframe.src = activeViteUrl + '/hub/widget?context=' + contextStr;
+                            console.log("[Mascot Port Auto-Discovery]: Connected to active dev server on port", port);
+                        }
+                    })
+            )).catch(() => {
+                // absolute fallback
+                widgetIframe.src = activeViteUrl + '/hub/widget?context=' + contextStr;
+            });
+        } else {
+            widgetIframe.src = '/hub/widget?context=' + contextStr;
+        }
+
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'mascot-toggle') {
+                const widget = document.getElementById('mascot-widget');
+                if (event.data.isOpen) {
+                    widget.style.width = '420px';
+                    widget.style.height = '600px';
+                    widget.style.pointerEvents = 'auto';
+                } else {
+                    widget.style.width = '300px';
+                    widget.style.height = '200px';
+                    widget.style.pointerEvents = 'auto';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

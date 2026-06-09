@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 1 Preview - OfficeAIM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,700;0,800;1,400;1,700;1,800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #05070A;
+            color: white;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #22D3EE 0%, #FF7A18 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glass-card {
+            background: rgba(11, 18, 32, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="border-b border-white/5 bg-[#0B1220]/80 backdrop-blur-xl sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-8 py-6 flex items-center justify-between">
+            <div
+                class="flex items-center gap-2 text-gray-400 hover:text-white transition-all text-xs font-black uppercase tracking-widest italic">
+                ← Back to Dashboard
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="text-right">
+                    <div class="text-xs text-gray-400 uppercase tracking-widest font-black italic">Progress</div>
+                    <div class="text-2xl font-black italic text-[#22D3EE]">33%</div>
+                </div>
+                <div class="h-2 w-32 bg-white/5 rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-[#22D3EE] to-[#FF7A18] rounded-full shadow-[0_0_15px_rgba(34,211,238,0.5)]"
+                        style="width: 33%"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto px-8 py-16">
+        <!-- Module Title -->
+        <div class="mb-12">
+            <div
+                class="inline-flex items-center gap-2 px-4 py-2 bg-[#22D3EE]/10 text-[#22D3EE] rounded-xl text-xs font-black tracking-widest uppercase italic border border-[#22D3EE]/20 mb-6">
+                🏆 Module 1
+            </div>
+            <h1 class="text-5xl lg:text-7xl font-black mb-6 leading-tight italic">
+                Module 1: Demystifying AI
+                <br />
+                <span class="gradient-text">
+                    What It Is and Isn't
+                </span>
+            </h1>
+            <p class="text-2xl text-gray-400 italic font-medium">
+                (and Why You Don't Need to Be Scared)
+            </p>
+        </div>
+
+        <!-- Welcome Video -->
+        <div class="mb-16">
+            <h2 class="text-2xl font-black mb-6 italic flex items-center gap-3">
+                <svg class="h-6 w-6 text-[#22D3EE]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z">
+                    </path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Welcome to Module 1
+            </h2>
+            <div class="aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/UD6mW0ihCww"
+                    title="Module Introduction" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen class="w-full h-full"></iframe>
+            </div>
+        </div>
+
+        <!-- Lesson Cards -->
+        <div class="space-y-6 mb-12">
+            <h2 class="text-2xl font-black italic">What You'll Learn</h2>
+
+            <!-- Lesson 1.1 -->
+            <div class="p-8 glass-card rounded-2xl hover:border-[#22D3EE]/30 transition-all cursor-pointer group"
+                onclick="showLesson()">
+                <div class="flex items-start gap-6">
+                    <div class="flex-shrink-0">
+                        <div
+                            class="h-12 w-12 rounded-full bg-[#22D3EE]/10 border-2 border-[#22D3EE] flex items-center justify-center text-[#22D3EE] font-black text-xl">
+                            1
+                        </div>
+                    </div>
+                    <div class="flex-grow">
+                        <h3 class="text-xl font-black mb-2 group-hover:text-[#22D3EE] transition-colors italic">
+                            AI in Your Daily Life: Beyond Hype
+                        </h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            By the end of this lesson, you will be able to identify at least three common AI
+                            applications in your daily life and articulate in one sentence how AI functions as a tool to
+                            augment human capabilities.
+                        </p>
+                    </div>
+                    <svg class="h-6 w-6 text-gray-400 group-hover:text-[#22D3EE] group-hover:translate-x-1 transition-all"
+                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Lesson 1.2 -->
+            <div class="p-8 glass-card rounded-2xl opacity-50">
+                <div class="flex items-start gap-6">
+                    <div class="flex-shrink-0">
+                        <div
+                            class="h-12 w-12 rounded-full bg-white/5 border-2 border-white/20 flex items-center justify-center text-white/40 font-black text-xl relative">
+                            2
+                            <svg class="h-5 w-5 absolute -top-1 -right-1 text-white/40" fill="currentColor"
+                                viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-grow">
+                        <h3 class="text-xl font-black mb-2 italic text-white/40">
+                            The Human-AI Partnership: Your New Co-Pilot
+                        </h3>
+                        <p class="text-gray-500 text-sm leading-relaxed">
+                            🔒 Complete Lesson 1.1 to unlock
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lesson 1.3 -->
+            <div class="p-8 glass-card rounded-2xl opacity-50">
+                <div class="flex items-start gap-6">
+                    <div class="flex-shrink-0">
+                        <div
+                            class="h-12 w-12 rounded-full bg-white/5 border-2 border-white/20 flex items-center justify-center text-white/40 font-black text-xl relative">
+                            3
+                            <svg class="h-5 w-5 absolute -top-1 -right-1 text-white/40" fill="currentColor"
+                                viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-grow">
+                        <h3 class="text-xl font-black mb-2 italic text-white/40">
+                            Your First AI Tool: Introduction to ChatGPT
+                        </h3>
+                        <p class="text-gray-500 text-sm leading-relaxed">
+                            🔒 Complete Lesson 1.2 to unlock
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Start Button -->
+        <button onclick="showLesson()"
+            class="w-full py-8 bg-gradient-to-r from-[#22D3EE] to-[#FF7A18] text-white font-black uppercase tracking-widest italic rounded-2xl hover:shadow-[0_0_40px_rgba(34,211,238,0.4)] transition-all text-xl flex items-center justify-center gap-4 group">
+            Start Module 1
+            <svg class="h-6 w-6 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+        </button>
+    </main>
+
+    <!-- Lesson View (Hidden by default) -->
+    <div id="lessonView" class="hidden">
+        <main class="max-w-5xl mx-auto px-8 py-16">
+            <!-- Lesson Header -->
+            <div class="mb-12">
+                <div
+                    class="inline-flex items-center gap-2 px-4 py-2 bg-[#22D3EE]/10 text-[#22D3EE] rounded-xl text-xs font-black tracking-widest uppercase italic border border-[#22D3EE]/20 mb-6">
+                    Lesson 1.1
+                </div>
+                <h1 class="text-5xl lg:text-6xl font-black mb-8 leading-tight italic">
+                    AI in Your Daily Life: Beyond Hype
+                </h1>
+
+                <!-- SMART Goal -->
+                <div
+                    class="p-8 bg-gradient-to-br from-[#22D3EE]/10 to-[#FF7A18]/10 border border-[#22D3EE]/20 rounded-2xl mb-12">
+                    <div class="flex items-start gap-4">
+                        <svg class="h-6 w-6 text-[#22D3EE] flex-shrink-0 mt-1" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div>
+                            <h3 class="text-sm font-black uppercase tracking-widest text-[#22D3EE] mb-3 italic">
+                                🎯 Your SMART Goal
+                            </h3>
+                            <p class="text-lg leading-relaxed italic font-medium">
+                                By the end of this lesson, you will be able to identify at least three common AI
+                                applications in your daily life and articulate in one sentence how AI functions as a
+                                tool to augment human capabilities, thereby reducing initial anxiety about AI's
+                                complexity.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lesson Video -->
+            <div class="mb-16">
+                <div class="aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/TJrEb9pLquo"
+                        title="Lesson Video" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen class="w-full h-full"></iframe>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="prose prose-invert max-w-none space-y-12 mb-16">
+                <section class="space-y-4">
+                    <h2 class="text-3xl font-black italic text-white">
+                        What is AI, Really?
+                    </h2>
+                    <p class="text-xl text-gray-400 leading-relaxed">
+                        Forget the robots from sci-fi movies. At its core, Artificial Intelligence is simply a computer
+                        system designed to perform tasks that typically require human intelligence. This includes things
+                        like learning, problem-solving, understanding language, and recognizing patterns. Think of it as
+                        a very smart tool, not a sentient being.
+                    </p>
+                </section>
+
+                <section class="space-y-4">
+                    <h2 class="text-3xl font-black italic text-white">
+                        Where is AI Hiding in Plain Sight?
+                    </h2>
+                    <p class="text-xl text-gray-400 leading-relaxed">
+                        AI isn't some futuristic technology; it's woven into the fabric of our everyday lives. You've
+                        probably interacted with it countless times without even realizing it.
+                    </p>
+                    <ul class="space-y-4 mt-6">
+                        <li class="flex items-start gap-4 text-lg text-gray-400">
+                            <span class="text-[#22D3EE] text-2xl">•</span>
+                            <span><strong>Your Smartphone:</strong> Face ID, voice assistants (Siri, Google Assistant),
+                                predictive text, and even the way your camera optimizes photos all use AI.</span>
+                        </li>
+                        <li class="flex items-start gap-4 text-lg text-gray-400">
+                            <span class="text-[#22D3EE] text-2xl">•</span>
+                            <span><strong>Streaming Services:</strong> Netflix, Spotify, and YouTube use AI to recommend
+                                movies, music, and videos based on your viewing and listening habits.</span>
+                        </li>
+                        <li class="flex items-start gap-4 text-lg text-gray-400">
+                            <span class="text-[#22D3EE] text-2xl">•</span>
+                            <span><strong>Online Shopping:</strong> When Amazon suggests products you might like, that's
+                                AI at work.</span>
+                        </li>
+                        <li class="flex items-start gap-4 text-lg text-gray-400">
+                            <span class="text-[#22D3EE] text-2xl">•</span>
+                            <span><strong>Email Spam Filters:</strong> AI helps keep your inbox clean by identifying and
+                                filtering out unwanted emails.</span>
+                        </li>
+                        <li class="flex items-start gap-4 text-lg text-gray-400">
+                            <span class="text-[#22D3EE] text-2xl">•</span>
+                            <span><strong>Navigation Apps:</strong> Google Maps or Waze use AI to analyze traffic
+                                patterns and suggest the fastest routes.</span>
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="space-y-4">
+                    <h2 class="text-3xl font-black italic text-white">
+                        AI as a Tool: Augmenting Human Capabilities
+                    </h2>
+                    <p class="text-xl text-gray-400 leading-relaxed">
+                        It's crucial to understand that AI, especially in the context of office work, is primarily an
+                        augmentation tool. It's designed to extend your abilities, not replace them. Think of it like a
+                        calculator for math, a word processor for writing, or a spreadsheet for data. These tools don't
+                        replace your intelligence; they amplify it, allowing you to do more, faster, and with greater
+                        accuracy.
+                    </p>
+                </section>
+            </div>
+
+            <!-- Take Quiz Button -->
+            <button
+                onclick="alert('Quiz functionality coming soon! In the full version, you\'ll answer 5 questions and need 80% to unlock the next lesson.')"
+                class="w-full py-8 bg-gradient-to-r from-[#22D3EE] to-[#FF7A18] text-white font-black uppercase tracking-widest italic rounded-2xl hover:shadow-[0_0_40px_rgba(34,211,238,0.4)] transition-all text-xl flex items-center justify-center gap-4 group">
+                Take the Quiz
+                <svg class="h-6 w-6 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </button>
+
+            <button onclick="location.reload()"
+                class="mt-6 text-gray-400 hover:text-white transition-all text-sm font-black uppercase tracking-widest italic">
+                ← Back to Module Overview
+            </button>
+        </main>
+    </div>
+
+    <script>
+        function showLesson() {
+            document.querySelector('main').classList.add('hidden');
+            document.getElementById('lessonView').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+
+</html>

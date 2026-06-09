@@ -95,11 +95,18 @@
                         <div class="mega-menu-inner">
                             <div class="mega-menu-col">
                                 <h4>Free Tools</h4>
+                                <a href="resources/website-creator.html" class="mega-link">
+                                    <div class="mega-icon">🎨</div>
+                                    <div class="mega-text">
+                                        <strong>AI SVG Logo Lab</strong>
+                                        <span>Bespoke vector design &amp; web coach</span>
+                                    </div>
+                                </a>
                                 <a href="gems.html" class="mega-link">
                                     <div class="mega-icon">⭐</div>
                                     <div class="mega-text">
-                                        <strong>Prompt Generator</strong>
-                                        <span>Our most powerful free tool</span>
+                                        <strong>Prompt Creator</strong>
+                                        <span>Create emails and prompts for your site</span>
                                     </div>
                                 </a>
                                 <a href="gems.html#gemini" class="mega-link">
@@ -117,7 +124,7 @@
                 <li><a href="pricing.html" class="nav-link">Pricing</a></li>
             </ul>
             <div class="nav-ctas">
-                <a href="hub/login" class="btn btn-primary">Enter Campus →</a>
+                <a href="construction.html" class="btn btn-primary">Enter Campus →</a>
             </div>
         </div>
     </nav>
@@ -302,7 +309,7 @@
                     <div class="policy-contact">
                         <h3>Questions about these policies?</h3>
                         <p>Contact us directly through our social channels or reach out via the Campus Hub.</p>
-                        <a href="/hub/login" class="btn btn-primary" style="margin-top:1rem;display:inline-block;">Open
+                        <a href="/construction.html" class="btn btn-primary" style="margin-top:1rem;display:inline-block;">Open
                             the Campus</a>
                     </div>
 
@@ -333,7 +340,7 @@
                             <li><a href="index.html#how">How It Works</a></li>
                             <li><a href="gems.html">Free Gems &amp; Tools</a></li>
                             <li><a href="pricing.html">Pricing</a></li>
-                            <li><a href="/hub/login">Campus Login</a></li>
+                            <li><a href="/construction.html">Campus Login</a></li>
                         </ul>
                     </div>
                     <div class="footer-column">
@@ -355,6 +362,72 @@
         </div>
     </footer>
 
+
+    
+    <!-- Global Mascot Widget Injection -->
+    <iframe id="mascot-widget" src="/hub/widget"
+        style="position: fixed; bottom: 0; right: 0; border: none; z-index: 2147483647; background: transparent; width: 300px; height: 200px; transition: all 0.3s ease-in-out; pointer-events: auto;"
+        allowtransparency="true"></iframe>
+
+    <script>
+        const widgetIframe = document.getElementById('mascot-widget');
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
+        
+        let contextStr = 'landing';
+        const path = window.location.pathname;
+        if(path.includes('pricing')) contextStr = 'pricing';
+        else if(path.includes('board')) contextStr = 'board';
+        else if(path.includes('gems')) contextStr = 'gems';
+        else if(path.includes('security')) contextStr = 'security';
+        else if(path.includes('use-cases')) contextStr = 'use-cases';
+        else if(path.includes('classroom')) contextStr = 'classroom';
+        else if(path.includes('courses')) contextStr = 'courses';
+        else if(path.includes('blueprint')) contextStr = 'blueprint';
+        else if(path.includes('construction')) contextStr = 'construction';
+        
+        let activeViteUrl = "http://localhost:5174"; // default fallback (port 5174 is active)
+        
+        if (isLocal) {
+            // Dynamically discover which port is serving the Vite app (5173, 5174, 5175)
+            const ports = [5173, 5174, 5175];
+            let detected = false;
+            
+            Promise.any(ports.map(port => 
+                fetch(`http://localhost:${port}/hub/logo_officeaim.png`)
+                    .then(res => {
+                        if (!res.ok) throw new Error("Not our server");
+                        if (!detected) {
+                            detected = true;
+                            activeViteUrl = `http://localhost:${port}`;
+                            widgetIframe.src = activeViteUrl + '/hub/widget?context=' + contextStr;
+                            console.log("[Mascot Port Auto-Discovery]: Connected to active dev server on port", port);
+                        }
+                    })
+            )).catch(() => {
+                // absolute fallback
+                widgetIframe.src = activeViteUrl + '/hub/widget?context=' + contextStr;
+            });
+        } else {
+            widgetIframe.src = '/hub/widget?context=' + contextStr;
+        }
+
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'mascot-toggle') {
+                const widget = document.getElementById('mascot-widget');
+                if (event.data.isOpen) {
+                    widget.style.width = '420px';
+                    widget.style.height = '600px';
+                    widget.style.pointerEvents = 'auto';
+                } else {
+                    widget.style.width = '300px';
+                    widget.style.height = '200px';
+                    widget.style.pointerEvents = 'auto';
+                }
+            }
+        });
+    </script>
 </body>
+
+
 
 </html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OfficeAIM — The State of AI Agents 2026</title>
+    <meta name="description"
+        content="From Prompting to Autonomous Business Building. The OfficeAIM Blueprint whitepaper.">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700;1,800&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="landing-new.css">
+    <style>
+        .article-page {
+            padding: 8rem 0 4rem;
+            background: var(--bg-body);
+            min-height: 100vh;
+        }
+
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .article-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .article-label {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .article-title {
+            font-size: 2.75rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .article-subtitle {
+            font-size: 1.25rem;
+            color: var(--accent-primary);
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .article-content {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        .article-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-content h2 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.75rem;
+            color: var(--text-primary);
+            margin: 3.5rem 0 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .article-content h3 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.35rem;
+            color: var(--text-primary);
+            margin: 2.5rem 0 1rem;
+        }
+
+        .article-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .article-content strong {
+            color: var(--text-primary);
+        }
+
+        .callout {
+            background: rgba(15, 27, 46, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-left: 4px solid var(--accent-primary);
+            padding: 2rem;
+            margin: 2.5rem 0;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            font-style: italic;
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="images/favicon.png" alt="OfficeAIM Logo" class="logo-img">
+            </a>
+            <ul class="nav-links">
+                <li class="nav-item-dropdown">
+                    <a href="index.html#features" class="nav-link">Features <svg class="dropdown-arrow" width="12"
+                            height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-inner">
+                            <div class="mega-menu-col">
+                                <h4>The Platform</h4>
+                                <a href="board.html" class="mega-link">
+                                    <div class="mega-icon">👥</div>
+                                    <div class="mega-text">
+                                        <strong>The AI Board</strong>
+                                        <span>Meet your 19 specialist agents</span>
+                                    </div>
+                                </a>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </li>
+
+                <li class="nav-item-dropdown">
+                    <a href="#" class="nav-link active-nav">Learn <svg class="dropdown-arrow" width="12" height="12"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-inner">
+                            <div class="mega-menu-col">
+                                <h4>Guides</h4>
+                                <a href="use-cases.html" class="mega-link">
+                                    <div class="mega-icon">🗺️</div>
+                                    <div class="mega-text">
+                                        <strong>Workflow Guide</strong>
+                                        <span>Build with 6 Free Agents</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="mega-menu-col">
+                                <h4>Reports</h4>
+                                <a href="blueprint.html" class="mega-link active-mega-link">
+                                    <div class="mega-icon">📄</div>
+                                    <div class="mega-text">
+                                        <strong>The Blueprint</strong>
+                                        <span>State of AI Agents 2026</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item-dropdown">
+                    <a href="index.html#resources" class="nav-link">Resources <svg class="dropdown-arrow" width="12"
+                            height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-inner">
+                            <div class="mega-menu-col">
+                                <h4>Free Tools</h4>
+                                <a href="gems.html" class="mega-link">
+                                    <div class="mega-icon">⭐</div>
+                                    <div class="mega-text">
+                                        <strong>Prompt Generator</strong>
+                                        <span>Our most powerful free tool</span>
+                                    </div>
+                                </a>
+                                <a href="gems.html#gemini" class="mega-link">
+                                    <div class="mega-icon">💎</div>
+                                    <div class="mega-text">
+                                        <strong>15 Gem Agents</strong>
+                                        <span>Try Google Gemini integrations</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li><a href="pricing.html" class="nav-link">Pricing</a></li>
+            </ul>
+            <div class="nav-ctas">
+                <a href="construction.html" class="btn btn-primary">Enter Campus →</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="article-page">
+        <div class="article-container">
+            <header class="article-header">
+                <span class="article-label">WHITEPAPER REPORT</span>
+                <h1 class="article-title">The State of AI Agents 2026: The OfficeAIM Blueprint</h1>
+                <p class="article-subtitle">From Prompting to Autonomous Business Building</p>
+            </header>
+
+            <div class="article-content">
+                <h2>1. EXECUTIVE SUMMARY: THE AGENTIC SHIFT</h2>
+                <p>Artificial Intelligence is no longer just a chatbot answering questions; it is a workforce executing
+                    tasks. We have entered the era of <strong>Agentic Workflows</strong>.</p>
+                <p>OfficeAIM is designed to democratize this power. It is an educational and operational platform where
+                    users learn to build, automate, and scale real businesses using a structured hierarchy of AI Agents.
+                    This blueprint outlines the exact journey from a free account to a fully automated enterprise.</p>
+
+                <div class="evolution-timeline"
+                    style="margin: 3.5rem 0; padding: 2.5rem 2rem; background: rgba(15, 27, 46, 0.5); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-radius: 1.5rem; border: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: stretch; position: relative; gap: 1rem;">
+
+                    <!-- Animated connecting line -->
+                    <div
+                        style="position: absolute; top: 50%; left: 8%; right: 8%; height: 3px; background: linear-gradient(90deg, rgba(255,122,24,0.4) 0%, rgba(34,211,238,0.6) 50%, rgba(168,85,247,0.9) 100%); z-index: 0; transform: translateY(-50%); border-radius: 2px;">
+                    </div>
+
+                    <!-- 2023: Chatbots -->
+                    <div
+                        style="position: relative; z-index: 1; text-align: center; background: rgba(20,25,40,0.9); padding: 1.5rem 1.25rem; border-radius: 1.25rem; border: 1px solid rgba(255,122,24,0.35); width: 30%; box-shadow: 0 4px 20px rgba(255,122,24,0.08);">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">💬</div>
+                        <div
+                            style="color: #ff7a18; font-family: var(--font-heading); font-weight: 900; font-size: 1.5rem; letter-spacing: -0.5px;">
+                            2023</div>
+                        <div
+                            style="font-weight: 800; color: var(--text-primary); margin: 0.5rem 0; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                            Chatbots</div>
+                        <div style="font-size: 0.82rem; color: var(--text-secondary); line-height:1.5;">Answering
+                            questions &amp; basic text generation. Single-turn interactions.</div>
+                    </div>
+
+                    <!-- Arrow 1 -->
+                    <div
+                        style="position:relative; z-index:1; display:flex; align-items:center; font-size:1.5rem; color:rgba(255,255,255,0.15);">
+                        →</div>
+
+                    <!-- 2024: Copilots -->
+                    <div
+                        style="position: relative; z-index: 1; text-align: center; background: rgba(20,25,40,0.9); padding: 1.5rem 1.25rem; border-radius: 1.25rem; border: 1px solid rgba(34,211,238,0.35); width: 30%; box-shadow: 0 4px 20px rgba(34,211,238,0.08);">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🤖</div>
+                        <div
+                            style="color: var(--accent-secondary); font-family: var(--font-heading); font-weight: 900; font-size: 1.5rem; letter-spacing: -0.5px;">
+                            2024</div>
+                        <div
+                            style="font-weight: 800; color: var(--text-primary); margin: 0.5rem 0; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                            Copilots</div>
+                        <div style="font-size: 0.82rem; color: var(--text-secondary); line-height:1.5;">Assisting
+                            with coding &amp; specific workflows. Context-aware pair programming.</div>
+                    </div>
+
+                    <!-- Arrow 2 -->
+                    <div
+                        style="position:relative; z-index:1; display:flex; align-items:center; font-size:1.5rem; color:rgba(255,255,255,0.15);">
+                        →</div>
+
+                    <!-- 2026: Autonomous Agents (highlighted) -->
+                    <div
+                        style="position: relative; z-index: 1; text-align: center; background: rgba(168,85,247,0.12); padding: 1.75rem 1.25rem; border-radius: 1.25rem; border: 2px solid rgba(168,85,247,0.5); width: 32%; box-shadow: 0 0 40px rgba(168,85,247,0.2), 0 8px 30px rgba(168,85,247,0.1); transform: scale(1.03);">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🧠</div>
+                        <div
+                            style="color: #c084fc; font-family: var(--font-heading); font-weight: 900; font-size: 1.5rem; letter-spacing: -0.5px;">
+                            2026</div>
+                        <div
+                            style="font-weight: 900; color: var(--text-primary); margin: 0.5rem 0; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                            Autonomous Agents</div>
+                        <div style="font-size: 0.82rem; color: var(--text-secondary); line-height:1.5;">Executing
+                            complex multi-step tasks across integrations. Full business automation.</div>
+                        <div
+                            style="margin-top: 0.75rem; display:inline-block; padding: 0.25rem 0.75rem; border-radius: 1rem; background: rgba(168,85,247,0.2); color: #c084fc; font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; border: 1px solid rgba(168,85,247,0.3);">
+                            ← We are here</div>
+                    </div>
+                </div>
+
+                <h2>2. THE OFFICEAIM ECOSYSTEM & ARCHITECTURE</h2>
+                <p>OfficeAIM operates like a real digital corporation. You start with a core team and hire elite
+                    executives as your business grows.</p>
+
+                <h3>The Hook: The Open Network (Pre-Registration)</h3>
+                <ul>
+                    <li><strong>The 15 Free Gems:</strong> External, highly specialized AI assistants available to the
+                        public. Used for initial ideation and market research.</li>
+                </ul>
+
+                <h3>Level 1: The Foundation (Free Dashboard Subscription)</h3>
+                <ul>
+                    <li><strong>The Standard 5:</strong> Once registered, users enter their private dashboard and unlock
+                        the core team of 5 Standard Agents.</li>
+                    <li><strong>The Goal:</strong> Build out the foundation of a real project. These agents help draft
+                        initial business plans, create basic marketing content, and structure operations. They deliver
+                        high-quality, actionable results that prove the platform's power.</li>
+                </ul>
+
+                <h3>Level 2: The Strategic Core (Pro Tier)</h3>
+                <ul>
+                    <li><strong>The Engine (7 Agents):</strong> Powered by deeper reasoning and advanced strategy
+                        algorithms.</li>
+                    <li><strong>The Goal:</strong> Turn basic plans into complex, multi-channel campaigns, robust
+                        technical architectures, and advanced financial models. This is where a "project" becomes a
+                        "business".</li>
+                </ul>
+
+                <p><em>Further exploration of enterprise automation scaling is available inside the application.</em>
+                </p>
+
+                <div
+                    style="margin-top: 4rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 3rem;">
+                    <h3>Ready to build your digital corporation?</h3>
+                    <a href="/construction.html" class="btn btn-primary btn-large" style="margin-top: 1rem;">Experience the
+                        Agentic Shift →</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="images/favicon.png" alt="OfficeAIM Logo" class="footer-logo"
+                        style="display:block;margin:0 auto 0.75rem;">
+                    <p class="footer-tagline" style="text-align:center;">Learn. Build. Automate.</p>
+                    <p style="text-align:center;margin-top:0.5rem;">
+                        <a href="policy.html"
+                            style="color:var(--text-muted);font-size:0.8rem;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:2px;">Privacy
+                            &amp; Policies</a>
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Platform</h4>
+                        <ul>
+                            <li><a href="board.html">The Board</a></li>
+                            <li><a href="index.html#how">How It Works</a></li>
+                            <li><a href="gems.html">Free Gems &amp; Tools</a></li>
+                            <li><a href="pricing.html">Pricing</a></li>
+                            <li><a href="/construction.html">Campus Login</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Connect</h4>
+                        <ul>
+                            <li><a href="https://www.instagram.com/office.aim/" target="_blank">Instagram</a></li>
+                            <li><a href="https://www.youtube.com/@Aimora-Officeaim" target="_blank">YouTube</a></li>
+                            <li><a href="https://www.facebook.com/profile.php?id=61584047901312"
+                                    target="_blank">Facebook</a></li>
+                            <li><a href="https://www.linkedin.com/in/office-aim-hq-b8a7013a8/"
+                                    target="_blank">LinkedIn</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 OfficeAIM. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

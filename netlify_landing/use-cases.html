@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OfficeAIM — Free Tier Workflow Guide</title>
+    <meta name="description"
+        content="Learn how to launch a newsletter using your OfficeAIM free tier agents. Step-by-step workflow guide.">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700;1,800&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="landing-new.css">
+    <style>
+        .article-page {
+            padding: 8rem 0 4rem;
+            background: var(--bg-body);
+            min-height: 100vh;
+        }
+
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .article-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .article-label {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(255, 122, 24, 0.1);
+            color: var(--accent-primary);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .article-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .article-content {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        .article-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-content h2 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.75rem;
+            color: var(--text-primary);
+            margin: 3rem 0 1rem;
+        }
+
+        .article-content h3 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.35rem;
+            color: var(--text-primary);
+            margin: 2rem 0 1rem;
+        }
+
+        .article-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .workflow-step {
+            background: rgba(15, 27, 46, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .workflow-step:hover {
+            border-color: rgba(34, 211, 238, 0.3);
+            box-shadow: 0 0 40px rgba(34, 211, 238, 0.08);
+            transform: translateY(-4px);
+        }
+
+        .workflow-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent-primary);
+        }
+
+        .workflow-step-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 122, 24, 0.1);
+            color: var(--accent-primary);
+            border-radius: 50%;
+            font-weight: 700;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin-bottom: 1rem;
+        }
+
+        .workflow-step h3 {
+            margin-top: 0;
+            margin-bottom: 0.75rem;
+        }
+
+        .agent-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .agent-badge img {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="images/favicon.png" alt="OfficeAIM Logo" class="logo-img">
+            </a>
+            <ul class="nav-links">
+                <li class="nav-item-dropdown">
+                    <a href="index.html#features" class="nav-link">Features <svg class="dropdown-arrow" width="12"
+                            height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-inner">
+                            <div class="mega-menu-col">
+                                <h4>The Platform</h4>
+                                <a href="board.html" class="mega-link">
+                                    <div class="mega-icon">👥</div>
+                                    <div class="mega-text">
+                                        <strong>The AI Board</strong>
+                                        <span>Meet your 19 specialist agents</span>
+                                    </div>
+                                </a>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </li>
+
+                <li class="nav-item-dropdown">
+                    <a href="#" class="nav-link active-nav">Learn <svg class="dropdown-arrow" width="12" height="12"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-inner">
+                            <div class="mega-menu-col">
+                                <h4>Guides</h4>
+                                <a href="use-cases.html" class="mega-link active-mega-link">
+                                    <div class="mega-icon">🗺️</div>
+                                    <div class="mega-text">
+                                        <strong>Workflow Guide</strong>
+                                        <span>Build with 6 Free Agents</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="mega-menu-col">
+                                <h4>Reports</h4>
+                                <a href="blueprint.html" class="mega-link">
+                                    <div class="mega-icon">📄</div>
+                                    <div class="mega-text">
+                                        <strong>The Blueprint</strong>
+                                        <span>State of AI Agents 2026</span>
+                                    </div>
+                                </a>
+                                <a href="security.html" class="mega-link">
+                                    <div class="mega-icon">🛡️</div>
+                                    <div class="mega-text">
+                                        <strong>Security & Trust</strong>
+                                        <span>Data privacy & encryption</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item-dropdown">
+                    <a href="index.html#resources" class="nav-link">Resources <svg class="dropdown-arrow" width="12"
+                            height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-inner">
+                            <div class="mega-menu-col">
+                                <h4>Free Tools</h4>
+                                <a href="gems.html" class="mega-link">
+                                    <div class="mega-icon">⭐</div>
+                                    <div class="mega-text">
+                                        <strong>Prompt Generator</strong>
+                                        <span>Our most powerful free tool</span>
+                                    </div>
+                                </a>
+                                <a href="gems.html#gemini" class="mega-link">
+                                    <div class="mega-icon">💎</div>
+                                    <div class="mega-text">
+                                        <strong>15 Gem Agents</strong>
+                                        <span>Try Google Gemini integrations</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li><a href="pricing.html" class="nav-link">Pricing</a></li>
+            </ul>
+            <div class="nav-ctas">
+                <a href="construction.html" class="btn btn-primary">Enter Campus →</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="article-page">
+        <div class="article-container">
+            <header class="article-header">
+                <span class="article-label">Workflow Guide</span>
+                <h1 class="article-title">How to Launch a Newsletter with the Free Tier</h1>
+                <p class="article-subtitle">A logical, step-by-step example of how to orchestrate your 6 free AI agents
+                    to build, validate, and launch a real project.</p>
+            </header>
+
+            <div class="article-content">
+                <p>One of the biggest mistakes people make with AI is treating it like a search engine. At OfficeAIM, we
+                    treat AI like a workforce.</p>
+                <p>When you create a free account, you don't just get access to chat interfaces—you get a core team of
+                    specialists. To illustrate how this changes the game, let's walk through a common project:
+                    <strong>Launching a niche newsletter.</strong>
+                </p>
+                <p>Instead of trying to do everything yourself or asking a single AI to "write a newsletter," here is
+                    the logical sequence of operations using your OfficeAIM Free Tier.</p>
+
+                <h2>The Agent Workflow Sequence</h2>
+
+                <div class="workflow-step">
+                    <div class="workflow-step-num">1</div>
+                    <div class="agent-badge">
+                        <img src="https://lh3.googleusercontent.com/d/1qVeSx1suf01TU01h_SGecwfbieBrotw6" alt="Gema"
+                            referrerpolicy="no-referrer"
+                            style="width:80px; height:80px; border-radius:50%; object-fit:cover; border:3px solid var(--accent-secondary); margin: 0 auto 0.5rem; display:block;">
+                        <span>Gema — AI Project Manager</span>
+                    </div>
+                    <h3>Scope and Structure</h3>
+                    <p>Start your project with Gema. Tell her: <em>"I want to launch a weekly newsletter about AI
+                            marketing tools."</em></p>
+                    <p>Gema will break down the entire project into actionable milestones, helping you determine the
+                        target audience, cadence, and platforms you'll need. She gives you the operational blueprint.
+                    </p>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="workflow-step-num">2</div>
+                    <div class="agent-badge">
+                        <img src="https://lh3.googleusercontent.com/d/1dwtTpaggtlN_a5zEMfrNFiV4889fgzpE"
+                            alt="Behavioral Psych" referrerpolicy="no-referrer"
+                            style="width:80px; height:80px; border-radius:50%; object-fit:cover; border:3px solid var(--accent-secondary); margin: 0 auto 0.5rem; display:block;">
+                        <span>Behavioral Psychologist</span>
+                    </div>
+                    <h3>Analyze the Target Audience</h3>
+                    <p>Take Gema's audience profile to the Behavioral Psychologist. This agent will analyze the
+                        underlying motivations, fears, and cognitive biases of your target readers.</p>
+                    <p>You'll learn <em>why</em> they would subscribe, what pain points to agitate in your welcome
+                        email, and what emotional triggers will drive engagement.</p>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="workflow-step-num">3</div>
+                    <div class="agent-badge">
+                        <img src="https://lh3.googleusercontent.com/d/1mUtk1oaHnHMoPJdXERRiW_aftebtbu0B"
+                            alt="SEO Master" referrerpolicy="no-referrer"
+                            style="width:80px; height:80px; border-radius:50%; object-fit:cover; border:3px solid var(--accent-secondary); margin: 0 auto 0.5rem; display:block;">
+                        <span>SEO Master</span>
+                    </div>
+                    <h3>Optimize the Funnel</h3>
+                    <p>Now that you know your audience's psychology, the SEO Master helps you capture them. You'll work
+                        with this agent to discover the actual search terms your audience uses.</p>
+                    <p>They will help you craft the perfect, high-converting copy for your landing page and suggest
+                        title ideas for your first few issues.</p>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="workflow-step-num">4</div>
+                    <div class="agent-badge">
+                        <img src="https://lh3.googleusercontent.com/d/1U3cGohwRtl76_0QfeiiZEkRgPRq9JorK"
+                            alt="Community Builder" referrerpolicy="no-referrer"
+                            style="width:80px; height:80px; border-radius:50%; object-fit:cover; border:3px solid var(--accent-secondary); margin: 0 auto 0.5rem; display:block;">
+                        <span>Community Builder</span>
+                    </div>
+                    <h3>Draft the Content</h3>
+                    <p>With the structure, psychology, and keywords in hand, pass the baton to the Community Builder.
+                        This agent specializes in tone and engagement.</p>
+                    <p>They will draft your welcome sequence, write your first issue, and establish the distinct "voice"
+                        of your publication so you don't sound like a generic robot.</p>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="workflow-step-num">5</div>
+                    <div class="agent-badge">
+                        <img src="https://lh3.googleusercontent.com/d/1m1enxP1y7kj1VzWvO8VI7gXZHkxxek8c"
+                            alt="Quality Checker" referrerpolicy="no-referrer"
+                            style="width:80px; height:80px; border-radius:50%; object-fit:cover; border:3px solid var(--accent-secondary); margin: 0 auto 0.5rem; display:block;">
+                        <span>Quality Checker</span>
+                    </div>
+                    <h3>Review and Refine</h3>
+                    <p>Never publish an initial draft. Give your generated content to the Quality Checker.</p>
+                    <p>This ruthless editor will spot inconsistencies, tighten the prose, verify that the psychological
+                        triggers are naturally integrated, and ensure the entire campaign meets professional standards.
+                    </p>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="workflow-step-num">6</div>
+                    <div class="agent-badge">
+                        <img src="images/idea_cloner_avatar.png" alt="Idea Cloner"
+                            style="width:80px; height:80px; border-radius:50%; object-fit:cover; border:3px solid var(--accent-secondary); margin: 0 auto 0.5rem; display:block;">
+                        <span>Idea Cloner (Bonus)</span>
+                    </div>
+                    <h3>Reverse-Engineer Competitors</h3>
+                    <p>Once you reach Module 2, you unlock the Idea Cloner. Find a successful newsletter in your niche,
+                        feed the URL to the Cloner, and ask it to break down their SaaS or landing page structure.</p>
+                    <p>You can instantly replicate successful technical and marketing elements for your own newsletter
+                        sign-up flow.</p>
+                </div>
+
+                <h2>The Multi-Agent Advantage</h2>
+                <p>Instead of relying on a single prompt to do six different jobs poorly, you orchestrated a specialized
+                    team. You achieved a professional-grade business launch from ideation to final copy—all on the Free
+                    Tier.</p>
+
+                <div style="margin-top: 4rem; text-align: center;">
+                    <a href="/construction.html" class="btn btn-primary btn-large">Start Building Now. Create Free Account →</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="images/favicon.png" alt="OfficeAIM Logo" class="footer-logo"
+                        style="display:block;margin:0 auto 0.75rem;">
+                    <p class="footer-tagline" style="text-align:center;">Learn. Build. Automate.</p>
+                    <p style="text-align:center;margin-top:0.5rem;">
+                        <a href="policy.html"
+                            style="color:var(--text-muted);font-size:0.8rem;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:2px;">Privacy
+                            &amp; Policies</a>
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Platform</h4>
+                        <ul>
+                            <li><a href="board.html">The Board</a></li>
+                            <li><a href="index.html#how">How It Works</a></li>
+                            <li><a href="gems.html">Free Gems &amp; Tools</a></li>
+                            <li><a href="pricing.html">Pricing</a></li>
+                            <li><a href="/construction.html">Campus Login</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Connect</h4>
+                        <ul>
+                            <li><a href="https://www.instagram.com/office.aim/" target="_blank">Instagram</a></li>
+                            <li><a href="https://www.youtube.com/@Aimora-Officeaim" target="_blank">YouTube</a></li>
+                            <li><a href="https://www.facebook.com/profile.php?id=61584047901312"
+                                    target="_blank">Facebook</a></li>
+                            <li><a href="https://www.linkedin.com/in/office-aim-hq-b8a7013a8/"
+                                    target="_blank">LinkedIn</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 OfficeAIM. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

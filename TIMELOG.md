@@ -22,8 +22,21 @@ This log tracks the "Working Curve" to ensure sustainable productivity and high-
 | 2026-03-04 | 17:00 | 20:15 | ~3.25h | Updated Admin UUID in App.jsx and added null checks for event listeners in script.js. | ✅ Completed |
 | 2026-03-05 | 09:00 | 11:49 | ~2.75h | Admin Dashboard CRM redesign (single-page layout, sidebar nav wired via activeTab). Financial Command Center URLs updated. Large files (2.2G) purged from git history with git filter-repo. GitHub push successful. | ✅ Completed |
 | 2026-03-06 | 16:30 | 18:00 | ~1.5h | Implementing Subscriber Interest Test, Dashboard Integration, and planning Post-Diagnostic Automations (Phase 4). | ✅ Completed |
+| 2026-04-28 | 19:30 | 20:30 | 1h | Transitioned landing page to construction state, translated construction page to English, and globally injected Mascot widget across standalone pages. | ✅ Completed |
+| 2026-05-23 | 14:56 | 16:04 | 1.1h | Restored Supabase, updated cookies.txt, implemented SaaS LMS premium tabs (Learning Paths, Curated Resources, Leaderboard, Community Lounge) in localhost Dashboard, and whitelisted rodyf81@yahoo.es admin UUID. | ✅ Completed |
+| 2026-05-24 | 06:38 | 08:38 | 2.0h | Initialized session dev server (handled Port 5174 auto-switch), designed VSL page conversion funnel, mapped out and implemented the multilingual onboarding flow & mascot dynamic coach translation architecture, and verified Admin controls. | ✅ Completed |
+| 2026-05-24 | 10:40 | 11:00 | 0.3h | Refactored App.jsx with resilient isWhitelistedAdmin check. Outlined SQL queries for Supabase profiles role upgrade and trigger function override. | ✅ Completed |
+| 2026-05-24 | 11:00 | 11:20 | 0.3h | Integrated Mascot Assistant into AdminDashboard.jsx as Admin Coach. Programmed handleSend system change requests and DB triage queue push. Fixed Jean Paulo hardcoded welcome name in Dashboard.jsx. | ✅ Completed |
+| 2026-05-24 | 11:20 | 11:55 | 0.6h | Integrated native web speech recognition (STT) and voice synthesis (TTS) in MascotAssistant.jsx. Programmed rollback (/rollback), diagnostics (/diagnose), and possibilities (/possibilities) admin commands. | ✅ Completed |
+| 2026-05-24 | 11:55 | 12:15 | 0.3h | Refactored agentFactory.js to inject dynamic JARVIS persona for administrators. Refactored speakText in MascotAssistant.jsx to dynamically map British English premium male voices (Daniel) for English outputs, eliminating robotic Spanglish audio glitches. | ✅ Completed |
+| 2026-05-24 | 12:15 | 12:20 | 0.1h | Resolved Vite syntax parser import-analysis compilation error by fixing the systemInstruction string template literal boundaries in agentFactory.js. | ✅ Completed |
+| 2026-05-24 | 12:20 | 12:40 | 0.3h | Refactored agentFactory.js to support total Admin bypass on standard tier verifications. Resolved concurrent Speech Synthesis double voice triggers in MascotAssistant.jsx utilizing useRef state caching. | ✅ Completed |
+| 2026-05-24 | 12:21 | 13:44 | 1.4h | Segmented Mascot visual styles/personas into student guide vs. admin command pilot. Fixed logo loading glitch by mapping logo_premium_v2.png under public assets root. Strictly renamed JARVIS to AIM and added HUD name meaning to avatar panel. | ✅ Completed |
+| 2026-05-25 | 07:50 | 08:20 | 0.5h | Implemented premium isolated Website Creator tool at resources/website-creator.html with a 3-step wizard, prompt compiler, dynamic webhook injection, pay-as-you-go transparency, and embedded AIM Mascot. | ✅ Completed |
+| 2026-05-30 | 12:18 | 15:29 | 3.2h | Robust Mascot Widget Improvement (border, timeout, fallback) | ✅ Completed |
+| 2026-06-09 | 04:41 | 08:18 | ~3.6h | Mascot SDK history fix, Newsletter translation, news.html integration. | ✅ Completed |
 ---
-*Next Break Suggestion: 11:00 AM*
+*Next Break Suggestion: 12:00 PM*
 
 **Session 1 (Feb 13, 11:00 AM - 12:00 PM)**
   - **Focus:** Premium Visuals, Curriculum Seeding & Hub Integration.

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OfficeAIM — Under Construction</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #030712;
+            --accent-primary: #ff7a18;
+            --accent-secondary: #22d3ee;
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        .bg-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 122, 24, 0.15) 0%, transparent 70%);
+            filter: blur(80px);
+            top: -200px;
+            left: -200px;
+            z-index: 0;
+            animation: pulse 8s infinite alternate;
+        }
+
+        .bg-glow-2 {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(34, 211, 238, 0.1) 0%, transparent 70%);
+            filter: blur(80px);
+            bottom: -100px;
+            right: -100px;
+            z-index: 0;
+            animation: pulse 10s infinite alternate-reverse;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.2) translate(50px, 50px); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 3rem;
+            max-width: 600px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 0 15px rgba(255, 122, 24, 0.4));
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #fff 0%, #999 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 122, 24, 0.1);
+            border: 1px solid rgba(255, 122, 24, 0.2);
+            color: var(--accent-primary);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--accent-primary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 20px -5px rgba(255, 122, 24, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px -5px rgba(255, 122, 24, 0.5);
+            filter: brightness(1.1);
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 2rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: 2rem;
+                margin: 1rem;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-glow"></div>
+    <div class="bg-glow-2"></div>
+
+    <div class="container">
+        <img src="images/favicon.png" alt="OfficeAIM" class="logo">
+        <div class="status-badge">Coming Soon</div>
+        <h1>We are building the Campus</h1>
+        <p>
+            The OfficeAIM Campus is in its final stabilization phase. 
+            Soon you will be able to interact with your 19 specialized agents. 
+            Join the waitlist to be the first to enter!
+        </p>
+        
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdnWIIe4TYnb0D4KEuSIESu8MBCj0roj1F6w5iQeI2I-4hyKQ/viewform?usp=sharing&ouid=112223944907330879630" target="_blank" class="btn">
+            Join the Waitlist
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+        </a>
+
+        <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+
+    
+    
+    <!-- Global Mascot Widget Injection -->
+    <iframe id="mascot-widget" src="/hub/widget"
+        style="position: fixed; bottom: 0; right: 0; border: none; z-index: 2147483647; background: transparent; width: 300px; height: 200px; transition: all 0.3s ease-in-out; pointer-events: auto;"
+        allowtransparency="true"></iframe>
+
+    <script>
+        const widgetIframe = document.getElementById('mascot-widget');
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
+        
+        let contextStr = 'landing';
+        const path = window.location.pathname;
+        if(path.includes('pricing')) contextStr = 'pricing';
+        else if(path.includes('board')) contextStr = 'board';
+        else if(path.includes('gems')) contextStr = 'gems';
+        else if(path.includes('security')) contextStr = 'security';
+        else if(path.includes('use-cases')) contextStr = 'use-cases';
+        else if(path.includes('classroom')) contextStr = 'classroom';
+        else if(path.includes('courses')) contextStr = 'courses';
+        else if(path.includes('blueprint')) contextStr = 'blueprint';
+        else if(path.includes('construction')) contextStr = 'construction';
+        
+        let activeViteUrl = "http://localhost:5174"; // default fallback (port 5174 is active)
+        
+        if (isLocal) {
+            // Dynamically discover which port is serving the Vite app (5173, 5174, 5175)
+            const ports = [5173, 5174, 5175];
+            let detected = false;
+            
+            Promise.any(ports.map(port => 
+                fetch(`http://localhost:${port}/hub/logo_officeaim.png`)
+                    .then(res => {
+                        if (!res.ok) throw new Error("Not our server");
+                        if (!detected) {
+                            detected = true;
+                            activeViteUrl = `http://localhost:${port}`;
+                            widgetIframe.src = activeViteUrl + '/hub/widget?context=' + contextStr;
+                            console.log("[Mascot Port Auto-Discovery]: Connected to active dev server on port", port);
+                        }
+                    })
+            )).catch(() => {
+                // absolute fallback
+                widgetIframe.src = activeViteUrl + '/hub/widget?context=' + contextStr;
+            });
+        } else {
+            widgetIframe.src = '/hub/widget?context=' + contextStr;
+        }
+
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'mascot-toggle') {
+                const widget = document.getElementById('mascot-widget');
+                if (event.data.isOpen) {
+                    widget.style.width = '420px';
+                    widget.style.height = '600px';
+                    widget.style.pointerEvents = 'auto';
+                } else {
+                    widget.style.width = '300px';
+                    widget.style.height = '200px';
+                    widget.style.pointerEvents = 'auto';
+                }
+            }
+        });
+    </script>
+</body>
+
+
+</html>
