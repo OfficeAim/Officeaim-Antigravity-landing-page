@@ -1,7 +1,7 @@
 [build]
-  # No build command because the root is static HTML
-  # If we wanted Netlify to build the Vite app, it would be:
-  # command = "cd hub && npm run build && cp -r dist/* ../hub/"
+  # Build the React app inside /hub, then move the built files to the /hub directory
+  # so Netlify serves the compiled app instead of the raw source code.
+  command = "cd hub && npm install && npm run build && cd .. && cp -R hub/dist/* hub/"
   publish = "."
 
 [[redirects]]
