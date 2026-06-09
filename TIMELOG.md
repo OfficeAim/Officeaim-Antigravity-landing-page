@@ -33,8 +33,10 @@ This log tracks the "Working Curve" to ensure sustainable productivity and high-
 | 2026-05-24 | 12:20 | 12:40 | 0.3h | Refactored agentFactory.js to support total Admin bypass on standard tier verifications. Resolved concurrent Speech Synthesis double voice triggers in MascotAssistant.jsx utilizing useRef state caching. | ✅ Completed |
 | 2026-05-24 | 12:21 | 13:44 | 1.4h | Segmented Mascot visual styles/personas into student guide vs. admin command pilot. Fixed logo loading glitch by mapping logo_premium_v2.png under public assets root. Strictly renamed JARVIS to AIM and added HUD name meaning to avatar panel. | ✅ Completed |
 | 2026-05-25 | 07:50 | 08:20 | 0.5h | Implemented premium isolated Website Creator tool at resources/website-creator.html with a 3-step wizard, prompt compiler, dynamic webhook injection, pay-as-you-go transparency, and embedded AIM Mascot. | ✅ Completed |
+| 2026-05-30 | 12:18 | 15:29 | 3.2h | Robust Mascot Widget Improvement (border, timeout, fallback) | ✅ Completed |
+| 2026-06-09 | 04:41 | 08:18 | ~3.6h | Mascot SDK history fix, Newsletter translation, news.html integration. | ✅ Completed |
 ---
-*Next Break Suggestion: 09:16 AM*
+*Next Break Suggestion: 12:00 PM*
 
 **Session 1 (Feb 13, 11:00 AM - 12:00 PM)**
   - **Focus:** Premium Visuals, Curriculum Seeding & Hub Integration.

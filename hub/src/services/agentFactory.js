@@ -166,11 +166,11 @@ export async function callAgent(agentRole, userMessage, chatHistory = [], userTi
 
     // Format history for Gemini SDK
     // CRITICAL FIX: Google SDK strictly requires the first message in history to be from 'user'.
-    // ProjectLab.jsx injects an initial automated greeting as 'agent'. We must strip it out.
+    // ProjectLab.jsx and MascotAssistant.jsx inject automated greetings as 'agent'. We must strip them out.
     let cleanHistory = [...chatHistory];
 
-    // Check if the very first message is the automated greeting. If so, remove it.
-    if (cleanHistory.length > 0 && cleanHistory[0].role === 'agent' && cleanHistory[0].content.includes('Neural Bridge Established')) {
+    // Remove any leading messages that are not from 'user' to avoid Gemini SDK crashes
+    while (cleanHistory.length > 0 && cleanHistory[0].role !== 'user') {
         cleanHistory.shift();
     }
 
@@ -261,13 +261,13 @@ If the user's query contains the trigger '✨ GENERATE LOGO REQUEST', you MUST b
 Your response MUST contain EXACTLY a valid XML '<svg>...</svg>' code block and absolutely NOTHING else. No introductions, no explanations, no chat remarks. Just raw, copy-paste-ready SVG code.
 Design rules for the Premium SVG Logos (MUST APPLY THE FOLLOWING VECTOR PATTERNS):
 1. Defs & Gradients: Always define high-end visual gradients inside the '<defs>' tags. Use linear or radial gradients with multiple color stops (e.g., orange '#f97316' to amber '#ffa751' to cyan '#06b6d4', or gold '#ffe259' to amber '#ffa751').
-2. Neon Glow Filters: Define a drop-shadow filter with `<feGaussianBlur stdDeviation="5"/>` and `<feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#f97316" flood-opacity="0.3"/>` to create amazing neonic depth.
-3. Multi-layer Complex Shapes: Draw rich, advanced vector elements using `<path>` curves or polylines instead of single shapes:
+2. Neon Glow Filters: Define a drop-shadow filter with '<feGaussianBlur stdDeviation="5"/>' and '<feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#f97316" flood-opacity="0.3"/>' to create amazing neonic depth.
+3. Multi-layer Complex Shapes: Draw rich, advanced vector elements using '<path>' curves or polylines instead of single shapes:
    - For 'Minimal Tech': Hexagonal core, tech orbits, or intersecting bezier lines.
    - For 'Sleek Modern Serif': A classic gold border shield or double-frame around the initials.
    - For 'Abstract Monogram': Overlapping dashed concentric circles and interlocking letter lines.
    - For 'Futuristic Cyberpunk': Angular tech brackets and digital grid vectors.
-4. Professional Typography: Anchor text beautifully with `text-anchor="middle"` and `dominant-baseline="central"`. Use premium system fonts ('Outfit', 'Inter', sans-serif).
+4. Professional Typography: Anchor text beautifully with 'text-anchor="middle"' and 'dominant-baseline="central"'. Use premium system fonts ('Outfit', 'Inter', sans-serif).
 5. Responsive scale: Protect the layout. Use 'viewBox="0 0 200 200"' so it fits perfectly on navigation headers without cropping.`;
         }
 

@@ -9,18 +9,7 @@ import InterestTest from '../components/InterestTest';
 const Dashboard = ({ profile }) => {
     const navigate = useNavigate();
 
-    // FAILSAFE: If profile is missing, don't crash. Show loading or empty state.
-    if (!profile) {
-        return (
-            <div className="h-screen w-full flex items-center justify-center bg-[#070A12] text-white">
-                <div className="text-center">
-                    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-accent-secondary mx-auto mb-4"></div>
-                    <p className="text-xs font-bold text-text-muted uppercase tracking-widest italic">Loading Student Profile...</p>
-                </div>
-            </div>
-        );
-    }
-
+    // FAILSAFE: Handled right before render
     const [courses, setCourses] = useState([]);
     const [stats, setStats] = useState({ progress: 0, totalLessons: 0 });
     const [projects, setProjects] = useState([]);
@@ -62,6 +51,7 @@ const Dashboard = ({ profile }) => {
         } else {
             setLoadingCourses(false);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [profile]);
 
     const handleSaveOnboarding = async () => {
@@ -135,7 +125,7 @@ const Dashboard = ({ profile }) => {
                 totalLessons: lessonsData?.length || 0
             });
 
-            const mappedCourses = (modulesData || []).map((m, idx) => {
+            const mappedCourses = (modulesData || []).map((m) => {
                 const moduleLessons = (lessonsData || []).filter(l => l.module_id === m.id);
 
                 // DYNAMIC ACCESS LOGIC
@@ -391,6 +381,18 @@ const Dashboard = ({ profile }) => {
         }
     };
 
+    // FAILSAFE: If profile is missing, don't crash. Show loading or empty state.
+    if (!profile) {
+        return (
+            <div className="h-screen w-full flex items-center justify-center bg-[#070A12] text-white">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-accent-secondary mx-auto mb-4"></div>
+                    <p className="text-xs font-bold text-text-muted uppercase tracking-widest italic">Loading Student Profile...</p>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="w-full h-full py-12 px-6 lg:px-8 bg-[#070A12] text-white">
             <motion.div
@@ -506,6 +508,30 @@ const Dashboard = ({ profile }) => {
                             <div className="text-[9px] text-text-muted font-bold mt-1 uppercase tracking-tighter">System Integrity: Nominal</div>
                         </div>
                     </div>
+
+                    {/* Vlog News Banner */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="glass-card p-1 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-3xl overflow-hidden mb-8"
+                    >
+                        <div className="bg-[#0B1220]/90 backdrop-blur-xl p-8 rounded-[22px] flex flex-col md:flex-row items-center gap-8 border border-white/5">
+                            <div className="h-20 w-20 rounded-2xl border border-cyan-400/20 shrink-0 relative overflow-hidden bg-cyan-400/10 flex items-center justify-center">
+                                <span className="text-3xl">📺</span>
+                            </div>
+                            <div className="flex-grow text-center md:text-left">
+                                <span className="text-[10px] font-black text-cyan-400 uppercase tracking-widest mb-1 block italic">New Content Transmission</span>
+                                <h3 className="text-2xl font-black italic mb-2">OfficeAIM Vlog News</h3>
+                                <p className="text-xs text-text-muted italic max-w-xl">Stay up-to-date with the latest AI workflows, system updates, and pilot strategies directly from the Command Center.</p>
+                            </div>
+                            <button
+                                onClick={() => navigate('/hub/vlog-news')}
+                                className="px-8 py-4 bg-white text-black font-black uppercase tracking-widest text-[10px] rounded-xl hover:bg-cyan-400 hover:text-white transition-all italic shrink-0 shadow-[0_0_20px_rgba(34,211,238,0.3)]"
+                            >
+                                Watch Protocols
+                            </button>
+                        </div>
+                    </motion.div>
 
                     {/* Trial Agent Spotlight */}
                     <motion.div

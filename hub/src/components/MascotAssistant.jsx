@@ -110,15 +110,26 @@ const MascotAssistant = ({ profile, isAdminDashboard = false }) => {
     const [isVoiceEnabled, setIsVoiceEnabled] = useState(false);
     const recognitionRef = useRef(null);
     const lastSpokenTextRef = useRef('');
+    const [audioAllowed, setAudioAllowed] = useState(false);
 
-    // Initialize Web Speech Recognition
+    // Auto-send ref to decouple handleSend closure from useEffect
+    const handleSendRef = useRef(null);
+
+    // Initialize Web Speech Recognition and pre-load voices
     useEffect(() => {
+        // Pre-load voices to avoid robotic fallback on first run
+        const loadVoices = () => { window.speechSynthesis.getVoices(); };
+        loadVoices();
+        if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
+            window.speechSynthesis.onvoiceschanged = loadVoices;
+        }
+
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (SpeechRecognition) {
             const rec = new SpeechRecognition();
             rec.continuous = false;
             rec.interimResults = false;
-            rec.lang = 'es-ES'; // Match Rioplatense Spanish flows
+            rec.lang = 'es-AR'; // Match Rioplatense Spanish flows
 
             rec.onstart = () => setIsListening(true);
             rec.onend = () => setIsListening(false);
@@ -129,6 +140,9 @@ const MascotAssistant = ({ profile, isAdminDashboard = false }) => {
             rec.onresult = (e) => {
                 const transcript = e.results[0][0].transcript;
                 setInput(transcript);
+                if (handleSendRef.current) {
+                    handleSendRef.current(transcript);
+                }
             };
             recognitionRef.current = rec;
         }
@@ -165,15 +179,29 @@ const MascotAssistant = ({ profile, isAdminDashboard = false }) => {
 
         const utterance = new SpeechSynthesisUtterance(cleanText);
         
+        // Tune rate and pitch to sound more natural and less robotic
+        utterance.rate = 1.0;
+        utterance.pitch = 1.05;
+
         // Dynamically detect language to apply the correct accent and avoid robot-clashing Spanglish
         const isSpanish = /[áéíóúñ]|hola|jefe|entendido|gracias|cambio|sistema|rollback/i.test(cleanText);
         const voices = window.speechSynthesis.getVoices();
 
         if (isSpanish) {
-            utterance.lang = 'es-ES';
-            const premiumSpanishVoice = voices.find(v => v.lang.startsWith('es') && v.name.includes('Google')) || 
+            utterance.lang = 'es-AR';
+            const premiumSpanishVoice = voices.find(v => v.lang.startsWith('es') && v.name.includes('Diego')) || 
+                                         voices.find(v => v.lang.startsWith('es') && v.name.includes('Paulina')) ||
+                                         voices.find(v => v.lang.startsWith('es') && v.name.includes('Monica')) ||
+                                         voices.find(v => v.lang.startsWith('es') && v.name.includes('Jorge')) ||
+                                         voices.find(v => v.lang.startsWith('es') && v.name.includes('Sabina')) ||
+                                         voices.find(v => v.lang.startsWith('es') && v.name.includes('Google español')) || 
+                                         voices.find(v => v.lang === 'es-AR') ||
                                          voices.find(v => v.lang.startsWith('es'));
-            if (premiumSpanishVoice) utterance.voice = premiumSpanishVoice;
+            if (premiumSpanishVoice) {
+                utterance.voice = premiumSpanishVoice;
+            } else {
+                console.warn("No premium Spanish voice found. Available voices:", voices.map(v => `${v.name} (${v.lang})`));
+            }
         } else {
             // AIM Mode: British English premium masculine voice (Daniel / Google UK / Oliver)
             utterance.lang = 'en-GB';
@@ -553,8 +581,13 @@ const MascotAssistant = ({ profile, isAdminDashboard = false }) => {
         return () => window.removeEventListener('message', handleParentMessages);
     }, [profile, context]);
 
-    const handleSend = async () => {
-        const trimmed = input.trim();
+    useEffect(() => {
+        handleSendRef.current = handleSend;
+    });
+
+    const handleSend = async (forcedInput = null) => {
+        const textToSend = typeof forcedInput === 'string' ? forcedInput : input;
+        const trimmed = textToSend.trim();
         if (!trimmed || isTyping) return;
 
         const userMsg = { role: 'user', content: trimmed };

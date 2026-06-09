@@ -15,6 +15,7 @@ import AgentTestConsole from './pages/AgentTestConsole';
 import MyProjects from './pages/MyProjects';
 import Lounge from './pages/Lounge';
 import ProjectPlanner from './pages/ProjectPlanner';
+import VlogNewsPage from './pages/VlogNewsPage';
 import MascotAssistant from './components/MascotAssistant';
 import { Toaster } from 'react-hot-toast';
 
@@ -94,11 +95,40 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // PREVIEW MODE TOGGLE: Set to 'true' to bypass auth for visual testing
-  const isPreview = false;
+  // ------------------------------------------------------------
+  // DEV PREVIEW MODE – bypass authentication and Supabase calls
+  // ------------------------------------------------------------
+  // Set to true to render the landing page and student dashboard
+  // without requiring a real login. This is useful for quick UI
+  // testing or when the Supabase endpoint is unreachable.
+  const FORCE_PREVIEW = false;
+  const mockSession = {
+    user: {
+      id: 'preview-user',
+      email: 'preview@officeaim.com',
+      user_metadata: { full_name: 'Preview User' },
+    },
+  };
+  const mockProfile = {
+    id: 'preview-user',
+    role: 'student',
+    membership_status: 'active',
+    full_name: 'Preview User',
+  };
+  // Determine preview based on flag (overrides email check)
+  const isPreview = FORCE_PREVIEW;
+
 
   useEffect(() => {
     console.log("App initialized - Checking session...");
+
+    if (FORCE_PREVIEW) {
+      // Skip real Supabase calls, use mock data
+      setSession(mockSession);
+      setProfile(mockProfile);
+      setLoading(false);
+      return;
+    }
 
     // 1. Get initial session
     supabase.auth.getSession().then(({ data: { session }, error }) => {
@@ -130,13 +160,24 @@ const App = () => {
       const userId = user.id;
       const userEmail = user.email;
       console.log("Fetching profile for:", userId, userEmail);
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .maybeSingle(); // Use maybeSingle to avoid 406 error on empty result
-
+      // If preview mode is active, skip actual DB fetch
+    if (FORCE_PREVIEW) {
       const isWhitelisted = isWhitelistedAdmin(userId, userEmail);
+      setProfile({
+        id: userId,
+        role: isWhitelisted ? 'admin' : 'student',
+        membership_status: 'active',
+        full_name: user?.user_metadata?.full_name || 'Preview User',
+      });
+      return;
+    }
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)
+      .maybeSingle(); // Use maybeSingle to avoid 406 error on empty result
+
+    const isWhitelisted = isWhitelistedAdmin(userId, userEmail);
 
       if (error) {
         console.warn("Profile fetch error:", error.message);
@@ -234,6 +275,11 @@ const App = () => {
             <Route path="/hub/agent-test" element={<AgentTestConsole />} />
             <Route path="/hub/projects" element={<MyProjects />} />
             <Route path="/hub/lounge" element={<Lounge profile={profile} />} />
+          </Route>
+
+          {/* PUBLIC ROUTES WITH MAIN LAYOUT (Guest access) */}
+          <Route element={<MainLayout profile={profile || { role: 'guest', full_name: 'Visitor', membership_status: 'active' }} />}>
+            <Route path="/hub/vlog-news" element={<VlogNewsPage profile={profile || { role: 'guest' }} />} />
           </Route>
 
           <Route path="/hub/widget" element={<MascotAssistant profile={{ role: 'guest' }} />} />

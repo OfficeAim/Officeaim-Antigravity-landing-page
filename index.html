@@ -152,6 +152,7 @@
                 </li>
 
                 <li><a href="pricing.html" class="nav-link">Pricing</a></li>
+                <li><a id="nav-news-link" href="news.html" class="nav-link" style="color: var(--accent-primary);">News</a></li>
             </ul>
             <div class="nav-ctas">
                 <a href="construction.html" class="btn btn-primary">Enter Campus →</a>
@@ -540,6 +541,7 @@
                             <li><a href="#how">How It Works</a></li>
                             <li><a href="gems.html">Free Gems &amp; Tools</a></li>
                             <li><a href="pricing.html">Pricing</a></li>
+                            <li><a id="footer-news-link" href="/hub/vlog-news">News &amp; Updates</a></li>
                             <li><a href="construction.html">Campus Login</a></li>
                         </ul>
                     </div>
@@ -589,10 +591,11 @@
     <script src="script.js"></script>
 
     
+    
     <!-- Global Mascot Widget Injection -->
     <iframe id="mascot-widget" src="/hub/widget"
         style="position: fixed; bottom: 0; right: 0; border: none; z-index: 2147483647; background: transparent; width: 300px; height: 200px; transition: all 0.3s ease-in-out; pointer-events: auto;"
-        allowtransparency="true"></iframe>
+        allowtransparency="true" allow="microphone"></iframe>
 
     <script>
         const widgetIframe = document.getElementById('mascot-widget');
@@ -612,6 +615,14 @@
         
         let activeViteUrl = "http://localhost:5174"; // default fallback (port 5174 is active)
         
+        const updateLinks = (baseUrl) => {
+            const navLink = document.getElementById('nav-news-link');
+            const footerLink = document.getElementById('footer-news-link');
+            if (navLink) navLink.href = baseUrl + '/hub/vlog-news';
+            if (footerLink) footerLink.href = baseUrl + '/hub/vlog-news';
+            widgetIframe.src = baseUrl + '/hub/widget?context=' + contextStr;
+        };
+
         if (isLocal) {
             // Dynamically discover which port is serving the Vite app (5173, 5174, 5175)
             const ports = [5173, 5174, 5175];
@@ -624,16 +635,18 @@
                         if (!detected) {
                             detected = true;
                             activeViteUrl = `http://localhost:${port}`;
-                            widgetIframe.src = activeViteUrl + '/hub/widget?context=' + contextStr;
+                            updateLinks(activeViteUrl);
                             console.log("[Mascot Port Auto-Discovery]: Connected to active dev server on port", port);
                         }
                     })
             )).catch(() => {
                 // absolute fallback
-                widgetIframe.src = activeViteUrl + '/hub/widget?context=' + contextStr;
+                updateLinks(activeViteUrl);
             });
         } else {
+            // In production or non-local, use relative paths
             widgetIframe.src = '/hub/widget?context=' + contextStr;
+            // Links are already relative: /hub/vlog-news
         }
 
         window.addEventListener('message', (event) => {
@@ -652,6 +665,7 @@
         });
     </script>
 </body>
+
 
 
 
