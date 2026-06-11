@@ -6,6 +6,14 @@ const VlogNewsPage = ({ profile }) => {
     // Placeholder Data
     const vlogs = [
         {
+            id: 'meta-prompting',
+            title: 'Mastering Meta-Prompting: The Future of Automated Prompt Engineering',
+            date: 'June 11, 2026',
+            description: 'Discover how meta-prompting shifts the focus from content to structural patterns, allowing you to interact with Large Language Models in a more abstract way [1]. Stop babysitting your AI and scale your operations by building systems that write their own prompts [2].',
+            image: '/hub/images/module1_hero.png',
+            duration: '5:00'
+        },
+{
             id: 'v1',
             title: 'OfficeAIM 2.0 Launch & Neural Engine Updates',
             date: 'June 2026',

@@ -35,7 +35,8 @@ Estimación del tiempo de desarrollo basado en las sesiones de trabajo registrad
 | **30/05/2026** | ~3.2h | Robust Mascant Widget Improvement (border, timeout, fallback) |
 | **09/06/2026** | ~3.6h | Mascot SDK fix and news.html integration |
 | **09/06/2026** | ~1.5h | NotebookLM true news integration & Video Modal UI |
-| **TOTAL** | **~120.95 horas** | **Semana 4 de Desarrollo Intenso** |
+| **11/06/2026** | ~0.8h | Daily Vlog News Orchestrator pipeline, HTTP 406 fix, nested JSON parsing, NotebookLM MCP video overview generation. |
+| **TOTAL** | **~121.75 horas** | **Semana 4 de Desarrollo Intenso** |
 ---
 *Nota: Estos tiempos son aproximados basados en la duración de las sesiones de terminal.*
 
