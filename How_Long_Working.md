@@ -34,7 +34,8 @@ Estimación del tiempo de desarrollo basado en las sesiones de trabajo registrad
 | **24/05/2026** | ~5.3 horas | Multilingual onboarding, STT/TTS in Mascot, Admin Coach integration, unified AIM branding & HUD refinements. |
 | **30/05/2026** | ~3.2h | Robust Mascant Widget Improvement (border, timeout, fallback) |
 | **09/06/2026** | ~3.6h | Mascot SDK fix and news.html integration |
-| **TOTAL** | **~119.45 horas** | **Semana 4 de Desarrollo Intenso** |
+| **09/06/2026** | ~1.5h | NotebookLM true news integration & Video Modal UI |
+| **TOTAL** | **~120.95 horas** | **Semana 4 de Desarrollo Intenso** |
 ---
 *Nota: Estos tiempos son aproximados basados en la duración de las sesiones de terminal.*
 
