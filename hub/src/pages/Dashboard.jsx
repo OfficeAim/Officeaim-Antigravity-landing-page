@@ -43,10 +43,12 @@ const Dashboard = ({ profile }) => {
             // Trigger onboarding if language is not set and they haven't onboarded yet
             const localFallback = JSON.parse(localStorage.getItem('officeaim_profiles_fallback') || '{}');
             const hasLang = profile.language || localFallback[profile.id]?.language;
-            const hasDismissed = localStorage.getItem(`officeaim_onboarded_${profile.id}`);
+            const hasDismissed = localStorage.getItem(`officeaim_onboarded_${profile.id}`) === 'true' || localStorage.getItem('officeaim_onboarded_global') === 'true';
             
             if (!hasLang && !hasDismissed && profile.role !== 'guest') {
                 setShowOnboarding(true);
+            } else {
+                setShowOnboarding(false);
             }
         } else {
             setLoadingCourses(false);
@@ -58,7 +60,26 @@ const Dashboard = ({ profile }) => {
         if (!profile?.id) return;
         
         try {
-            // Update public.profiles
+            // 1. Always write to localFallback and dismissal state first for absolute local resilience
+            const localFallback = JSON.parse(localStorage.getItem('officeaim_profiles_fallback') || '{}');
+            localFallback[profile.id] = { 
+                language: onboardingData.language, 
+                country: onboardingData.country 
+            };
+            localStorage.setItem('officeaim_profiles_fallback', JSON.stringify(localFallback));
+            localStorage.setItem(`officeaim_onboarded_${profile.id}`, 'true');
+            localStorage.setItem('officeaim_onboarded_global', 'true');
+
+            // Force refresh local profile object
+            if (profile) {
+                profile.language = onboardingData.language;
+                profile.country = onboardingData.country;
+                if (onboardingData.goal) {
+                    profile.ai_proficiency = onboardingData.goal;
+                }
+            }
+
+            // 2. Safely attempt to update public.profiles (will catch missing column errors on server)
             const { error } = await supabase
                 .from('profiles')
                 .update({ 
@@ -68,19 +89,8 @@ const Dashboard = ({ profile }) => {
                 })
                 .eq('id', profile.id);
 
-            // Always write to localFallback for absolute resilience and instant sync
-            const localFallback = JSON.parse(localStorage.getItem('officeaim_profiles_fallback') || '{}');
-            localFallback[profile.id] = { 
-                language: onboardingData.language, 
-                country: onboardingData.country 
-            };
-            localStorage.setItem('officeaim_profiles_fallback', JSON.stringify(localFallback));
-            localStorage.setItem(`officeaim_onboarded_${profile.id}`, 'true');
-
-            // Force refresh local profile object
-            if (profile) {
-                profile.language = onboardingData.language;
-                profile.country = onboardingData.country;
+            if (error) {
+                console.warn("DB Onboarding Update Warning (Safe fallback active):", error.message);
             }
 
             setShowOnboarding(false);
@@ -89,7 +99,9 @@ const Dashboard = ({ profile }) => {
             window.location.reload();
         } catch (err) {
             console.error("Error saving onboarding:", err);
+            // Hide the onboarding screen even on critical failure so the user is not blocked
             setShowOnboarding(false);
+            window.location.reload();
         }
     };
 
@@ -1164,6 +1176,18 @@ const Dashboard = ({ profile }) => {
                             transition={{ type: 'spring', damping: 25, stiffness: 120 }}
                             className="bg-[#0B1220] border border-cyan-500/20 relative overflow-hidden w-full max-w-lg rounded-3xl shadow-2xl p-8"
                         >
+                            {/* Close button */}
+                            <button 
+                                onClick={() => {
+                                    setShowOnboarding(false);
+                                    localStorage.setItem(`officeaim_onboarded_${profile.id}`, 'true');
+                                    localStorage.setItem('officeaim_onboarded_global', 'true');
+                                }}
+                                className="absolute top-6 right-6 text-white/70 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors z-20 bg-black/40 backdrop-blur-md"
+                                type="button"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
                             {/* Cyber Ambient glows */}
                             <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 blur-3xl -mr-10 -mt-10 rounded-full"></div>
                             <div className="absolute bottom-0 left-0 w-32 h-32 bg-orange-500/5 blur-3xl -ml-10 -mb-10 rounded-full"></div>

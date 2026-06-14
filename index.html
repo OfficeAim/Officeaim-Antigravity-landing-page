@@ -541,7 +541,7 @@
                             <li><a href="#how">How It Works</a></li>
                             <li><a href="gems.html">Free Gems &amp; Tools</a></li>
                             <li><a href="pricing.html">Pricing</a></li>
-                            <li><a id="footer-news-link" href="/hub/vlog-news">News &amp; Updates</a></li>
+                            <li><a id="footer-news-link" href="news.html">News &amp; Updates</a></li>
                             <li><a href="construction.html">Campus Login</a></li>
                         </ul>
                     </div>
@@ -616,10 +616,6 @@
         let activeViteUrl = "http://localhost:5174"; // default fallback (port 5174 is active)
         
         const updateLinks = (baseUrl) => {
-            const navLink = document.getElementById('nav-news-link');
-            const footerLink = document.getElementById('footer-news-link');
-            if (navLink) navLink.href = baseUrl + '/hub/vlog-news';
-            if (footerLink) footerLink.href = baseUrl + '/hub/vlog-news';
             widgetIframe.src = baseUrl + '/hub/widget?context=' + contextStr;
         };
 

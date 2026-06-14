@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, CheckCircle2, Lock, PlayCircle, Trophy, Target, Loader2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CheckCircle2, Lock, PlayCircle, Trophy, Target, Loader2, Play, Calendar, X, Clock, Newspaper } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { vlogs } from './newsData';
 
 const ModuleViewer = () => {
     const navigate = useNavigate();
@@ -23,6 +24,7 @@ const ModuleViewer = () => {
     const [quizSubmitted, setQuizSubmitted] = useState(false);
     const [quizScore, setQuizScore] = useState(null);
     const [user, setUser] = useState(null);
+    const [selectedLiveVlog, setSelectedLiveVlog] = useState(null);
 
     // Get current user
     useEffect(() => {
@@ -317,6 +319,25 @@ const ModuleViewer = () => {
         return Math.round((completed / lessons.length) * 100);
     };
 
+    const getRelevantUpdates = (lessonId) => {
+        if (!lessonId) return [];
+        return vlogs.filter(vlog => {
+            if (lessonId === '1-1') {
+                return vlog.id === 'apple-intelligence';
+            }
+            if (lessonId === '1-2') {
+                return vlog.id === 'new-tooling';
+            }
+            if (lessonId === '1-3') {
+                return vlog.id === 'meta-prompting';
+            }
+            if (lessonId === '1-4') {
+                return vlog.id === 'ai-mvp-days';
+            }
+            return true;
+        });
+    };
+
     if (loading) {
         return (
             <div className="min-h-screen bg-[#05070A] text-white flex items-center justify-center">
@@ -511,86 +532,139 @@ const ModuleViewer = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
-                        className="max-w-5xl mx-auto px-8 py-16"
+                        className="max-w-7xl mx-auto px-8 py-16"
                     >
-                        {/* Lesson Header */}
-                        <div className="mb-12">
-                            <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent-secondary/10 text-accent-secondary rounded-xl text-xs font-black tracking-widest uppercase italic border border-accent-secondary/20 mb-6">
-                                Lesson {currentLesson.id}
-                            </div>
-                            <h1 className="text-5xl lg:text-6xl font-black mb-8 leading-tight italic">
-                                {currentLesson.title}
-                            </h1>
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+                            {/* Left Column (2/3 width) - Main Lesson Content */}
+                            <div className="lg:col-span-2 space-y-12">
+                                {/* Lesson Header */}
+                                <div>
+                                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent-secondary/10 text-accent-secondary rounded-xl text-xs font-black tracking-widest uppercase italic border border-accent-secondary/20 mb-6">
+                                        Lesson {currentLesson.id}
+                                    </div>
+                                    <h1 className="text-4xl lg:text-5xl font-black mb-8 leading-tight italic">
+                                        {currentLesson.title}
+                                    </h1>
 
-                            {/* SMART Goal */}
-                            <div className="p-8 bg-gradient-to-br from-accent-secondary/10 to-accent-primary/10 border border-accent-secondary/20 rounded-2xl mb-12">
-                                <div className="flex items-start gap-4">
-                                    <Target className="h-6 w-6 text-accent-secondary flex-shrink-0 mt-1" />
+                                    {/* SMART Goal */}
+                                    <div className="p-8 bg-gradient-to-br from-accent-secondary/10 to-accent-primary/10 border border-accent-secondary/20 rounded-2xl">
+                                        <div className="flex items-start gap-4">
+                                            <Target className="h-6 w-6 text-accent-secondary flex-shrink-0 mt-1" />
+                                            <div>
+                                                <h3 className="text-sm font-black uppercase tracking-widest text-accent-secondary mb-3 italic">
+                                                    🎯 Your SMART Goal
+                                                </h3>
+                                                <p className="text-base leading-relaxed italic font-medium">
+                                                    {currentLesson.smart_goal}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Video */}
+                                {currentLesson.video_url && (
                                     <div>
-                                        <h3 className="text-sm font-black uppercase tracking-widest text-accent-secondary mb-3 italic">
-                                            🎯 Your SMART Goal
-                                        </h3>
-                                        <p className="text-lg leading-relaxed italic font-medium">
-                                            {currentLesson.smart_goal}
+                                        <div className="aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+                                            <iframe
+                                                width="100%"
+                                                height="100%"
+                                                src={convertVideoUrl(currentLesson.video_url)}
+                                                title="Lesson Video"
+                                                frameBorder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowFullScreen
+                                                className="w-full h-full"
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Lesson Image Overlay - Reinforcing the topic */}
+                                {currentLesson.image_url && (
+                                    <div className="rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+                                        <img
+                                            src={currentLesson.image_url}
+                                            alt={currentLesson.title}
+                                            className="w-full h-auto object-cover max-h-[400px]"
+                                        />
+                                    </div>
+                                )}
+
+                                {/* Content */}
+                                <div
+                                    className="prose prose-invert max-w-none space-y-8"
+                                    dangerouslySetInnerHTML={{ __html: currentLesson.content }}
+                                />
+
+                                {/* Controls */}
+                                <div className="space-y-4 pt-6">
+                                    <motion.button
+                                        onClick={() => setCurrentView('quiz')}
+                                        className="w-full py-8 bg-gradient-to-r from-accent-secondary to-accent-primary text-white font-black uppercase tracking-widest italic rounded-2xl hover:shadow-[0_0_40px_rgba(34,211,238,0.4)] transition-all text-xl flex items-center justify-center gap-4 group"
+                                        whileHover={{ scale: 1.01 }}
+                                        whileTap={{ scale: 0.99 }}
+                                    >
+                                        Take the Quiz
+                                        <ChevronRight className="h-6 w-6 group-hover:translate-x-2 transition-transform" />
+                                    </motion.button>
+
+                                    <button
+                                        onClick={() => setCurrentView('intro')}
+                                        className="text-text-muted hover:text-white transition-all text-sm font-black uppercase tracking-widest italic flex items-center gap-2 mx-auto"
+                                    >
+                                        <ChevronLeft className="h-4 w-4" />
+                                        Back to Module Overview
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Right Column (1/3 width) - Evergreen Updates Panel */}
+                            <div className="lg:col-span-1 lg:sticky lg:top-28 space-y-6">
+                                <div className="glass-card p-6 border-cyan-500/20 bg-[#0B1220]/60 backdrop-blur-md rounded-2xl relative overflow-hidden">
+                                    {/* Subtle Ambient glows */}
+                                    <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-500/10 blur-2xl rounded-full pointer-events-none"></div>
+                                    <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(34, 211, 238, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(34, 211, 238, 0.05) 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
+
+                                    <div className="relative z-10">
+                                        <div className="flex items-center gap-2 mb-4">
+                                            <Newspaper className="h-4 w-4 text-cyan-400 animate-pulse" />
+                                            <h3 className="text-sm font-black uppercase tracking-widest text-cyan-400 italic">
+                                                Evergreen Updates
+                                            </h3>
+                                        </div>
+                                        <p className="text-xs text-text-muted italic mb-6 leading-relaxed">
+                                            These live updates and tech vlogs dynamically link your lessons with real-world changes.
                                         </p>
+
+                                        <div className="space-y-4">
+                                            {getRelevantUpdates(currentLesson.id).length > 0 ? (
+                                                getRelevantUpdates(currentLesson.id).map(vlog => (
+                                                    <div 
+                                                        key={vlog.id} 
+                                                        className="p-4 bg-white/5 border border-white/10 rounded-xl hover:border-cyan-400/30 transition-all cursor-pointer group"
+                                                        onClick={() => setSelectedLiveVlog(vlog)}
+                                                    >
+                                                        <div className="flex items-center justify-between mb-1">
+                                                            <span className="text-[9px] font-black text-cyan-400 uppercase tracking-widest italic">{vlog.category}</span>
+                                                            <span className="text-[8px] text-text-muted font-bold">{vlog.date}</span>
+                                                        </div>
+                                                        <h4 className="text-xs font-black text-white group-hover:text-cyan-400 transition-colors mb-1 italic leading-snug">{vlog.title}</h4>
+                                                        <p className="text-[10px] text-text-muted line-clamp-2 leading-relaxed">{vlog.description}</p>
+                                                        <div className="flex items-center gap-1 mt-3 text-[9px] font-bold text-cyan-400 group-hover:text-orange-400 transition-colors">
+                                                            <span>Read Update Protocol</span>
+                                                            <ChevronRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <p className="text-xs text-text-muted italic text-center py-4">No recent updates for this lesson.</p>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        {/* Video */}
-                        {currentLesson.video_url && (
-                            <div className="mb-16">
-                                <div className="aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl border border-white/10">
-                                    <iframe
-                                        width="100%"
-                                        height="100%"
-                                        src={convertVideoUrl(currentLesson.video_url)}
-                                        title="Lesson Video"
-                                        frameBorder="0"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                        allowFullScreen
-                                        className="w-full h-full"
-                                    />
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Lesson Image Overlay - Reinforcing the topic */}
-                        {currentLesson.image_url && (
-                            <div className="mb-16 rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
-                                <img
-                                    src={currentLesson.image_url}
-                                    alt={currentLesson.title}
-                                    className="w-full h-auto object-cover max-h-[400px]"
-                                />
-                            </div>
-                        )}
-
-                        {/* Content */}
-                        <div
-                            className="prose prose-invert max-w-none space-y-8 mb-16"
-                            dangerouslySetInnerHTML={{ __html: currentLesson.content }}
-                        />
-
-                        {/* Take Quiz Button */}
-                        <motion.button
-                            onClick={() => setCurrentView('quiz')}
-                            className="w-full py-8 bg-gradient-to-r from-accent-secondary to-accent-primary text-white font-black uppercase tracking-widest italic rounded-2xl hover:shadow-[0_0_40px_rgba(34,211,238,0.4)] transition-all text-xl flex items-center justify-center gap-4 group"
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                        >
-                            Take the Quiz
-                            <ChevronRight className="h-6 w-6 group-hover:translate-x-2 transition-transform" />
-                        </motion.button>
-
-                        <button
-                            onClick={() => setCurrentView('intro')}
-                            className="mt-6 text-text-muted hover:text-white transition-all text-sm font-black uppercase tracking-widest italic flex items-center gap-2 mx-auto"
-                        >
-                            <ChevronLeft className="h-4 w-4" />
-                            Back to Module Overview
-                        </button>
                     </motion.div>
                 )}
 
@@ -771,6 +845,124 @@ const ModuleViewer = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* EVERGREEN VLOG MODAL */}
+            <AnimatePresence>
+                {selectedLiveVlog && (
+                    <div 
+                        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-md overflow-y-auto"
+                        onClick={() => setSelectedLiveVlog(null)}
+                    >
+                        <motion.div
+                            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 30, scale: 0.95 }}
+                            transition={{ type: 'spring', damping: 25, stiffness: 120 }}
+                            className="bg-[#0B1220] border border-cyan-500/20 relative overflow-hidden w-full max-w-4xl rounded-3xl shadow-2xl p-6 lg:p-10 my-8"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            {/* Close Button */}
+                            <div className="absolute top-6 right-6 z-10">
+                                <button 
+                                    onClick={() => setSelectedLiveVlog(null)} 
+                                    className="h-10 w-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-all font-bold"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+
+                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mt-6 max-h-[80vh] overflow-y-auto pr-2">
+                                <div className="lg:col-span-7 space-y-6">
+                                    {selectedLiveVlog.youtubeId ? (
+                                        <div className="aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+                                            <iframe
+                                                width="100%"
+                                                height="100%"
+                                                src={`https://www.youtube-nocookie.com/embed/${selectedLiveVlog.youtubeId}`}
+                                                title={selectedLiveVlog.title}
+                                                frameBorder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowFullScreen
+                                                referrerPolicy="strict-origin-when-cross-origin"
+                                                className="w-full h-full"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="aspect-video bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center p-6 text-center">
+                                            <div>
+                                                <Newspaper className="h-12 w-12 text-cyan-400 mx-auto mb-3 animate-pulse" />
+                                                <p className="text-sm font-black italic">Content Curation Protocol</p>
+                                                <p className="text-xs text-text-muted italic max-w-xs mt-1">This update is a curated documentation release. Read the full article details in the right-hand panel.</p>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    <div className="flex flex-wrap gap-4 text-xs font-bold text-text-muted">
+                                        <span className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5 text-cyan-400" /> {selectedLiveVlog.date}</span>
+                                        <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5 text-cyan-400" /> {selectedLiveVlog.duration || 'Curated'}</span>
+                                    </div>
+                                    
+                                    <h2 className="text-2xl font-black italic text-white leading-tight">
+                                        {selectedLiveVlog.title}
+                                    </h2>
+                                    <p className="text-sm text-text-muted leading-relaxed italic">
+                                        {selectedLiveVlog.description}
+                                    </p>
+                                </div>
+
+                                <div className="lg:col-span-5 border-t lg:border-t-0 lg:border-l border-white/10 pt-6 lg:pt-0 lg:pl-8">
+                                    <h3 className="text-xs font-black uppercase tracking-widest text-cyan-400 mb-4 italic flex items-center gap-1.5">
+                                        <Newspaper className="h-3.5 w-3.5" /> News Article & Analysis
+                                    </h3>
+                                    <div className="modal-article-content text-sm text-text-muted leading-relaxed space-y-4 max-h-[50vh] overflow-y-auto pr-2">
+                                        {selectedLiveVlog.articleContent ? (
+                                            <div dangerouslySetInnerHTML={{ __html: selectedLiveVlog.articleContent }} />
+                                        ) : (
+                                            <p className="text-xs italic text-text-muted">No full article analysis released for this news story yet. Stay tuned for further updates.</p>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
+
+            <style>{`
+                .modal-article-content h2, .modal-article-content h3 {
+                    color: #fff;
+                    font-family: 'Plus Jakarta Sans', sans-serif;
+                    font-weight: 800;
+                    margin-top: 2rem;
+                    margin-bottom: 1rem;
+                    font-style: italic;
+                }
+                .modal-article-content h2 {
+                    font-size: 1.5rem;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                    padding-bottom: 0.5rem;
+                }
+                .modal-article-content h3 {
+                    font-size: 1.25rem;
+                }
+                .modal-article-content p {
+                    margin-bottom: 1.25rem;
+                    color: #94A3B8;
+                    line-height: 1.7;
+                    font-size: 0.95rem;
+                }
+                .modal-article-content strong {
+                    color: #fff;
+                }
+                .modal-article-content a {
+                    color: #22D3EE;
+                    text-decoration: underline;
+                    transition: color 0.2s;
+                }
+                .modal-article-content a:hover {
+                    color: #FF7A18;
+                }
+            `}</style>
         </div>
     );
 };

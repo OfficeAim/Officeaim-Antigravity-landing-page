@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building an AI MVP in Days — OfficeAIM News</title>
+    <meta name="description" content="The traditional software lifecycle is dead. Discover how modern startups utilize AI APIs, n8n orchestration, and Supabase to bootstrap and launch MVPs in record time.">
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../policy.css">
+    <style>
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px 100px;
+        }
+        .article-meta {
+            display: flex;
+            gap: 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        .article-content {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .article-content h2, .article-content h3 {
+            color: white;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        .article-content h2 {
+            font-size: 1.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 10px;
+        }
+        .article-content p {
+            margin-bottom: 24px;
+        }
+        .article-content strong {
+            color: white;
+        }
+        .article-video-wrap {
+            margin-bottom: 50px;
+            aspect-ratio: 16/9;
+            width: 100%;
+            background: #000;
+            border-radius: 24px;
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.05);
+            overflow: hidden;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.2s;
+        }
+        .back-link:hover {
+            transform: translateX(-4px);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">
+                <img src="../images/favicon.png" alt="OfficeAIM Logo" class="logo-img">
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html#features" class="nav-link">Features</a></li>
+                <li><a href="../board.html" class="nav-link">The Board</a></li>
+                <li><a href="../use-cases.html" class="nav-link">Learn</a></li>
+                <li><a href="../gems.html" class="nav-link">Free Tools</a></li>
+                <li><a href="../pricing.html" class="nav-link">Pricing</a></li>
+                <li><a href="../news.html" class="nav-link" style="color: var(--accent-primary);">News</a></li>
+            </ul>
+            <div class="nav-ctas">
+                <a href="../construction.html" class="btn btn-primary">Enter Campus →</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== ARTICLE SECTION ===== -->
+    <section style="padding-top: 150px;">
+        <div class="article-container">
+            <a href="../news.html" class="back-link">
+                ← Back to News
+            </a>
+            
+            <h1 class="hero-v2-title" style="font-size: 3rem; margin-bottom: 20px; text-align: left; line-height: 1.2;">
+                Building an AI MVP in Days (OfficeAIM News)
+            </h1>
+            
+            <div class="article-meta">
+                <span>Published on June 9, 2026</span>
+                <span>•</span>
+                <span>Category: Startups & MVP</span>
+            </div>
+
+            <div class="article-video-wrap">
+                <iframe src="https://www.youtube-nocookie.com/embed/0YObx03xkSo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="width: 100%; height: 100%; border: none; border-radius: 24px;"></iframe>
+            </div>
+
+            <div class="article-content">
+                <h2>The Death of the Traditional Software Lifecycle</h2>
+                <p>For decades, building a Minimum Viable Product (MVP) required months of planning, hiring expensive engineering teams, and writing massive amounts of boilerplate code from scratch [1]. Today, that lifecycle is completely dead [4]. Startups are launching fully functional products in days, not months, by leveraging modular AI APIs, low-code automation engines like n8n, and scalable backend-as-a-service platforms like Supabase [2, 3].</p>
+
+                <h3>The Power of Low-Code and AI Orchestration</h3>
+                <p>Instead of writing custom backend controllers for every feature, modern developers are using <strong>n8n</strong> to orchestrate complex data flows between their database, user interface, and AI endpoints [3]. By chaining AI models (like Google Gemini or OpenAI GPT-4) directly into visual workflow pipelines, you can build autonomous features—such as automatic lead scoring, content generation, and support triaging—without writing a single line of backend API code [2].</p>
+
+                <h3>Supabase: The Scalable Foundation</h3>
+                <p>Every MVP needs a secure, real-time database, authentication, and file storage. <strong>Supabase</strong> provides a PostgreSQL database, built-in Auth, and row-level security (RLS) policies out of the box [5]. It integrates seamlessly with n8n and React, allowing frontend developers to query database tables safely directly from the client side while the backend logic is handled securely in background automation workflows [5, 6].</p>
+
+                <h3>How to Start Your MVP Today</h3>
+                <p>To begin, map out your user journey. Identify which parts of your product require human judgment and which can be automated using AI [2]. Use n8n to connect your user inputs (from Supabase or webhooks) directly to your AI agents, and serve the results instantly to your frontend dashboard [3].</p>
+
+                <h3>Read More</h3>
+                <p>For more weekly updates on how to build and scale your AI startup, visit the <a href="../news.html">OfficeAIM News Hub</a>.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="../images/favicon.png" alt="OfficeAIM Logo" class="footer-logo" style="display:block;margin:0 auto 0.75rem;">
+                    <p class="footer-tagline" style="text-align:center;">Learn. Build. Automate.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Platform</h4>
+                        <ul>
+                            <li><a href="../index.html#agents">The Board</a></li>
+                            <li><a href="../index.html#how">How It Works</a></li>
+                            <li><a href="../gems.html">Free Gems &amp; Tools</a></li>
+                            <li><a href="../pricing.html">Pricing</a></li>
+                            <li><a href="../construction.html">Campus Login</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 OfficeAIM. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
