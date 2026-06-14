@@ -518,30 +518,38 @@ def run_orchestrator(args):
         f.write(news_html_content)
     print("   Injected vlog card into news.html grid.")
 
-    # Inject into VlogNewsPage.jsx
-    react_page_path = os.path.join(base_dir, "hub/src/pages/VlogNewsPage.jsx")
+    # Inject into newsData.js
+    react_page_path = os.path.join(base_dir, "hub/src/pages/newsData.js")
     with open(react_page_path, 'r') as f:
         react_content = f.read()
 
-    new_vlog_obj = f"""        {{
-            id: '{slugified_title}',
-            title: '{synthesis['title']}',
-            date: '{formatted_date}',
-            description: '{synthesis['summary']}',
-            image: '/hub/images/module1_hero.png',
-            duration: '5:00'
-        }},"""
+    escaped_title = synthesis['title'].replace("'", "\\'")
+    escaped_summary = synthesis['summary'].replace("'", "\\'")
+    escaped_category = synthesis.get('category', 'AI News').replace("'", "\\'")
+    escaped_article = synthesis['article_content'].replace("`", "\\`").replace("${", "\\${")
 
-    # Insert right after const vlogs = [
+    new_vlog_obj = f"""    {{
+        id: '{slugified_title}',
+        title: '{escaped_title}',
+        date: '{formatted_date}',
+        category: '{escaped_category}',
+        description: '{escaped_summary}',
+        image: '/hub/images/module1_hero.png',
+        duration: '5:00',
+        youtubeId: '{youtube_id if youtube_id else ""}',
+        articleContent: `{escaped_article}`
+    }},"""
+
+    # Insert right after export const vlogs = [
     react_content = re.sub(
-        r'const vlogs = \[\s*',
-        f"const vlogs = [\n{new_vlog_obj}\n",
+        r'export const vlogs = \[\s*',
+        f"export const vlogs = [\n{new_vlog_obj}\n",
         react_content,
         count=1
     )
     with open(react_page_path, 'w') as f:
         f.write(react_content)
-    print("   Updated vlogs array in VlogNewsPage.jsx.")
+    print("   Updated vlogs array in newsData.js.")
 
     log("STEP 5", "Updating local publication database...")
     published_urls.append(selected_story['link'])

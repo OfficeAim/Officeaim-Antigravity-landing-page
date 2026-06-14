@@ -93,3 +93,36 @@
   - `news.html`, `hub/src/pages/VlogNewsPage.jsx`, `news/meta-prompting.html`: Updated files to use the new article title and description, and rendered the YouTube video player overlay correctly.
 - **Root Cause & Learnings**: Standard LLM outputs must be handled defensively when transforming content into web elements. Designing dynamic slot placeholders like `{{VIDEO_PLAYER}}` and building heuristic plain-text-to-HTML converters ensures that even minor format changes in AI responses do not break visual alignment or crash page generation. Command line overrides for key variables (like `--url` and `--youtube`) are critical to allow developers to manually trigger updates, correct video mappings, or bypass RSS database duplicates.
 
+## 2026-06-14: News Page Redirection Fix, Navbar & Dedicated Article Creation, and YouTube Error 153 Fix
+- **Task**: Restore the original static news.html page routing from the landing page, add the missing 'News' link to the navbar in news.html, create a dedicated article page for the June 9 news story, and resolve the YouTube Error 153 'video player configuration error' on local environments.
+- **Changes**:
+  - `index.html`: Removed the Javascript port auto-discovery link overrides for `nav-news-link` and `footer-news-link` to allow the landing page to directly load the static `news.html` page.
+  - `news.html`: Added the missing "News" menu option to the navbar and changed the June 9 card click event to load `news/ai-mvp-days.html` instead of opening the video modal directly.
+  - `news/ai-mvp-days.html` [NEW]: Created a dedicated, beautiful news article page for "Building an AI MVP in Days", embedding the YouTube player securely.
+  - `news/meta-prompting.html`: Updated the YouTube iframe to use the `youtube-nocookie.com` domain and added `referrerpolicy="strict-origin-when-cross-origin"` to bypass Referer verification blocks when loaded locally.
+  - `hub/src/components/MainLayout.jsx`: Imported the `Newspaper` icon from `lucide-react` and added a permanent menu button pointing to `/hub/vlog-news` in the student campus sidebar.
+- **Root Cause & Learnings**: YouTube embeds require an HTTP Referer header to verify origin. When loading HTML files locally using the `file://` protocol, browsers do not transmit a Referer header, resulting in YouTube blocking embeds with Error 153. Using `youtube-nocookie.com` and adding `referrerpolicy="strict-origin-when-cross-origin"` mitigates this block. Always ensure that static marketing pages maintain consistent navbars and that all vlogs map to dedicated content pages rather than simple video modals with no text.
+
+## 2026-06-14: Dashboard News Synchronization & React Modal Integration
+- **Task**: Synchronize the internal AI News Hub dashboard vlogs with the static news page, implement a video and article reading modal in React to support native playback, and update the orchestration script to support this new data model.
+- **Changes**:
+  - `hub/src/pages/VlogNewsPage.jsx`: Updated `vlogs` array with real categories, YouTube video IDs, and HTML article contents. Implemented a glassmorphic modal with a YouTube iframe and dangerouslySetInnerHTML article rendering, using youtube-nocookie.com and cross-origin referrerpolicy.
+  - `news-vlog-orchestrator/news-vlog-orchestrator/scripts/orchestrator.py`: Refactored JS injection template to write `youtubeId`, `category`, and `articleContent` keys during news generation.
+  - `news.html`: Added referrerpolicy attribute to the modal iframe.
+- **Root Cause & Learnings**: Accessing YouTube videos via the React app served by Vite (localhost:5173) sends proper Referer headers, preventing Error 153. Using an in-app React modal for the News Hub improves UX by keeping the user inside the portal and avoids 404/local-path routing issues.
+
+## 2026-06-14: Incremental Change Logging & Daily Backup Automation
+- **Task**: Implement an incremental change logging system (`/salva-cambio` and `/salva-diaria`) to allow saving individual change logs during sessions and automatically compiling them during the daily save.
+- **Changes**:
+  - `.agent/workflows/salva-cambio.md` [NEW]: Created workflow for saving incremental changes into `.agent/session_state.json`.
+  - `.agent/workflows/salva-diaria.md`: Modified workflow to read session changes, auto-format summaries, update tracking files, run backup script, and clear session state.
+  - `.agent/workflows/start.md`: Modified workflow to automatically initialize `.agent/session_state.json` at session startup.
+  - `.agent/session_state.json` [NEW]: Created tracking file for session state.
+- **Root Cause & Learnings**: Performing daily backups and updating timelogs manually at the end of long sessions is error-prone and tedious. Introducing a lightweight local state file (`session_state.json`) and creating an incremental logging command (`/salva-cambio`) enables immediate registration of achievements. This ensures that the final daily save is fully compiled, precise, and completely hands-free.
+
+## 2026-06-14: Resilient Onboarding Modal & Missing DB Columns Fallback
+- **Task**: Fix the issue where the Welcome/Onboarding modal triggers repeatedly on dashboard load even after submission.
+- **Changes**:
+  - `hub/src/pages/Dashboard.jsx`: Refactored `handleSaveOnboarding` to persist selections to `localStorage` (with profile fallback keys) *before* attempting the Supabase database write. Added error handling around the Supabase query to catch and log DDL errors gracefully, preventing them from blocking local dismissal.
+  - `supabase/021_add_onboarding_columns.sql` [NEW]: Created SQL migration script to add the missing `language` and `country` columns to the `profiles` table (successfully executed and verified in the production database).
+- **Root Cause & Learnings**: The hosted database was missing the `language` and `country` columns on the `profiles` table. The Supabase client failed the update query, throwing an error that bypassed local `localStorage` writing, causing the onboarding modal to reappear on every reload. Saving locally first and handling database queries defensively ensures the user is never blocked by unapplied migrations.

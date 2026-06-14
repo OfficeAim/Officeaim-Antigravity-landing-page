@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     BookOpen, Trophy, Bot, Layout, Award, Settings,
     LogOut, ChevronRight, ChevronLeft, Activity, Shield,
-    MessageSquare, CheckCircle2, ListTodo, PenTool, Bug, X, Send, CheckCircle
+    MessageSquare, CheckCircle2, ListTodo, PenTool, Bug, X, Send, CheckCircle, Newspaper
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import MascotAssistant from './MascotAssistant';
@@ -267,6 +267,13 @@ const MainLayout = ({ profile }) => {
                             className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all text-sm font-black italic ${location.pathname.includes('/projects') ? 'bg-white/10 text-white shadow-inner border border-white/5' : 'text-text-muted hover:bg-white/5 hover:text-white'}`}
                         >
                             <Award className="h-4 w-4" /> Neural Vault
+                        </button>
+
+                        <button
+                            onClick={() => navigate('/hub/vlog-news')}
+                            className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all text-sm font-black italic ${location.pathname.includes('/vlog-news') ? 'bg-white/10 text-white shadow-inner border border-white/5' : 'text-text-muted hover:bg-white/5 hover:text-white'}`}
+                        >
+                            <Newspaper className="h-4 w-4" /> AI News Hub
                         </button>
                     </nav>
 

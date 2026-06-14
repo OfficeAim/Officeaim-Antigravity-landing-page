@@ -81,3 +81,15 @@ Agent, you must now start internally tracking the session time based on the time
 2. Tell the user: *"⏳ It's been 2 hours since we started! Please take a quick break to stretch and rest your eyes."*
 3. Automatically run `./backup.sh` again to preserve all recent progress.
 4. Update `TIMELOG.md` with the current progress before resuming.
+
+## 📦 Step 8: Initialize Session State
+
+Agent, you must check if `.agent/session_state.json` exists. If it does not exist, or if this is the start of a brand new session, create/reset it with the current system time:
+```json
+{
+  "session_start": "YYYY-MM-DDTHH:MM:SS",
+  "changes": []
+}
+```
+Make sure to replace `YYYY-MM-DDTHH:MM:SS` with the actual current system timestamp in ISO format.
+
