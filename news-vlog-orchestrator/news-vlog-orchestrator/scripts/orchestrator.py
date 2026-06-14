@@ -8,6 +8,7 @@ import urllib.request
 import urllib.parse
 import xml.etree.ElementTree as ET
 import subprocess
+import argparse
 
 import ssl
 
@@ -16,6 +17,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 
 # Ensure we print unbuffered
 sys.stdout.reconfigure(line_buffering=True)
+
 
 def load_env(env_path):
     env_vars = {}
@@ -31,6 +33,8 @@ def load_env(env_path):
 # Load environment
 base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../"))
 env = load_env(os.path.join(base_dir, "hub/.env"))
+for k, v in env.items():
+    os.environ[k] = v
 
 def log(step: str, message: str):
     print(f"\n🚀 [{step}] {message}")
@@ -67,62 +71,132 @@ def rpc_request(process, method, params=None, req_id=1):
         if line.startswith('{"'):
             return json.loads(line)
 
-def run_orchestrator(dry_run=False):
-    log("STEP 1", "Scoping & Fetching RSS Feed from HLRNet...")
-    rss_url = "https://hlrnet.com/sites/ai/?feed=rss2&cat=5"
+def fetch_page_title(url):
     try:
         headers = {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-            'Accept-Language': 'en-US,en;q=0.5'
         }
-        req = urllib.request.Request(rss_url, headers=headers)
-        with urllib.request.urlopen(req) as response:
-            xml_data = response.read()
-        root = ET.fromstring(xml_data)
-        items = []
-        for item in root.findall('.//item'):
-            title = item.find('title').text
-            link = item.find('link').text
-            pub_date = item.find('pubDate').text
-            description = item.find('description').text if item.find('description') is not None else ""
-            items.append({
-                'title': title,
-                'link': link,
-                'pub_date': pub_date,
-                'description': description
-            })
-        print(f"   Successfully loaded {len(items)} items from feed.")
-    except Exception as e:
-        print(f"❌ Error fetching RSS feed: {e}")
-        sys.exit(1)
+        req = urllib.request.Request(url, headers=headers)
+        with urllib.request.urlopen(req, timeout=5) as response:
+            html = response.read().decode('utf-8', errors='ignore')
+            match = re.search(r'<title>(.*?)</title>', html, re.IGNORECASE)
+            if match:
+                title = match.group(1).strip()
+                title = re.sub(r'\s+[-|]\s+.*$', '', title)
+                return title
+    except Exception:
+        pass
+    return "AI News Story"
 
-    log("STEP 1b", "Filtering out already published stories...")
+def extract_youtube_id(url):
+    if not url:
+        return None
+    parsed = urllib.parse.urlparse(url)
+    if parsed.hostname == 'youtu.be':
+        return parsed.path.strip('/')
+    if parsed.hostname in ('www.youtube.com', 'youtube.com', 'm.youtube.com'):
+        if parsed.path == '/watch':
+            p = urllib.parse.parse_qs(parsed.query)
+            return p.get('v', [None])[0]
+        if parsed.path.startswith('/embed/'):
+            return parsed.path.split('/')[2]
+        if parsed.path.startswith('/v/'):
+            return parsed.path.split('/')[2]
+    match = re.search(r'(?:v=|\/embed\/|\/v\/|youtu\.be\/|\/watch\?v=)([^#\&\?]{11})', url)
+    if match:
+        return match.group(1)
+    return None
+
+def format_article_as_html(content):
+    content = content.strip()
+    if not content:
+        return ""
+    if "<p>" in content or "<h2>" in content or "<h3>" in content or "<br>" in content:
+        return content
+    
+    paragraphs = content.split('\n\n')
+    formatted_paragraphs = []
+    for p in paragraphs:
+        p = p.strip()
+        if not p:
+            continue
+        if len(p) < 80 and not p.endswith('.') and (p.startswith('**') or p.isupper()):
+            clean_hdr = p.replace('**', '')
+            formatted_paragraphs.append(f"<h2>{clean_hdr}</h2>")
+        else:
+            clean_p = p.replace('**', '<strong>', 1).replace('**', '</strong>', 1)
+            while '**' in clean_p:
+                clean_p = clean_p.replace('**', '<strong>', 1).replace('**', '</strong>', 1)
+            formatted_paragraphs.append(f"<p>{clean_p}</p>")
+            
+    return '\n'.join(formatted_paragraphs)
+
+def run_orchestrator(args):
+    dry_run = args.dry_run
+    log("STEP 1", "Scoping & Selecting News Source...")
     published_path = os.path.join(base_dir, "published_news.json")
     if os.path.exists(published_path):
         with open(published_path, 'r') as f:
             published_urls = json.load(f)
     else:
         published_urls = []
-    
-    new_items = [it for it in items if it['link'] not in published_urls]
-    print(f"   Found {len(new_items)} new stories.")
-    if not new_items:
-        log("FINISHED", "No new stories to process today. Exiting.")
-        return
 
-    log("STEP 2", "Ranking stories by audience interest using Google Autocomplete...")
-    ranked_items = []
-    for item in new_items:
-        # Score title
-        score = get_autocomplete_score(item['title'])
-        ranked_items.append((score, item))
-        print(f"   - '{item['title']}' | Score: {score}")
+    if args.url:
+        log("STEP 1", f"Forcing processing for custom URL: {args.url}")
+        selected_story = {
+            'title': fetch_page_title(args.url),
+            'link': args.url,
+            'pub_date': time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime()),
+            'description': "Forced manual news story update."
+        }
+        log("STEP 2b", f"Selected Custom Story: '{selected_story['title']}' (URL: {selected_story['link']})")
+    else:
+        log("STEP 1", "Scoping & Fetching RSS Feed from HLRNet...")
+        rss_url = "https://hlrnet.com/sites/ai/?feed=rss2&cat=5"
+        try:
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.5'
+            }
+            req = urllib.request.Request(rss_url, headers=headers)
+            with urllib.request.urlopen(req) as response:
+                xml_data = response.read()
+            root = ET.fromstring(xml_data)
+            items = []
+            for item in root.findall('.//item'):
+                title = item.find('title').text
+                link = item.find('link').text
+                pub_date = item.find('pubDate').text
+                description = item.find('description').text if item.find('description') is not None else ""
+                items.append({
+                    'title': title,
+                    'link': link,
+                    'pub_date': pub_date,
+                    'description': description
+                })
+            print(f"   Successfully loaded {len(items)} items from feed.")
+        except Exception as e:
+            print(f"❌ Error fetching RSS feed: {e}")
+            sys.exit(1)
+
+        log("STEP 1b", "Filtering out already published stories...")
+        new_items = [it for it in items if it['link'] not in published_urls]
+        print(f"   Found {len(new_items)} new stories.")
+        if not new_items:
+            log("FINISHED", "No new stories to process today. Exiting.")
+            return
     
-    # Sort descending by score
-    ranked_items.sort(key=lambda x: x[0], reverse=True)
-    selected_story = ranked_items[0][1]
-    log("STEP 2b", f"Selected Main Story: '{selected_story['title']}' (URL: {selected_story['link']})")
+        log("STEP 2", "Ranking stories by audience interest using Google Autocomplete...")
+        ranked_items = []
+        for item in new_items:
+            score = get_autocomplete_score(item['title'])
+            ranked_items.append((score, item))
+            print(f"   - '{item['title']}' | Score: {score}")
+        
+        ranked_items.sort(key=lambda x: x[0], reverse=True)
+        selected_story = ranked_items[0][1]
+        log("STEP 2b", f"Selected Main Story: '{selected_story['title']}' (URL: {selected_story['link']})")
 
     if dry_run:
         log("DRY RUN", "Dry run enabled. Exiting before calling NotebookLM.")
@@ -179,14 +253,22 @@ def run_orchestrator(dry_run=False):
 
         # Query NotebookLM for synthesis
         query_prompt = (
-            "Analyze the attached news article. Based on it, generate the following outputs "
+            f"Analyze the attached news article from source URL: {selected_story['link']}. Based on it, generate the following outputs "
             "formatted strictly as a raw JSON object. Do not include markdown code block syntax "
             "or any extra comments. The JSON keys must be exactly:\n"
             '- "title": A premium headline for the article.\n'
             '- "summary": A compelling 1-2 sentence teaser summary.\n'
             '- "script": A detailed explainer script for a 3-minute video/vlog, in English. Include timestamp markers (e.g. (0:00 - 0:30) Hook) and clear dialogue.\n'
-            '- "youtube_desc": A YouTube video description including calls-to-action to register free at officeaim.netlify.app and relevant hashtags.\n'
+            '- "youtube_desc": A YouTube video description formatted strictly according to this template:\n'
+            '  1. A strong hook sentence with emoji.\n'
+            f'  2. A paragraph starting with "In this week\'s OfficeAIM News, Rody breaks down [Main Topic Summary]. We explain [Key points detailed in the video]."\n'
+            '  3. A paragraph announcing the new OfficeAIM Hub features/modules or relevant details.\n'
+            '  4. Two Call to Action Links: "👉 Read the full breakdown and subscribe to the Insider Newsletter at https://officeaim.netlify.app" and "👉 Access the Campus & MVP Builder Modules on the landing page".\n'
+            '  5. A ⏱️ CHAPTERS / TIMESTAMPS section with timings mapped from the script timing markers.\n'
+            '  6. A 💡 KEY TAKEAWAYS section containing 3 concise bullet points with lessons learned.\n'
+            '  7. Hashtags including #OfficeAIM, #n8n, #Supabase, #AI, #PromptEngineering, and relevant topic-specific tags.\n'
             '- "facebook_post": A friendly Facebook post summarizing the news, linking to officeaim.netlify.app, and inviting discussions.\n'
+            f'- "article_content": A comprehensive, beautifully formatted news article / blog post in English based on this news story, organized using structural HTML elements such as <h2> or <h3> for section headers, <strong> for emphasis, and including relevant hyperlinks to sources where possible (pointing to the news category page https://officeaim.netlify.app/news.html or external sites, and including a link to the original source {selected_story["link"]}).\n'
             '- "category": A 1-2 word category classification (e.g., "AI Hardware", "Image Generation").'
         )
 
@@ -247,12 +329,31 @@ def run_orchestrator(dry_run=False):
             'script': normalized_synthesis.get('script', normalized_synthesis.get('vlog_script', normalized_synthesis.get('video_script', ''))),
             'youtube_desc': normalized_synthesis.get('youtube_desc', normalized_synthesis.get('youtube_description', '')),
             'facebook_post': normalized_synthesis.get('facebook_post', normalized_synthesis.get('facebook_description', '')),
+            'article_content': normalized_synthesis.get('article_content', normalized_synthesis.get('article', '')),
             'category': normalized_synthesis.get('category', normalized_synthesis.get('genre', 'AI News'))
         }
         
         # Fallback if script is completely empty
         if not synthesis['script']:
             synthesis['script'] = query_text # use raw text if it couldn't format properly
+
+        # Fallback if article_content is completely empty
+        if not synthesis['article_content']:
+            print("⚠️ Article content is empty, applying heuristic script conversion...")
+            cleaned = re.sub(r'\(\d+:\d+\s*-\s*\d+:\d+\)[^:\n]*:\s*', '', synthesis['script'])
+            synthesis['article_content'] = cleaned
+
+        # Convert plain text to beautiful HTML tags if no HTML structure is detected
+        synthesis['article_content'] = format_article_as_html(synthesis['article_content'])
+
+        # Ensure links to the original source and the news overview page are present
+        source_link_html = f'<p><em>Original source: <a href="{selected_story["link"]}" target="_blank" rel="noopener noreferrer">{selected_story["link"]}</a></em></p>'
+        news_link_html = f'<p><em>For more updates, visit the <a href="https://officeaim.netlify.app/news.html">OfficeAIM News</a> page.</em></p>'
+        
+        if selected_story['link'] not in synthesis['article_content']:
+            synthesis['article_content'] += f"\n\n{source_link_html}"
+        if "news.html" not in synthesis['article_content']:
+            synthesis['article_content'] += f"\n\n{news_link_html}"
 
         print("   Synthesis completed successfully.")
 
@@ -292,6 +393,55 @@ def run_orchestrator(dry_run=False):
             "arguments": {"notebook_id": notebook_id, "confirm": True}
         }, req_id=6)
 
+        # Resolve video player block
+        video_player_html = ""
+        youtube_id = None
+        if args.youtube:
+            youtube_id = extract_youtube_id(args.youtube)
+            if youtube_id:
+                log("VIDEO RESOLUTION", f"Using YouTube video ID: {youtube_id}")
+                video_player_html = f'''            <div class="article-video-wrap">
+                <iframe src="https://www.youtube.com/embed/{youtube_id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width: 100%; height: 100%; border: none; border-radius: 24px;"></iframe>
+            </div>'''
+            else:
+                log("VIDEO RESOLUTION", f"Could not parse YouTube ID from URL: {args.youtube}. Falling back to NotebookLM.")
+
+        if not video_player_html:
+            # Try to resolve video from studio status via MCP
+            persistent_notebook_id = "740e2028-5520-47dd-acc6-c5150d36a990"
+            try:
+                log("VIDEO RESOLUTION", f"Checking studio status for persistent notebook {persistent_notebook_id}...")
+                status_res = rpc_request(process, "tools/call", {
+                    "name": "studio_status",
+                    "arguments": {"notebook_id": persistent_notebook_id}
+                }, req_id=99)
+                
+                result = status_res.get("result", {})
+                content = result.get("content", [{}])
+                if content and "text" in content[0]:
+                    status_data = json.loads(content[0]["text"])
+                    artifacts = status_data.get("artifacts", [])
+                    completed_videos = [a for a in artifacts if a.get("type") == "video" and a.get("status") == "completed"]
+                    if completed_videos:
+                        completed_videos.sort(key=lambda x: x.get("created_at", ""), reverse=True)
+                        video_url = completed_videos[0].get("video_url")
+                        log("VIDEO RESOLUTION", f"Found latest completed video URL: {video_url}")
+                        video_player_html = f'''            <div class="article-video-wrap">
+                <video src="{video_url}" controls style="width: 100%; height: 100%; border-radius: 24px; border: none;"></video>
+            </div>'''
+                    else:
+                        log("VIDEO RESOLUTION", "No completed videos found in studio status.")
+            except Exception as se:
+                log("VIDEO RESOLUTION", f"Warning: could not retrieve video URL from studio_status: {se}")
+
+        if not video_player_html:
+            log("VIDEO RESOLUTION", "No video player resolved. Using empty placeholder.")
+            video_player_html = '''            <div class="article-video-wrap">
+                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 1.1rem; font-style: italic;">
+                    Video summary is being generated by OfficeAIM Studio...
+                </div>
+            </div>'''
+
     except Exception as e:
         print(f"❌ Error during NotebookLM MCP communication: {e}")
         process.terminate()
@@ -302,7 +452,10 @@ def run_orchestrator(dry_run=False):
     log("STEP 4", "Publishing news to landing page and dashboard...")
     
     # Generate file names
-    slugified_title = re.sub(r'[^a-z0-9]+', '-', selected_story['title'].lower()).strip('-')
+    if args.slug:
+        slugified_title = args.slug
+    else:
+        slugified_title = re.sub(r'[^a-z0-9]+', '-', selected_story['title'].lower()).strip('-')
     filename = f"{slugified_title}.html"
     detail_dir = os.path.join(base_dir, "news")
     os.makedirs(detail_dir, exist_ok=True)
@@ -317,16 +470,13 @@ def run_orchestrator(dry_run=False):
     with open(template_path, 'r') as f:
         template_content = f.read()
 
-    # Convert script newlines to HTML breaks for readable output
-    html_content = synthesis['script'].replace('\n', '<br>')
-    
     detail_html = template_content\
         .replace("{{TITLE}}", synthesis['title'])\
         .replace("{{DESCRIPTION}}", synthesis['summary'])\
         .replace("{{DATE}}", formatted_date)\
         .replace("{{CATEGORY}}", synthesis.get('category', 'AI News'))\
-        .replace("{{CONTENT}}", html_content)\
-        .replace("{{VIDEO_EMBED_URL}}", "https://www.youtube.com/embed/dQw4w9WgXcQ") # placeholder video
+        .replace("{{CONTENT}}", synthesis['article_content'])\
+        .replace("{{VIDEO_PLAYER}}", video_player_html)
 
     with open(detail_path, 'w') as f:
         f.write(detail_html)
@@ -406,7 +556,8 @@ def run_orchestrator(dry_run=False):
             "title": synthesis['title'],
             "youtube_desc": synthesis['youtube_desc'],
             "facebook_post": synthesis['facebook_post'],
-            "script": synthesis['script']
+            "script": synthesis['script'],
+            "article_content": synthesis['article_content']
         }, f, indent=2)
 
     log("SUCCESS", "Pipeline fully completed!")
@@ -418,5 +569,11 @@ def run_orchestrator(dry_run=False):
     print(synthesis['facebook_post'])
 
 if __name__ == "__main__":
-    dry_run = "--dry-run" in sys.argv
-    run_orchestrator(dry_run=dry_run)
+    parser = argparse.ArgumentParser(description="OfficeAIM Daily News & Vlog Orchestrator")
+    parser.add_argument("--dry-run", action="store_true", help="Dry run without calling NotebookLM")
+    parser.add_argument("--url", type=str, default=None, help="Force processing a specific news URL")
+    parser.add_argument("--youtube", type=str, default=None, help="YouTube video URL to embed")
+    parser.add_argument("--slug", type=str, default=None, help="Force custom slug for output filename")
+    args = parser.parse_args()
+    
+    run_orchestrator(args)
