@@ -7,9 +7,9 @@ const VlogNewsPage = ({ profile }) => {
     const vlogs = [
         {
             id: 'meta-prompting',
-            title: 'Mastering Meta-Prompting: The Future of Automated Prompt Engineering',
+            title: 'Mastering Meta-Prompting: How AI is Learning to Write Its Own Prompts',
             date: 'June 11, 2026',
-            description: 'Discover how meta-prompting shifts the focus from content to structural patterns, allowing you to interact with Large Language Models in a more abstract way [1]. Stop babysitting your AI and scale your operations by building systems that write their own prompts [2].',
+            description: 'Meta-prompting shifts focus from content-centric prompts to structural frameworks, allowing AI to write and refine its own prompts [1, 2]. This advanced technique helps scale operations by automating prompt engineering [3, 4].',
             image: '/hub/images/module1_hero.png',
             duration: '5:00'
         },
