@@ -39,6 +39,7 @@ This log tracks the "Working Curve" to ensure sustainable productivity and high-
 | 2026-06-11 | 10:41 | 11:31 | ~0.8h | Daily Vlog News Orchestrator pipeline transition, fixed HTTP 406 RSS feed block, nested JSON synthesis parsing, and implemented NotebookLM MCP video overview generation with custom prompt rules. | ✅ Completed |
 | 2026-06-11 | 15:17 | 15:29 | ~0.2h | Refactored orchestrator.py to support custom URL, YouTube video overrides, dynamic player slot {{VIDEO_PLAYER}}, and HTML conversion for article content. | ✅ Completed |
 | 2026-06-14 | 08:53 | 09:51 | ~1.0h | Restored static news routing, created dedicated news article page news/ai-mvp-days.html, resolved YouTube Error 153, synchronized React News Hub with modal, and implemented the /salva-cambio workflow. | ✅ Completed |
+| 2026-06-14 | 09:52 | 10:56 | ~1.0h | Resilient onboarding modal fix (Dashboard.jsx localStorage fallback + X close button), vlogs array decoupled into newsData.js (React Fast Refresh compliance), Module 1 lesson-to-vlog strict 1-to-1 mapping in ModuleViewer.jsx, orchestrator.py retargeted to newsData.js, SQL migration 021 for language/country columns, and created vault/PLATFORM_MAP.md (full platform ecosystem map). | ✅ Completed |
 ---
 *Next Break Suggestion: 22:30 PM*
 
