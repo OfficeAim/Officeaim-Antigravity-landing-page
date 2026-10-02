@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Creator Blueprint Generator | OfficeAIM</title>
+    <title>OfficeAIM Web Blueprint Studio | Decoupled Jamstack Architecture</title>
     <meta name="description" content="Design and structure your next website's technical blueprint. Generate AI-optimized developer prompts with integrated payment gateways and webhooks.">
     
     <!-- Google Fonts -->
@@ -129,14 +129,20 @@
             </div>
             <div>
                 <span class="font-outfit font-black uppercase tracking-widest text-xs text-white leading-none">OfficeAIM</span>
-                <p class="text-[9px] text-brand-orange font-bold uppercase tracking-wider leading-none mt-0.5">Website Creator</p>
+                <p class="text-[9px] text-brand-orange font-bold uppercase tracking-wider leading-none mt-0.5">Web Blueprint Studio</p>
             </div>
         </div>
         
-        <a href="../index.html" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.03] border border-white/10 hover:bg-white/[0.08] hover:border-white/20 transition-all text-xs font-bold italic tracking-wide text-white/80 hover:text-white">
-            <svg class="w-4 h-4 text-brand-orange shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-            Return to Home
-        </a>
+        <div class="flex items-center gap-3">
+            <a href="#roadmap-section" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/[0.03] border border-white/10 hover:border-brand-orange/40 transition-all text-[11px] font-bold text-gray-300 hover:text-white">
+                <span>9-Step Stack Roadmap</span>
+                <span class="text-brand-orange">↓</span>
+            </a>
+            <a href="../index.html" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.03] border border-white/10 hover:bg-white/[0.08] hover:border-white/20 transition-all text-xs font-bold italic tracking-wide text-white/80 hover:text-white">
+                <svg class="w-4 h-4 text-brand-orange shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Return to Home
+            </a>
+        </div>
     </header>
 
     <!-- Main Container -->
@@ -145,7 +151,7 @@
         <!-- Header Text -->
         <div class="max-w-3xl mb-12 text-left">
             <h1 class="text-3xl md:text-5xl font-outfit font-black tracking-tight italic uppercase text-white leading-tight">
-                Web <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">Blueprint Generator</span> for Your Site
+                Web <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">Blueprint Studio</span> for Your Site
             </h1>
             <p class="mt-4 text-sm md:text-base text-gray-400 font-medium leading-relaxed">
                 Design your website's architecture, configure booking paths, and generate a technical prompt optimized for AI code compilers (like Lovable, v0, or Cursor). <span class="text-white">Everything is transparent, under your control, with $0 hidden markup costs.</span>
@@ -685,65 +691,162 @@
             <!-- Right Side: Platform Cost & Partnership Info -->
             <aside class="md:col-span-4 space-y-6">
                 
-                <!-- Transparent Cost Panel -->
-                <div class="glass-card rounded-3xl p-6 border-brand-cyan/20 glow-cyan">
-                    <div class="flex items-center gap-2 mb-4">
-                        <div class="w-8 h-8 rounded-lg bg-brand-cyan/10 flex items-center justify-center text-brand-cyan shrink-0">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z"></path></svg>
+                <!-- Transparent Cost Panel (Jamstack 2026 Architecture) -->
+                <div class="glass-card rounded-3xl p-6 border-brand-cyan/20 glow-cyan relative overflow-hidden" id="cost-calculator-card">
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-lg bg-brand-cyan/10 flex items-center justify-center text-brand-cyan shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="font-outfit font-black uppercase text-xs tracking-wider text-white">Jamstack 2026 Costs</h3>
+                                <p class="text-[9px] text-brand-cyan font-bold uppercase tracking-wider">Zero Hidden Markups</p>
+                            </div>
                         </div>
-                        <h3 class="font-outfit font-black uppercase text-xs tracking-wider text-white">Transparent Costs</h3>
+                        <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-brand-emerald/10 text-brand-emerald border border-brand-emerald/30 font-bold">Verified Stack</span>
                     </div>
                     
-                    <p class="text-[11px] text-gray-400 leading-relaxed mb-6 font-medium">
-                        Zero hidden markups. You pay third-party cloud infrastructure providers directly with a credit card under your name.
+                    <p class="text-[11px] text-gray-400 leading-relaxed mb-4 font-medium">
+                        Modern decoupled infrastructure. You pay directly to official cloud providers with zero middleman markup.
                     </p>
 
-                    <!-- Cost Items List -->
-                    <div class="space-y-4">
-                        <!-- Hosting -->
-                        <div class="flex justify-between items-start gap-2 border-b border-white/[0.04] pb-3">
-                            <div>
-                                <span class="text-xs font-bold text-white block">Hosting</span>
-                                <span class="text-[10px] text-gray-500 font-mono">Vercel or Netlify</span>
+                    <!-- Phase Mode Toggle (MVP vs Commercial Scale) -->
+                    <div class="grid grid-cols-2 gap-1.5 p-1 bg-black/40 rounded-xl border border-white/5 mb-4 select-none">
+                        <button type="button" id="cost-mode-mvp" class="py-1.5 px-2 rounded-lg text-[10px] font-bold uppercase tracking-wider text-white bg-brand-orange shadow-md transition-all">
+                            Phase 1: MVP ($1/mo)
+                        </button>
+                        <button type="button" id="cost-mode-pro" class="py-1.5 px-2 rounded-lg text-[10px] font-bold uppercase tracking-wider text-gray-400 hover:text-white transition-all">
+                            Phase 2: Scale Pro ($113/mo)
+                        </button>
+                    </div>
+
+                    <!-- Cost Items List Container -->
+                    <div class="space-y-3" id="cost-items-container">
+                        <!-- 1. Google Gemini AI Pro -->
+                        <div class="border-b border-white/[0.04] pb-2.5">
+                            <div class="flex justify-between items-start gap-2">
+                                <div>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-xs font-bold text-white">Google Gemini AI Pro</span>
+                                        <a href="https://one.google.com/referral/redeem/5D7BZ6PL?g1_landing_page=5" target="_blank" rel="noopener noreferrer" class="text-[9px] text-brand-orange hover:underline font-bold" title="3-Month Promo at €5.49/mo">Promo ↗</a>
+                                    </div>
+                                    <span class="text-[10px] text-gray-400 block cost-subtext" id="cost-sub-gemini">Free Tier or €5.49/mo (3 mo promo + 5TB & 1M context)</span>
+                                </div>
+                                <span class="text-xs font-black text-brand-emerald bg-brand-emerald/10 px-2.5 py-0.5 rounded-full shrink-0 cost-badge" id="cost-badge-gemini">$0 USD</span>
                             </div>
-                            <span class="text-xs font-black text-brand-emerald bg-brand-emerald/10 px-2.5 py-0.5 rounded-full">$0 USD</span>
                         </div>
 
-                        <!-- Database -->
-                        <div class="flex justify-between items-start gap-2 border-b border-white/[0.04] pb-3">
-                            <div>
-                                <span class="text-xs font-bold text-white block">Database & Auth</span>
-                                <span class="text-[10px] text-gray-500 font-mono">Supabase Postgres</span>
+                        <!-- 2. Hostinger Domain -->
+                        <div class="border-b border-white/[0.04] pb-2.5">
+                            <div class="flex justify-between items-start gap-2">
+                                <div>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-xs font-bold text-white">Hostinger (Domain & DNS)</span>
+                                        <a href="https://www.hostinger.com?REFERRALCODE=RE9OFFICEEXZ" target="_blank" rel="noopener noreferrer" class="text-[9px] text-brand-cyan hover:underline font-bold" title="Discount Code RE9OFFICEEXZ">Discount ↗</a>
+                                    </div>
+                                    <span class="text-[10px] text-gray-400 block cost-subtext" id="cost-sub-hostinger">Custom .com domain (~$12/year prorated with code)</span>
+                                </div>
+                                <span class="text-xs font-black text-brand-orange bg-brand-orange/10 px-2.5 py-0.5 rounded-full shrink-0 cost-badge" id="cost-badge-hostinger">~$1 USD/mo</span>
                             </div>
-                            <span class="text-xs font-black text-brand-emerald bg-brand-emerald/10 px-2.5 py-0.5 rounded-full">$0 USD</span>
                         </div>
 
-                        <!-- Webhooks -->
-                        <div class="flex justify-between items-start gap-2 border-b border-white/[0.04] pb-3">
-                            <div>
-                                <span class="text-xs font-bold text-white block">Automations</span>
-                                <span class="text-[10px] text-gray-500 font-mono">Make (1k ops free)</span>
+                        <!-- 3. GitHub -->
+                        <div class="border-b border-white/[0.04] pb-2.5">
+                            <div class="flex justify-between items-start gap-2">
+                                <div>
+                                    <span class="text-xs font-bold text-white block">GitHub (Git & CI/CD)</span>
+                                    <span class="text-[10px] text-gray-400 block cost-subtext" id="cost-sub-github">Unlimited repositories / 2,000 mins Actions</span>
+                                </div>
+                                <span class="text-xs font-black text-brand-emerald bg-brand-emerald/10 px-2.5 py-0.5 rounded-full shrink-0 cost-badge" id="cost-badge-github">$0 USD</span>
                             </div>
-                            <span class="text-xs font-black text-brand-emerald bg-brand-emerald/10 px-2.5 py-0.5 rounded-full">$0 USD</span>
                         </div>
 
-                        <!-- AI Engine -->
-                        <div class="flex justify-between items-start gap-2 border-b border-white/[0.04] pb-3">
-                            <div>
-                                <span class="text-xs font-bold text-white block">AI Generator / Dev</span>
-                                <span class="text-[10px] text-gray-500 font-mono">Lovable.dev / Gemini</span>
+                        <!-- 4. Vercel -->
+                        <div class="border-b border-white/[0.04] pb-2.5">
+                            <div class="flex justify-between items-start gap-2">
+                                <div>
+                                    <span class="text-xs font-bold text-white block">Vercel (Edge Deployment)</span>
+                                    <span class="text-[10px] text-gray-400 block cost-subtext" id="cost-sub-vercel">1 TB bandwidth / 10M edge requests</span>
+                                </div>
+                                <span class="text-xs font-black text-brand-emerald bg-brand-emerald/10 px-2.5 py-0.5 rounded-full shrink-0 cost-badge" id="cost-badge-vercel">$0 USD</span>
                             </div>
-                            <span class="text-xs font-black text-gray-400 bg-white/5 px-2 py-0.5 rounded-full text-[10px]">Free / Pro Tiers</span>
                         </div>
 
-                        <!-- Domain -->
-                        <div class="flex justify-between items-start gap-2">
-                            <div>
-                                <span class="text-xs font-bold text-white block">Custom Domain (.com)</span>
-                                <span class="text-[10px] text-gray-500 font-mono">Namecheap / GoDaddy</span>
+                        <!-- 5. Supabase -->
+                        <div class="border-b border-white/[0.04] pb-2.5">
+                            <div class="flex justify-between items-start gap-2">
+                                <div>
+                                    <span class="text-xs font-bold text-white block">Supabase (PostgreSQL & Auth)</span>
+                                    <span class="text-[10px] text-gray-400 block cost-subtext" id="cost-sub-supabase">500 MB DB / 50,000 active users (MAU)</span>
+                                </div>
+                                <span class="text-xs font-black text-brand-emerald bg-brand-emerald/10 px-2.5 py-0.5 rounded-full shrink-0 cost-badge" id="cost-badge-supabase">$0 USD</span>
                             </div>
-                            <span class="text-xs font-black text-brand-orange bg-brand-orange/10 px-2 py-0.5 rounded-full text-[10px]">~$12 /year</span>
                         </div>
+
+                        <!-- 6. Stripe -->
+                        <div class="border-b border-white/[0.04] pb-2.5">
+                            <div class="flex justify-between items-start gap-2">
+                                <div>
+                                    <span class="text-xs font-bold text-white block">Stripe (Online Payments)</span>
+                                    <span class="text-[10px] text-gray-400 block cost-subtext" id="cost-sub-stripe">No fixed monthly fee (only ~3% per verified sale)</span>
+                                </div>
+                                <span class="text-xs font-black text-brand-emerald bg-brand-emerald/10 px-2.5 py-0.5 rounded-full shrink-0 cost-badge" id="cost-badge-stripe">$0 Fixed</span>
+                            </div>
+                        </div>
+
+                        <!-- 7. Brevo -->
+                        <div class="border-b border-white/[0.04] pb-2.5">
+                            <div class="flex justify-between items-start gap-2">
+                                <div>
+                                    <span class="text-xs font-bold text-white block">Brevo (Emails & SMTP)</span>
+                                    <span class="text-[10px] text-gray-400 block cost-subtext" id="cost-sub-brevo">300 emails/day free / up to 100k contacts</span>
+                                </div>
+                                <span class="text-xs font-black text-brand-emerald bg-brand-emerald/10 px-2.5 py-0.5 rounded-full shrink-0 cost-badge" id="cost-badge-brevo">$0 USD</span>
+                            </div>
+                        </div>
+
+                        <!-- 8. Senja -->
+                        <div class="border-b border-white/[0.04] pb-2.5">
+                            <div class="flex justify-between items-start gap-2">
+                                <div>
+                                    <span class="text-xs font-bold text-white block">Senja (Social Proof / Reviews)</span>
+                                    <span class="text-[10px] text-gray-400 block cost-subtext" id="cost-sub-senja">15 testimonials / Unlimited forms & widgets</span>
+                                </div>
+                                <span class="text-xs font-black text-brand-emerald bg-brand-emerald/10 px-2.5 py-0.5 rounded-full shrink-0 cost-badge" id="cost-badge-senja">$0 USD</span>
+                            </div>
+                        </div>
+
+                        <!-- 9. PostHog -->
+                        <div class="pb-1">
+                            <div class="flex justify-between items-start gap-2">
+                                <div>
+                                    <span class="text-xs font-bold text-white block">PostHog (Analytics & Replays)</span>
+                                    <span class="text-[10px] text-gray-400 block cost-subtext" id="cost-sub-posthog">1,000,000 events/mo / 5k recorded sessions</span>
+                                </div>
+                                <span class="text-xs font-black text-brand-emerald bg-brand-emerald/10 px-2.5 py-0.5 rounded-full shrink-0 cost-badge" id="cost-badge-posthog">$0 USD</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total Cost Summary Banner -->
+                    <div class="mt-4 pt-3 border-t border-white/10 bg-black/30 -mx-6 -mb-6 p-4 rounded-b-3xl">
+                        <div class="flex items-center justify-between mb-2">
+                            <div>
+                                <span class="text-[10px] uppercase font-bold text-gray-400 block" id="cost-total-label">Initial MVP Fixed Cost:</span>
+                                <span class="text-[9px] text-gray-500 font-medium" id="cost-total-note">Covers only your domain on Hostinger</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-base font-outfit font-black text-white" id="cost-total-amount">$1.00 USD <span class="text-[10px] font-normal text-gray-400">/mo</span></span>
+                                <span class="block text-[9px] text-brand-orange font-bold" id="cost-total-promo">(or €5.49/mo with Google One AI Pro)</span>
+                            </div>
+                        </div>
+
+                        <!-- Download Excel Button -->
+                        <a href="./calculadora-costos-stack-jamstack.xlsx" download="calculadora-costos-stack-jamstack.xlsx"
+                            class="w-full mt-2 py-2 px-3 rounded-xl bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] hover:border-brand-emerald/40 transition-all flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-wider text-brand-emerald hover:text-white group">
+                            <svg class="w-3.5 h-3.5 text-brand-emerald group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/><path d="M8 12h8v2H8zm0 4h8v2H8zm0-8h5v2H8z"/></svg>
+                            <span>Download Financial Model Spreadsheet (.xlsx)</span>
+                        </a>
                     </div>
                 </div>
 
@@ -773,12 +876,225 @@
 
         </div>
 
+        <!-- ============================================ -->
+        <!-- 9-STEP JAMSTACK ARCHITECTURE ROADMAP -->
+        <!-- ============================================ -->
+        <section class="mt-16 pt-12 border-t border-white/[0.08]" id="roadmap-section">
+            <div class="max-w-3xl mb-10 text-left">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-orange/10 border border-brand-orange/30 text-brand-orange text-[10px] font-black uppercase tracking-widest mb-3">
+                    <span>✨ Decoupled Jamstack 2026</span>
+                </div>
+                <h2 class="text-2xl md:text-4xl font-outfit font-black tracking-tight uppercase italic text-white">
+                    The 9-Step <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">Integration Roadmap</span>
+                </h2>
+                <p class="mt-3 text-xs md:text-sm text-gray-400 leading-relaxed font-medium">
+                    In a modern decoupled setup, each specialized tool excels at its core duty with zero vendor lock-in. Here is how your data travels seamlessly from inception to commercial scale:
+                </p>
+            </div>
+
+            <!-- Steps Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <!-- Step 1: Gemini -->
+                <div class="glass-card rounded-2xl p-5 border border-white/[0.06] hover:border-brand-orange/40 transition-all group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="w-7 h-7 rounded-lg bg-brand-orange/15 text-brand-orange flex items-center justify-center font-outfit font-black text-xs">01</span>
+                        <span class="text-[9px] font-bold uppercase tracking-wider text-gray-400 bg-white/5 px-2 py-0.5 rounded-full">Core Dev</span>
+                    </div>
+                    <h3 class="text-sm font-bold text-white mb-1 group-hover:text-brand-orange transition-colors">Google Gemini AI Pro</h3>
+                    <p class="text-[11px] text-gray-400 leading-relaxed">
+                        Acts as your lead software architect: generates production React/HTML/JS code, PostgreSQL database schemas, and AI prompts for Lovable / Cursor.
+                    </p>
+                    <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[10px]">
+                        <span class="text-gray-500 font-mono">Data Output:</span>
+                        <span class="text-brand-cyan font-mono font-bold">Source Code / SQL Schemas</span>
+                    </div>
+                </div>
+
+                <!-- Step 2: GitHub -->
+                <div class="glass-card rounded-2xl p-5 border border-white/[0.06] hover:border-brand-orange/40 transition-all group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="w-7 h-7 rounded-lg bg-brand-orange/15 text-brand-orange flex items-center justify-center font-outfit font-black text-xs">02</span>
+                        <span class="text-[9px] font-bold uppercase tracking-wider text-gray-400 bg-white/5 px-2 py-0.5 rounded-full">Version Control</span>
+                    </div>
+                    <h3 class="text-sm font-bold text-white mb-1 group-hover:text-brand-orange transition-colors">GitHub Repository</h3>
+                    <p class="text-[11px] text-gray-400 leading-relaxed">
+                        The secure vault of your digital assets. Every commit is tracked in branch (main), triggering instant automated deployments (CI/CD).
+                    </p>
+                    <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[10px]">
+                        <span class="text-gray-500 font-mono">Data Output:</span>
+                        <span class="text-brand-cyan font-mono font-bold">Git Webhook Push</span>
+                    </div>
+                </div>
+
+                <!-- Step 3: Hostinger -->
+                <div class="glass-card rounded-2xl p-5 border border-white/[0.06] hover:border-brand-orange/40 transition-all group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="w-7 h-7 rounded-lg bg-brand-orange/15 text-brand-orange flex items-center justify-center font-outfit font-black text-xs">03</span>
+                        <span class="text-[9px] font-bold uppercase tracking-wider text-brand-emerald bg-brand-emerald/10 px-2 py-0.5 rounded-full">Code RE9OFFICEEXZ</span>
+                    </div>
+                    <h3 class="text-sm font-bold text-white mb-1 group-hover:text-brand-orange transition-colors">Hostinger DNS & Domain</h3>
+                    <p class="text-[11px] text-gray-400 leading-relaxed">
+                        Registers your official commercial identity (yourbrand.com). Configures DNS records (CNAME & A) routing traffic to Vercel's global edge network.
+                    </p>
+                    <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[10px]">
+                        <span class="text-gray-500 font-mono">Data Output:</span>
+                        <span class="text-brand-cyan font-mono font-bold">Global IP Resolution</span>
+                    </div>
+                </div>
+
+                <!-- Step 4: Vercel -->
+                <div class="glass-card rounded-2xl p-5 border border-white/[0.06] hover:border-brand-orange/40 transition-all group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="w-7 h-7 rounded-lg bg-brand-orange/15 text-brand-orange flex items-center justify-center font-outfit font-black text-xs">04</span>
+                        <span class="text-[9px] font-bold uppercase tracking-wider text-gray-400 bg-white/5 px-2 py-0.5 rounded-full">Edge CDN</span>
+                    </div>
+                    <h3 class="text-sm font-bold text-white mb-1 group-hover:text-brand-orange transition-colors">Vercel Edge Network</h3>
+                    <p class="text-[11px] text-gray-400 leading-relaxed">
+                        Builds and deploys your site globally in milliseconds with automated SSL, lightning CDN edge caching, and mobile responsiveness.
+                    </p>
+                    <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[10px]">
+                        <span class="text-gray-500 font-mono">Data Output:</span>
+                        <span class="text-brand-cyan font-mono font-bold">HTML / CSS / Edge Assets</span>
+                    </div>
+                </div>
+
+                <!-- Step 5: Supabase -->
+                <div class="glass-card rounded-2xl p-5 border border-white/[0.06] hover:border-brand-orange/40 transition-all group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="w-7 h-7 rounded-lg bg-brand-orange/15 text-brand-orange flex items-center justify-center font-outfit font-black text-xs">05</span>
+                        <span class="text-[9px] font-bold uppercase tracking-wider text-gray-400 bg-white/5 px-2 py-0.5 rounded-full">DB & Auth</span>
+                    </div>
+                    <h3 class="text-sm font-bold text-white mb-1 group-hover:text-brand-orange transition-colors">Supabase (PostgreSQL)</h3>
+                    <p class="text-[11px] text-gray-400 leading-relaxed">
+                        Your relational database and authentication engine. Manages users, bookings, profiles, and orders protected by Row-Level Security (RLS).
+                    </p>
+                    <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[10px]">
+                        <span class="text-gray-500 font-mono">Data Output:</span>
+                        <span class="text-brand-cyan font-mono font-bold">Auth JWT / User Records</span>
+                    </div>
+                </div>
+
+                <!-- Step 6: Stripe -->
+                <div class="glass-card rounded-2xl p-5 border border-white/[0.06] hover:border-brand-orange/40 transition-all group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="w-7 h-7 rounded-lg bg-brand-orange/15 text-brand-orange flex items-center justify-center font-outfit font-black text-xs">06</span>
+                        <span class="text-[9px] font-bold uppercase tracking-wider text-gray-400 bg-white/5 px-2 py-0.5 rounded-full">Checkout</span>
+                    </div>
+                    <h3 class="text-sm font-bold text-white mb-1 group-hover:text-brand-orange transition-colors">Stripe Checkout</h3>
+                    <p class="text-[11px] text-gray-400 leading-relaxed">
+                        Processes credit card, Apple Pay, and Google Pay checkouts. Upon payment completion, fires secure webhooks to Supabase and automations.
+                    </p>
+                    <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[10px]">
+                        <span class="text-gray-500 font-mono">Data Output:</span>
+                        <span class="text-brand-cyan font-mono font-bold">checkout.session.completed</span>
+                    </div>
+                </div>
+
+                <!-- Step 7: Brevo -->
+                <div class="glass-card rounded-2xl p-5 border border-white/[0.06] hover:border-brand-orange/40 transition-all group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="w-7 h-7 rounded-lg bg-brand-orange/15 text-brand-orange flex items-center justify-center font-outfit font-black text-xs">07</span>
+                        <span class="text-[9px] font-bold uppercase tracking-wider text-gray-400 bg-white/5 px-2 py-0.5 rounded-full">Email Marketing</span>
+                    </div>
+                    <h3 class="text-sm font-bold text-white mb-1 group-hover:text-brand-orange transition-colors">Brevo (Emails & SMTP)</h3>
+                    <p class="text-[11px] text-gray-400 leading-relaxed">
+                        Delivers instant booking confirmations, payment receipts, and automated customer onboarding drip campaigns with high delivery rates.
+                    </p>
+                    <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[10px]">
+                        <span class="text-gray-500 font-mono">Data Output:</span>
+                        <span class="text-brand-cyan font-mono font-bold">Transactional Email Dispatched</span>
+                    </div>
+                </div>
+
+                <!-- Step 8: Senja -->
+                <div class="glass-card rounded-2xl p-5 border border-white/[0.06] hover:border-brand-orange/40 transition-all group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="w-7 h-7 rounded-lg bg-brand-orange/15 text-brand-orange flex items-center justify-center font-outfit font-black text-xs">08</span>
+                        <span class="text-[9px] font-bold uppercase tracking-wider text-gray-400 bg-white/5 px-2 py-0.5 rounded-full">Social Proof</span>
+                    </div>
+                    <h3 class="text-sm font-bold text-white mb-1 group-hover:text-brand-orange transition-colors">Senja (Testimonials)</h3>
+                    <p class="text-[11px] text-gray-400 leading-relaxed">
+                        Automates collection of text and video customer reviews and renders them in customizable social proof walls to maximize credibility.
+                    </p>
+                    <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[10px]">
+                        <span class="text-gray-500 font-mono">Data Output:</span>
+                        <span class="text-brand-cyan font-mono font-bold">Embedded Social Wall iFrame</span>
+                    </div>
+                </div>
+
+                <!-- Step 9: PostHog -->
+                <div class="glass-card rounded-2xl p-5 border border-white/[0.06] hover:border-brand-orange/40 transition-all group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="w-7 h-7 rounded-lg bg-brand-orange/15 text-brand-orange flex items-center justify-center font-outfit font-black text-xs">09</span>
+                        <span class="text-[9px] font-bold uppercase tracking-wider text-gray-400 bg-white/5 px-2 py-0.5 rounded-full">Telemetry</span>
+                    </div>
+                    <h3 class="text-sm font-bold text-white mb-1 group-hover:text-brand-orange transition-colors">PostHog Analytics</h3>
+                    <p class="text-[11px] text-gray-400 leading-relaxed">
+                        Visualizes real user journey funnels, anonymous video session replays, and conversion bottlenecks without invasive third-party tracking cookies.
+                    </p>
+                    <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[10px]">
+                        <span class="text-gray-500 font-mono">Data Output:</span>
+                        <span class="text-brand-cyan font-mono font-bold">Event Stream / Session Replay</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Proof Guide Accordion -->
+            <div class="mt-8 glass-card rounded-2xl p-6 border border-white/[0.06]">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h4 class="text-base font-outfit font-black uppercase text-white flex items-center gap-2">
+                            <span class="text-brand-orange">★</span> Social Proof Decision Matrix
+                        </h4>
+                        <p class="text-xs text-gray-400 mt-1 font-medium">
+                            Evaluation across top 3 social proof engines for projects starting with a $0 initial budget.
+                        </p>
+                    </div>
+                    <span class="text-[10px] font-bold text-brand-emerald bg-brand-emerald/10 border border-brand-emerald/30 px-3 py-1 rounded-full uppercase tracking-wider shrink-0 self-start md:self-auto">
+                        Top Pick: Senja ($0)
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+                    <div class="p-4 rounded-xl bg-black/30 border border-brand-orange/30">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-xs font-bold text-white">Senja</span>
+                            <span class="text-[9px] font-black text-brand-emerald bg-brand-emerald/10 px-2 py-0.5 rounded-full">$0 Free</span>
+                        </div>
+                        <p class="text-[10px] text-gray-400 mt-1 leading-normal">
+                            Up to 15 text and video testimonials. Unlimited collection forms and widgets. Ideal to launch with $0 overhead.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-black/30 border border-white/5">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-xs font-bold text-white">Famewall</span>
+                            <span class="text-[9px] font-black text-gray-400 bg-white/5 px-2 py-0.5 rounded-full">10 Free</span>
+                        </div>
+                        <p class="text-[10px] text-gray-400 mt-1 leading-normal">
+                            Sleek social wall, but limited to 10 testimonials on the starter free tier.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-black/30 border border-white/5">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-xs font-bold text-white">Testimonial.to</span>
+                            <span class="text-[9px] font-black text-gray-400 bg-white/5 px-2 py-0.5 rounded-full">From $25/mo</span>
+                        </div>
+                        <p class="text-[10px] text-gray-400 mt-1 leading-normal">
+                            Industry benchmark, but requires a $25/mo subscription once the 7-day trial ends.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- Global Mascot Widget Injection (AIM Mascot Widget Bridge) -->
     <iframe id="mascot-widget" src="/hub/widget"
         style="position: fixed; bottom: 0; right: 0; border: none; z-index: 2147483647; background: transparent; width: 300px; height: 200px; transition: all 0.3s ease-in-out; pointer-events: auto;"
-        allowtransparency="true"></iframe>
+        allowtransparency="true" allow="microphone"></iframe>
 
     <!-- Core Javascript Code -->
     <script>
@@ -812,19 +1128,104 @@
             widgetIframe.src = '/hub/widget?context=website-creator';
         }
 
-        // Listen for mascot toggles and adjust Iframe container size
+        // Listen for mascot toggles and adjust Iframe container size responsively
         window.addEventListener('message', (event) => {
             if (event.data && event.data.type === 'mascot-toggle') {
                 const widget = document.getElementById('mascot-widget');
                 if (event.data.isOpen) {
-                    widget.style.width = '420px';
-                    widget.style.height = '600px';
+                    widget.style.width = 'min(420px, calc(100vw - 20px))';
+                    widget.style.height = 'min(620px, calc(100vh - 30px))';
                 } else {
                     widget.style.width = '300px';
                     widget.style.height = '200px';
                 }
             }
         });
+
+        // ===================================================
+        // JAMSTACK 2026 COST CALCULATOR CONTROLLER
+        // ===================================================
+        const costBtnMvp = document.getElementById('cost-mode-mvp');
+        const costBtnPro = document.getElementById('cost-mode-pro');
+
+        const costData = {
+            mvp: {
+                gemini: { badge: "$0 USD", sub: "Free Tier or €5.49/mo (3 mo promo + 5TB & 1M context)" },
+                hostinger: { badge: "~$1 USD/mo", sub: "Custom .com domain (~$12/year prorated with code)" },
+                github: { badge: "$0 USD", sub: "Unlimited repositories / 2,000 mins Actions" },
+                vercel: { badge: "$0 USD", sub: "1 TB bandwidth / 10M edge requests" },
+                supabase: { badge: "$0 USD", sub: "500 MB DB / 50,000 active users (MAU)" },
+                stripe: { badge: "$0 Fixed", sub: "No fixed monthly fee (only ~3% per verified sale)" },
+                brevo: { badge: "$0 USD", sub: "300 emails/day free / up to 100k contacts" },
+                senja: { badge: "$0 USD", sub: "15 testimonials / Unlimited forms & widgets" },
+                posthog: { badge: "$0 USD", sub: "1,000,000 events/mo / 5k recorded sessions" },
+                totalLabel: "Initial MVP Fixed Cost:",
+                totalNote: "Covers only your domain on Hostinger",
+                totalAmount: "$1.00 USD",
+                totalPromo: "(or €5.49/mo with Google One AI Pro)"
+            },
+            pro: {
+                gemini: { badge: "$19.99/mo", sub: "Google One AI Pro (Gemini 3.5 Pro with 2TB & Workspace)" },
+                hostinger: { badge: "$1.00/mo", sub: "Annual prorated domain renewal fee" },
+                github: { badge: "$0 USD", sub: "Free (or $4/mo GitHub Pro for higher CI/CD limits)" },
+                vercel: { badge: "$20.00/mo", sub: "Pro Commercial Plan / Enterprise Edge delivery" },
+                supabase: { badge: "$25.00/mo", sub: "Active Pro DB (No 7-day auto-pause on inactivity)" },
+                stripe: { badge: "$0 Fixed", sub: "Standard processing fee per successful charge (~2.9% + $0.30)" },
+                brevo: { badge: "$18.00/mo", sub: "Standard Plan (Removes Brevo logo / unlimited sends)" },
+                senja: { badge: "$29.00/mo", sub: "Starter Plan (Unlimited testimonials with no watermark)" },
+                posthog: { badge: "$0 USD", sub: "1M free events included ($0.00031 per extra event)" },
+                totalLabel: "Full Scale Pro Total:",
+                totalNote: "For high-volume, production business traffic",
+                totalAmount: "$112.99 USD",
+                totalPromo: "(Complete commercial infrastructure)"
+            }
+        };
+
+        function setCostMode(mode) {
+            const data = costData[mode];
+            if (!data) return;
+
+            if (mode === 'mvp') {
+                costBtnMvp.className = "py-1.5 px-2 rounded-lg text-[10px] font-bold uppercase tracking-wider text-white bg-brand-orange shadow-md transition-all";
+                costBtnPro.className = "py-1.5 px-2 rounded-lg text-[10px] font-bold uppercase tracking-wider text-gray-400 hover:text-white transition-all";
+            } else {
+                costBtnPro.className = "py-1.5 px-2 rounded-lg text-[10px] font-bold uppercase tracking-wider text-white bg-brand-orange shadow-md transition-all";
+                costBtnMvp.className = "py-1.5 px-2 rounded-lg text-[10px] font-bold uppercase tracking-wider text-gray-400 hover:text-white transition-all";
+            }
+
+            // Update badges and subtexts
+            ['gemini', 'hostinger', 'github', 'vercel', 'supabase', 'stripe', 'brevo', 'senja', 'posthog'].forEach(tool => {
+                const badge = document.getElementById(`cost-badge-${tool}`);
+                const sub = document.getElementById(`cost-sub-${tool}`);
+                if (badge && data[tool]) {
+                    badge.innerText = data[tool].badge;
+                    if (data[tool].badge.includes('$0') || data[tool].badge.includes('Fixed')) {
+                        badge.className = "text-xs font-black text-brand-emerald bg-brand-emerald/10 px-2.5 py-0.5 rounded-full shrink-0 cost-badge";
+                    } else {
+                        badge.className = "text-xs font-black text-brand-orange bg-brand-orange/10 px-2.5 py-0.5 rounded-full shrink-0 cost-badge";
+                    }
+                }
+                if (sub && data[tool]) {
+                    sub.innerText = data[tool].sub;
+                }
+            });
+
+            // Update Total Banner
+            const labelEl = document.getElementById('cost-total-label');
+            const noteEl = document.getElementById('cost-total-note');
+            const amountEl = document.getElementById('cost-total-amount');
+            const promoEl = document.getElementById('cost-total-promo');
+
+            if (labelEl) labelEl.innerText = data.totalLabel;
+            if (noteEl) noteEl.innerText = data.totalNote;
+            if (amountEl) amountEl.innerHTML = `${data.totalAmount} <span class="text-[10px] font-normal text-gray-400">/mo</span>`;
+            if (promoEl) promoEl.innerText = data.totalPromo;
+        }
+
+        if (costBtnMvp && costBtnPro) {
+            costBtnMvp.addEventListener('click', () => setCostMode('mvp'));
+            costBtnPro.addEventListener('click', () => setCostMode('pro'));
+        }
 
         // ===================================================
         // SVG LOGO LAB CONTROLLER LOGIC
@@ -1769,7 +2170,7 @@ Proceed to assemble the clean component hierarchy and deliver a production-ready
                 
                 setTimeout(() => {
                     btnText.innerText = "Copy Technical Prompt";
-                    copyBtn.add('bg-brand-orange');
+                    copyBtn.classList.add('bg-brand-orange');
                     copyBtn.classList.remove('bg-brand-emerald');
                     btnIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>`;
                 }, 2000);
@@ -1801,59 +2202,6 @@ Proceed to assemble the clean component hierarchy and deliver a production-ready
             goToPhase(1);
         });
 
-    </script>
-
-    <!-- Global Mascot Widget Injection -->
-    <iframe id="mascot-widget" src="/hub/widget"
-        style="position: fixed; bottom: 0; right: 0; border: none; z-index: 2147483647; background: transparent; width: 300px; height: 200px; transition: all 0.3s ease-in-out; pointer-events: auto;"
-        allowtransparency="true" allow="microphone"></iframe>
-
-    <script>
-        const widgetIframe = document.getElementById('mascot-widget');
-        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
-        
-        let contextStr = 'website-creator';
-        
-        let activeViteUrl = "http://localhost:5174"; // default fallback (port 5174 is active)
-        
-        if (isLocal) {
-            // Dynamically discover which port is serving the Vite app (5173, 5174, 5175)
-            const ports = [5173, 5174, 5175];
-            let detected = false;
-            
-            Promise.any(ports.map(port => 
-                fetch(`http://localhost:${port}/hub/logo_officeaim.png`)
-                    .then(res => {
-                        if (!res.ok) throw new Error("Not our server");
-                        if (!detected) {
-                            detected = true;
-                            activeViteUrl = `http://localhost:${port}`;
-                            widgetIframe.src = activeViteUrl + '/hub/widget?context=' + contextStr;
-                            console.log("[Mascot Port Auto-Discovery]: Connected to active dev server on port", port);
-                        }
-                    })
-            )).catch(() => {
-                // absolute fallback
-                widgetIframe.src = activeViteUrl + '/hub/widget?context=' + contextStr;
-            });
-        } else {
-            widgetIframe.src = '/hub/widget?context=' + contextStr;
-        }
-
-        window.addEventListener('message', (event) => {
-            if (event.data && event.data.type === 'mascot-toggle') {
-                const widget = document.getElementById('mascot-widget');
-                if (event.data.isOpen) {
-                    widget.style.width = '420px';
-                    widget.style.height = '600px';
-                    widget.style.pointerEvents = 'auto';
-                } else {
-                    widget.style.width = '300px';
-                    widget.style.height = '200px';
-                    widget.style.pointerEvents = 'auto';
-                }
-            }
-        });
     </script>
 </body>
 </html>

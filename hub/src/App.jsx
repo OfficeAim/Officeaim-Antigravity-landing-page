@@ -16,6 +16,7 @@ import MyProjects from './pages/MyProjects';
 import Lounge from './pages/Lounge';
 import ProjectPlanner from './pages/ProjectPlanner';
 import VlogNewsPage from './pages/VlogNewsPage';
+import LibraryTracker from './pages/LibraryTracker';
 import MascotAssistant from './components/MascotAssistant';
 import { Toaster } from 'react-hot-toast';
 
@@ -122,10 +123,26 @@ const App = () => {
   useEffect(() => {
     console.log("App initialized - Checking session...");
 
-    if (FORCE_PREVIEW) {
-      // Skip real Supabase calls, use mock data
-      setSession(mockSession);
-      setProfile(mockProfile);
+    const isLocalhost = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    const localDevAdmin = isLocalhost && localStorage.getItem('OFFICEAIM_LOCAL_DEV_AUTH') === 'admin';
+
+    if (FORCE_PREVIEW || localDevAdmin) {
+      // Skip real Supabase calls, use mock admin data
+      const adminSession = {
+        user: {
+          id: 'b2283a40-d51e-4bd2-ba46-262465a83d95',
+          email: 'admin@officeaim.com',
+          user_metadata: { full_name: 'Admin Rody' },
+        },
+      };
+      const adminProfile = {
+        id: 'b2283a40-d51e-4bd2-ba46-262465a83d95',
+        role: 'admin',
+        membership_status: 'active',
+        full_name: 'Admin Rody',
+      };
+      setSession(adminSession);
+      setProfile(adminProfile);
       setLoading(false);
       return;
     }
@@ -275,6 +292,7 @@ const App = () => {
             <Route path="/hub/agent-test" element={<AgentTestConsole />} />
             <Route path="/hub/projects" element={<MyProjects />} />
             <Route path="/hub/lounge" element={<Lounge profile={profile} />} />
+            <Route path="/hub/library" element={<LibraryTracker />} />
           </Route>
 
           {/* PUBLIC ROUTES WITH MAIN LAYOUT (Guest access) */}
@@ -283,6 +301,10 @@ const App = () => {
           </Route>
 
           <Route path="/hub/widget" element={<MascotAssistant profile={{ role: 'guest' }} />} />
+
+          {/* PUBLIC STANDALONE UTILITY ROUTE (No Auth Required - Anyone can use) */}
+          <Route path="/hub/library-tracker" element={<LibraryTracker standalone={true} />} />
+          <Route path="/library-tracker" element={<LibraryTracker standalone={true} />} />
 
           <Route path="/hub/admin" element={
             (isPreview) ? <AdminDashboard profile={{ full_name: 'Admin Rody' }} /> :

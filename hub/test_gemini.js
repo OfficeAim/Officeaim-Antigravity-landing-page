@@ -31,7 +31,7 @@ const genAI = new GoogleGenerativeAI(apiKey);
 
 async function testGemini() {
     // Model testing
-    const modelName = "gemini-2.5-flash"; 
+    const modelName = "gemini-3.6-flash"; 
     console.log(`Testing getGenerativeModel with model: ${modelName}`);
 
     const systemInstruction = `Role: You are AIM, the friendly, highly advanced, and extremely competent AI Design Partner and Coach for the OfficeAIM Website Creator.

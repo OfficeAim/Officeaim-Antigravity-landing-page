@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Send, Sparkles, Mic, MicOff, Volume2, VolumeX, History, RotateCcw } from 'lucide-react';
+import { X, Send, Sparkles, Mic, MicOff, Volume2, VolumeX, History, RotateCcw, Sliders } from 'lucide-react';
 import { callAgent } from '../services/agentFactory';
 import { supabase } from '../lib/supabase';
 
@@ -10,14 +11,14 @@ const MascotAssistant = ({ profile, isAdminDashboard = false }) => {
     const context = queryParams.get('context') || '';
 
     const [isOpen, setIsOpen] = useState(false);
-    // Multi-language translation tables for the Mascot Guide
+    // Multi-language translation tables for the Mascot Guide (No emojis to ensure clean TTS audio)
     const greetings = {
-        english: "Hi! 👋 I'm **AIM**, your platform guide. Ask me anything about OfficeAIM — modules, agents, how things work... I'm here to help!",
-        spanish: "¡Hola! 👋 Soy **AIM**, tu guía en la plataforma. Preguntame lo que quieras sobre OfficeAIM, los módulos, agentes o lo que necesites...",
-        dutch: "Hoi! 👋 Ik ben **AIM**, je platformgids. Vraag me alles over OfficeAIM — modules, agents, hoe het werkt... Ik ben hier om te helpen!",
-        portuguese: "Oi! 👋 Eu sou o **AIM**, seu guia da plataforma. Pergunte-me qualquer coisa sobre o OfficeAIM — módulos, agentes, como funciona...",
-        french: "Salut! 👋 Je suis **AIM**, votre guide sur la plateforme. Posez-moi des questions sur OfficeAIM — modules, agents, fonctionnement...",
-        german: "Hallo! 👋 Ich bin **AIM**, dein Plattform-Guide. Frag mich alles über OfficeAIM — Module, Agenten, wie alles funktioniert..."
+        english: "Hi! I'm **AIM**, your platform guide. Ask me anything about OfficeAIM — modules, agents, how things work... I'm here to help!",
+        spanish: "¡Hola! Soy **AIM**, tu guía en la plataforma. Preguntame lo que quieras sobre OfficeAIM, los módulos, agentes o lo que necesites...",
+        dutch: "Hoi! Ik ben **AIM**, je platformgids. Vraag me alles over OfficeAIM — modules, agents, hoe het werkt... Ik ben hier om te helpen!",
+        portuguese: "Oi! Eu sou o **AIM**, seu guia da plataforma. Pergunte-me qualquer coisa sobre o OfficeAIM — módulos, agentes, como funciona...",
+        french: "Salut! Je suis **AIM**, votre guide sur la plateforme. Posez-moi des questions sur OfficeAIM — modules, agents, fonctionnement...",
+        german: "Hallo! Ich bin **AIM**, dein Plattform-Guide. Frag mich alles über OfficeAIM — Module, Agenten, wie alles funktioniert..."
     };
 
     const quotesByLanguage = {
@@ -108,19 +109,29 @@ const MascotAssistant = ({ profile, isAdminDashboard = false }) => {
     // --- Conversational Speech APIs (STT & TTS) ---
     const [isListening, setIsListening] = useState(false);
     const [isVoiceEnabled, setIsVoiceEnabled] = useState(false);
+    const [availableVoices, setAvailableVoices] = useState([]);
+    const [selectedVoiceEn, setSelectedVoiceEn] = useState(() => localStorage.getItem('officeaim_voice_en') || '');
+    const [selectedVoiceEs, setSelectedVoiceEs] = useState(() => localStorage.getItem('officeaim_voice_es') || '');
+    const [showVoiceSettings, setShowVoiceSettings] = useState(false);
     const recognitionRef = useRef(null);
     const lastSpokenTextRef = useRef('');
-    const [audioAllowed, setAudioAllowed] = useState(false);
 
     // Auto-send ref to decouple handleSend closure from useEffect
     const handleSendRef = useRef(null);
 
     // Initialize Web Speech Recognition and pre-load voices
     useEffect(() => {
-        // Pre-load voices to avoid robotic fallback on first run
-        const loadVoices = () => { window.speechSynthesis.getVoices(); };
+        // Pre-load voices and keep state synchronized
+        const loadVoices = () => {
+            if (typeof window !== 'undefined' && window.speechSynthesis) {
+                const list = window.speechSynthesis.getVoices();
+                if (list && list.length > 0) {
+                    setAvailableVoices(list);
+                }
+            }
+        };
         loadVoices();
-        if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
+        if (typeof window !== 'undefined' && window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
             window.speechSynthesis.onvoiceschanged = loadVoices;
         }
 
@@ -170,48 +181,67 @@ const MascotAssistant = ({ profile, isAdminDashboard = false }) => {
         
         window.speechSynthesis.cancel(); // Mute ongoing audio first
         
-        // Sanitize markdown characters before reading
+        // Sanitize markdown and all emojis so speech synthesizers never read aloud "cara sonriente", "cohete", etc.
         const cleanText = text
             .replace(/\*\*([^*]+)\*\*/g, '$1')
             .replace(/\*([^*]+)\*/g, '$1')
             .replace(/`([^`]+)`/g, '$1')
-            .replace(/`|[#_*]/g, '');
+            .replace(/`|[#_*]/g, '')
+            .replace(/[\p{Extended_Pictographic}\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}]/gu, '')
+            .replace(/\s+([.,!?:;])/g, '$1')
+            .replace(/\s+/g, ' ')
+            .trim();
 
         const utterance = new SpeechSynthesisUtterance(cleanText);
         
-        // Tune rate and pitch to sound more natural and less robotic
-        utterance.rate = 1.0;
-        utterance.pitch = 1.05;
-
         // Dynamically detect language to apply the correct accent and avoid robot-clashing Spanglish
-        const isSpanish = /[áéíóúñ]|hola|jefe|entendido|gracias|cambio|sistema|rollback/i.test(cleanText);
+        const isSpanish = /[áéíóúñ]|hola|jefe|entendido|gracias|cambio|sistema|rollback|buen|cómo|qué/i.test(cleanText);
         const voices = window.speechSynthesis.getVoices();
+
+        // Tune rate and pitch to sound natural, warm, and grounded (calm human tone)
+        utterance.rate = 0.94;
+        utterance.pitch = isSpanish ? 0.98 : 0.93;
+
+        let chosenVoice = null;
 
         if (isSpanish) {
             utterance.lang = 'es-AR';
-            const premiumSpanishVoice = voices.find(v => v.lang.startsWith('es') && v.name.includes('Diego')) || 
-                                         voices.find(v => v.lang.startsWith('es') && v.name.includes('Paulina')) ||
-                                         voices.find(v => v.lang.startsWith('es') && v.name.includes('Monica')) ||
-                                         voices.find(v => v.lang.startsWith('es') && v.name.includes('Jorge')) ||
-                                         voices.find(v => v.lang.startsWith('es') && v.name.includes('Sabina')) ||
-                                         voices.find(v => v.lang.startsWith('es') && v.name.includes('Google español')) || 
-                                         voices.find(v => v.lang === 'es-AR') ||
-                                         voices.find(v => v.lang.startsWith('es'));
-            if (premiumSpanishVoice) {
-                utterance.voice = premiumSpanishVoice;
-            } else {
-                console.warn("No premium Spanish voice found. Available voices:", voices.map(v => `${v.name} (${v.lang})`));
+            // 1. User manual Spanish voice selection
+            if (selectedVoiceEs) {
+                chosenVoice = voices.find(v => v.voiceURI === selectedVoiceEs || v.name === selectedVoiceEs);
+            }
+            // 2. Default Spanish hierarchy: Google español / Natural / Enhanced
+            if (!chosenVoice) {
+                chosenVoice = 
+                    voices.find(v => v.lang.startsWith('es') && v.name.includes('Google español')) ||
+                    voices.find(v => v.lang.startsWith('es') && (v.name.includes('Enhanced') || v.name.includes('Mejorada') || v.name.includes('Siri') || v.name.includes('Natural'))) ||
+                    voices.find(v => v.lang.startsWith('es') && (v.name.includes('Paulina') || v.name.includes('Monica') || v.name.includes('Jorge') || v.name.includes('Diego') || v.name.includes('Juan'))) ||
+                    voices.find(v => v.lang === 'es-AR') ||
+                    voices.find(v => v.lang.startsWith('es'));
             }
         } else {
-            // AIM Mode: British English premium masculine voice (Daniel / Google UK / Oliver)
             utterance.lang = 'en-GB';
-            const aimVoice = voices.find(v => v.lang.startsWith('en-GB') && v.name.includes('Daniel')) || // macOS Siri/AIM clone
-                                voices.find(v => v.lang.startsWith('en-GB') && v.name.includes('Google UK English Male')) ||
-                                voices.find(v => v.lang.startsWith('en-GB') && v.name.includes('Oliver')) ||
-                                voices.find(v => v.lang.startsWith('en-GB') && v.name.includes('Male')) ||
-                                voices.find(v => v.lang.startsWith('en-GB')) ||
-                                voices.find(v => v.lang.startsWith('en')); // general fallback
-            if (aimVoice) utterance.voice = aimVoice;
+            // 1. User manual English voice selection
+            if (selectedVoiceEn) {
+                chosenVoice = voices.find(v => v.voiceURI === selectedVoiceEn || v.name === selectedVoiceEn);
+            }
+            // 2. Default English hierarchy: Google UK English Female FIRST!
+            if (!chosenVoice) {
+                chosenVoice = 
+                    voices.find(v => v.name.includes('Google UK English Female')) ||
+                    voices.find(v => v.lang.startsWith('en') && v.name.includes('Female') && (v.name.includes('Google') || v.name.includes('Enhanced') || v.name.includes('Natural'))) ||
+                    voices.find(v => v.lang.startsWith('en-GB') && (v.name.includes('Serena') || v.name.includes('Stephanie') || v.name.includes('Martha'))) ||
+                    voices.find(v => v.lang.startsWith('en-GB') && (v.name.includes('Enhanced') || v.name.includes('Natural') || v.name.includes('Siri'))) ||
+                    voices.find(v => v.lang.startsWith('en-GB') && v.name.includes('Google')) ||
+                    voices.find(v => v.lang.startsWith('en-GB') && v.name.includes('Daniel')) ||
+                    voices.find(v => v.lang.startsWith('en-GB')) ||
+                    voices.find(v => v.lang.startsWith('en'));
+            }
+        }
+
+        if (chosenVoice) {
+            utterance.voice = chosenVoice;
+            utterance.lang = chosenVoice.lang;
         }
 
         // Clean cache reference on speech completion to allow repeating queries if desired
@@ -231,6 +261,7 @@ const MascotAssistant = ({ profile, isAdminDashboard = false }) => {
         if (lastMsg && lastMsg.role === 'agent') {
             speakText(lastMsg.content);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [messages, isVoiceEnabled]);
 
     useEffect(() => {
@@ -241,13 +272,14 @@ const MascotAssistant = ({ profile, isAdminDashboard = false }) => {
             ]);
         } else if (context === 'website-creator') {
             setMessages([
-                { role: 'agent', content: "Hello! 👋 I'm **AIM**, your design co-pilot. I'm here to help you architect your website's technical blueprint step-by-step.\n\nComplete the 3-phase form: we will define your brand identity, site architecture, and call-to-action routing (WhatsApp or Custom Webhooks). In the background, I'll compile the developer prompts and sync them to your dashboard. If you have questions about form fields, platform costs, or our results-driven partnership, feel free to ask me in any language!" }
+                { role: 'agent', content: "Hello! I'm **AIM**, your design co-pilot. I'm here to help you architect your website's technical blueprint step-by-step.\n\nComplete the 3-phase form: we will define your brand identity, site architecture, and call-to-action routing (WhatsApp or Custom Webhooks). In the background, I'll compile the developer prompts and sync them to your dashboard. If you have questions about form fields, platform costs, or our results-driven partnership, feel free to ask me in any language!" }
             ]);
         } else {
             setMessages([
                 { role: 'agent', content: greetings[lang] || greetings.english }
             ]);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [profile, profile?.language, isAdminDashboard, context]);
 
     const [showGreeting, setShowGreeting] = useState(false);
@@ -924,11 +956,26 @@ const MascotAssistant = ({ profile, isAdminDashboard = false }) => {
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-1.5">
+                                        {/* Toggle Voice Config Popover */}
+                                        {isVoiceEnabled && (
+                                            <button
+                                                onClick={() => setShowVoiceSettings(!showVoiceSettings)}
+                                                title="Configurar voz"
+                                                className={`h-6 w-6 rounded-lg flex items-center justify-center transition-all ${
+                                                    showVoiceSettings 
+                                                        ? (isAdminDashboard ? 'bg-cyan-500/30 text-cyan-300 border border-cyan-500/50' : 'bg-orange-500/30 text-orange-300 border border-orange-500/50') 
+                                                        : 'bg-white/5 text-white/50 hover:bg-white/10 hover:text-white/80'
+                                                }`}
+                                            >
+                                                <Sliders size={12} />
+                                            </button>
+                                        )}
                                         {/* Toggle Voice Output (Altavoz) */}
                                         <button
                                             onClick={() => {
-                                                setIsVoiceEnabled(!isVoiceEnabled);
-                                                if (isVoiceEnabled && window.speechSynthesis) {
+                                                const nextState = !isVoiceEnabled;
+                                                setIsVoiceEnabled(nextState);
+                                                if (!nextState && window.speechSynthesis) {
                                                     window.speechSynthesis.cancel();
                                                 }
                                             }}
@@ -949,6 +996,64 @@ const MascotAssistant = ({ profile, isAdminDashboard = false }) => {
                                         </button>
                                     </div>
                                 </div>
+
+                                {/* Voice Selector Dropdown (Collapsible) */}
+                                {showVoiceSettings && isVoiceEnabled && (
+                                    <div className="px-3 py-2 bg-[#04060b] border-b border-white/10 space-y-1.5 text-[10px]">
+                                        <div className="flex items-center justify-between gap-2">
+                                            <span className="text-cyan-400 font-mono text-[9px] uppercase tracking-wider shrink-0 font-bold">Voz EN:</span>
+                                            <select
+                                                value={selectedVoiceEn}
+                                                onChange={(e) => {
+                                                    const val = e.target.value;
+                                                    setSelectedVoiceEn(val);
+                                                    localStorage.setItem('officeaim_voice_en', val);
+                                                    if (window.speechSynthesis) {
+                                                        window.speechSynthesis.cancel();
+                                                        lastSpokenTextRef.current = '';
+                                                        speakText("English voice calibrated.");
+                                                    }
+                                                }}
+                                                className="bg-[#0b101b] text-white/90 border border-white/10 rounded-lg px-2 py-1 text-[10px] outline-none w-full max-w-[245px] truncate cursor-pointer hover:border-cyan-500/40 transition-colors"
+                                            >
+                                                <option value="">Por defecto (Google UK English Female)</option>
+                                                {availableVoices
+                                                    .filter(v => v.lang.startsWith('en'))
+                                                    .map(v => (
+                                                        <option key={v.voiceURI || v.name} value={v.voiceURI || v.name}>
+                                                            {v.name} ({v.lang})
+                                                        </option>
+                                                    ))}
+                                            </select>
+                                        </div>
+                                        <div className="flex items-center justify-between gap-2">
+                                            <span className="text-orange-400 font-mono text-[9px] uppercase tracking-wider shrink-0 font-bold">Voz ES:</span>
+                                            <select
+                                                value={selectedVoiceEs}
+                                                onChange={(e) => {
+                                                    const val = e.target.value;
+                                                    setSelectedVoiceEs(val);
+                                                    localStorage.setItem('officeaim_voice_es', val);
+                                                    if (window.speechSynthesis) {
+                                                        window.speechSynthesis.cancel();
+                                                        lastSpokenTextRef.current = '';
+                                                        speakText("Voz en español configurada.");
+                                                    }
+                                                }}
+                                                className="bg-[#0b101b] text-white/90 border border-white/10 rounded-lg px-2 py-1 text-[10px] outline-none w-full max-w-[245px] truncate cursor-pointer hover:border-orange-500/40 transition-colors"
+                                            >
+                                                <option value="">Por defecto (Google español / Natural)</option>
+                                                {availableVoices
+                                                    .filter(v => v.lang.startsWith('es'))
+                                                    .map(v => (
+                                                        <option key={v.voiceURI || v.name} value={v.voiceURI || v.name}>
+                                                            {v.name} ({v.lang})
+                                                        </option>
+                                                    ))}
+                                            </select>
+                                        </div>
+                                    </div>
+                                )}
 
                                 {/* Messages */}
                                 <div className="h-[250px] overflow-y-auto scrollbar-hide p-4 space-y-4">

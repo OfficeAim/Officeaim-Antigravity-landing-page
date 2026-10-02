@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, useSearchParams, useOutletContext } from 'react-router-dom';
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../lib/supabase';
 import {
@@ -184,6 +185,7 @@ const ProjectLab = () => {
             }
         };
         init();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchParams, agentId]);
 
     const restoreSession = async (id) => {
@@ -452,6 +454,7 @@ const ProjectLab = () => {
                                         <div className="space-y-3 mb-6">
                                             <div className="flex items-center justify-between text-[9px] font-bold italic"><span className="text-text-muted">Stability:</span><span className="text-green-400">99.9%</span></div>
                                             <div className="flex items-center justify-between text-[9px] font-bold italic"><span className="text-text-muted">Memory:</span><span>{messages.length} units</span></div>
+                                            <div className="flex items-center justify-between text-[9px] font-bold italic"><span className="text-text-muted">Engine:</span><span className="text-cyan-400">{activeModel || (agent.tier === 'PLUS' ? 'gemini-3.5-flash' : 'gemini-3.5-flash-lite')}</span></div>
                                             <div className="flex items-center justify-between text-[9px] font-bold italic"><span className="text-text-muted">Access:</span><span className="text-accent-secondary">{userTier}</span></div>
                                         </div>
                                         <button onClick={handleSaveToVault} disabled={isSaving || messages.length === 0} className={`w-full py-3 rounded-xl border transition-all flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest italic bg-white/5 border-white/10 text-white/40 hover:bg-white/10 hover:text-white`}>
@@ -576,7 +579,7 @@ const ProjectLab = () => {
                                                         <div className={`h-1.5 w-1.5 rounded-full ${tc.bg} animate-bounce [animation-delay:-0.3s]`} />
                                                     </div>
                                                     <span className={`text-[9px] font-black uppercase tracking-widest ${tc.text} italic`}>
-                                                        Thinking {agent.featured ? 'Gemini 3.3 Pro (Max Compute)' : agent.tier === 'PLUS' ? 'Gemini 3.3 Pro (Max Compute)' : agent.tier === 'PRO' ? 'Gemini 3.3 Flash (Advanced Context)' : 'Gemini 2.5 Flash (Standard Logic)'}...
+                                                        Thinking {agent.featured ? 'Gemini 3.5 Flash (Max Compute)' : agent.tier === 'PLUS' ? 'Gemini 3.5 Flash (Max Compute)' : agent.tier === 'PRO' ? 'Gemini 3.5 Flash (Advanced Context)' : 'Gemini 3.5 Flash-Lite (Standard Logic)'}...
                                                     </span>
                                                 </div>
                                                 <div className="h-0.5 w-full bg-white/5 rounded-full overflow-hidden">

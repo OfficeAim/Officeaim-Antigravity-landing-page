@@ -9,41 +9,57 @@
     <link rel="icon" type="image/png" href="../images/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="../policy.css">
     <style>
         .article-container {
-            max-width: 800px;
+            max-width: 820px;
             margin: 0 auto;
             padding: 40px 20px 100px;
         }
         .article-meta {
             display: flex;
-            gap: 20px;
+            align-items: center;
+            gap: 15px;
             color: var(--text-muted);
             font-size: 0.9rem;
             margin-bottom: 30px;
-            font-style: italic;
+            flex-wrap: wrap;
+        }
+        .article-meta .badge {
+            background: rgba(0, 242, 254, 0.1);
+            color: var(--accent-primary);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.8rem;
         }
         .article-content {
             font-family: 'Inter', sans-serif;
-            line-height: 1.8;
+            line-height: 1.85;
             color: var(--text-secondary);
             font-size: 1.1rem;
         }
-        .article-content h2, .article-content h3 {
+        .article-content h2 {
             color: white;
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-weight: 800;
-            margin-top: 40px;
+            font-size: 1.85rem;
+            margin-top: 48px;
             margin-bottom: 20px;
-            font-style: italic;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 12px;
+            letter-spacing: -0.5px;
         }
-        .article-content h2 {
-            font-size: 1.75rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding-bottom: 10px;
+        .article-content h3 {
+            color: white;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            margin-top: 32px;
+            margin-bottom: 16px;
         }
         .article-content p {
             margin-bottom: 24px;
@@ -51,15 +67,29 @@
         .article-content strong {
             color: white;
         }
+        .opening-hook {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: #ffffff;
+            font-weight: 500;
+            padding: 24px;
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.08) 0%, rgba(79, 70, 229, 0.08) 100%);
+            border-left: 4px solid var(--accent-primary);
+            border-radius: 0 16px 16px 0;
+            margin-bottom: 36px;
+        }
         .article-video-wrap {
-            margin-bottom: 50px;
+            margin-bottom: 45px;
             aspect-ratio: 16/9;
             width: 100%;
             background: #000;
             border-radius: 24px;
-            border: 1px solid rgba(0, 242, 254, 0.2);
-            box-shadow: 0 0 30px rgba(0, 242, 254, 0.05);
+            border: 1px solid rgba(0, 242, 254, 0.25);
+            box-shadow: 0 0 40px rgba(0, 242, 254, 0.08);
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .back-link {
             display: inline-flex;
@@ -69,13 +99,79 @@
             text-decoration: none;
             font-weight: 700;
             font-size: 0.9rem;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: transform 0.2s;
+            transition: transform 0.2s ease;
         }
         .back-link:hover {
             transform: translateX(-4px);
+        }
+        .takeaways-box {
+            background: linear-gradient(180deg, rgba(16, 185, 129, 0.06) 0%, rgba(6, 78, 59, 0.04) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            border-radius: 18px;
+            padding: 28px;
+            margin: 40px 0;
+        }
+        .takeaways-box h3 {
+            color: #34d399;
+            margin-top: 0;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .takeaways-box ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .takeaways-box li {
+            margin-bottom: 14px;
+            color: #e2e8f0;
+        }
+        .takeaways-box li:last-child {
+            margin-bottom: 0;
+        }
+        .cta-card {
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.1) 0%, rgba(79, 70, 229, 0.15) 100%);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            border-radius: 20px;
+            padding: 36px 30px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .cta-card h3 {
+            font-size: 1.6rem;
+            color: white;
+            margin-bottom: 12px;
+        }
+        .social-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 24px;
+        }
+        .social-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .social-pill:hover {
+            background: rgba(0, 242, 254, 0.15);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            transform: translateY(-2px);
         }
     </style>
 </head>
@@ -88,12 +184,12 @@
                 <img src="../images/favicon.png" alt="OfficeAIM Logo" class="logo-img">
             </a>
             <ul class="nav-links">
-                <li><a href="../index.html#features" class="nav-link">Features</a></li>
+                <li><a href="../features.html" class="nav-link">Features</a></li>
                 <li><a href="../board.html" class="nav-link">The Board</a></li>
                 <li><a href="../use-cases.html" class="nav-link">Learn</a></li>
                 <li><a href="../gems.html" class="nav-link">Free Tools</a></li>
                 <li><a href="../pricing.html" class="nav-link">Pricing</a></li>
-                <li><a href="../news.html" class="nav-link" style="color: var(--accent-primary);">News</a></li>
+                <li><a href="../news.html" class="nav-link active-nav" style="color: var(--accent-primary);">News</a></li>
             </ul>
             <div class="nav-ctas">
                 <a href="../construction.html" class="btn btn-primary">Enter Campus →</a>
@@ -108,35 +204,105 @@
                 ← Back to News
             </a>
             
-            <h1 class="hero-v2-title" style="font-size: 3rem; margin-bottom: 20px; text-align: left; line-height: 1.2;">
+            <h1 class="hero-v2-title" style="font-size: 2.8rem; margin-bottom: 18px; text-align: left; line-height: 1.25;">
                 Building an AI MVP in Days (OfficeAIM News)
             </h1>
             
             <div class="article-meta">
+                <span class="badge">Startups & MVP</span>
                 <span>Published on June 9, 2026</span>
                 <span>•</span>
-                <span>Category: Startups & MVP</span>
+                <span style="color: var(--accent-primary); font-weight: 600;">NotebookLM Explainer</span>
             </div>
 
-            <div class="article-video-wrap">
-                <iframe src="https://www.youtube-nocookie.com/embed/0YObx03xkSo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="width: 100%; height: 100%; border: none; border-radius: 24px;"></iframe>
+            <!-- Video Player Slot -->
+            <div class="article-video-wrap" id="notebooklm-video-slot">
+                <iframe id="articleVideoFrame" src="https://www.youtube.com/embed/0YObx03xkSo?enablejsapi=1&origin=https://officeaimhq.netlify.app&widget_referrer=https://officeaimhq.netlify.app" title="Building an AI MVP in Days" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width: 100%; height: 100%; border: none; border-radius: 24px;"></iframe>
             </div>
 
             <div class="article-content">
-                <h2>The Death of the Traditional Software Lifecycle</h2>
-                <p>For decades, building a Minimum Viable Product (MVP) required months of planning, hiring expensive engineering teams, and writing massive amounts of boilerplate code from scratch [1]. Today, that lifecycle is completely dead [4]. Startups are launching fully functional products in days, not months, by leveraging modular AI APIs, low-code automation engines like n8n, and scalable backend-as-a-service platforms like Supabase [2, 3].</p>
+                <!-- Opening Hook -->
+                <div class="opening-hook">
+                    The multi-month software development cycle is obsolete. Today, solo founders launch production-ready AI MVPs in days using n8n orchestration and Supabase.
+                </div>
 
-                <h3>The Power of Low-Code and AI Orchestration</h3>
-                <p>Instead of writing custom backend controllers for every feature, modern developers are using <strong>n8n</strong> to orchestrate complex data flows between their database, user interface, and AI endpoints [3]. By chaining AI models (like Google Gemini or OpenAI GPT-4) directly into visual workflow pipelines, you can build autonomous features—such as automatic lead scoring, content generation, and support triaging—without writing a single line of backend API code [2].</p>
+                <!-- Section 1 -->
+                <h2>Section 1 — The Death of the Traditional Software Lifecycle</h2>
+                <p>
+                    For decades, bringing a Minimum Viable Product (MVP) to market demanded months of blueprinting, hiring costly software engineers, and building bespoke authentication, billing, and database plumbing from scratch. By the time a product finally reached potential customers, market momentum had passed.
+                </p>
+                <p>
+                    Today, that sluggish lifecycle is completely dead. Agile solopreneurs and product teams are bootstrapping fully functional, customer-facing applications in a matter of days. The catalyst is a tripartite architecture: <strong>modular AI models (like Gemini and GPT-4)</strong>, <strong>visual low-code automation (n8n)</strong>, and <strong>serverless backend infrastructure (Supabase)</strong>.
+                </p>
 
-                <h3>Supabase: The Scalable Foundation</h3>
-                <p>Every MVP needs a secure, real-time database, authentication, and file storage. <strong>Supabase</strong> provides a PostgreSQL database, built-in Auth, and row-level security (RLS) policies out of the box [5]. It integrates seamlessly with n8n and React, allowing frontend developers to query database tables safely directly from the client side while the backend logic is handled securely in background automation workflows [5, 6].</p>
+                <!-- Section 2 -->
+                <h2>Section 2 — Visual Orchestration with n8n and AI APIs</h2>
+                <p>
+                    Writing custom backend controllers for every routine business action creates technical debt before your startup even generates revenue. With <strong>n8n</strong>, you visually orchestrate high-complexity data flows directly between your frontend, database, and generative AI endpoints.
+                </p>
+                <p>
+                    Whether it is triaging inbound client leads, parsing uploaded PDF contracts, generating automated marketing copy, or sending dynamic webhook notifications, n8n executes the logic asynchronously. AI models act as cognitive workers inside the visual canvas, performing extraction and synthesis without a single line of backend boilerplate.
+                </p>
 
-                <h3>How to Start Your MVP Today</h3>
-                <p>To begin, map out your user journey. Identify which parts of your product require human judgment and which can be automated using AI [2]. Use n8n to connect your user inputs (from Supabase or webhooks) directly to your AI agents, and serve the results instantly to your frontend dashboard [3].</p>
+                <!-- Section 3 -->
+                <h2>Section 3 — Supabase as the High-Velocity Backend</h2>
+                <p>
+                    Speed means nothing if your data layer is fragile or insecure. <strong>Supabase</strong> provides production-grade PostgreSQL, built-in JWT authentication, encrypted file storage, and Row Level Security (RLS) policies out of the box.
+                </p>
+                <p>
+                    By coupling Supabase with React, your frontend directly reads sanitized, user-specific tables, while background mutation tasks trigger webhooks to n8n. This cleanly separates user presentation from heavy automation logic, ensuring lightning-fast load times and bulletproof enterprise security.
+                </p>
 
-                <h3>Read More</h3>
-                <p>For more weekly updates on how to build and scale your AI startup, visit the <a href="../news.html">OfficeAIM News Hub</a>.</p>
+                <!-- 3 Key Takeaways -->
+                <div class="takeaways-box">
+                    <h3>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        3 Key Takeaways
+                    </h3>
+                    <ul>
+                        <li><strong>Decoupled velocity:</strong> Separating the frontend UI from backend visual workflows compresses development cycles from months to days.</li>
+                        <li><strong>Orchestration over code:</strong> Utilizing n8n to connect AI models and databases eliminates custom backend servers and heavy maintenance.</li>
+                        <li><strong>Production foundations early:</strong> Starting with Supabase guarantees PostgreSQL reliability, real-time auth, and RLS security from day one.</li>
+                    </ul>
+                </div>
+
+                <!-- Closing CTA & Socials -->
+                <div class="cta-card">
+                    <h3>Launch Your AI MVP With OfficeAIM</h3>
+                    <p style="color: var(--text-secondary); max-width: 580px; margin: 0 auto 24px; font-size: 1.05rem;">
+                        Ready to build and launch your own automated product? Explore the <strong>OfficeAIM</strong> platform for step-by-step blueprints, and subscribe to our latest explainers on YouTube.
+                    </p>
+                    <a href="https://officeaimhq.netlify.app/" target="_blank" class="btn btn-primary" style="display: inline-block; margin-bottom: 24px;">
+                        Explore OfficeAIM Workflows →
+                    </a>
+
+                    <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px;">
+                        <span style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; display: block; margin-bottom: 12px;">
+                            Connect With Our Ecosystem
+                        </span>
+                        <div class="social-grid">
+                            <a href="https://officeaimhq.netlify.app/" target="_blank" class="social-pill">
+                                🌐 Website
+                            </a>
+                            <a href="https://www.youtube.com/@Aimora-Officeaim" target="_blank" class="social-pill">
+                                📺 YouTube
+                            </a>
+                            <a href="https://www.instagram.com/office.aim/" target="_blank" class="social-pill">
+                                📸 Instagram
+                            </a>
+                            <a href="https://www.facebook.com/profile.php?id=61584047901312" target="_blank" class="social-pill">
+                                📘 Facebook
+                            </a>
+                            <a href="https://www.linkedin.com/in/officeaimhqlearninghub2026/" target="_blank" class="social-pill">
+                                💼 LinkedIn
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>

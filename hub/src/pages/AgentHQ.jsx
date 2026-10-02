@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Map as MapIcon, Mail, FileText, PenTool, Cpu, Users, Wrench, Rocket,
@@ -47,7 +48,6 @@ const AgentHQ = () => {
     const [userTier, setUserTier] = useState('FREE');
     const [showUpgradeModal, setShowUpgradeModal] = useState(false);
     const [selectedTier, setSelectedTier] = useState(null);
-    const agentAvatar = "https://lh3.googleusercontent.com/d/1m1enxP1y7kj1VzWvO8VI7gXZHkxxek8c";
 
     useEffect(() => {
         const fetchUserTier = async () => {
@@ -76,7 +76,7 @@ const AgentHQ = () => {
         }
     };
 
-    const AgentCard = ({ agent, idx, isTactical = false }) => {
+    const AgentCard = ({ agent, idx }) => {
         const isLocked = !canAccess(agent.tier);
         const tierCfg = TIER_CONFIG[agent.tier];
 
@@ -138,17 +138,17 @@ const AgentHQ = () => {
                         {(() => {
                             if (agent.tier === 'PLUS') return (
                                 <span className="text-[9px] font-bold text-amber-400 uppercase tracking-widest italic opacity-60 group-hover:opacity-100 transition-opacity flex items-center gap-1.5">
-                                    <Sparkles className="h-3 w-3" /> Gemini 3.3 Pro • Max Compute
+                                    <Sparkles className="h-3 w-3" /> Gemini 3.5 Flash • Max Compute
                                 </span>
                             );
                             if (agent.tier === 'PRO') return (
                                 <span className="text-[9px] font-bold text-blue-400 uppercase tracking-widest italic opacity-60 group-hover:opacity-100 transition-opacity flex items-center gap-1.5">
-                                    <Zap className="h-3 w-3" /> Gemini 3.3 Flash • Advanced Context
+                                    <Zap className="h-3 w-3" /> Gemini 3.5 Flash • Advanced Context
                                 </span>
                             );
                             return (
                                 <span className="text-[9px] font-bold text-emerald-400 uppercase tracking-widest italic opacity-60 group-hover:opacity-100 transition-opacity flex items-center gap-1.5">
-                                    <Cpu className="h-3 w-3" /> Gemini 2.5 Flash • Standard Logic
+                                    <Cpu className="h-3 w-3" /> Gemini 3.5 Flash-Lite • Standard Logic
                                 </span>
                             );
                         })()}

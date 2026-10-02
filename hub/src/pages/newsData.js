@@ -1,39 +1,86 @@
 // Shared News and Vlog Data for OfficeAIM Hub Pages
 export const vlogs = [
     {
+        id: 'openai-dots-always-on-ai-agents',
+        title: 'OpenAI Dots: The AI Agent That Keeps Working After You Log Off?',
+        date: 'October 02, 2026',
+        category: 'Autonomous Agents',
+        description: 'OpenAI Dots move AI from answering prompts to managing projects in the background. Discover what always-on agents mean for modern work.',
+        image: '/hub/images/module2_hero.png',
+        duration: '5:15',
+        youtubeId: 'dfXsIYPj3Pw',
+        articleContent: `<h2>From Prompts to Projects</h2>
+<p>Unlike a traditional chatbot that sits waiting for your next command, OpenAI Dots represent a structural evolution toward background execution. Instead of asking AI one question at a time, users assign comprehensive project outcomes.</p>
+<h2>Three Takeaways for Modern Professionals</h2>
+<ol>
+<li><strong>Delegation matters more than clever prompts:</strong> Productivity gains come from defining clear briefs, constraints, and sources.</li>
+<li><strong>Connected tools make AI sensitive at scale:</strong> Grant only essential permissions and sandbox early routines.</li>
+<li><strong>Human review checkpoints are non-negotiable:</strong> Critical actions require human approval before execution.</li>
+</ol>
+<h2>The Wider AI Tools Trend</h2>
+<p>From Ideogram 4.5 for iterative image editing to Utopai X for cinematic video generation, AI is shifting toward persistence, multimodality, and deep tool connectivity.</p>`
+    },
+    {
+        id: '100-ai-websites-find-the-tools-that-matter',
+        title: '100 AI Websites? How to Find the Few That Actually Improve Your Workflow',
+        date: 'October 01, 2026',
+        category: 'AI Workflow Strategy',
+        description: 'A curated list of 100 AI websites can save research time—but only if you know how to filter, test, and keep the tools that genuinely improve your workflow.',
+        image: '/hub/images/module1_hero.png',
+        duration: '5:00',
+        youtubeId: 'OkaW3P2zuUQ',
+        articleContent: `<h2>Section 1 — The Discovery Problem</h2>
+<p>A recent newsletter dispatch from <strong>Ninja AI Tools</strong> announced a directory of over 100 AI websites. While useful resources are hard to track because AI changes fast, the email notably does not name the individual websites.</p>
+<h2>Section 2 — A Big List is a Starting Point, Not a Strategy</h2>
+<p>Quantity creates decision fatigue. Readers should never assume that every listed tool is current, secure, affordable, or relevant. Reframe any massive directory as a raw shortlist generator rather than an immediate solution.</p>
+<h2>Section 3 — The Four-Question Filter</h2>
+<ol>
+<li><strong>Which workflow am I improving?</strong> Anchor directly to a concrete recurring bottleneck.</li>
+<li><strong>Can I test the tool on one small task?</strong> If setup takes over 15 minutes, onboarding friction is too high.</li>
+<li><strong>What do privacy, pricing, and integrations look like?</strong> Verify data security, team costs, and API connectivity.</li>
+<li><strong>Did it create a measurable improvement?</strong> Quantify real time saved or error reduction.</li>
+</ol>
+<h3>3 Key Takeaways</h3>
+<ul>
+<li><strong>Discovery is not adoption:</strong> finding 100 tools is less valuable than validating one.</li>
+<li><strong>Use-case first:</strong> start with a recurring task, not a tool category.</li>
+<li><strong>Keep a small stack:</strong> a focused set of reliable tools beats an overflowing browser tab bar.</li>
+</ul>`
+    },
+    {
         id: 'meta-prompting',
         title: 'Mastering Meta-Prompting: How AI is Learning to Write Its Own Prompts',
         date: 'June 11, 2026',
         category: 'Prompt Engineering',
-        description: 'Meta-prompting shifts focus from content-centric prompts to structural frameworks, allowing AI to write and refine its own prompts [1, 2]. This advanced technique helps scale operations by automating prompt engineering [3, 4].',
+        description: 'Stop writing prompts by hand. Discover how structural meta-prompting lets AI write, test, and refine its own prompts to scale your operations autonomously.',
         image: '/hub/images/module1_hero.png',
         duration: '5:00',
         youtubeId: '09jIjqDO-Xg',
         articleContent: `<h2>The Evolution of Prompt Engineering: Enter Meta-Prompting</h2>
-<p>In the rapidly evolving world of Artificial Intelligence, traditional prompt engineering is undergoing a massive transformation [4]. The industry is shifting towards an advanced technique known as <strong>Meta-Prompting</strong> [1, 6].</p>
+<p>In the rapidly evolving world of Artificial Intelligence, traditional prompt engineering is undergoing a massive transformation. The industry is shifting towards an advanced technique known as <strong>Meta-Prompting</strong>.</p>
 <h3>What is Meta-Prompting?</h3>
-<p>Unlike standard prompting methods that get bogged down in content details, meta-prompting focuses on the structural and syntactical aspects of tasks [1]. The goal is to construct a more abstract, structured way of interacting with Large Language Models (LLMs) [1]. It emphasizes the form and pattern of information over traditional content-centric methods [1].</p>
-<p>This approach gives the AI a framework, rules, and a method&mdash;ultimately producing results perfectly adapted to specific business requirements [5].</p>
+<p>Unlike standard prompting methods that get bogged down in content details, meta-prompting focuses on the structural and syntactical aspects of tasks. The goal is to construct a more abstract, structured way of interacting with Large Language Models (LLMs). It emphasizes the form and pattern of information over traditional content-centric methods.</p>
+<p>This approach gives the AI a framework, rules, and a method—ultimately producing results perfectly adapted to specific business requirements.</p>
 <h3>From Babysitting AI to Scaling Operations</h3>
-<p>One of the most profound benefits of meta-prompting is scalability [4]. If you want to stop babysitting your AI and actually scale your operations, you need to build systems that write prompts for you [4]. By leveraging automated LLM prompt engineering, businesses can create self-improving AI that consistently writes better prompts than human operators [2, 3].</p>`
+<p>One of the most profound benefits of meta-prompting is scalability. If you want to stop babysitting your AI and actually scale your operations, you need to build systems that write prompts for you. By leveraging automated LLM prompt engineering, businesses can create self-improving AI that consistently writes better prompts than human operators.</p>`
     },
     {
         id: 'ai-mvp-days',
         title: 'Building an AI MVP in Days (OfficeAIM News)',
         date: 'June 09, 2026',
         category: 'Startups & MVP',
-        description: 'The traditional lifecycle is dead. See how startups use AI APIs, n8n, and Supabase to launch MVPs in record time.',
+        description: 'Build and launch a production-ready AI product in days. See how modern builders combine Google Gemini APIs, n8n visual automation, and Supabase.',
         image: '/hub/images/module1_hero.png',
         duration: '4:00',
         youtubeId: '0YObx03xkSo',
         articleContent: `<h2>The Death of the Traditional Software Lifecycle</h2>
-<p>For decades, building a Minimum Viable Product (MVP) required months of planning, hiring expensive engineering teams, and writing massive amounts of boilerplate code from scratch [1]. Today, that lifecycle is completely dead [4]. Startups are launching fully functional products in days, not months, by leveraging modular AI APIs, low-code automation engines like n8n, and scalable backend-as-a-service platforms like Supabase [2, 3].</p>
+<p>For decades, building a Minimum Viable Product (MVP) required months of planning, hiring expensive engineering teams, and writing massive amounts of boilerplate code from scratch. Today, that lifecycle is completely dead. Startups are launching fully functional products in days, not months, by leveraging modular AI APIs, low-code automation engines like n8n, and scalable backend-as-a-service platforms like Supabase.</p>
 
 <h3>The Power of Low-Code and AI Orchestration</h3>
-<p>Instead of writing custom backend controllers for every feature, modern developers are using <strong>n8n</strong> to orchestrate complex data flows between their database, user interface, and AI endpoints [3]. By chaining AI models (like Google Gemini or OpenAI GPT-4) directly into visual workflow pipelines, you can build autonomous features—such as automatic lead scoring, content generation, and support triaging—without writing a single line of backend API code [2].</p>
+<p>Instead of writing custom backend controllers for every feature, modern developers are using <strong>n8n</strong> to orchestrate complex data flows between their database, user interface, and AI endpoints. By chaining AI models (like Google Gemini or OpenAI GPT-4) directly into visual workflow pipelines, you can build autonomous features—such as automatic lead scoring, content generation, and support triaging—without writing a single line of backend API code.</p>
 
 <h3>Supabase: The Scalable Foundation</h3>
-<p>Every MVP needs a secure, real-time database, authentication, and file storage. <strong>Supabase</strong> provides a PostgreSQL database, built-in Auth, and row-level security (RLS) policies out of the box [5]. It integrates seamlessly with n8n and React, allowing frontend developers to query database tables safely directly from the client side while the backend logic is handled securely in background automation workflows [5, 6].</p>`
+<p>Every MVP needs a secure, real-time database, authentication, and file storage. <strong>Supabase</strong> provides a PostgreSQL database, built-in Auth, and row-level security (RLS) policies out of the box. It integrates seamlessly with n8n and React, allowing frontend developers to query database tables safely directly from the client side while the backend logic is handled securely in background automation workflows.</p>`
     },
     {
         id: 'apple-intelligence',

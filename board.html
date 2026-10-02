@@ -218,26 +218,7 @@
                 <img src="images/favicon.png" alt="OfficeAIM Logo" class="logo-img">
             </a>
             <ul class="nav-links">
-                <li class="nav-item-dropdown">
-                    <a href="#features" class="nav-link active-nav">Features <svg class="dropdown-arrow" width="12"
-                            height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M6 9l6 6 6-6" />
-                        </svg></a>
-                    <div class="mega-menu">
-                        <div class="mega-menu-inner">
-                            <div class="mega-menu-col">
-                                <h4>The Platform</h4>
-                                <a href="board.html" class="mega-link active-mega-link">
-                                    <div class="mega-icon">👥</div>
-                                    <div class="mega-text">
-                                        <strong>The AI Board</strong>
-                                        <span>Meet your 19 specialist agents</span>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
+                <li><a href="features.html" class="nav-link">Features</a></li>
 
                 <li class="nav-item-dropdown">
                     <a href="#" class="nav-link">Learn <svg class="dropdown-arrow" width="12" height="12"
@@ -277,7 +258,7 @@
                     </div>
                 </li>
                 <li class="nav-item-dropdown">
-                    <a href="#resources" class="nav-link">Resources <svg class="dropdown-arrow" width="12" height="12"
+                    <a href="#resources" class="nav-link active-nav">Resources <svg class="dropdown-arrow" width="12" height="12"
                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M6 9l6 6 6-6" />
                         </svg></a>
@@ -306,12 +287,27 @@
                                         <span>Try Google Gemini integrations</span>
                                     </div>
                                 </a>
+                                <a href="resources/free-stack-kit.html" class="mega-link">
+                                    <div class="mega-icon">📦</div>
+                                    <div class="mega-text">
+                                        <strong>Free Stack Kit</strong>
+                                        <span>Curated tools &amp; step-by-step stack</span>
+                                    </div>
+                                </a>
+                                <a href="board.html" class="mega-link active-mega-link">
+                                    <div class="mega-icon">👥</div>
+                                    <div class="mega-text">
+                                        <strong>The AI Board</strong>
+                                        <span>Meet your 19 specialist agents — free to explore</span>
+                                    </div>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </li>
 
                 <li><a href="pricing.html" class="nav-link">Pricing</a></li>
+                <li><a id="nav-news-link" href="news.html" class="nav-link" style="color: var(--accent-primary);">News</a></li>
             </ul>
             <div class="nav-ctas">
                 <a href="construction.html" class="btn btn-primary">Enter Campus →</a>
@@ -354,7 +350,7 @@
                 </div>
 
                 <div class="board-grid">
-                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(59,130,246,0.5);">
+                    <div class="agent-photo-card" style="border-top-color: rgba(59,130,246,0.5);">
                         <div class="photo-section">
                             <img src="https://lh3.googleusercontent.com/d/1qVeSx1suf01TU01h_SGecwfbieBrotw6" alt="Gema"
                                 referrerpolicy="no-referrer">
@@ -368,13 +364,13 @@
                             <p>Orchestrates tasks, organizes workflows, and guides students. The first agent every
                                 student meets.</p>
                             <div class="card-footer">
-                                <span class="model-info" style="color:#34d399;">⚡ Gemini 2.5 Flash • Standard</span>
+                                <span class="model-info" style="color:#34d399;">⚡ Gemini 3.5 Flash-Lite • Standard</span>
                                 <span class="activate-btn" style="color:#60a5fa;">Activate →</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
 
-                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(99,102,241,0.5);">
+                    <div class="agent-photo-card" style="border-top-color: rgba(99,102,241,0.5);">
                         <div class="photo-section">
                             <img src="https://lh3.googleusercontent.com/d/1dwtTpaggtlN_a5zEMfrNFiV4889fgzpE"
                                 alt="Behavioral Psych" referrerpolicy="no-referrer">
@@ -388,13 +384,13 @@
                             <p>Analyzes cognitive patterns, decision-making, and emotional architecture to build
                                 psychologically resonant products.</p>
                             <div class="card-footer">
-                                <span class="model-info" style="color:#34d399;">⚡ Gemini 2.5 Flash • Standard</span>
+                                <span class="model-info" style="color:#34d399;">⚡ Gemini 3.5 Flash-Lite • Standard</span>
                                 <span class="activate-btn" style="color:#818cf8;">Activate →</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
 
-                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(236,72,153,0.5);">
+                    <div class="agent-photo-card" style="border-top-color: rgba(236,72,153,0.5);">
                         <div class="photo-section">
                             <img src="https://lh3.googleusercontent.com/d/1U3cGohwRtl76_0QfeiiZEkRgPRq9JorK"
                                 alt="Community Builder" referrerpolicy="no-referrer">
@@ -408,13 +404,13 @@
                             <p>Fosters participation, provides warm onboarding, and builds engagement loops for highly
                                 active digital communities.</p>
                             <div class="card-footer">
-                                <span class="model-info" style="color:#34d399;">⚡ Gemini 2.5 Flash • Standard</span>
+                                <span class="model-info" style="color:#34d399;">⚡ Gemini 3.5 Flash-Lite • Standard</span>
                                 <span class="activate-btn" style="color:#f472b6;">Activate →</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
 
-                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(34,211,238,0.5);">
+                    <div class="agent-photo-card" style="border-top-color: rgba(34,211,238,0.5);">
                         <div class="photo-section">
                             <img src="https://lh3.googleusercontent.com/d/1m1enxP1y7kj1VzWvO8VI7gXZHkxxek8c"
                                 alt="Quality Checker" referrerpolicy="no-referrer">
@@ -428,13 +424,13 @@
                             <p>Reviews excellence rubrics, detects errors, and enforces QA. Tests your systems before
                                 they go live.</p>
                             <div class="card-footer">
-                                <span class="model-info" style="color:#34d399;">⚡ Gemini 2.5 Flash • Standard</span>
+                                <span class="model-info" style="color:#34d399;">⚡ Gemini 3.5 Flash-Lite • Standard</span>
                                 <span class="activate-btn" style="color:#22d3ee;">Activate →</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
 
-                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(251,146,60,0.5);">
+                    <div class="agent-photo-card" style="border-top-color: rgba(251,146,60,0.5);">
                         <div class="photo-section">
                             <img src="https://lh3.googleusercontent.com/d/1mUtk1oaHnHMoPJdXERRiW_aftebtbu0B"
                                 alt="SEO Master" referrerpolicy="no-referrer">
@@ -448,13 +444,13 @@
                             <p>Optimizes organic keyword positioning, builds technical SEO audits, and designs content
                                 architectures.</p>
                             <div class="card-footer">
-                                <span class="model-info" style="color:#34d399;">⚡ Gemini 2.5 Flash • Standard</span>
+                                <span class="model-info" style="color:#34d399;">⚡ Gemini 3.5 Flash-Lite • Standard</span>
                                 <span class="activate-btn" style="color:#fb923c;">Activate →</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
 
-                    <a href="/construction.html" class="agent-photo-card" id="cloner"
+                    <div class="agent-photo-card" id="cloner"
                         style="border-top-color: rgba(245,158,11,0.5);">
                         <div class="photo-section">
                             <img src="images/idea_cloner_avatar.png" alt="Idea Cloner">
@@ -468,11 +464,11 @@
                             <p>Reverse-engineers proven SaaS models into actionable, cloneable blueprints. Paste any URL
                                 to begin.</p>
                             <div class="card-footer">
-                                <span class="model-info" style="color:#34d399;">⚡ Gemini 2.5 Flash • Standard</span>
+                                <span class="model-info" style="color:#34d399;">⚡ Gemini 3.5 Flash-Lite • Standard</span>
                                 <span class="activate-btn" style="color:#fbbf24;">Activate →</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
                 </div>
             </div>
 
@@ -493,7 +489,7 @@
                 </div>
 
                 <div class="board-grid">
-                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(59,130,246,0.5);">
+                    <div class="agent-photo-card" style="border-top-color: rgba(59,130,246,0.5);">
                         <div class="photo-section">
                             <img src="https://lh3.googleusercontent.com/d/1M8XW4N4vhnG4D1ZEzMeMJYU2SLeqoBMY"
                                 alt="Strategy Director" referrerpolicy="no-referrer">
@@ -507,13 +503,13 @@
                             <p>Designs strategic calendars and master growth plans. Aligns all projects with core
                                 business objectives.</p>
                             <div class="card-footer">
-                                <span class="model-info" style="color:#60a5fa;">⚡ Gemini 2.5 Flash • Advanced</span>
+                                <span class="model-info" style="color:#60a5fa;">⚡ Gemini 3.5 Flash • Advanced</span>
                                 <span class="activate-btn" style="color:#60a5fa;">Unlock Tier →</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
 
-                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(99,102,241,0.5);">
+                    <div class="agent-photo-card" style="border-top-color: rgba(99,102,241,0.5);">
                         <div class="photo-section">
                             <img src="https://lh3.googleusercontent.com/d/1mDh3YozJXiylbO3QJe8wPRvutJsDNFoc"
                                 alt="Communications Lead" referrerpolicy="no-referrer">
@@ -527,13 +523,13 @@
                             <p>Master of public speaking, PR, and persuasive messaging. Manages brand messaging across
                                 all channels.</p>
                             <div class="card-footer">
-                                <span class="model-info" style="color:#60a5fa;">⚡ Gemini 2.5 Flash • Advanced</span>
+                                <span class="model-info" style="color:#60a5fa;">⚡ Gemini 3.5 Flash • Advanced</span>
                                 <span class="activate-btn" style="color:#818cf8;">Unlock Tier →</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
 
-                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(16,185,129,0.5);">
+                    <div class="agent-photo-card" style="border-top-color: rgba(16,185,129,0.5);">
                         <div class="photo-section">
                             <img src="https://lh3.googleusercontent.com/d/155tJ6oucIdfsfOdvit5vi01xN_ua9fv1"
                                 alt="Intelligence Analyst" referrerpolicy="no-referrer">
@@ -547,13 +543,13 @@
                             <p>Summarizes complex reports and analyzes market data. Uncovers actionable competitive
                                 intelligence.</p>
                             <div class="card-footer">
-                                <span class="model-info" style="color:#60a5fa;">⚡ Gemini 2.5 Flash • Advanced</span>
+                                <span class="model-info" style="color:#60a5fa;">⚡ Gemini 3.5 Flash • Advanced</span>
                                 <span class="activate-btn" style="color:#34d399;">Unlock Tier →</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
 
-                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(245,158,11,0.5);">
+                    <div class="agent-photo-card" style="border-top-color: rgba(245,158,11,0.5);">
                         <div class="photo-section">
                             <img src="https://lh3.googleusercontent.com/d/1LzT707qS52irOluEDoFiI0Lh6agHgjHL"
                                 alt="Publishing Editor" referrerpolicy="no-referrer">
@@ -567,13 +563,13 @@
                             <p>Handles content structure, curation, and premium writing. Edits for narrative flow and
                                 maximum retention.</p>
                             <div class="card-footer">
-                                <span class="model-info" style="color:#60a5fa;">⚡ Gemini 2.5 Flash • Advanced</span>
+                                <span class="model-info" style="color:#60a5fa;">⚡ Gemini 3.5 Flash • Advanced</span>
                                 <span class="activate-btn" style="color:#fbbf24;">Unlock Tier →</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
 
-                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(168,85,247,0.5);">
+                    <div class="agent-photo-card" style="border-top-color: rgba(168,85,247,0.5);">
                         <div class="photo-section">
                             <img src="https://lh3.googleusercontent.com/d/1AJIL1a2Du47nfTy62vsPBw-3b5-Y1Gyk"
                                 alt="Course Creator" referrerpolicy="no-referrer">
@@ -587,13 +583,13 @@
                             <p>Handles instructional design and inclusive AI pedagogy. Structures curriculums and
                                 learning modules.</p>
                             <div class="card-footer">
-                                <span class="model-info" style="color:#60a5fa;">⚡ Gemini 2.5 Flash • Advanced</span>
+                                <span class="model-info" style="color:#60a5fa;">⚡ Gemini 3.5 Flash • Advanced</span>
                                 <span class="activate-btn" style="color:#c084fc;">Unlock Tier →</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
 
-                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(245,158,11,0.5);">
+                    <div class="agent-photo-card" style="border-top-color: rgba(245,158,11,0.5);">
                         <div class="photo-section">
                             <img src="https://lh3.googleusercontent.com/d/1A0CWgl5f8dY58Vf2hQcIKzUnOOmiT3X4"
                                 alt="AI Prompter" referrerpolicy="no-referrer">
@@ -607,13 +603,13 @@
                             <p>Masters prompt engineering, LLM logic, and optimization. Writes complex few-shot prompts
                                 for other AIs.</p>
                             <div class="card-footer">
-                                <span class="model-info" style="color:#60a5fa;">⚡ Gemini 2.5 Flash • Advanced</span>
+                                <span class="model-info" style="color:#60a5fa;">⚡ Gemini 3.5 Flash • Advanced</span>
                                 <span class="activate-btn" style="color:#fbbf24;">Unlock Tier →</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
 
-                    <a href="/construction.html" class="agent-photo-card" style="border-top-color: rgba(16,185,129,0.5);">
+                    <div class="agent-photo-card" style="border-top-color: rgba(16,185,129,0.5);">
                         <div class="photo-section">
                             <img src="https://lh3.googleusercontent.com/d/1cx9XGXA4G2sy-UZ0U9V7OmRryXkjtFod"
                                 alt="Marketing Pro" referrerpolicy="no-referrer">
@@ -627,11 +623,11 @@
                             <p>Builds conversion funnels, sales psychology, and virality. Designs omni-channel marketing
                                 campaigns.</p>
                             <div class="card-footer">
-                                <span class="model-info" style="color:#60a5fa;">⚡ Gemini 2.5 Flash • Advanced</span>
+                                <span class="model-info" style="color:#60a5fa;">⚡ Gemini 3.5 Flash • Advanced</span>
                                 <span class="activate-btn" style="color:#34d399;">Unlock Tier →</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
                 </div>
             </div>
 
@@ -652,7 +648,7 @@
                 </div>
 
                 <div class="board-grid">
-                    <a href="/construction.html" class="agent-photo-card locked-card"
+                    <div class="agent-photo-card locked-card"
                         style="border-top-color: rgba(34,211,238,0.5);">
                         <div class="photo-section">
                             <img src="https://lh3.googleusercontent.com/d/1Mhs2BA3KKibMtKp0oaTuH6EJ0H0yL-1z"
@@ -667,13 +663,13 @@
                             <p>Handles infrastructure, technical support, and scalability. Designs database schemas and
                                 APIs.</p>
                             <div class="card-footer">
-                                <span class="model-info" style="color:#fbbf24;">✨ Gemini 2.5 Pro • Max Compute</span>
+                                <span class="model-info" style="color:#fbbf24;">✨ Gemini 3.5 Flash • Max Compute</span>
                                 <span class="activate-btn" style="color:#a78bfa;">Unlock Tier →</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
 
-                    <a href="/construction.html" class="agent-photo-card locked-card"
+                    <div class="agent-photo-card locked-card"
                         style="border-top-color: rgba(251,146,60,0.5);">
                         <div class="photo-section">
                             <img src="https://lh3.googleusercontent.com/d/1wI7ZdTKWeXUrFVziS5jjVrk2W0o3f6tk"
@@ -688,13 +684,13 @@
                             <p>Dictates GTM strategies, launch funnels, and acquisition metrics. Manages day-1
                                 operational war room.</p>
                             <div class="card-footer">
-                                <span class="model-info" style="color:#fbbf24;">✨ Gemini 2.5 Pro • Max Compute</span>
+                                <span class="model-info" style="color:#fbbf24;">✨ Gemini 3.5 Flash • Max Compute</span>
                                 <span class="activate-btn" style="color:#a78bfa;">Unlock Tier →</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
 
-                    <a href="/construction.html" class="agent-photo-card locked-card"
+                    <div class="agent-photo-card locked-card"
                         style="border-top-color: rgba(16,185,129,0.5);">
                         <div class="photo-section">
                             <img src="https://lh3.googleusercontent.com/d/1GAWql7WAVlFqOpuLFOKaPFW2XroL20_w"
@@ -709,13 +705,13 @@
                             <p>Optimizes monetization, ROI, and financial models. Builds pricing strategies to maximize
                                 LTV and MRR.</p>
                             <div class="card-footer">
-                                <span class="model-info" style="color:#fbbf24;">✨ Gemini 2.5 Pro • Max Compute</span>
+                                <span class="model-info" style="color:#fbbf24;">✨ Gemini 3.5 Flash • Max Compute</span>
                                 <span class="activate-btn" style="color:#a78bfa;">Unlock Tier →</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
 
-                    <a href="/construction.html" class="agent-photo-card locked-card"
+                    <div class="agent-photo-card locked-card"
                         style="border-top-color: rgba(139,92,246,0.5);">
                         <div class="photo-section">
                             <img src="https://lh3.googleusercontent.com/d/13WF8UslO178npxVS3ZKYl-7pBL8jlyCO"
@@ -730,13 +726,13 @@
                             <p>Masters brand positioning, visual identity, and emotional resonance. Ensures aesthetic
                                 consistency.</p>
                             <div class="card-footer">
-                                <span class="model-info" style="color:#fbbf24;">✨ Gemini 2.5 Pro • Max Compute</span>
+                                <span class="model-info" style="color:#fbbf24;">✨ Gemini 3.5 Flash • Max Compute</span>
                                 <span class="activate-btn" style="color:#a78bfa;">Unlock Tier →</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
 
-                    <a href="/construction.html" class="agent-photo-card locked-card"
+                    <div class="agent-photo-card locked-card"
                         style="border-top-color: rgba(236,72,153,0.5);">
                         <div class="photo-section">
                             <img src="https://lh3.googleusercontent.com/d/1M6q2RP3Dsibq7ee5Mch9xJ_P23dWR-L-"
@@ -751,13 +747,13 @@
                             <p>Studies profound customer psychology and behavioral patterns. Creates hyper-detailed
                                 buyer personas.</p>
                             <div class="card-footer">
-                                <span class="model-info" style="color:#fbbf24;">✨ Gemini 2.5 Pro • Max Compute</span>
+                                <span class="model-info" style="color:#fbbf24;">✨ Gemini 3.5 Flash • Max Compute</span>
                                 <span class="activate-btn" style="color:#a78bfa;">Unlock Tier →</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
 
-                    <a href="/construction.html" class="agent-photo-card locked-card"
+                    <div class="agent-photo-card locked-card"
                         style="border-top-color: rgba(244,63,94,0.5);">
                         <div class="photo-section">
                             <img src="https://lh3.googleusercontent.com/d/1aa64exG3P-qrdcIl2pG-Q05rBROsoO5e"
@@ -772,14 +768,14 @@
                             <p>Resolves technical conflicts, optimizes flows, and enforces QA. Builds custom demos for
                                 complex scenarios.</p>
                             <div class="card-footer">
-                                <span class="model-info" style="color:#fbbf24;">✨ Gemini 2.5 Pro • Max Compute</span>
+                                <span class="model-info" style="color:#fbbf24;">✨ Gemini 3.5 Flash • Max Compute</span>
                                 <span class="activate-btn" style="color:#a78bfa;">Unlock Tier →</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
 
                     <!-- CLASSIFIED -->
-                    <a href="/construction.html" class="agent-photo-card locked-card"
+                    <div class="agent-photo-card locked-card"
                         style="border-top-color: rgba(139, 92, 246, 0.5); box-shadow: 0 0 25px rgba(139, 92, 246, 0.1);">
                         <div class="photo-section"
                             style="background: linear-gradient(135deg, rgba(139,92,246,0.15) 0%, rgba(30,27,75,0.8) 100%); display:flex; align-items:center; justify-content:center;">
@@ -796,11 +792,11 @@
                             <p>This agent's identity is classified. Unlock the Plus tier to discover the final member of
                                 your executive board.</p>
                             <div class="card-footer">
-                                <span class="model-info" style="color:#fbbf24;">✨ Gemini 2.5 Pro • Max Compute</span>
+                                <span class="model-info" style="color:#fbbf24;">✨ Gemini 3.5 Flash • Max Compute</span>
                                 <span class="activate-btn" style="color:#a78bfa;">Unlock Tier →</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
                 </div>
             </div>
 

@@ -40,8 +40,14 @@ This log tracks the "Working Curve" to ensure sustainable productivity and high-
 | 2026-06-11 | 15:17 | 15:29 | ~0.2h | Refactored orchestrator.py to support custom URL, YouTube video overrides, dynamic player slot {{VIDEO_PLAYER}}, and HTML conversion for article content. | ✅ Completed |
 | 2026-06-14 | 08:53 | 09:51 | ~1.0h | Restored static news routing, created dedicated news article page news/ai-mvp-days.html, resolved YouTube Error 153, synchronized React News Hub with modal, and implemented the /salva-cambio workflow. | ✅ Completed |
 | 2026-06-14 | 09:52 | 10:56 | ~1.0h | Resilient onboarding modal fix (Dashboard.jsx localStorage fallback + X close button), vlogs array decoupled into newsData.js (React Fast Refresh compliance), Module 1 lesson-to-vlog strict 1-to-1 mapping in ModuleViewer.jsx, orchestrator.py retargeted to newsData.js, SQL migration 021 for language/country columns, and created vault/PLATFORM_MAP.md (full platform ecosystem map). | ✅ Completed |
+| 2026-09-02 | 10:36 | 15:13 | ~0.9h | Relocated AI Board to Resources dropdown, created resources/free-stack-kit.html with Master Guide/Skills Pack links & video modal, built features.html portfolio page (Case Studies + 5 Team Boxes), removed temp #features anchor, and synced site-wide nav. | ✅ Completed |
+| 2026-09-05 | 11:48 | 15:11 | ~3.3h | Built OfficeAIM Library & Loan Tracker. Solved Gemini Vision API (gemini-3.6-flash), fixed FileReader base64 bug, added EN/NL i18n switcher, local admin/admin bypass, standalone public route /hub/library-tracker, and PWA iOS meta tags. | ✅ Completed |
+| 2026-09-18 | 11:14 | 13:16 | ~2.0h | Fixed Mascot API 404 deprecation (migrated to Gemini 3.5), set up AIMBOT free tier key, upgraded natural voice cadence and dual EN/ES voice picker, eliminated emoji voice speech glitches, and resolved duplicate iframe bug in website-creator.html. | ✅ Completed |
+| 2026-09-18 | 20:30 | 22:05 | ~1.6h | Transformed website-creator.html into OfficeAIM Web Blueprint Studio with Jamstack 2026 interactive costs (MVP vs Pro), Hostinger/Gemini discount links, Excel download (calculadora-costos-stack-jamstack.xlsx), 9-Step Architecture Roadmap, and Social Proof Decision Guide. Localized 100% in English. | ✅ Completed |
+| 2026-10-01 | 15:49 | 17:49 | ~2.0h | Created 100 AI Websites news article (Antigravity outline), integrated YouTube video OkaW3P2zuUQ, restored video thumbnails across all news cards, enabled in-page video modal on play button, resolved Error 153 via HTTP server & origin fallback, synchronized React hub. | ✅ Completed |
+| 2026-10-02 | 11:00 | 12:00 | ~1.0h | Published OpenAI Dots article (video dfXsIYPj3Pw), reformatted Meta-Prompting & AI MVP in Days to modern layout, cleaned bracketed annotations, synced news grid & React newsData.js. | ✅ Completed |
 ---
-*Next Break Suggestion: 22:30 PM*
+*Next Break Suggestion: 13:00 PM*
 
 **Session 1 (Feb 13, 11:00 AM - 12:00 PM)**
   - **Focus:** Premium Visuals, Curriculum Seeding & Hub Integration.

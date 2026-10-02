@@ -26,31 +26,13 @@
                 <img src="images/favicon.png" alt="OfficeAIM Logo" class="logo-img">
             </a>
             <ul class="nav-links">
+                <li><a href="features.html" class="nav-link">Features</a></li>
+
                 <li class="nav-item-dropdown">
-                    <a href="index.html#features" class="nav-link">Features <svg class="dropdown-arrow" width="12"
-                            height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <a href="#" class="nav-link">Learn <svg class="dropdown-arrow" width="12" height="12"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M6 9l6 6 6-6" />
                         </svg></a>
-                    <div class="mega-menu">
-                        <div class="mega-menu-inner">
-                            <div class="mega-menu-col">
-                                <h4>The Platform</h4>
-                                <a href="board.html" class="mega-link">
-                                    <div class="mega-icon">👥</div>
-                                    <div class="mega-text">
-                                        <strong>The AI Board</strong>
-                                        <span>Meet your 19 specialist agents</span>
-                                    </div>
-                                </a>
-                                
-                            </div>
-                            
-                        </div>
-                    </div>
-                </li>
-
-                                <li class="nav-item-dropdown">
-                    <a href="#" class="nav-link">Learn <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></a>
                     <div class="mega-menu">
                         <div class="mega-menu-inner">
                             <div class="mega-menu-col">
@@ -75,8 +57,8 @@
                                 <a href="security.html" class="mega-link">
                                     <div class="mega-icon">🛡️</div>
                                     <div class="mega-text">
-                                        <strong>Security &amp; Trust</strong>
-                                        <span>Data privacy &amp; encryption</span>
+                                        <strong>Security & Trust</strong>
+                                        <span>Data privacy & encryption</span>
                                     </div>
                                 </a>
                             </div>
@@ -84,8 +66,8 @@
                     </div>
                 </li>
                 <li class="nav-item-dropdown">
-                    <a href="index.html#resources" class="nav-link">Resources <svg class="dropdown-arrow" width="12"
-                            height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <a href="#resources" class="nav-link">Resources <svg class="dropdown-arrow" width="12" height="12"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M6 9l6 6 6-6" />
                         </svg></a>
                     <div class="mega-menu">
@@ -113,13 +95,27 @@
                                         <span>Try Google Gemini integrations</span>
                                     </div>
                                 </a>
+                                <a href="resources/free-stack-kit.html" class="mega-link">
+                                    <div class="mega-icon">📦</div>
+                                    <div class="mega-text">
+                                        <strong>Free Stack Kit</strong>
+                                        <span>Curated tools &amp; step-by-step stack</span>
+                                    </div>
+                                </a>
+                                <a href="board.html" class="mega-link">
+                                    <div class="mega-icon">👥</div>
+                                    <div class="mega-text">
+                                        <strong>The AI Board</strong>
+                                        <span>Meet your 19 specialist agents — free to explore</span>
+                                    </div>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </li>
 
                 <li><a href="pricing.html" class="nav-link">Pricing</a></li>
-                <li><a href="news.html" class="nav-link" style="color: var(--accent-primary);">News</a></li>
+                <li><a id="nav-news-link" href="news.html" class="nav-link active-nav" style="color: var(--accent-primary);">News</a></li>
             </ul>
             <div class="nav-ctas">
                 <a href="construction.html" class="btn btn-primary">Enter Campus →</a>
@@ -147,22 +143,70 @@
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
             <!-- VLOG_CARDS_START -->
 
-            <!-- Vlog Card: Mastering Meta-Prompting: How AI is Learning to Write Its Own Prompts -->
-            <div class="glass-card" style="padding: 0; overflow: hidden; border-radius: 24px;">
-                <div onclick="location.href='news/meta-prompting.html'" style="height: 200px; background: rgba(0, 242, 254, 0.1) center/cover; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-                    <div style="position: absolute; top: 15px; right: 15px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: var(--accent-primary); border: 1px solid rgba(0, 242, 254, 0.3);">
-                        Prompt Engineering
+            <!-- Vlog Card: OpenAI Dots: The AI Agent That Keeps Working After You Log Off? -->
+            <div class="glass-card" style="padding: 0; overflow: hidden; border-radius: 24px; border: 1px solid rgba(0, 242, 254, 0.3); box-shadow: 0 0 25px rgba(0, 242, 254, 0.08);">
+                <div onclick="location.href='news/openai-dots-always-on-ai-agents.html'" style="height: 200px; background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.65)), url('https://img.youtube.com/vi/dfXsIYPj3Pw/hqdefault.jpg') center/cover; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                    <div style="position: absolute; top: 15px; right: 15px; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: var(--accent-primary); border: 1px solid rgba(0, 242, 254, 0.4);">
+                        Autonomous Agents
                     </div>
-                    <!-- Play Button -->
-                    <div style="width: 60px; height: 60px; background: rgba(0,0,0,0.5); border: 2px solid var(--accent-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
+                    <!-- Play / Video Badge with Modal Trigger -->
+                    <div onclick="event.stopPropagation(); openVideoModal('https://www.youtube.com/embed/dfXsIYPj3Pw');" title="Play Video in Modal" style="width: 60px; height: 60px; background: rgba(0,0,0,0.65); border: 2px solid var(--accent-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); box-shadow: 0 0 20px rgba(0, 242, 254, 0.35); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--accent-primary)" stroke="var(--accent-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                     </div>
                 </div>
                 <div style="padding: 24px;">
-                    <h3 style="font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 10px;">Mastering Meta-Prompting: How AI is Learning to Write Its Own Prompts</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Meta-prompting shifts focus from content-centric prompts to structural frameworks, allowing AI to write and refine its own prompts [1, 2]. This advanced technique helps scale operations by automating prompt engineering [3, 4].</p>
+                    <h3 style="font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 10px; line-height: 1.35;">
+                        <a href="news/openai-dots-always-on-ai-agents.html" style="color: white; text-decoration: none;">OpenAI Dots: The AI Agent That Keeps Working After You Log Off?</a>
+                    </h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; line-height: 1.6;">OpenAI Dots move AI from answering prompts to managing projects in the background. Discover what always-on agents mean for modern work.</p>
                     <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.8rem;">
-                        <span>Vlog News</span>
+                        <span style="color: var(--accent-primary); font-weight: 600;">NotebookLM Explainer</span>
+                        <span>October 02, 2026</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vlog Card: 100 AI Websites? How to Find the Few That Actually Improve Your Workflow -->
+            <div class="glass-card" style="padding: 0; overflow: hidden; border-radius: 24px; border: 1px solid rgba(0, 242, 254, 0.3); box-shadow: 0 0 25px rgba(0, 242, 254, 0.08);">
+                <div onclick="location.href='news/100-ai-websites-find-the-tools-that-matter.html'" style="height: 200px; background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.65)), url('https://img.youtube.com/vi/OkaW3P2zuUQ/hqdefault.jpg') center/cover; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                    <div style="position: absolute; top: 15px; right: 15px; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: var(--accent-primary); border: 1px solid rgba(0, 242, 254, 0.4);">
+                        Workflow Strategy
+                    </div>
+                    <!-- Play / Video Badge with Modal Trigger -->
+                    <div onclick="event.stopPropagation(); openVideoModal('https://www.youtube.com/embed/OkaW3P2zuUQ');" title="Play Video in Modal" style="width: 60px; height: 60px; background: rgba(0,0,0,0.65); border: 2px solid var(--accent-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); box-shadow: 0 0 20px rgba(0, 242, 254, 0.35); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--accent-primary)" stroke="var(--accent-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    </div>
+                </div>
+                <div style="padding: 24px;">
+                    <h3 style="font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 10px; line-height: 1.35;">
+                        <a href="news/100-ai-websites-find-the-tools-that-matter.html" style="color: white; text-decoration: none;">100 AI Websites? How to Find the Few That Actually Improve Your Workflow</a>
+                    </h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; line-height: 1.6;">A curated list of 100 AI websites can save research time—but only if you know how to filter, test, and keep the tools that genuinely improve your workflow.</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.8rem;">
+                        <span style="color: var(--accent-primary); font-weight: 600;">NotebookLM Explainer</span>
+                        <span>October 01, 2026</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vlog Card: Mastering Meta-Prompting: How AI is Learning to Write Its Own Prompts -->
+            <div class="glass-card" style="padding: 0; overflow: hidden; border-radius: 24px; border: 1px solid rgba(0, 242, 254, 0.3); box-shadow: 0 0 25px rgba(0, 242, 254, 0.08);">
+                <div onclick="location.href='news/meta-prompting.html'" style="height: 200px; background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.65)), url('https://img.youtube.com/vi/09jIjqDO-Xg/hqdefault.jpg') center/cover; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                    <div style="position: absolute; top: 15px; right: 15px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: var(--accent-primary); border: 1px solid rgba(0, 242, 254, 0.3);">
+                        Prompt Engineering
+                    </div>
+                    <!-- Play Button with Modal Trigger -->
+                    <div onclick="event.stopPropagation(); openVideoModal('https://www.youtube.com/embed/09jIjqDO-Xg');" title="Play Video in Modal" style="width: 60px; height: 60px; background: rgba(0,0,0,0.65); border: 2px solid var(--accent-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); box-shadow: 0 0 20px rgba(0, 242, 254, 0.35); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--accent-primary)" stroke="var(--accent-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    </div>
+                </div>
+                <div style="padding: 24px;">
+                    <h3 style="font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 10px;">
+                        <a href="news/meta-prompting.html" style="color: white; text-decoration: none;">Mastering Meta-Prompting: How AI is Learning to Write Its Own Prompts</a>
+                    </h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; line-height: 1.6;">Stop writing prompts by hand. Discover how structural meta-prompting lets AI write, test, and refine its own prompts to scale your operations autonomously.</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.8rem;">
+                        <span style="color: var(--accent-primary); font-weight: 600;">NotebookLM Explainer</span>
                         <span>June 11, 2026</span>
                     </div>
                 </div>
@@ -171,21 +215,23 @@
             <!-- VLOG_CARDS_END -->
             
             <!-- Vlog Card 1 -->
-            <div class="glass-card" style="padding: 0; overflow: hidden; border-radius: 24px;">
-                <div onclick="location.href='news/ai-mvp-days.html'" style="height: 200px; background: rgba(0, 242, 254, 0.1) url('images/newsletter-bg.png') center/cover; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+            <div class="glass-card" style="padding: 0; overflow: hidden; border-radius: 24px; border: 1px solid rgba(0, 242, 254, 0.3); box-shadow: 0 0 25px rgba(0, 242, 254, 0.08);">
+                <div onclick="location.href='news/ai-mvp-days.html'" style="height: 200px; background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.65)), url('https://img.youtube.com/vi/0YObx03xkSo/hqdefault.jpg') center/cover; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                     <div style="position: absolute; top: 15px; right: 15px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: var(--accent-primary); border: 1px solid rgba(0, 242, 254, 0.3);">
                         Startups & MVP
                     </div>
-                    <!-- Play Button -->
-                    <div style="width: 60px; height: 60px; background: rgba(0,0,0,0.5); border: 2px solid var(--accent-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
+                    <!-- Play Button with Modal Trigger -->
+                    <div onclick="event.stopPropagation(); openVideoModal('https://www.youtube.com/embed/0YObx03xkSo');" title="Play Video in Modal" style="width: 60px; height: 60px; background: rgba(0,0,0,0.65); border: 2px solid var(--accent-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); box-shadow: 0 0 20px rgba(0, 242, 254, 0.35); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--accent-primary)" stroke="var(--accent-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                     </div>
                 </div>
                 <div style="padding: 24px;">
-                    <h3 style="font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 10px;">Building an AI MVP in Days (OfficeAIM News)</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">The traditional lifecycle is dead. See how startups use AI APIs, n8n, and Supabase to launch MVPs in record time.</p>
+                    <h3 style="font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 10px;">
+                        <a href="news/ai-mvp-days.html" style="color: white; text-decoration: none;">Building an AI MVP in Days (OfficeAIM News)</a>
+                    </h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; line-height: 1.6;">Build and launch a production-ready AI product in days. See how modern builders combine Google Gemini APIs, n8n visual automation, and Supabase.</p>
                     <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.8rem;">
-                        <span>4 min watch</span>
+                        <span style="color: var(--accent-primary); font-weight: 600;">NotebookLM Explainer</span>
                         <span>June 09, 2026</span>
                     </div>
                 </div>
@@ -193,7 +239,7 @@
 
             <!-- Vlog Card 2 (Curated News Placeholder) -->
             <div class="glass-card" style="padding: 0; overflow: hidden; border-radius: 24px;">
-                <div onclick="alert('Este video se generará en la próxima edición semanal.')" style="height: 200px; background: rgba(249, 115, 22, 0.1); display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                <div onclick="alert('Este video se generará en la próxima edición semanal.')" style="height: 200px; background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.75)), url('images/module2_hero.png') center/cover; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                     <div style="position: absolute; top: 15px; right: 15px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: var(--accent-secondary); border: 1px solid rgba(249, 115, 22, 0.3);">
                         Apple Intelligence
                     </div>
@@ -213,7 +259,7 @@
 
             <!-- Vlog Card 3 (Curated News Placeholder) -->
             <div class="glass-card" style="padding: 0; overflow: hidden; border-radius: 24px;">
-                <div onclick="alert('Este video se generará en la próxima edición semanal.')" style="height: 200px; background: rgba(236, 72, 153, 0.1); display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                <div onclick="alert('Este video se generará en la próxima edición semanal.')" style="height: 200px; background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.75)), url('images/gpt_ecosystem.png') center/cover; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
                     <div style="position: absolute; top: 15px; right: 15px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: #ec4899; border: 1px solid rgba(236, 72, 153, 0.3);">
                         Updates
                     </div>
@@ -249,7 +295,7 @@
     <div id="videoModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
         <div style="position: relative; width: 90%; max-width: 1000px; aspect-ratio: 16/9; background: #000; border-radius: 12px; border: 1px solid rgba(0,242,254,0.3); box-shadow: 0 0 50px rgba(0,242,254,0.1);">
             <button onclick="closeVideoModal()" style="position: absolute; top: -40px; right: 0; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; font-weight: 200;">&times;</button>
-            <iframe id="modalVideo" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="width: 100%; height: 100%; border-radius: 12px; outline: none;"></iframe>
+            <iframe id="modalVideo" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width: 100%; height: 100%; border-radius: 12px; outline: none;"></iframe>
         </div>
     </div>
     
@@ -257,7 +303,12 @@
         function openVideoModal(videoUrl) {
             const modal = document.getElementById('videoModal');
             const video = document.getElementById('modalVideo');
-            video.src = videoUrl;
+            let origin = 'https://officeaimhq.netlify.app';
+            if (window.location.origin && window.location.origin !== 'null' && !window.location.origin.startsWith('file:')) {
+                origin = window.location.origin;
+            }
+            const sep = videoUrl.includes('?') ? '&' : '?';
+            video.src = `${videoUrl}${sep}autoplay=1&enablejsapi=1&origin=${encodeURIComponent(origin)}&widget_referrer=${encodeURIComponent(origin)}`;
             modal.style.display = 'flex';
             // Disable body scroll when modal is open
             document.body.style.overflow = 'hidden';

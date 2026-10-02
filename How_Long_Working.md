@@ -38,7 +38,11 @@ Estimación del tiempo de desarrollo basado en las sesiones de trabajo registrad
 | **11/06/2026** | ~0.8h | Daily Vlog News Orchestrator pipeline, HTTP 406 fix, nested JSON parsing, NotebookLM MCP video overview generation. |
 | **11/06/2026** | ~0.2h | Refactored orchestrator.py (YouTube/Studio video resolution & HTML article formatting) |
 | **14/06/2026** | ~1.0h | React News Modal, News Hub sync, Error 153 fix, and incremental change log automation |
-| **14/06/2026** | ~1.0h | Resilient Onboarding Modal, vlogs decoupling, Module 1 lesson mapping, SQL migration, PLATFORM_MAP |\n| **TOTAL** | **~123.95 horas** | **Semana 4 de Desarrollo Intenso** |
+| **14/06/2026** | ~1.0h | Resilient Onboarding Modal, vlogs decoupling, Module 1 lesson mapping, SQL migration, PLATFORM_MAP |
+| **02/09/2026** | ~0.9h | AI Board a Resources, creación de Free Stack Kit, features.html portfolio (Case Studies + 5 Team Boxes), y sincronización de nav |
+| **05/09/2026** | ~3.3h | Built OfficeAIM Library & Loan Tracker (Gemini Vision OCR, standalone route, i18n switcher) |
+| **18/09/2026** | ~3.6h | Mascot API 404 fix (Gemini 3.5 + free key), natural TTS audio calibration, Web Blueprint Studio with Jamstack 2026 calculator, 9-step roadmap, and Excel download |
+| **TOTAL** | **~131.75 horas** | **Semana 5 de Desarrollo Intenso** |
 ---
 *Nota: Estos tiempos son aproximados basados en la duración de las sesiones de terminal.*
 

@@ -5,45 +5,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mastering Meta-Prompting: How AI is Learning to Write Its Own Prompts — OfficeAIM News</title>
-    <meta name="description" content="Meta-prompting shifts focus from content-centric prompts to structural frameworks, allowing AI to write and refine its own prompts [1, 2]. This advanced technique helps scale operations by automating prompt engineering [3, 4].">
+    <meta name="description" content="Meta-prompting shifts focus from content-centric prompts to structural frameworks, allowing AI to write and refine its own prompts. This advanced technique scales operations by automating prompt engineering.">
     <link rel="icon" type="image/png" href="../images/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="../policy.css">
     <style>
         .article-container {
-            max-width: 800px;
+            max-width: 820px;
             margin: 0 auto;
             padding: 40px 20px 100px;
         }
         .article-meta {
             display: flex;
-            gap: 20px;
+            align-items: center;
+            gap: 15px;
             color: var(--text-muted);
             font-size: 0.9rem;
             margin-bottom: 30px;
-            font-style: italic;
+            flex-wrap: wrap;
+        }
+        .article-meta .badge {
+            background: rgba(0, 242, 254, 0.1);
+            color: var(--accent-primary);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.8rem;
         }
         .article-content {
             font-family: 'Inter', sans-serif;
-            line-height: 1.8;
+            line-height: 1.85;
             color: var(--text-secondary);
             font-size: 1.1rem;
         }
-        .article-content h2, .article-content h3 {
+        .article-content h2 {
             color: white;
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-weight: 800;
-            margin-top: 40px;
+            font-size: 1.85rem;
+            margin-top: 48px;
             margin-bottom: 20px;
-            font-style: italic;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 12px;
+            letter-spacing: -0.5px;
         }
-        .article-content h2 {
-            font-size: 1.75rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding-bottom: 10px;
+        .article-content h3 {
+            color: white;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            margin-top: 32px;
+            margin-bottom: 16px;
         }
         .article-content p {
             margin-bottom: 24px;
@@ -51,15 +67,29 @@
         .article-content strong {
             color: white;
         }
+        .opening-hook {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: #ffffff;
+            font-weight: 500;
+            padding: 24px;
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.08) 0%, rgba(79, 70, 229, 0.08) 100%);
+            border-left: 4px solid var(--accent-primary);
+            border-radius: 0 16px 16px 0;
+            margin-bottom: 36px;
+        }
         .article-video-wrap {
-            margin-bottom: 50px;
+            margin-bottom: 45px;
             aspect-ratio: 16/9;
             width: 100%;
             background: #000;
             border-radius: 24px;
-            border: 1px solid rgba(0, 242, 254, 0.2);
-            box-shadow: 0 0 30px rgba(0, 242, 254, 0.05);
+            border: 1px solid rgba(0, 242, 254, 0.25);
+            box-shadow: 0 0 40px rgba(0, 242, 254, 0.08);
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .back-link {
             display: inline-flex;
@@ -69,13 +99,79 @@
             text-decoration: none;
             font-weight: 700;
             font-size: 0.9rem;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: transform 0.2s;
+            transition: transform 0.2s ease;
         }
         .back-link:hover {
             transform: translateX(-4px);
+        }
+        .takeaways-box {
+            background: linear-gradient(180deg, rgba(16, 185, 129, 0.06) 0%, rgba(6, 78, 59, 0.04) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            border-radius: 18px;
+            padding: 28px;
+            margin: 40px 0;
+        }
+        .takeaways-box h3 {
+            color: #34d399;
+            margin-top: 0;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .takeaways-box ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .takeaways-box li {
+            margin-bottom: 14px;
+            color: #e2e8f0;
+        }
+        .takeaways-box li:last-child {
+            margin-bottom: 0;
+        }
+        .cta-card {
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.1) 0%, rgba(79, 70, 229, 0.15) 100%);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            border-radius: 20px;
+            padding: 36px 30px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .cta-card h3 {
+            font-size: 1.6rem;
+            color: white;
+            margin-bottom: 12px;
+        }
+        .social-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 24px;
+        }
+        .social-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .social-pill:hover {
+            background: rgba(0, 242, 254, 0.15);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            transform: translateY(-2px);
         }
     </style>
 </head>
@@ -88,12 +184,12 @@
                 <img src="../images/favicon.png" alt="OfficeAIM Logo" class="logo-img">
             </a>
             <ul class="nav-links">
-                <li><a href="../index.html#features" class="nav-link">Features</a></li>
+                <li><a href="../features.html" class="nav-link">Features</a></li>
                 <li><a href="../board.html" class="nav-link">The Board</a></li>
                 <li><a href="../use-cases.html" class="nav-link">Learn</a></li>
                 <li><a href="../gems.html" class="nav-link">Free Tools</a></li>
                 <li><a href="../pricing.html" class="nav-link">Pricing</a></li>
-                <li><a href="../news.html" class="nav-link" style="color: var(--accent-primary);">News</a></li>
+                <li><a href="../news.html" class="nav-link active-nav" style="color: var(--accent-primary);">News</a></li>
             </ul>
             <div class="nav-ctas">
                 <a href="../construction.html" class="btn btn-primary">Enter Campus →</a>
@@ -108,30 +204,107 @@
                 ← Back to News
             </a>
             
-            <h1 class="hero-v2-title" style="font-size: 3rem; margin-bottom: 20px; text-align: left; line-height: 1.2;">
+            <h1 class="hero-v2-title" style="font-size: 2.8rem; margin-bottom: 18px; text-align: left; line-height: 1.25;">
                 Mastering Meta-Prompting: How AI is Learning to Write Its Own Prompts
             </h1>
             
             <div class="article-meta">
+                <span class="badge">Prompt Engineering</span>
                 <span>Published on June 11, 2026</span>
                 <span>•</span>
-                <span>Category: Prompt Engineering</span>
+                <span style="color: var(--accent-primary); font-weight: 600;">NotebookLM Explainer</span>
             </div>
 
-                        <div class="article-video-wrap">
-                <iframe src="https://www.youtube-nocookie.com/embed/09jIjqDO-Xg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="width: 100%; height: 100%; border: none; border-radius: 24px;"></iframe>
+            <!-- Video Player Slot -->
+            <div class="article-video-wrap" id="notebooklm-video-slot">
+                <iframe id="articleVideoFrame" src="https://www.youtube.com/embed/09jIjqDO-Xg?enablejsapi=1&origin=https://officeaimhq.netlify.app&widget_referrer=https://officeaimhq.netlify.app" title="Mastering Meta-Prompting" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width: 100%; height: 100%; border: none; border-radius: 24px;"></iframe>
             </div>
 
             <div class="article-content">
-                <h2>The Evolution of Prompt Engineering: Enter Meta-Prompting</h2>
-<p>In the rapidly evolving world of Artificial Intelligence, traditional prompt engineering is undergoing a massive transformation [4]. According to a <a href="https://hlrnet.com/sites/ai/?p=19503" target="_blank">recent curation by Hans Le Roy</a>, the industry is shifting towards an advanced technique known as <strong>Meta-Prompting</strong> [1, 6].</p>
-<h3>What is Meta-Prompting?</h3>
-<p>Unlike standard prompting methods that get bogged down in content details, meta-prompting focuses on the structural and syntactical aspects of tasks [1]. The goal is to construct a more abstract, structured way of interacting with Large Language Models (LLMs) [1]. It emphasizes the form and pattern of information over traditional content-centric methods [1].</p>
-<p>This approach gives the AI a framework, rules, and a method&mdash;ultimately producing results perfectly adapted to specific business requirements [5].</p>
-<h3>From Babysitting AI to Scaling Operations</h3>
-<p>One of the most profound benefits of meta-prompting is scalability [4]. If you want to stop babysitting your AI and actually scale your operations, you need to build systems that write prompts for you [4]. By leveraging automated LLM prompt engineering, businesses can create self-improving AI that consistently writes better prompts than human operators [2, 3].</p>
-<h3>Read More</h3>
-<p>For more daily insights on the AI revolution and structural prompting techniques, visit the <a href="https://officeaim.netlify.app/news.html" target="_blank">OfficeAIM News Hub</a>.</p>
+                <!-- Opening Hook -->
+                <div class="opening-hook">
+                    Traditional prompt engineering asks AI for answers. Meta-prompting builds architectural frameworks so AI writes, evaluates, and optimizes its own prompts.
+                </div>
+
+                <!-- Section 1 -->
+                <h2>Section 1 — The Shift from Content to Structure</h2>
+                <p>
+                    In the rapidly evolving landscape of generative AI, traditional manual prompt tweaking has hit an insurmountable ceiling. Operators spend countless hours adjusting adjectives, testing edge cases, and manually nursing LLMs to output predictable responses.
+                </p>
+                <p>
+                    <strong>Meta-prompting</strong> radically shifts the paradigm from content-centric commands to structural and syntactical architectures. Instead of telling the model what to write, you define the operational boundaries, data schemas, verification criteria, and reasoning patterns. The AI is tasked with generating the actual execution prompt dynamically, perfectly tailored to the business task at hand.
+                </p>
+
+                <!-- Section 2 -->
+                <h2>Section 2 — From Babysitting AI to Autonomous Scale</h2>
+                <p>
+                    One of the most profound bottlenecks in modern enterprises is prompt maintenance. As models are updated or context windows expand, hardcoded human prompts frequently degrade or produce subtle regressions.
+                </p>
+                <p>
+                    If your goal is to stop babysitting individual agent interactions and genuinely scale operations, your system must write its own prompts. By delegating prompt formulation to specialized meta-agents, businesses construct self-healing pipelines where the AI inspects the task, generates a targeted prompt, runs the task, and critiques the outcome against strict business rules.
+                </p>
+
+                <!-- Section 3 -->
+                <h2>Section 3 — Designing Self-Improving Prompt Pipelines</h2>
+                <p>
+                    Building a reliable meta-prompting workflow requires three core architectural pillars:
+                </p>
+                <ul style="padding-left: 20px; margin-bottom: 24px; color: var(--text-secondary);">
+                    <li style="margin-bottom: 10px;"><strong>Abstract Schema Definition:</strong> Specify strict inputs, outputs, and constraints using JSON Schema or structured markup rather than ambiguous natural language.</li>
+                    <li style="margin-bottom: 10px;"><strong>The Generator-Evaluator Loop:</strong> Deploy a two-agent pattern where Agent A drafts the operational prompt and Agent B stress-tests it against historical edge cases.</li>
+                    <li style="margin-bottom: 10px;"><strong>Persistent Memory Feedback:</strong> Log winning prompt patterns back into your vector store or database to elevate future prompt iterations automatically.</li>
+                </ul>
+
+                <!-- 3 Key Takeaways -->
+                <div class="takeaways-box">
+                    <h3>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        3 Key Takeaways
+                    </h3>
+                    <ul>
+                        <li><strong>Meta-prompts scale operations:</strong> Delegating prompt composition to AI eliminates the human bottleneck in enterprise automation.</li>
+                        <li><strong>Syntax over content:</strong> Defining structural frameworks and strict schemas produces drastically higher consistency than manual text prompts.</li>
+                        <li><strong>Self-improving loops:</strong> Combining prompt generators with automated evaluation agents creates prompts that continuously outperform human drafts.</li>
+                    </ul>
+                </div>
+
+                <!-- Closing CTA & Socials -->
+                <div class="cta-card">
+                    <h3>Master Autonomous AI Prompt Architectures</h3>
+                    <p style="color: var(--text-secondary); max-width: 580px; margin: 0 auto 24px; font-size: 1.05rem;">
+                        Ready to move beyond basic prompts? Explore the <strong>OfficeAIM</strong> platform for battle-tested agent factories, and watch our latest architectural walk-throughs on YouTube.
+                    </p>
+                    <a href="https://officeaimhq.netlify.app/" target="_blank" class="btn btn-primary" style="display: inline-block; margin-bottom: 24px;">
+                        Explore OfficeAIM Workflows →
+                    </a>
+
+                    <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px;">
+                        <span style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; display: block; margin-bottom: 12px;">
+                            Connect With Our Ecosystem
+                        </span>
+                        <div class="social-grid">
+                            <a href="https://officeaimhq.netlify.app/" target="_blank" class="social-pill">
+                                🌐 Website
+                            </a>
+                            <a href="https://www.youtube.com/@Aimora-Officeaim" target="_blank" class="social-pill">
+                                📺 YouTube
+                            </a>
+                            <a href="https://www.instagram.com/office.aim/" target="_blank" class="social-pill">
+                                📸 Instagram
+                            </a>
+                            <a href="https://www.facebook.com/profile.php?id=61584047901312" target="_blank" class="social-pill">
+                                📘 Facebook
+                            </a>
+                            <a href="https://www.linkedin.com/in/officeaimhqlearninghub2026/" target="_blank" class="social-pill">
+                                💼 LinkedIn
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
