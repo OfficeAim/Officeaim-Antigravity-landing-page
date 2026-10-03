@@ -255,6 +255,35 @@
             color: var(--accent-primary);
         }
 
+        .team-avatar-img-wrap {
+            width: 5.5rem;
+            height: 5.5rem;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0.8rem 0 1rem 0;
+            border: 2px solid rgba(0, 242, 254, 0.35);
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.15);
+            background: #111827;
+            position: relative;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .team-card:hover .team-avatar-img-wrap {
+            transform: scale(1.08);
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.4);
+        }
+
+        .team-avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
         .team-card h4 {
             font-size: 1.05rem;
             font-weight: 800;
@@ -558,108 +587,123 @@
 
             <div class="team-grid">
 
-                <!-- Team Box 1 -->
+                <!-- Team Box 1: Gema -->
                 <div class="team-card">
                     <span class="team-number-badge">#01</span>
-                    <div class="team-avatar-placeholder">
-                        👤
+                    <div class="team-avatar-img-wrap">
+                        <img src="https://lh3.googleusercontent.com/d/1qVeSx1suf01TU01h_SGecwfbieBrotw6" alt="Gema" class="team-avatar-img" referrerpolicy="no-referrer">
                     </div>
-                    <h4>Team Member #1</h4>
+                    <h4>Gema</h4>
+                    <div style="font-size: 0.7rem; font-weight: 800; color: #60a5fa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.6rem;">🎯 The Orchestrator</div>
+                    <div style="font-size: 0.6rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1.5px; font-style: italic; margin-bottom: 0.75rem;">ORIGIN: Nigerian • Free</div>
                     <div class="team-field">
                         <span class="team-field-label">Name</span>
-                        <span class="team-field-value">[PENDING]</span>
+                        <span class="team-field-value" style="color: white;">Gema (Project Manager)</span>
                     </div>
                     <div class="team-field">
                         <span class="team-field-label">Role</span>
-                        <span class="team-field-value">[PENDING]</span>
+                        <span class="team-field-value">Workflow & Task Orchestration</span>
                     </div>
                     <div class="team-field" style="border-bottom: none;">
                         <span class="team-field-label">Portfolio</span>
-                        <span class="team-field-value">[PENDING]</span>
+                        <span class="team-field-value">Student Navigator & Process Lead</span>
+                        <a href="board.html" class="team-portfolio-url">Explore on The Board →</a>
                     </div>
                 </div>
 
-                <!-- Team Box 2 -->
+                <!-- Team Box 2: Systems Architect -->
                 <div class="team-card">
                     <span class="team-number-badge">#02</span>
-                    <div class="team-avatar-placeholder">
-                        👤
+                    <div class="team-avatar-img-wrap">
+                        <img src="https://lh3.googleusercontent.com/d/1Mhs2BA3KKibMtKp0oaTuH6EJ0H0yL-1z" alt="Systems Architect" class="team-avatar-img" referrerpolicy="no-referrer">
                     </div>
-                    <h4>Team Member #2</h4>
+                    <h4>Systems Architect</h4>
+                    <div style="font-size: 0.7rem; font-weight: 800; color: #22d3ee; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.6rem;">⚙️ The Tech</div>
+                    <div style="font-size: 0.6rem; color: #a78bfa; text-transform: uppercase; letter-spacing: 1.5px; font-style: italic; margin-bottom: 0.75rem;">ORIGIN: Cybernetic • Plus</div>
                     <div class="team-field">
                         <span class="team-field-label">Name</span>
-                        <span class="team-field-value">[PENDING]</span>
+                        <span class="team-field-value" style="color: white;">Systems Architect</span>
                     </div>
                     <div class="team-field">
                         <span class="team-field-label">Role</span>
-                        <span class="team-field-value">[PENDING]</span>
+                        <span class="team-field-value">Cloud Infrastructure & API Mesh</span>
                     </div>
                     <div class="team-field" style="border-bottom: none;">
                         <span class="team-field-label">Portfolio</span>
-                        <span class="team-field-value">[PENDING]</span>
+                        <span class="team-field-value">Database Schemas & Scalability</span>
+                        <a href="board.html" class="team-portfolio-url">Explore on The Board →</a>
                     </div>
                 </div>
 
-                <!-- Team Box 3 -->
+                <!-- Team Box 3: Quality Checker -->
                 <div class="team-card">
                     <span class="team-number-badge">#03</span>
-                    <div class="team-avatar-placeholder">
-                        👤
+                    <div class="team-avatar-img-wrap">
+                        <img src="https://lh3.googleusercontent.com/d/1m1enxP1y7kj1VzWvO8VI7gXZHkxxek8c" alt="Quality Checker" class="team-avatar-img" referrerpolicy="no-referrer">
                     </div>
-                    <h4>Team Member #3</h4>
+                    <h4>Quality Checker</h4>
+                    <div style="font-size: 0.7rem; font-weight: 800; color: #34d399; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.6rem;">🛡️ The Standard</div>
+                    <div style="font-size: 0.6rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1.5px; font-style: italic; margin-bottom: 0.75rem;">ORIGIN: Swedish • Free</div>
                     <div class="team-field">
                         <span class="team-field-label">Name</span>
-                        <span class="team-field-value">[PENDING]</span>
+                        <span class="team-field-value" style="color: white;">Quality Checker</span>
                     </div>
                     <div class="team-field">
                         <span class="team-field-label">Role</span>
-                        <span class="team-field-value">[PENDING]</span>
+                        <span class="team-field-value">Rubrics & Systems Auditing</span>
                     </div>
                     <div class="team-field" style="border-bottom: none;">
                         <span class="team-field-label">Portfolio</span>
-                        <span class="team-field-value">[PENDING]</span>
+                        <span class="team-field-value">Zero-Defect QA & Pre-Launch Testing</span>
+                        <a href="board.html" class="team-portfolio-url">Explore on The Board →</a>
                     </div>
                 </div>
 
-                <!-- Team Box 4 -->
+                <!-- Team Box 4: Behavioral Psych -->
                 <div class="team-card">
                     <span class="team-number-badge">#04</span>
-                    <div class="team-avatar-placeholder">
-                        👤
+                    <div class="team-avatar-img-wrap">
+                        <img src="https://lh3.googleusercontent.com/d/1dwtTpaggtlN_a5zEMfrNFiV4889fgzpE" alt="Behavioral Psych" class="team-avatar-img" referrerpolicy="no-referrer">
                     </div>
-                    <h4>Team Member #4</h4>
+                    <h4>Behavioral Psych</h4>
+                    <div style="font-size: 0.7rem; font-weight: 800; color: #818cf8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.6rem;">🤖 The UX</div>
+                    <div style="font-size: 0.6rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1.5px; font-style: italic; margin-bottom: 0.75rem;">ORIGIN: Kenyan • Free</div>
                     <div class="team-field">
                         <span class="team-field-label">Name</span>
-                        <span class="team-field-value">[PENDING]</span>
+                        <span class="team-field-value" style="color: white;">Behavioral Psych</span>
                     </div>
                     <div class="team-field">
                         <span class="team-field-label">Role</span>
-                        <span class="team-field-value">[PENDING]</span>
+                        <span class="team-field-value">Cognitive UX & Retention Triggers</span>
                     </div>
                     <div class="team-field" style="border-bottom: none;">
                         <span class="team-field-label">Portfolio</span>
-                        <span class="team-field-value">[PENDING]</span>
+                        <span class="team-field-value">Emotional Architecture & Flow Design</span>
+                        <a href="board.html" class="team-portfolio-url">Explore on The Board →</a>
                     </div>
                 </div>
 
-                <!-- Team Box 5 -->
+                <!-- Team Box 5: Solutions Engineer -->
                 <div class="team-card">
                     <span class="team-number-badge">#05</span>
-                    <div class="team-avatar-placeholder">
-                        👤
+                    <div class="team-avatar-img-wrap">
+                        <img src="https://lh3.googleusercontent.com/d/1aa64exG3P-qrdcIl2pG-Q05rBROsoO5e" alt="Solutions Engineer" class="team-avatar-img" referrerpolicy="no-referrer">
                     </div>
-                    <h4>Team Member #5</h4>
+                    <h4>Solutions Engineer</h4>
+                    <div style="font-size: 0.7rem; font-weight: 800; color: #f43f5e; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.6rem;">🔧 The Fixer</div>
+                    <div style="font-size: 0.6rem; color: #a78bfa; text-transform: uppercase; letter-spacing: 1.5px; font-style: italic; margin-bottom: 0.75rem;">ORIGIN: Japanese • Plus</div>
                     <div class="team-field">
                         <span class="team-field-label">Name</span>
-                        <span class="team-field-value">[PENDING]</span>
+                        <span class="team-field-value" style="color: white;">Solutions Engineer</span>
                     </div>
                     <div class="team-field">
                         <span class="team-field-label">Role</span>
-                        <span class="team-field-value">[PENDING]</span>
+                        <span class="team-field-value">Conflict Resolution & Automation</span>
                     </div>
                     <div class="team-field" style="border-bottom: none;">
                         <span class="team-field-label">Portfolio</span>
-                        <span class="team-field-value">[PENDING]</span>
+                        <span class="team-field-value">Enterprise Custom Integrations</span>
+                        <a href="board.html" class="team-portfolio-url">Explore on The Board →</a>
                     </div>
                 </div>
 

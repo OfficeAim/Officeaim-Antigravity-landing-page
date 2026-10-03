@@ -1,6 +1,26 @@
 // Shared News and Vlog Data for OfficeAIM Hub Pages
 export const vlogs = [
     {
+        id: 'ideogram-4-5-consistent-ai-image-editing',
+        title: 'Ideogram 4.5 and the Next AI Shift: Editing Images Without the Drift',
+        date: 'October 03, 2026',
+        category: 'Generative Visuals',
+        description: 'AI image editing moves beyond one-shot generation. Discover how Ideogram 4.5’s consistency focus empowers repeatable creative workflows.',
+        image: '/hub/images/module1_hero.png',
+        duration: '5:30',
+        youtubeId: 'mNW3RlNsP5Q',
+        articleContent: `<h2>Why Consistency Matters More Than a Perfect First Draft</h2>
+<p>For creators, the real workflow is rarely “generate once and publish.” It requires iterating concepts, correcting details, updating branding, and producing final client-ready versions without random drift.</p>
+<h2>Three Key Takeaways</h2>
+<ol>
+<li><strong>Test the second, third, and fourth edit:</strong> True quality is handling intentional adjustments without unintended alterations.</li>
+<li><strong>High-resolution control is a workflow feature:</strong> Zoom editing and reframing eliminate the need to regenerate whole assets.</li>
+<li><strong>AI tools are becoming persistent:</strong> Systems are preserving context across turns and operating autonomously in the background.</li>
+</ol>
+<h2>A Simple Evaluation Checklist</h2>
+<p>Make one local change, make a second change elsewhere, inspect untouched details, compare against original seed, and quantify required touch-up time.</p>`
+    },
+    {
         id: 'openai-dots-always-on-ai-agents',
         title: 'OpenAI Dots: The AI Agent That Keeps Working After You Log Off?',
         date: 'October 02, 2026',

@@ -1,15 +1,9 @@
 {
-  "session_start": "2026-10-01T15:49:00+02:00",
+  "session_start": "2026-10-03T09:02:30+02:00",
   "changes": [
-    "Created news/100-ai-websites-find-the-tools-that-matter.html following Antigravity Blog Post Outline",
-    "Added 100 AI Websites card to news.html grid",
-    "Synchronized hub/src/pages/newsData.js with new article data",
-    "Embedded YouTube NotebookLM video OkaW3P2zuUQ in article page, news.html card thumbnail, and hub data",
-    "Reformatted news/meta-prompting.html and news/ai-mvp-days.html with NotebookLM Explainer layout, badges, opening hooks, takeaways, and CTA cards",
-    "Updated news.html cards with NotebookLM Explainer tags and matching glowing card borders",
-    "Cleaned up all bracketed citation numbers ([1, 2], [3, 4], etc.) from news cards synopses and hub data",
-    "Created news/openai-dots-always-on-ai-agents.html with NotebookLM video dfXsIYPj3Pw, 3 takeaways, and social CTA",
-    "Added OpenAI Dots card to news.html grid with high-res YouTube thumbnail and in-page modal playback",
-    "Synchronized hub/src/pages/newsData.js with OpenAI Dots data"
+    "Created news/ideogram-4-5-consistent-ai-image-editing.html with video mNW3RlNsP5Q, 5-step creative workflow, takeaways, checklist, and social links",
+    "Added Ideogram 4.5 card to news.html grid with high-res YouTube thumbnail and in-page modal trigger",
+    "Synchronized hub/src/pages/newsData.js with Ideogram 4.5 entry and metadata",
+    "Populated THE BUILDERS (Core Team) section on features.html with 5 top neural network agents (Gema, Systems Architect, Quality Checker, Behavioral Psych, Solutions Engineer) including high-res circular avatar frames, official roles, origins, and direct links to The Board"
   ]
 }
