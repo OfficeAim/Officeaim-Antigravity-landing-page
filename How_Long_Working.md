@@ -42,7 +42,11 @@ Estimación del tiempo de desarrollo basado en las sesiones de trabajo registrad
 | **02/09/2026** | ~0.9h | AI Board a Resources, creación de Free Stack Kit, features.html portfolio (Case Studies + 5 Team Boxes), y sincronización de nav |
 | **05/09/2026** | ~3.3h | Built OfficeAIM Library & Loan Tracker (Gemini Vision OCR, standalone route, i18n switcher) |
 | **18/09/2026** | ~3.6h | Mascot API 404 fix (Gemini 3.5 + free key), natural TTS audio calibration, Web Blueprint Studio with Jamstack 2026 calculator, 9-step roadmap, and Excel download |
-| **TOTAL** | **~131.75 horas** | **Semana 5 de Desarrollo Intenso** |
+| **01/10/2026** | ~2.0h | 100 AI Websites news article, YouTube embed OkaW3P2zuUQ, video modal player & thumbnail sync |
+| **02/10/2026** | ~1.0h | OpenAI Dots article, layout modernization & news hub sync |
+| **03/10/2026** | ~1.0h | Ideogram 4.5 article, features.html THE BUILDERS core team (5 neural agents), GitHub PAT push |
+| **04/10/2026** | ~1.5h | Newsroom Telemetry widget (SVG area chart + ranking), Netlify Secrets Scanner fix, live Mascot production activation |
+| **TOTAL** | **~137.25 horas** | **Semana 6 de Desarrollo Intenso** |
 ---
 *Nota: Estos tiempos son aproximados basados en la duración de las sesiones de terminal.*
 
