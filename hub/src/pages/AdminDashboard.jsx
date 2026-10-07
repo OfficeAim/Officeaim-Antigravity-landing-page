@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Shield, ShieldCheck, Power, Search, AlertTriangle, TrendingUp, Bot, Sparkles, RefreshCcw, BookOpen, Clock, MessageSquare, Send, ChevronRight, X, Activity, Award, HeadphonesIcon, DollarSign, Cpu, BarChart3, Wallet, Pencil, Check, ChevronDown, ChevronUp, Globe, Server, Zap, Mail, ExternalLink, Copy, CheckCircle, Inbox, Bug, ClipboardCheck } from 'lucide-react';
+import { Users, Shield, ShieldCheck, Power, Search, AlertTriangle, TrendingUp, Bot, Sparkles, RefreshCcw, BookOpen, Clock, MessageSquare, Send, ChevronRight, X, Activity, Award, HeadphonesIcon, DollarSign, Cpu, BarChart3, Wallet, Pencil, Check, ChevronDown, ChevronUp, Globe, Server, Zap, Mail, ExternalLink, Copy, CheckCircle, Inbox, Bug, ClipboardCheck, Newspaper } from 'lucide-react';
 import MascotAssistant from '../components/MascotAssistant';
+import NewsManager from '../components/NewsManager';
 
 const AdminDashboard = ({ profile }) => {
     const [users, setUsers] = useState([]);
@@ -525,6 +526,13 @@ const AdminDashboard = ({ profile }) => {
                     </div>
 
                     <div className="mb-4">
+                        <span className="text-[8px] font-black text-text-muted uppercase tracking-widest px-3 italic">Content</span>
+                        <button onClick={() => setActiveTab('news')} className={`w-full flex items-center gap-3 px-3 py-2.5 mt-1 rounded-xl font-bold text-xs transition-all ${activeTab === 'news' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30' : 'text-text-muted hover:text-white hover:bg-white/5'}`}>
+                            <Newspaper className="h-4 w-4 text-cyan-400" /> Newsroom
+                        </button>
+                    </div>
+
+                    <div className="mb-4">
                         <span className="text-[8px] font-black text-text-muted uppercase tracking-widest px-3 italic">Operations</span>
                         <button onClick={() => setActiveTab('support')} className={`w-full flex items-center justify-between px-3 py-2.5 mt-1 rounded-xl font-bold text-xs transition-all ${activeTab === 'support' ? 'bg-white/10 text-white border border-white/5' : 'text-text-muted hover:text-white hover:bg-white/5'}`}>
                             <div className="flex items-center gap-3"><HeadphonesIcon className="h-4 w-4" /> Support</div>
@@ -621,8 +629,16 @@ const AdminDashboard = ({ profile }) => {
                     </div>
                 )}
 
+                {/* Newsroom Tab View */}
+                {activeTab === 'news' && (
+                    <div className="flex-1 overflow-y-auto pr-1" style={{ scrollbarWidth: 'thin' }}>
+                        <NewsManager />
+                    </div>
+                )}
+
                 {/* MIDDLE ROW: 2 Columns */}
-                <div className="flex gap-6 flex-1 min-h-0 overflow-hidden">
+                {activeTab !== 'news' && (
+                    <div className="flex gap-6 flex-1 min-h-0 overflow-hidden">
 
                     {/* LEFT COL (60%): User List */}
                     {(activeTab === 'dashboard' || activeTab === 'users') && (
@@ -782,6 +798,7 @@ const AdminDashboard = ({ profile }) => {
                         </div>
                     )}
                 </div>
+                )}
             </div>
 
             {/* Mascot Assistant as Admin Coach */}

@@ -4,6 +4,7 @@ import { supabase } from './lib/supabase';
 
 // Pages
 import Login from './pages/Login';
+import AdminLogin from './pages/AdminLogin';
 import MainLayout from './components/MainLayout';
 import Dashboard from './pages/Dashboard';
 import Classroom from './pages/Classroom';
@@ -19,6 +20,7 @@ import VlogNewsPage from './pages/VlogNewsPage';
 import LibraryTracker from './pages/LibraryTracker';
 import MascotAssistant from './components/MascotAssistant';
 import { Toaster } from 'react-hot-toast';
+import { NewsProvider } from './context/NewsContext';
 
 // Hardcoded admin whitelist — these users always get admin access
 const KNOWN_ADMINS = [
@@ -57,14 +59,15 @@ const AdminGuard = ({ session, profile, setProfile }) => {
           .eq('id', userId)
           .maybeSingle();
         if (data) {
-          // Override role if user is in whitelist
-          const adminProfile = (isWhitelisted || data.role === 'admin') ? { ...data, role: 'admin' } : data;
+          // Override role if user is in whitelist or has superadmin/admin role
+          const isRoleAdmin = data.role === 'superadmin' || data.role === 'admin';
+          const adminProfile = (isWhitelisted || isRoleAdmin) ? { ...data, role: data.role || 'superadmin' } : data;
           setFreshProfile(adminProfile);
           setProfile(adminProfile);
-          setIsAdmin(adminProfile.role === 'admin');
+          setIsAdmin(isWhitelisted || isRoleAdmin);
         } else if (isWhitelisted) {
           // No profile but whitelisted — grant admin anyway
-          const fallback = { id: userId, role: 'admin', full_name: session.user.user_metadata?.full_name || 'Admin' };
+          const fallback = { id: userId, role: 'superadmin', full_name: session.user.user_metadata?.full_name || 'Super Admin' };
           setFreshProfile(fallback);
           setProfile(fallback);
           setIsAdmin(true);
@@ -258,15 +261,22 @@ const App = () => {
   const isCanceled = profile?.membership_status === 'canceled';
 
   return (
-    <Router>
-      <Toaster position="top-right" reverseOrder={false} toastOptions={{ className: 'glass-card border-white/10 text-white text-[12px] italic font-bold', style: { background: 'rgba(7, 10, 18, 0.9)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255, 255, 255, 0.1)', color: '#fff' } }} />
-      <div className={isWidgetRoute ? "min-h-screen bg-transparent text-white font-plus-jakarta" : "min-h-screen bg-[#070A12] text-white font-plus-jakarta"}>
-        <Routes>
-          {/* Main Redirect */}
-          <Route path="/hub" element={isPreview ? <Navigate to="/hub/dashboard" /> : (!session ? <Navigate to="/hub/login" /> : <Navigate to="/hub/dashboard" />)} />
+    <NewsProvider>
+      <Router>
+        <Toaster position="top-right" reverseOrder={false} toastOptions={{ className: 'glass-card border-white/10 text-white text-[12px] italic font-bold', style: { background: 'rgba(7, 10, 18, 0.9)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255, 255, 255, 0.1)', color: '#fff' } }} />
+        <div className={isWidgetRoute ? "min-h-screen bg-transparent text-white font-plus-jakarta" : "min-h-screen bg-[#070A12] text-white font-plus-jakarta"}>
+          <Routes>
+            {/* Super Admin Authentication Routes */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/hub/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<Navigate to="/hub/admin" />} />
+            <Route path="/news" element={<Navigate to="/hub/vlog-news" />} />
 
-          {/* Specific Routes with /hub prefix */}
-          <Route path="/hub/login" element={(session && !isPreview) ? <Navigate to="/hub/dashboard" /> : <Login />} />
+            {/* Main Redirect */}
+            <Route path="/hub" element={isPreview ? <Navigate to="/hub/dashboard" /> : (!session ? <Navigate to="/hub/login" /> : <Navigate to="/hub/dashboard" />)} />
+
+            {/* Specific Routes with /hub prefix */}
+            <Route path="/hub/login" element={(session && !isPreview) ? <Navigate to="/hub/dashboard" /> : <Login />} />
 
           {/* PROTECTED ROUTES WRAPPED IN MAIN LAYOUT */}
           <Route element={
@@ -311,12 +321,13 @@ const App = () => {
               <AdminGuard session={session} profile={profile} setProfile={setProfile} />
           } />
 
-          {/* Fallback for the root or mistakes */}
-          <Route path="/" element={<Navigate to="/hub/login" />} />
-          <Route path="*" element={<Navigate to="/hub/login" />} />
-        </Routes>
-      </div>
-    </Router>
+            {/* Fallback for the root or mistakes */}
+            <Route path="/" element={<Navigate to="/hub/login" />} />
+            <Route path="*" element={<Navigate to="/hub/login" />} />
+          </Routes>
+        </div>
+      </Router>
+    </NewsProvider>
   );
 };
 

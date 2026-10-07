@@ -8,3 +8,4 @@ dist/
 Modulos gratis/
 *.zip
 *.mov
+supabase/update_admin_password.sql
