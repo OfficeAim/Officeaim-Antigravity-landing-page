@@ -93,6 +93,20 @@ const AdminGuard = ({ session, profile, setProfile }) => {
   return <AdminDashboard profile={freshProfile} />;
 };
 
+const ResourceRedirect = ({ to }) => {
+  useEffect(() => {
+    window.location.href = to;
+  }, [to]);
+  return (
+    <div className="h-screen w-full flex items-center justify-center bg-[#070A12] text-white">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-cyan-400 mx-auto mb-4"></div>
+        <p className="text-xs font-mono uppercase tracking-widest text-cyan-400">Loading Public Resource...</p>
+      </div>
+    </div>
+  );
+};
+
 const App = () => {
   const [session, setSession] = useState(null);
   const [profile, setProfile] = useState(null);
@@ -302,7 +316,7 @@ const App = () => {
             <Route path="/hub/agent-test" element={<AgentTestConsole />} />
             <Route path="/hub/projects" element={<MyProjects />} />
             <Route path="/hub/lounge" element={<Lounge profile={profile} />} />
-            <Route path="/hub/library" element={<LibraryTracker />} />
+            <Route path="/hub/library" element={<ResourceRedirect to="/resources/library-tracker.html" />} />
           </Route>
 
           {/* PUBLIC ROUTES WITH MAIN LAYOUT (Guest access) */}
@@ -312,9 +326,9 @@ const App = () => {
 
           <Route path="/hub/widget" element={<MascotAssistant profile={{ role: 'guest' }} />} />
 
-          {/* PUBLIC STANDALONE UTILITY ROUTE (No Auth Required - Anyone can use) */}
-          <Route path="/hub/library-tracker" element={<LibraryTracker standalone={true} />} />
-          <Route path="/library-tracker" element={<LibraryTracker standalone={true} />} />
+          {/* PUBLIC STANDALONE UTILITY ROUTE (Redirected to public standalone resource) */}
+          <Route path="/hub/library-tracker" element={<ResourceRedirect to="/resources/library-tracker.html" />} />
+          <Route path="/library-tracker" element={<ResourceRedirect to="/resources/library-tracker.html" />} />
 
           <Route path="/hub/admin" element={
             (isPreview) ? <AdminDashboard profile={{ full_name: 'Admin Rody' }} /> :

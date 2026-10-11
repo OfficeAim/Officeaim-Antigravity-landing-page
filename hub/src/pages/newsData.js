@@ -1,6 +1,54 @@
 // Shared News and Vlog Data for OfficeAIM Hub Pages
 export const vlogs = [
     {
+        id: 'nano-banana-2-1-openbot-ai-tools',
+        title: 'Google Nano Banana 2.1 and OpenBot: The New AI Tools for Visuals and Teamwork',
+        date: 'October 10, 2026',
+        category: 'AI Workflow Strategy',
+        description: 'Google’s Nano Banana 2.1 brings stronger image generation and multi-image fusion, while OpenBot organizes AI agents in a shared workspace. Here’s what to know.',
+        image: 'https://img.youtube.com/vi/B4X9izGan8k/hqdefault.jpg',
+        duration: '3:00',
+        youtubeId: 'B4X9izGan8k',
+        articleContent: `<h2>Opening Hook</h2>
+<p>AI work is moving beyond one-shot prompts: image creators can iterate with more control, and agent workspaces can divide a job among several assistants. Nano Banana 2.1 leads the visual front, complemented by OpenBot for multi-agent execution.</p>
+<h2>Three Key Takeaways</h2>
+<ol>
+<li><strong>Google documents improved prompt adherence, text rendering, and character consistency</strong> in Nano Banana 2.1, with 1K–4K output options.</li>
+<li><strong>Multi-image fusion:</strong> Google documents up to 14 reference images, with specific limits for character consistency and object fidelity.</li>
+<li><strong>OpenBot is a local-first, open-source workspace</strong> that organizes existing AI models into role-based agents without creating its own base model.</li>
+</ol>
+<h2>What’s New in Nano Banana 2.1?</h2>
+<p>Covers enhanced image quality, strict instruction-following, infographic text layouts, multi-turn editing, and reference-image fusion. Keep in mind these are documented capabilities—human review remains mandatory.</p>
+<h2>OpenBot Turns Separate Assistants into a Team</h2>
+<p>OpenBot defines distinct roles, individual context workspaces, parallel background tasks, and a shared team collaboration surface. Users connect their own existing model providers.</p>
+<h2>Which Tool Fits Your Workflow?</h2>
+<p>Choose <strong>Nano Banana 2.1</strong> for producing and revising high-precision visuals. Choose <strong>OpenBot</strong> for coordinating multi-step work across specialized AI agents.</p>
+<p>Follow OfficeAIM for practical AI updates: <a href="https://officeaimhq.netlify.app/" target="_blank">Website</a> · <a href="https://www.youtube.com/@Aimora-Officeaim" target="_blank">YouTube</a> · <a href="https://www.instagram.com/office.aim/" target="_blank">Instagram</a></p>`
+    },
+    {
+        id: 'hyperframes-studio-open-source-ai-video-editor',
+        title: 'This Open-Source AI Video Editor Lets You Stay in the Director’s Seat',
+        date: 'October 09, 2026',
+        category: 'Generative AI',
+        description: 'AI can draft scripts and assemble videos, but HyperFrames Studio is built to let an agent do the building while you direct the revisions yourself.',
+        image: 'https://img.youtube.com/vi/-UZKFPYCTsU/hqdefault.jpg',
+        duration: '4:15',
+        youtubeId: '-UZKFPYCTsU',
+        articleContent: `<h2>An AI Agent, With a Human Still Guiding the Edit</h2>
+<p>HyperFrames’ official site calls Studio “the video editor built for agents.” The workflow starts with a prompt description of the video. An agent on your computer builds it; you then direct revisions by typing, pointing at the picture, drawing, or commenting—no code required.</p>
+<h2>Three Key Takeaways</h2>
+<ol>
+<li><strong>Iterative, agent-assisted video creation:</strong> Creators guide revisions rather than relying on an uncontrollable one-shot prompt.</li>
+<li><strong>Apache-2.0 open-source license:</strong> Desktop versions are available for macOS and Linux, with Windows coming soon.</li>
+<li><strong>AI assistance still requires human direction:</strong> Review claims, timing, visual continuity, and final output before publishing.</li>
+</ol>
+<h2>Open Source on Mac and Linux</h2>
+<p>HyperFrames is published under the Apache-2.0 license. In parallel, Mac copilots like SpeechShield are bringing live contextual talking points to interviews and meetings, showcasing AI’s transition into real-time conversation.</p>
+<h2>The Bigger Question</h2>
+<p>The real question is not whether an AI agent can assemble a video. It is how much creative control you want to keep while it works. Would you let an agent handle the first cut if you direct the details?</p>
+<p>Follow OfficeAIM for practical AI updates: <a href="https://officeaimhq.netlify.app/" target="_blank">Website</a> · <a href="https://www.youtube.com/@Aimora-Officeaim" target="_blank">YouTube</a> · <a href="https://www.instagram.com/office.aim/" target="_blank">Instagram</a></p>`
+    },
+    {
         id: 'ideogram-4-5-consistent-ai-image-editing',
         title: 'Ideogram 4.5 and the Next AI Shift: Editing Images Without the Drift',
         date: 'October 03, 2026',

@@ -5,6 +5,280 @@ import { supabase } from '../lib/supabase';
 import { extractYouTubeId, getYouTubeEmbedUrl, getYouTubeThumbnailUrl } from '../lib/youtube';
 import { vlogs as fallbackVlogs } from './newsData';
 
+// Helper to extract clean excerpt for feed card, stripping repeated titles/metadata
+export const getCleanExcerpt = (rawText, title = '') => {
+    if (!rawText) return '';
+    const normalizedTitle = (title || '').trim().toLowerCase();
+    
+    const lines = rawText.split(/\r?\n/).map(l => l.trim());
+    const cleanLines = [];
+    
+    for (const line of lines) {
+        if (!line) continue;
+        const lower = line.toLowerCase();
+        // Skip metadata and redundant title lines
+        if (lower === normalizedTitle) continue;
+        if (lower.startsWith('title:') || lower.startsWith('seo title:') || lower.startsWith('# ')) continue;
+        if (lower.startsWith('category:') || lower.startsWith('categoría:')) continue;
+        if (lower.startsWith('date:') || lower.startsWith('fecha:')) continue;
+        if (lower.startsWith('officeaim newsroom metadata:') || lower.startsWith('metadata:')) continue;
+        if (lower.startsWith('---') || lower.startsWith('===')) continue;
+        if (lower.startsWith('https://youtu.be') || lower.startsWith('https://www.youtube.com')) continue;
+        if (lower.includes('[insert_') && lower.includes('_embed_here]')) continue;
+        
+        // Strip inline markdown symbols for the card excerpt
+        const stripped = line
+            .replace(/^[#*_\-\•\d\.\s]+/, '')
+            .replace(/\*\*(.*?)\*\*/g, '$1')
+            .replace(/\*(.*?)\*/g, '$1')
+            .replace(/\[(.*?)\]\(.*?\)/g, '$1')
+            .trim();
+            
+        if (stripped.length > 20) {
+            cleanLines.push(stripped);
+            if (cleanLines.join(' ').length > 180) break;
+        }
+    }
+    
+    return cleanLines.join(' ') || rawText.slice(0, 160);
+};
+
+// Inline markdown formatting helper
+const renderInline = (text) => {
+    if (!text) return null;
+    const regex = /(\*\*.*?\*\*|\*.*?\*|\[.*?\]\(.*?\)|\bhttps?:\/\/[^\s]+)/g;
+    const parts = text.split(regex);
+    
+    return parts.map((part, idx) => {
+        if (!part) return null;
+        if (part.startsWith('**') && part.endsWith('**')) {
+            return <strong key={idx} className="text-white font-bold">{part.slice(2, -2)}</strong>;
+        }
+        if (part.startsWith('*') && part.endsWith('*') && part.length > 2) {
+            return <em key={idx} className="text-cyan-200/90 italic">{part.slice(1, -1)}</em>;
+        }
+        const linkMatch = part.match(/^\[(.*?)\]\((.*?)\)$/);
+        if (linkMatch) {
+            return (
+                <a 
+                    key={idx} 
+                    href={linkMatch[2]} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-cyan-400 hover:text-orange-400 underline decoration-cyan-500/40 hover:decoration-orange-400 font-medium transition-colors"
+                >
+                    {linkMatch[1]}
+                </a>
+            );
+        }
+        if (/^https?:\/\/[^\s]+$/.test(part)) {
+            return (
+                <a 
+                    key={idx} 
+                    href={part} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-cyan-400 hover:text-orange-400 underline decoration-cyan-500/40 font-mono text-xs break-all transition-colors"
+                >
+                    {part}
+                </a>
+            );
+        }
+        return part;
+    });
+};
+
+// Rich Dark Tech renderer for transmission body
+const TransmissionArticleBody = ({ content, title, youtubeUrl }) => {
+    if (!content) return null;
+
+    const normalizedTitle = (title || '').trim().toLowerCase();
+    const cleanYtUrl = (youtubeUrl || '').trim();
+
+    // 1. Normalize line endings and fix orphan bullets
+    let text = content.replace(/\r\n/g, '\n');
+    text = text.replace(/(?:^|\n)\s*([•\-\*])\s*\n+([^\n]+)/g, '\n$1 $2');
+    text = text.replace(/(?:^|\n)\s*(\d+\.)\s*\n+([^\n]+)/g, '\n$1 $2');
+
+    const rawLines = text.split('\n');
+    const filteredLines = [];
+
+    let hasEncounteredBody = false;
+    for (const rawLine of rawLines) {
+        const line = rawLine.trim();
+        const lower = line.toLowerCase();
+        
+        if (!hasEncounteredBody) {
+            if (!line) continue;
+            if (lower === normalizedTitle) continue;
+            if (lower.startsWith('title:') || lower.startsWith('seo title:') || lower.startsWith('# ')) continue;
+            if (lower.startsWith('category:') || lower.startsWith('categoría:')) continue;
+            if (lower.startsWith('date:') || lower.startsWith('fecha:')) continue;
+            if (lower.startsWith('officeaim newsroom metadata:') || lower.startsWith('metadata:')) continue;
+            if (lower.startsWith('---') || lower.startsWith('===')) continue;
+            if (lower.includes('[insert_') && lower.includes('_embed_here]')) continue;
+            hasEncounteredBody = true;
+        }
+
+        // Filter standalone youtube link if it's already rendered in the media iframe
+        if (cleanYtUrl && (line === cleanYtUrl || line.replace('http:', 'https:') === cleanYtUrl)) {
+            continue;
+        }
+
+        filteredLines.push(rawLine);
+    }
+
+    const blocks = [];
+    let currentList = null;
+
+    const flushList = () => {
+        if (currentList) {
+            blocks.push({ type: 'list', items: currentList });
+            currentList = null;
+        }
+    };
+
+    for (let i = 0; i < filteredLines.length; i++) {
+        const line = filteredLines[i].trim();
+
+        if (!line) {
+            flushList();
+            continue;
+        }
+
+        if (line.startsWith('## ') || line.startsWith('### ')) {
+            flushList();
+            const isH2 = line.startsWith('## ');
+            const headingText = line.replace(/^#{2,3}\s+/, '');
+            blocks.push({ type: isH2 ? 'h2' : 'h3', text: headingText });
+            continue;
+        }
+
+        if (/^(?:Core mechanics|Key takeaways|Practical takeaways|Frequently Asked Questions|FAQ|Sources|Continue with Officeaim|The operational shift):/i.test(line) ||
+            /^(?:Frequently Asked Questions|Sources|Continue with Officeaim)$/i.test(line)) {
+            flushList();
+            blocks.push({ type: 'h2', text: line });
+            continue;
+        }
+
+        if (/^[A-Z¿][^.!?]*\?$/.test(line) && line.length < 120) {
+            flushList();
+            blocks.push({ type: 'faq-question', text: line });
+            continue;
+        }
+
+        const numMatch = line.match(/^(\d+)\.\s+(.*)$/);
+        if (numMatch) {
+            flushList();
+            blocks.push({ type: 'numbered', num: numMatch[1], text: numMatch[2] });
+            continue;
+        }
+
+        const bulletMatch = line.match(/^[•\-\*]\s+(.*)$/);
+        if (bulletMatch) {
+            if (!currentList) currentList = [];
+            currentList.push(bulletMatch[1]);
+            continue;
+        }
+
+        if (/^(?:Editorial note|Nota editorial):/i.test(line)) {
+            flushList();
+            blocks.push({ type: 'callout-editorial', text: line.replace(/^(?:Editorial note|Nota editorial):\s*/i, '') });
+            continue;
+        }
+        if (/^(?:Officeaim analysis|Análisis Officeaim):/i.test(line)) {
+            flushList();
+            blocks.push({ type: 'callout-analysis', text: line.replace(/^(?:Officeaim analysis|Análisis Officeaim):\s*/i, '') });
+            continue;
+        }
+
+        flushList();
+        blocks.push({ type: 'p', text: line });
+    }
+    flushList();
+
+    return (
+        <div className="space-y-4 font-plus-jakarta">
+            {blocks.map((block, idx) => {
+                if (block.type === 'h2') {
+                    return (
+                        <h2 key={idx} className="text-xl md:text-2xl font-black italic text-white tracking-tight pt-6 pb-2 border-b border-cyan-500/20 flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
+                            {renderInline(block.text)}
+                        </h2>
+                    );
+                }
+                if (block.type === 'h3') {
+                    return (
+                        <h3 key={idx} className="text-lg font-extrabold italic text-cyan-300 pt-4 pb-1">
+                            {renderInline(block.text)}
+                        </h3>
+                    );
+                }
+                if (block.type === 'faq-question') {
+                    return (
+                        <div key={idx} className="pt-4 pb-1">
+                            <h4 className="text-base font-bold text-white flex items-center gap-2">
+                                <Sparkles className="w-4 h-4 text-cyan-400 shrink-0" />
+                                {renderInline(block.text)}
+                            </h4>
+                        </div>
+                    );
+                }
+                if (block.type === 'numbered') {
+                    return (
+                        <div key={idx} className="flex items-start gap-3.5 p-4 my-2.5 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-cyan-500/20 transition-all">
+                            <span className="px-2.5 py-1 rounded-lg bg-cyan-500/15 border border-cyan-500/30 text-cyan-400 text-xs font-black shrink-0">
+                                {block.num}
+                            </span>
+                            <div className="text-sm text-slate-300 leading-relaxed pt-0.5">
+                                {renderInline(block.text)}
+                            </div>
+                        </div>
+                    );
+                }
+                if (block.type === 'list') {
+                    return (
+                        <ul key={idx} className="space-y-2.5 my-3 pl-1">
+                            {block.items.map((item, itemIdx) => (
+                                <li key={itemIdx} className="flex items-start gap-3 text-sm text-slate-300 leading-relaxed">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-2 shrink-0 shadow-[0_0_8px_rgba(0,240,255,0.6)]"></span>
+                                    <span>{renderInline(item)}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    );
+                }
+                if (block.type === 'callout-editorial') {
+                    return (
+                        <div key={idx} className="p-4 my-5 rounded-2xl bg-orange-500/10 border-l-4 border-orange-500 text-orange-100 text-sm leading-relaxed">
+                            <span className="font-bold text-orange-400 uppercase text-[10px] tracking-widest block mb-1">
+                                Editorial Note
+                            </span>
+                            {renderInline(block.text)}
+                        </div>
+                    );
+                }
+                if (block.type === 'callout-analysis') {
+                    return (
+                        <div key={idx} className="p-4 my-5 rounded-2xl bg-cyan-500/10 border-l-4 border-cyan-400 text-cyan-100 text-sm leading-relaxed">
+                            <span className="font-bold text-cyan-400 uppercase text-[10px] tracking-widest block mb-1">
+                                OfficeAIM Analysis
+                            </span>
+                            {renderInline(block.text)}
+                        </div>
+                    );
+                }
+                return (
+                    <p key={idx} className="text-slate-300 text-sm leading-relaxed">
+                        {renderInline(block.text)}
+                    </p>
+                );
+            })}
+        </div>
+    );
+};
+
 const VlogNewsPage = ({ profile }) => {
     const [newsItems, setNewsItems] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -212,7 +486,7 @@ const VlogNewsPage = ({ profile }) => {
                                                     {item.title}
                                                 </h3>
                                                 <p className="text-sm text-text-muted mb-4 line-clamp-3 leading-relaxed">
-                                                    {item.description}
+                                                    {getCleanExcerpt(item.description, item.title)}
                                                 </p>
                                             </div>
                                         </div>
@@ -304,8 +578,12 @@ const VlogNewsPage = ({ profile }) => {
                                     {selectedNews.title}
                                 </h1>
 
-                                <div className="text-slate-300 text-sm leading-relaxed whitespace-pre-line mb-6">
-                                    {selectedNews.description}
+                                <div className="mb-6">
+                                    <TransmissionArticleBody 
+                                        content={selectedNews.description} 
+                                        title={selectedNews.title} 
+                                        youtubeUrl={selectedNews.youtube_url} 
+                                    />
                                 </div>
 
                                 {selectedNews.articleContent && (

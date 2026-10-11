@@ -276,13 +276,6 @@ const MainLayout = ({ profile }) => {
                         >
                             <Newspaper className="h-4 w-4" /> AI News Hub
                         </button>
-
-                        <button
-                            onClick={() => navigate('/hub/library')}
-                            className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all text-sm font-black italic ${location.pathname.includes('/library') ? 'bg-cyan-500/10 text-cyan-400 shadow-inner border border-cyan-500/20' : 'text-text-muted hover:bg-white/5 hover:text-white'}`}
-                        >
-                            <BookOpen className="h-4 w-4" /> Library & Loans
-                        </button>
                     </nav>
 
                     {/* Dynamic Course Curriculum */}
