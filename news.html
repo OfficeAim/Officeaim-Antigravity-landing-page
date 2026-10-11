@@ -432,15 +432,19 @@
             <h1 class="hero-v2-title" style="font-size: 3rem; margin-bottom: 20px;">
                 OfficeAIM <span style="color: var(--accent-primary);">News & Vlogs</span>
             </h1>
-            <p class="hero-v2-subtitle" style="margin: 0 auto 40px; max-width: 600px;">
+            <p class="hero-v2-subtitle" style="margin: 0 auto 24px; max-width: 600px;">
                 Stay updated with the latest AI trends, platform updates, and strategic insights directly from our engineering and marketing teams.
             </p>
+            <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-primary); background: rgba(0, 242, 254, 0.08); border: 1px solid rgba(0, 242, 254, 0.25); padding: 6px 14px; border-radius: 20px; margin-bottom: 40px;">
+                <span class="live-pulse-dot"></span>
+                <span>Live Supabase Telemetry • <span id="newsVerifiedCount">8</span> Verified Dispatches</span>
+            </div>
         </div>
     </section>
 
     <!-- ===== NEWS GRID ===== -->
     <section class="container" style="padding-bottom: 80px;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+        <div id="newsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
             <!-- VLOG_CARDS_START -->
 
             <!-- Vlog Card: Ideogram 4.5 and the Next AI Shift: Editing Images Without the Drift -->
@@ -904,8 +908,24 @@
             <iframe id="modalVideo" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width: 100%; height: 100%; border-radius: 12px; outline: none;"></iframe>
         </div>
     </div>
+
+    <!-- Article Detail Modal -->
+    <div id="articleModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5,8,18,0.88); z-index: 10000; align-items: center; justify-content: center; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); padding: 20px;" onclick="if(event.target === this) closeArticleModal();">
+        <div style="position: relative; width: 100%; max-width: 860px; max-height: 90vh; background: #0a0f1d; border-radius: 28px; border: 1px solid rgba(0,242,254,0.3); box-shadow: 0 0 60px rgba(0,242,254,0.15); overflow: hidden; display: flex; flex-direction: column;">
+            <button onclick="closeArticleModal()" aria-label="Close modal" style="position: absolute; top: 16px; right: 16px; background: rgba(0,0,0,0.65); border: 1px solid rgba(255,255,255,0.15); color: white; width: 40px; height: 40px; border-radius: 50%; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 30; backdrop-filter: blur(10px); transition: all 0.2s;" onmouseover="this.style.background='rgba(0,242,254,0.25)'; this.style.borderColor='var(--accent-primary)';" onmouseout="this.style.background='rgba(0,0,0,0.65)'; this.style.borderColor='rgba(255,255,255,0.15)';">&times;</button>
+            <div id="articleModalContent" style="overflow-y: auto; max-height: 90vh;"></div>
+        </div>
+    </div>
     
     <script>
+        // YouTube helpers
+        function extractYouTubeId(url) {
+            if (!url) return null;
+            const regExp = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+            const match = url.match(regExp);
+            return match ? match[1] : null;
+        }
+
         function openVideoModal(videoUrl) {
             const modal = document.getElementById('videoModal');
             const video = document.getElementById('modalVideo');
@@ -916,17 +936,344 @@
             const sep = videoUrl.includes('?') ? '&' : '?';
             video.src = `${videoUrl}${sep}autoplay=1&enablejsapi=1&origin=${encodeURIComponent(origin)}&widget_referrer=${encodeURIComponent(origin)}`;
             modal.style.display = 'flex';
-            // Disable body scroll when modal is open
             document.body.style.overflow = 'hidden';
         }
+
         function closeVideoModal() {
             const modal = document.getElementById('videoModal');
             const video = document.getElementById('modalVideo');
-            video.src = '';
-            modal.style.display = 'none';
-            // Restore body scroll
+            if (video) video.src = '';
+            if (modal) modal.style.display = 'none';
             document.body.style.overflow = 'auto';
         }
+
+        // Clean excerpt generator
+        function getCleanExcerpt(rawText, title) {
+            if (!rawText) return '';
+            const normalizedTitle = (title || '').trim().toLowerCase();
+            const lines = rawText.split(/\r?\n/).map(l => l.trim());
+            const cleanLines = [];
+
+            for (const line of lines) {
+                if (!line) continue;
+                const lower = line.toLowerCase();
+                if (lower === normalizedTitle) continue;
+                if (lower.startsWith('title:') || lower.startsWith('seo title:') || lower.startsWith('# ')) continue;
+                if (lower.startsWith('category:') || lower.startsWith('categoría:')) continue;
+                if (lower.startsWith('date:') || lower.startsWith('fecha:')) continue;
+                if (lower.startsWith('officeaim newsroom metadata:') || lower.startsWith('metadata:')) continue;
+                if (lower.startsWith('---') || lower.startsWith('===')) continue;
+                if (lower.startsWith('https://youtu.be') || lower.startsWith('https://www.youtube.com')) continue;
+                if (lower.includes('[insert_') && lower.includes('_embed_here]')) continue;
+
+                const stripped = line
+                    .replace(/^[#*_\-\•\d\.\s]+/, '')
+                    .replace(/\*\*(.*?)\*\*/g, '$1')
+                    .replace(/\*(.*?)\*/g, '$1')
+                    .replace(/\[(.*?)\]\(.*?\)/g, '$1')
+                    .trim();
+
+                if (stripped.length > 20) {
+                    cleanLines.push(stripped);
+                    if (cleanLines.join(' ').length > 180) break;
+                }
+            }
+            return cleanLines.join(' ') || rawText.slice(0, 160);
+        }
+
+        // Markdown renderer for article modal
+        function renderMarkdownBody(content, title, youtubeUrl) {
+            if (!content) return '';
+            const normalizedTitle = (title || '').trim().toLowerCase();
+            const cleanYtUrl = (youtubeUrl || '').trim();
+
+            let text = content.replace(/\r\n/g, '\n');
+            text = text.replace(/(?:^|\n)\s*([•\-\*])\s*\n+([^\n]+)/g, '\n$1 $2');
+            text = text.replace(/(?:^|\n)\s*(\d+\.)\s*\n+([^\n]+)/g, '\n$1 $2');
+
+            const rawLines = text.split('\n');
+            const filteredLines = [];
+
+            let hasEncounteredBody = false;
+            for (const rawLine of rawLines) {
+                const line = rawLine.trim();
+                const lower = line.toLowerCase();
+                
+                if (!hasEncounteredBody) {
+                    if (!line) continue;
+                    if (lower === normalizedTitle) continue;
+                    if (lower.startsWith('title:') || lower.startsWith('seo title:') || lower.startsWith('# ')) continue;
+                    if (lower.startsWith('category:') || lower.startsWith('categoría:')) continue;
+                    if (lower.startsWith('date:') || lower.startsWith('fecha:')) continue;
+                    if (lower.startsWith('officeaim newsroom metadata:') || lower.startsWith('metadata:')) continue;
+                    if (lower.startsWith('---') || lower.startsWith('===')) continue;
+                    if (lower.includes('[insert_') && lower.includes('_embed_here]')) continue;
+                    hasEncounteredBody = true;
+                }
+
+                if (cleanYtUrl && (line === cleanYtUrl || line.replace('http:', 'https:') === cleanYtUrl)) {
+                    continue;
+                }
+
+                filteredLines.push(rawLine);
+            }
+
+            function renderInline(str) {
+                if (!str) return '';
+                let escaped = str
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
+                escaped = escaped.replace(/\*\*(.*?)\*\*/g, '<strong style="color: #fff; font-weight: 700;">$1</strong>');
+                escaped = escaped.replace(/\*(.*?)\*/g, '<em style="color: #a5f3fc; font-style: italic;">$1</em>');
+                escaped = escaped.replace(/\[(.*?)\]\((https?:\/\/[^\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color: #00f2fe; text-decoration: underline;">$1</a>');
+                escaped = escaped.replace(/(^|[^"'])(https?:\/\/[^\s<]+)/g, '$1<a href="$2" target="_blank" rel="noopener noreferrer" style="color: #00f2fe; text-decoration: underline; word-break: break-all;">$2</a>');
+                return escaped;
+            }
+
+            let html = '<div style="display: flex; flex-direction: column; gap: 14px; font-family: \'Plus Jakarta Sans\', sans-serif;">';
+            let currentList = [];
+
+            function flushList() {
+                if (currentList.length > 0) {
+                    html += '<ul style="margin: 10px 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 8px;">';
+                    currentList.forEach(item => {
+                        html += `<li style="display: flex; align-items: flex-start; gap: 10px; color: #94a3b8; font-size: 0.95rem; line-height: 1.6;">
+                            <span style="width: 6px; height: 6px; border-radius: 50%; background: #00f2fe; margin-top: 9px; flex-shrink: 0; box-shadow: 0 0 8px rgba(0,242,254,0.6);"></span>
+                            <span>${renderInline(item)}</span>
+                        </li>`;
+                    });
+                    html += '</ul>';
+                    currentList = [];
+                }
+            }
+
+            for (const rawLine of filteredLines) {
+                const line = rawLine.trim();
+                if (!line) {
+                    flushList();
+                    continue;
+                }
+
+                if (line.startsWith('## ') || line.startsWith('### ')) {
+                    flushList();
+                    const headingText = line.replace(/^#{2,3}\s+/, '');
+                    html += `<h2 style="font-size: 1.35rem; font-weight: 800; font-style: italic; color: #fff; margin-top: 24px; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid rgba(0,242,254,0.2); display: flex; align-items: center; gap: 8px;">
+                        <span style="width: 8px; height: 8px; border-radius: 50%; background: #00f2fe;"></span>
+                        ${renderInline(headingText)}
+                    </h2>`;
+                    continue;
+                }
+
+                if (/^(?:Core mechanics|Key takeaways|Practical takeaways|Frequently Asked Questions|FAQ|Sources|Continue with Officeaim|The operational shift):/i.test(line) ||
+                    /^(?:Frequently Asked Questions|Sources|Continue with Officeaim)$/i.test(line)) {
+                    flushList();
+                    html += `<h2 style="font-size: 1.35rem; font-weight: 800; font-style: italic; color: #fff; margin-top: 24px; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid rgba(0,242,254,0.2); display: flex; align-items: center; gap: 8px;">
+                        <span style="width: 8px; height: 8px; border-radius: 50%; background: #00f2fe;"></span>
+                        ${renderInline(line)}
+                    </h2>`;
+                    continue;
+                }
+
+                if (/^[A-Z¿][^.!?]*\?$/.test(line) && line.length < 120) {
+                    flushList();
+                    html += `<div style="margin-top: 18px; margin-bottom: 6px;">
+                        <h4 style="font-size: 1.05rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px;">
+                            <span style="color: #00f2fe;">✦</span> ${renderInline(line)}
+                        </h4>
+                    </div>`;
+                    continue;
+                }
+
+                const numMatch = line.match(/^(\d+)\.\s+(.*)$/);
+                if (numMatch) {
+                    flushList();
+                    html += `<div style="display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; margin: 6px 0; border-radius: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);">
+                        <span style="padding: 2px 8px; border-radius: 6px; background: rgba(0,242,254,0.15); border: 1px solid rgba(0,242,254,0.3); color: #00f2fe; font-size: 0.75rem; font-weight: 800; flex-shrink: 0;">${numMatch[1]}</span>
+                        <div style="font-size: 0.92rem; color: #cbd5e1; line-height: 1.6;">${renderInline(numMatch[2])}</div>
+                    </div>`;
+                    continue;
+                }
+
+                const bulletMatch = line.match(/^[•\-\*]\s+(.*)$/);
+                if (bulletMatch) {
+                    currentList.push(bulletMatch[1]);
+                    continue;
+                }
+
+                if (/^(?:Editorial note|Nota editorial):/i.test(line)) {
+                    flushList();
+                    const textContent = line.replace(/^(?:Editorial note|Nota editorial):\s*/i, '');
+                    html += `<div style="padding: 16px; margin: 16px 0; border-radius: 16px; background: rgba(249,115,22,0.1); border-left: 4px solid #f97316; color: #ffedd5; font-size: 0.92rem; line-height: 1.6;">
+                        <span style="display: block; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #fb923c; margin-bottom: 4px;">Editorial Note</span>
+                        ${renderInline(textContent)}
+                    </div>`;
+                    continue;
+                }
+
+                if (/^(?:Officeaim analysis|Análisis Officeaim):/i.test(line)) {
+                    flushList();
+                    const textContent = line.replace(/^(?:Officeaim analysis|Análisis Officeaim):\s*/i, '');
+                    html += `<div style="padding: 16px; margin: 16px 0; border-radius: 16px; background: rgba(0,242,254,0.1); border-left: 4px solid #00f2fe; color: #cffafe; font-size: 0.92rem; line-height: 1.6;">
+                        <span style="display: block; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #00f2fe; margin-bottom: 4px;">OfficeAIM Analysis</span>
+                        ${renderInline(textContent)}
+                    </div>`;
+                    continue;
+                }
+
+                flushList();
+                html += `<p style="color: #94a3b8; font-size: 0.95rem; line-height: 1.7; margin: 0 0 10px 0;">${renderInline(line)}</p>`;
+            }
+            flushList();
+            html += '</div>';
+            return html;
+        }
+
+        // Open & close article modal
+        function openArticleModal(index) {
+            const item = window._officeaimNewsCache && window._officeaimNewsCache[index];
+            if (!item) return;
+
+            const modal = document.getElementById('articleModal');
+            const modalContent = document.getElementById('articleModalContent');
+            if (!modal || !modalContent) return;
+
+            const ytId = extractYouTubeId(item.youtube_url);
+            const displayDate = new Date(item.published_at || item.created_at).toLocaleDateString('en-US', { dateStyle: 'long' });
+            const category = item.category || 'Generative AI';
+
+            let mediaHtml = '';
+            if (ytId) {
+                let origin = window.location.origin || 'https://officeaimhq.netlify.app';
+                mediaHtml = `
+                    <div style="position: relative; width: 100%; aspect-ratio: 16/9; background: #000; border-top-left-radius: 28px; border-top-right-radius: 28px; overflow: hidden;">
+                        <iframe src="https://www.youtube.com/embed/${ytId}?autoplay=1&enablejsapi=1&origin=${encodeURIComponent(origin)}" title="${item.title.replace(/"/g, '&quot;')}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width: 100%; height: 100%; border: none;"></iframe>
+                    </div>
+                `;
+            }
+
+            const bodyHtml = renderMarkdownBody(item.description, item.title, item.youtube_url);
+
+            modalContent.innerHTML = `
+                ${mediaHtml}
+                <div style="padding: 32px 36px 40px 36px; max-height: calc(85vh - 200px); overflow-y: auto;">
+                    <div style="display: flex; align-items: center; gap: 10px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent-primary); margin-bottom: 16px;">
+                        <span style="background: rgba(0,242,254,0.1); border: 1px solid rgba(0,242,254,0.3); padding: 4px 10px; border-radius: 6px;">${category}</span>
+                        <span>•</span>
+                        <span>${displayDate}</span>
+                    </div>
+                    <h1 style="font-size: 1.85rem; font-weight: 900; font-style: italic; color: white; line-height: 1.25; margin-bottom: 24px; letter-spacing: -0.5px;">
+                        ${item.title}
+                    </h1>
+                    ${bodyHtml}
+                    <div style="margin-top: 36px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: flex-end;">
+                        <a href="/hub/vlog-news" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 12px; background: rgba(0,242,254,0.1); border: 1px solid rgba(0,242,254,0.3); color: #00f2fe; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(0,242,254,0.2)';" onmouseout="this.style.background='rgba(0,242,254,0.1)';">
+                            <span>Open in Campus Hub</span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                        </a>
+                    </div>
+                </div>
+            `;
+
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeArticleModal() {
+            const modal = document.getElementById('articleModal');
+            if (!modal) return;
+            const iframe = modal.querySelector('iframe');
+            if (iframe) iframe.src = '';
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeArticleModal();
+                closeVideoModal();
+            }
+        });
+
+        // Supabase REST client configuration
+        const SUPABASE_URL = "https://guemwhrdqmbneoccucht.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1ZW13aHJkcW1ibmVvY2N1Y2h0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5MTExODgsImV4cCI6MjA4NjQ4NzE4OH0.VvKIYP7lJSxa_a3e8-Gb3xGfukJzmmacUUt79WA-OM8";
+
+        function renderNewsCards(items) {
+            const grid = document.getElementById('newsGrid');
+            if (!grid || !items || items.length === 0) return;
+
+            window._officeaimNewsCache = items;
+
+            grid.innerHTML = items.map((item, index) => {
+                const ytId = extractYouTubeId(item.youtube_url);
+                const thumbUrl = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : 'images/newsletter_hero.png';
+                const displayDate = new Date(item.published_at || item.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                const excerpt = getCleanExcerpt(item.description, item.title);
+                const category = item.category || 'Generative AI';
+
+                return `
+                    <div class="glass-card" style="padding: 0; overflow: hidden; border-radius: 24px; border: 1px solid rgba(0, 242, 254, 0.3); box-shadow: 0 0 25px rgba(0, 242, 254, 0.08); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 35px rgba(0,242,254,0.18)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 0 25px rgba(0, 242, 254, 0.08)';">
+                        <div>
+                            <div onclick="openArticleModal(${index})" style="height: 200px; background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.65)), url('${thumbUrl}') center/cover; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; transition: transform 0.3s ease;">
+                                <div style="position: absolute; top: 15px; right: 15px; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; color: var(--accent-primary); border: 1px solid rgba(0, 242, 254, 0.4); text-transform: uppercase; letter-spacing: 0.5px;">
+                                    ${category}
+                                </div>
+                                ${ytId ? `
+                                <div onclick="event.stopPropagation(); openVideoModal('https://www.youtube.com/embed/${ytId}');" title="Play Video" style="width: 56px; height: 56px; background: rgba(0,0,0,0.7); border: 2px solid var(--accent-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); box-shadow: 0 0 20px rgba(0, 242, 254, 0.35); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="var(--accent-primary)" stroke="var(--accent-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 3px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                                </div>
+                                ` : ''}
+                            </div>
+                            <div style="padding: 24px;">
+                                <div style="display: flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-primary); margin-bottom: 12px;">
+                                    <span>${displayDate}</span>
+                                </div>
+                                <h3 style="font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 12px; line-height: 1.35; cursor: pointer;" onclick="openArticleModal(${index})">
+                                    ${item.title}
+                                </h3>
+                                <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0;">
+                                    ${excerpt}
+                                </p>
+                            </div>
+                        </div>
+                        <div style="padding: 0 24px 24px 24px;">
+                            <button onclick="openArticleModal(${index})" style="width: 100%; padding: 12px 18px; background: rgba(255,255,255,0.05); border: 1px solid rgba(0,242,254,0.25); border-radius: 14px; color: white; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.25s ease;" onmouseover="this.style.background='rgba(0,242,254,0.15)'; this.style.borderColor='var(--accent-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(0,242,254,0.25)';">
+                                <span>Read Transmission</span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function loadSupabaseNews() {
+            const grid = document.getElementById('newsGrid');
+            if (!grid) return;
+
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/news?published=eq.true&order=published_at.desc`, {
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    }
+                });
+
+                if (!response.ok) throw new Error('Supabase news fetch failed: ' + response.status);
+                const data = await response.json();
+
+                if (data && data.length > 0) {
+                    renderNewsCards(data);
+                    const countBadge = document.getElementById('newsVerifiedCount');
+                    if (countBadge) countBadge.textContent = data.length;
+                }
+            } catch (err) {
+                console.warn('Could not load dynamic Supabase news, keeping static fallback:', err);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadSupabaseNews);
     </script>
 
     <section class="container" style="padding-bottom: 100px;">
