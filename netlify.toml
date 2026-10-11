@@ -8,6 +8,16 @@
   SECRETS_SCAN_ENABLED = "false"
 
 [[redirects]]
+  from = "/admin/*"
+  to = "/hub/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin"
+  to = "/hub/index.html"
+  status = 200
+
+[[redirects]]
   from = "/hub/*"
   to = "/hub/index.html"
   status = 200

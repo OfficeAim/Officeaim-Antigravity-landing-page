@@ -2,8 +2,17 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Calendar, ChevronRight, X, Clock, Newspaper, Youtube, Sparkles } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { extractYouTubeId, getYouTubeEmbedUrl, getYouTubeThumbnailUrl, isYouTubePublished } from '../lib/youtube';
+import { extractYouTubeId, getYouTubeEmbedUrl, getYouTubeThumbnailUrl, isYouTubePublished, toSentenceCase } from '../lib/youtube';
 import { vlogs as fallbackVlogs } from './newsData';
+
+const OFFICIAL_LINKS = [
+    { label: 'Waitlist', url: 'https://docs.google.com/forms/d/e/1FAIpQLSfU9WOXw1BOpMwE9HO-rtSiIjju0nZrtlu_m-1dQICDH2IceQ/viewform', icon: '📝' },
+    { label: 'Website', url: 'https://officeaimhq.netlify.app/', icon: '🌐' },
+    { label: 'YouTube', url: 'https://www.youtube.com/@Aimora-Officeaim?sub_confirmation=1', icon: '▶' },
+    { label: 'Instagram', url: 'https://www.instagram.com/office.aim/', icon: '📸' },
+    { label: 'LinkedIn', url: 'https://www.linkedin.com/in/office-aim-hq-b8a7013a8/', icon: '💼' },
+    { label: 'Facebook', url: 'https://www.facebook.com/profile.php?id=61584047901312', icon: '👥' },
+];
 
 // Helper to extract clean excerpt for feed card, stripping repeated titles/metadata
 export const getCleanExcerpt = (rawText, title = '') => {
@@ -65,7 +74,7 @@ const renderInline = (text) => {
                     href={linkMatch[2]} 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="text-cyan-400 hover:text-orange-400 underline decoration-cyan-500/40 hover:decoration-orange-400 font-medium transition-colors"
+                    className="text-[#00F0FF] hover:text-white underline decoration-[#00F0FF]/40 hover:decoration-white font-semibold transition-colors"
                 >
                     {linkMatch[1]}
                 </a>
@@ -78,7 +87,7 @@ const renderInline = (text) => {
                     href={part} 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="text-cyan-400 hover:text-orange-400 underline decoration-cyan-500/40 font-mono text-xs break-all transition-colors"
+                    className="text-[#00F0FF] hover:text-white underline decoration-[#00F0FF]/40 hover:decoration-white font-mono text-xs break-all transition-colors"
                 >
                     {part}
                 </a>
@@ -279,6 +288,31 @@ const TransmissionArticleBody = ({ content, title, youtubeUrl }) => {
                     </p>
                 );
             })}
+
+            {/* Official OfficeAIM Channels & Network Footer */}
+            <div className="mt-8 pt-6 border-t border-white/10">
+                <div className="flex items-center gap-2 mb-3">
+                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                    <h4 className="text-xs font-black uppercase tracking-wider text-cyan-400">
+                        Official OfficeAIM Network & Verified Channels
+                    </h4>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                    {OFFICIAL_LINKS.map((link, lIdx) => (
+                        <a
+                            key={lIdx}
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white/[0.03] hover:bg-cyan-500/10 border border-white/10 hover:border-cyan-400/40 text-xs text-slate-300 hover:text-white transition-all group"
+                        >
+                            <span className="text-sm group-hover:scale-110 transition-transform">{link.icon}</span>
+                            <span className="font-semibold">{link.label}</span>
+                            <span className="ml-auto text-[10px] text-cyan-400 group-hover:translate-x-0.5 transition-transform">↗</span>
+                        </a>
+                    ))}
+                </div>
+            </div>
         </div>
     );
 };
@@ -493,7 +527,7 @@ const VlogNewsPage = ({ profile }) => {
                                                     <span>{displayDate}</span>
                                                 </div>
                                                 <h3 className="text-lg font-bold text-white mb-2 leading-tight group-hover:text-cyan-400 transition-colors">
-                                                    {item.title}
+                                                    {toSentenceCase(item.title)}
                                                 </h3>
                                                 <p className="text-sm text-text-muted mb-4 line-clamp-3 leading-relaxed">
                                                     {getCleanExcerpt(item.description, item.title)}
@@ -564,20 +598,30 @@ const VlogNewsPage = ({ profile }) => {
                                     />
                                 </div>
                             ) : (
-                                <div className="bg-[#0A0F1D] border-b border-cyan-500/25 px-6 sm:px-8 py-6 relative overflow-hidden flex items-center gap-4">
+                                <div className="bg-[#0A0F1D] border-b border-cyan-500/25 p-6 sm:p-8 relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
                                     <div className="absolute top-0 left-0 w-1.5 h-full bg-[#FF7A18] shadow-[0_0_12px_#FF7A18]"></div>
-                                    <div className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(255,152,0,0.15)] text-xl">
-                                        ⚡
-                                    </div>
-                                    <div className="pr-8">
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <span className="text-xs font-black uppercase tracking-wider text-orange-400">Video Broadcast Coming Soon</span>
-                                            <span className="text-[10px] bg-orange-500/15 border border-orange-500/30 text-orange-300 font-bold px-2 py-0.5 rounded-full font-mono">SCHEDULED</span>
+                                    <div className="flex items-start gap-4">
+                                        <div className="w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center shrink-0 shadow-[0_0_20px_rgba(255,152,0,0.2)] text-2xl text-orange-400">
+                                            🔔
                                         </div>
-                                        <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed">
-                                            This briefing is scheduled. Read the full transmission below or check back shortly.
-                                        </p>
+                                        <div>
+                                            <div className="flex items-center gap-2 mb-1.5">
+                                                <span className="text-xs font-black uppercase tracking-wider text-orange-400">⚡ Video Broadcast Coming Soon</span>
+                                                <span className="text-[10px] bg-orange-500/15 border border-orange-500/30 text-orange-300 font-bold px-2.5 py-0.5 rounded-full font-mono">SCHEDULED</span>
+                                            </div>
+                                            <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed max-w-xl">
+                                                This briefing is scheduled for release. Subscribe to our YouTube channel and turn on notifications so you don't miss upcoming video breakdowns.
+                                            </p>
+                                        </div>
                                     </div>
+                                    <a 
+                                        href="https://www.youtube.com/@Aimora-Officeaim?sub_confirmation=1" 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className="shrink-0 px-5 py-3 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-400/40 hover:border-cyan-400 text-cyan-300 hover:text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(0,240,255,0.15)] hover:scale-[1.02] active:scale-95"
+                                    >
+                                        <span>🔔 Subscribe on YouTube & Set Notifications</span>
+                                    </a>
                                 </div>
                             )}
 
@@ -590,7 +634,7 @@ const VlogNewsPage = ({ profile }) => {
                                 </div>
 
                                 <h1 className="text-2xl md:text-3xl font-black italic tracking-tight text-white mb-6 leading-tight">
-                                    {selectedNews.title}
+                                    {toSentenceCase(selectedNews.title)}
                                 </h1>
 
                                 <div className="mb-6">

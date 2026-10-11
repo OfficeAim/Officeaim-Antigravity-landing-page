@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Shield, ShieldCheck, Power, Search, AlertTriangle, TrendingUp, Bot, Sparkles, RefreshCcw, BookOpen, Clock, MessageSquare, Send, ChevronRight, X, Activity, Award, HeadphonesIcon, DollarSign, Cpu, BarChart3, Wallet, Pencil, Check, ChevronDown, ChevronUp, Globe, Server, Zap, Mail, ExternalLink, Copy, CheckCircle, Inbox, Bug, ClipboardCheck, Newspaper } from 'lucide-react';
+import { Users, Shield, ShieldCheck, Power, Search, AlertTriangle, TrendingUp, Bot, Sparkles, RefreshCcw, BookOpen, Clock, MessageSquare, Send, ChevronRight, X, Activity, Award, HeadphonesIcon, DollarSign, Cpu, BarChart3, Wallet, Pencil, Check, ChevronDown, ChevronUp, Globe, Server, Zap, Mail, ExternalLink, Copy, CheckCircle, Inbox, Bug, ClipboardCheck, Newspaper, Smartphone } from 'lucide-react';
 import MascotAssistant from '../components/MascotAssistant';
 import NewsManager from '../components/NewsManager';
 
@@ -530,6 +530,10 @@ const AdminDashboard = ({ profile }) => {
                         <button onClick={() => setActiveTab('news')} className={`w-full flex items-center gap-3 px-3 py-2.5 mt-1 rounded-xl font-bold text-xs transition-all ${activeTab === 'news' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30' : 'text-text-muted hover:text-white hover:bg-white/5'}`}>
                             <Newspaper className="h-4 w-4 text-cyan-400" /> Newsroom
                         </button>
+                        <a href="/admin/news" className="w-full flex items-center justify-between px-3 py-2 mt-1 rounded-xl font-bold text-[11px] text-cyan-400/80 hover:text-cyan-300 hover:bg-cyan-500/10 transition-all border border-cyan-500/10">
+                            <div className="flex items-center gap-2"><Smartphone className="h-3.5 w-3.5" /> Mobile Publisher</div>
+                            <span className="text-[8px] uppercase tracking-wider bg-cyan-500/20 px-1.5 py-0.5 rounded text-cyan-300 font-mono">Lite</span>
+                        </a>
                     </div>
 
                     <div className="mb-4">

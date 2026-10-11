@@ -18,6 +18,7 @@ import Lounge from './pages/Lounge';
 import ProjectPlanner from './pages/ProjectPlanner';
 import VlogNewsPage from './pages/VlogNewsPage';
 import LibraryTracker from './pages/LibraryTracker';
+import MobileNewsAdmin from './pages/MobileNewsAdmin';
 import MascotAssistant from './components/MascotAssistant';
 import { Toaster } from 'react-hot-toast';
 import { NewsProvider } from './context/NewsContext';
@@ -280,9 +281,11 @@ const App = () => {
         <Toaster position="top-right" reverseOrder={false} toastOptions={{ className: 'glass-card border-white/10 text-white text-[12px] italic font-bold', style: { background: 'rgba(7, 10, 18, 0.9)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255, 255, 255, 0.1)', color: '#fff' } }} />
         <div className={isWidgetRoute ? "min-h-screen bg-transparent text-white font-plus-jakarta" : "min-h-screen bg-[#070A12] text-white font-plus-jakarta"}>
           <Routes>
-            {/* Super Admin Authentication Routes */}
+            {/* Super Admin Authentication & Mobile News Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/hub/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/news" element={<MobileNewsAdmin profile={profile} />} />
+            <Route path="/hub/admin/news" element={<MobileNewsAdmin profile={profile} />} />
             <Route path="/admin" element={<Navigate to="/hub/admin" />} />
             <Route path="/news" element={<Navigate to="/hub/vlog-news" />} />
 

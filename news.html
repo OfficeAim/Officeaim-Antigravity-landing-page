@@ -928,9 +928,94 @@
 
         function isYouTubePublished(url) {
             if (!url || typeof url !== 'string') return false;
-            const trimmed = url.trim();
-            if (trimmed.toLowerCase() === 'not published') return false;
-            return !!extractYouTubeId(trimmed);
+            const trimmed = url.trim().toLowerCase();
+            if (!trimmed || ['not published', 'private', 'scheduled', 'pending', 'tbd', 'coming soon', 'none', 'draft'].includes(trimmed)) {
+                return false;
+            }
+            if (trimmed.includes('not published') || trimmed.includes('private') || trimmed.includes('scheduled')) {
+                return false;
+            }
+            if (trimmed.includes('r1zqdjvawx4')) {
+                return false;
+            }
+            return !!extractYouTubeId(url.trim());
+        }
+
+        function toSentenceCase(title) {
+            if (!title || typeof title !== 'string') return '';
+            const trimmed = title.trim();
+            if (!trimmed) return '';
+
+            const preservedMap = new Map([
+                ['ai', 'AI'],
+                ['agi', 'AGI'],
+                ['llm', 'LLM'],
+                ['llms', 'LLMs'],
+                ['api', 'API'],
+                ['apis', 'APIs'],
+                ['mvp', 'MVP'],
+                ['suno', 'Suno'],
+                ['ideogram', 'Ideogram'],
+                ['openai', 'OpenAI'],
+                ['google', 'Google'],
+                ['openbot', 'OpenBot'],
+                ['nano', 'Nano'],
+                ['banana', 'Banana'],
+                ['officeaim', 'OfficeAIM'],
+                ['hyperframes', 'HyperFrames'],
+                ['anthropic', 'Anthropic'],
+                ['claude', 'Claude'],
+                ['chatgpt', 'ChatGPT'],
+                ['youtube', 'YouTube'],
+                ['meta', 'Meta'],
+                ['notebooklm', 'NotebookLM'],
+                ['dots', 'Dots'],
+                ['studio', 'Studio'],
+                ['ui', 'UI'],
+                ['ux', 'UX'],
+                ['ceo', 'CEO'],
+                ['cto', 'CTO'],
+                ['sql', 'SQL']
+            ]);
+
+            const tokens = trimmed.split(/([ \t\r\n\—\-\:\?\!\.]+)/);
+            let isStartOfSentence = true;
+
+            const formattedTokens = tokens.map((token) => {
+                if (!token || /^[ \t\r\n\—\-\:\?\!\.]+$/.test(token)) {
+                    if (/[\.\?\!\:]/.test(token)) {
+                        isStartOfSentence = true;
+                    }
+                    return token;
+                }
+
+                const match = token.match(/^([^a-zA-Z0-9]*)([a-zA-Z0-9'’]+)([^a-zA-Z0-9]*)$/);
+                if (!match) {
+                    isStartOfSentence = false;
+                    return token;
+                }
+
+                const [, prefix, coreWord, suffix] = match;
+                const lowerCore = coreWord.toLowerCase();
+
+                let replacement = '';
+                if (preservedMap.has(lowerCore)) {
+                    replacement = preservedMap.get(lowerCore);
+                } else if (/^v\d+(\.\d+)?$/i.test(coreWord)) {
+                    replacement = coreWord.toLowerCase();
+                } else if (/^\d+(\.\d+)?$/.test(coreWord)) {
+                    replacement = coreWord;
+                } else if (isStartOfSentence) {
+                    replacement = coreWord.charAt(0).toUpperCase() + coreWord.slice(1).toLowerCase();
+                } else {
+                    replacement = coreWord.toLowerCase();
+                }
+
+                isStartOfSentence = false;
+                return `${prefix}${replacement}${suffix}`;
+            });
+
+            return formattedTokens.join('');
         }
 
         function openVideoModal(videoUrl) {
@@ -1037,8 +1122,8 @@
                     .replace(/>/g, '&gt;');
                 escaped = escaped.replace(/\*\*(.*?)\*\*/g, '<strong style="color: #fff; font-weight: 700;">$1</strong>');
                 escaped = escaped.replace(/\*(.*?)\*/g, '<em style="color: #a5f3fc; font-style: italic;">$1</em>');
-                escaped = escaped.replace(/\[(.*?)\]\((https?:\/\/[^\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color: #00f2fe; text-decoration: underline;">$1</a>');
-                escaped = escaped.replace(/(^|[^"'])(https?:\/\/[^\s<]+)/g, '$1<a href="$2" target="_blank" rel="noopener noreferrer" style="color: #00f2fe; text-decoration: underline; word-break: break-all;">$2</a>');
+                escaped = escaped.replace(/\[(.*?)\]\((https?:\/\/[^\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color: #00F0FF; text-decoration: underline; font-weight: 600;" onmouseover="this.style.color=\'#fff\'" onmouseout="this.style.color=\'#00F0FF\'">$1</a>');
+                escaped = escaped.replace(/(^|[^"'])(https?:\/\/[^\s<]+)/g, '$1<a href="$2" target="_blank" rel="noopener noreferrer" style="color: #00F0FF; text-decoration: underline; word-break: break-all; font-family: monospace; font-size: 0.85rem;" onmouseover="this.style.color=\'#fff\'" onmouseout="this.style.color=\'#00F0FF\'">$2</a>');
                 return escaped;
             }
 
@@ -1136,6 +1221,39 @@
                 html += `<p style="color: #94a3b8; font-size: 0.95rem; line-height: 1.7; margin: 0 0 10px 0;">${renderInline(line)}</p>`;
             }
             flushList();
+
+            // Official OfficeAIM Network Footer
+            html += `
+                <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                        <span style="width: 8px; height: 8px; border-radius: 50%; background: #00f2fe;"></span>
+                        <h4 style="margin: 0; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; color: #00f2fe;">
+                            Official OfficeAIM Network & Verified Channels
+                        </h4>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px;">
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfU9WOXw1BOpMwE9HO-rtSiIjju0nZrtlu_m-1dQICDH2IceQ/viewform" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; font-size: 0.75rem; font-weight: 700; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(0,242,254,0.1)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(255,255,255,0.03)'; this.style.color='#cbd5e1';">
+                            <span>📝</span> <span>Waitlist</span> <span style="margin-left: auto; color: #00f2fe;">↗</span>
+                        </a>
+                        <a href="https://officeaimhq.netlify.app/" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; font-size: 0.75rem; font-weight: 700; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(0,242,254,0.1)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(255,255,255,0.03)'; this.style.color='#cbd5e1';">
+                            <span>🌐</span> <span>Website</span> <span style="margin-left: auto; color: #00f2fe;">↗</span>
+                        </a>
+                        <a href="https://www.youtube.com/@Aimora-Officeaim?sub_confirmation=1" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; font-size: 0.75rem; font-weight: 700; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(0,242,254,0.1)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(255,255,255,0.03)'; this.style.color='#cbd5e1';">
+                            <span>▶</span> <span>YouTube</span> <span style="margin-left: auto; color: #00f2fe;">↗</span>
+                        </a>
+                        <a href="https://www.instagram.com/office.aim/" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; font-size: 0.75rem; font-weight: 700; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(0,242,254,0.1)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(255,255,255,0.03)'; this.style.color='#cbd5e1';">
+                            <span>📸</span> <span>Instagram</span> <span style="margin-left: auto; color: #00f2fe;">↗</span>
+                        </a>
+                        <a href="https://www.linkedin.com/in/office-aim-hq-b8a7013a8/" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; font-size: 0.75rem; font-weight: 700; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(0,242,254,0.1)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(255,255,255,0.03)'; this.style.color='#cbd5e1';">
+                            <span>💼</span> <span>LinkedIn</span> <span style="margin-left: auto; color: #00f2fe;">↗</span>
+                        </a>
+                        <a href="https://www.facebook.com/profile.php?id=61584047901312" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; font-size: 0.75rem; font-weight: 700; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(0,242,254,0.1)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(255,255,255,0.03)'; this.style.color='#cbd5e1';">
+                            <span>👥</span> <span>Facebook</span> <span style="margin-left: auto; color: #00f2fe;">↗</span>
+                        </a>
+                    </div>
+                </div>
+            `;
+
             html += '</div>';
             return html;
         }
@@ -1159,24 +1277,31 @@
                 let origin = window.location.origin || 'https://officeaimhq.netlify.app';
                 mediaHtml = `
                     <div style="position: relative; width: 100%; aspect-ratio: 16/9; background: #000; border-top-left-radius: 28px; border-top-right-radius: 28px; overflow: hidden;">
-                        <iframe src="https://www.youtube.com/embed/${ytId}?autoplay=1&enablejsapi=1&origin=${encodeURIComponent(origin)}" title="${item.title.replace(/"/g, '&quot;')}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width: 100%; height: 100%; border: none;"></iframe>
+                        <iframe src="https://www.youtube.com/embed/${ytId}?autoplay=1&enablejsapi=1&origin=${encodeURIComponent(origin)}" title="${toSentenceCase(item.title).replace(/"/g, '&quot;')}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width: 100%; height: 100%; border: none;"></iframe>
                     </div>
                 `;
             } else {
                 mediaHtml = `
-                    <div style="background: #0A0F1D; border-bottom: 1px solid rgba(0, 242, 254, 0.25); border-top-left-radius: 28px; border-top-right-radius: 28px; padding: 22px 32px; display: flex; align-items: center; gap: 18px; position: relative; overflow: hidden;">
+                    <div style="background: #0A0F1D; border-bottom: 1px solid rgba(0, 242, 254, 0.25); border-top-left-radius: 28px; border-top-right-radius: 28px; padding: 24px 32px; display: flex; flex-direction: column; gap: 18px; position: relative; overflow: hidden;">
                         <div style="position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: #ff9800; box-shadow: 0 0 12px #ff9800;"></div>
-                        <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(255, 152, 0, 0.12); border: 1px solid rgba(255, 152, 0, 0.35); display: flex; align-items: center; justify-content: center; font-size: 1.35rem; flex-shrink: 0; box-shadow: 0 0 16px rgba(255, 152, 0, 0.2);">
-                            ⚡
-                        </div>
-                        <div style="padding-right: 20px;">
-                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
-                                <span style="color: #ff9800; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px;">Video Broadcast Coming Soon</span>
-                                <span style="background: rgba(255, 152, 0, 0.15); border: 1px solid rgba(255, 152, 0, 0.35); color: #ffb74d; font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 10px; font-family: monospace;">SCHEDULED</span>
+                        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
+                            <div style="display: flex; align-items: flex-start; gap: 16px;">
+                                <div style="width: 48px; height: 48px; border-radius: 14px; background: rgba(255, 152, 0, 0.12); border: 1px solid rgba(255, 152, 0, 0.35); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; box-shadow: 0 0 18px rgba(255, 152, 0, 0.2);">
+                                    🔔
+                                </div>
+                                <div style="max-width: 620px;">
+                                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+                                        <span style="color: #ff9800; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px;">⚡ Video Broadcast Coming Soon</span>
+                                        <span style="background: rgba(255, 152, 0, 0.15); border: 1px solid rgba(255, 152, 0, 0.35); color: #ffb74d; font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 10px; font-family: monospace;">SCHEDULED</span>
+                                    </div>
+                                    <p style="margin: 0; color: #cbd5e1; font-size: 0.88rem; line-height: 1.55; font-family: 'Plus Jakarta Sans', sans-serif;">
+                                        This briefing is scheduled for release. Subscribe to our YouTube channel and turn on notifications so you don't miss upcoming video breakdowns.
+                                    </p>
+                                </div>
                             </div>
-                            <p style="margin: 0; color: #cbd5e1; font-size: 0.88rem; line-height: 1.5; font-family: 'Plus Jakarta Sans', sans-serif;">
-                                This briefing is scheduled. Read the full transmission below or check back shortly.
-                            </p>
+                            <a href="https://www.youtube.com/@Aimora-Officeaim?sub_confirmation=1" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; border-radius: 12px; background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.4); color: #00f0ff; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; transition: all 0.2s; white-space: nowrap; box-shadow: 0 0 20px rgba(0, 240, 255, 0.12);" onmouseover="this.style.background='rgba(0, 240, 255, 0.2)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(0, 240, 255, 0.08)'; this.style.color='#00f0ff';">
+                                <span>🔔 Subscribe on YouTube & Set Notifications</span>
+                            </a>
                         </div>
                     </div>
                 `;
@@ -1193,7 +1318,7 @@
                         <span>${displayDate}</span>
                     </div>
                     <h1 style="font-size: 1.85rem; font-weight: 900; font-style: italic; color: white; line-height: 1.25; margin-bottom: 24px; letter-spacing: -0.5px;">
-                        ${item.title}
+                        ${toSentenceCase(item.title)}
                     </h1>
                     ${bodyHtml}
                     <div style="margin-top: 36px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: flex-end;">
@@ -1270,7 +1395,7 @@
                                     <span>${displayDate}</span>
                                 </div>
                                 <h3 style="font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 12px; line-height: 1.35; cursor: pointer;" onclick="openArticleModal(${index})">
-                                    ${item.title}
+                                    ${toSentenceCase(item.title)}
                                 </h3>
                                 <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0;">
                                     ${excerpt}
