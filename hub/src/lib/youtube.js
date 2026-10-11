@@ -44,3 +44,13 @@ export const getYouTubeThumbnailUrl = (url) => {
     if (!videoId) return null;
     return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 };
+
+/**
+ * Validates whether a YouTube URL is valid and actually published (not scheduled/unassigned).
+ */
+export const isYouTubePublished = (url) => {
+    if (!url || typeof url !== 'string') return false;
+    const trimmed = url.trim();
+    if (trimmed.toLowerCase() === 'not published') return false;
+    return !!extractYouTubeId(trimmed);
+};

@@ -926,6 +926,13 @@
             return match ? match[1] : null;
         }
 
+        function isYouTubePublished(url) {
+            if (!url || typeof url !== 'string') return false;
+            const trimmed = url.trim();
+            if (trimmed.toLowerCase() === 'not published') return false;
+            return !!extractYouTubeId(trimmed);
+        }
+
         function openVideoModal(videoUrl) {
             const modal = document.getElementById('videoModal');
             const video = document.getElementById('modalVideo');
@@ -1007,10 +1014,14 @@
                     if (lower.startsWith('date:') || lower.startsWith('fecha:')) continue;
                     if (lower.startsWith('officeaim newsroom metadata:') || lower.startsWith('metadata:')) continue;
                     if (lower.startsWith('---') || lower.startsWith('===')) continue;
+                    if (lower.startsWith('youtube:') || lower.startsWith('video:') || lower === 'not published') continue;
                     if (lower.includes('[insert_') && lower.includes('_embed_here]')) continue;
                     hasEncounteredBody = true;
                 }
 
+                if (lower === 'not published' || lower.startsWith('youtube: not published') || lower.startsWith('video: not published')) {
+                    continue;
+                }
                 if (cleanYtUrl && (line === cleanYtUrl || line.replace('http:', 'https:') === cleanYtUrl)) {
                     continue;
                 }
@@ -1138,16 +1149,35 @@
             const modalContent = document.getElementById('articleModalContent');
             if (!modal || !modalContent) return;
 
-            const ytId = extractYouTubeId(item.youtube_url);
+            const hasVideo = isYouTubePublished(item.youtube_url);
+            const ytId = hasVideo ? extractYouTubeId(item.youtube_url) : null;
             const displayDate = new Date(item.published_at || item.created_at).toLocaleDateString('en-US', { dateStyle: 'long' });
             const category = item.category || 'Generative AI';
 
             let mediaHtml = '';
-            if (ytId) {
+            if (hasVideo && ytId) {
                 let origin = window.location.origin || 'https://officeaimhq.netlify.app';
                 mediaHtml = `
                     <div style="position: relative; width: 100%; aspect-ratio: 16/9; background: #000; border-top-left-radius: 28px; border-top-right-radius: 28px; overflow: hidden;">
                         <iframe src="https://www.youtube.com/embed/${ytId}?autoplay=1&enablejsapi=1&origin=${encodeURIComponent(origin)}" title="${item.title.replace(/"/g, '&quot;')}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width: 100%; height: 100%; border: none;"></iframe>
+                    </div>
+                `;
+            } else {
+                mediaHtml = `
+                    <div style="background: #0A0F1D; border-bottom: 1px solid rgba(0, 242, 254, 0.25); border-top-left-radius: 28px; border-top-right-radius: 28px; padding: 22px 32px; display: flex; align-items: center; gap: 18px; position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: #ff9800; box-shadow: 0 0 12px #ff9800;"></div>
+                        <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(255, 152, 0, 0.12); border: 1px solid rgba(255, 152, 0, 0.35); display: flex; align-items: center; justify-content: center; font-size: 1.35rem; flex-shrink: 0; box-shadow: 0 0 16px rgba(255, 152, 0, 0.2);">
+                            ⚡
+                        </div>
+                        <div style="padding-right: 20px;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
+                                <span style="color: #ff9800; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px;">Video Broadcast Coming Soon</span>
+                                <span style="background: rgba(255, 152, 0, 0.15); border: 1px solid rgba(255, 152, 0, 0.35); color: #ffb74d; font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 10px; font-family: monospace;">SCHEDULED</span>
+                            </div>
+                            <p style="margin: 0; color: #cbd5e1; font-size: 0.88rem; line-height: 1.5; font-family: 'Plus Jakarta Sans', sans-serif;">
+                                This briefing is scheduled. Read the full transmission below or check back shortly.
+                            </p>
+                        </div>
                     </div>
                 `;
             }
@@ -1206,7 +1236,8 @@
             window._officeaimNewsCache = items;
 
             grid.innerHTML = items.map((item, index) => {
-                const ytId = extractYouTubeId(item.youtube_url);
+                const hasVideo = isYouTubePublished(item.youtube_url);
+                const ytId = hasVideo ? extractYouTubeId(item.youtube_url) : null;
                 const thumbUrl = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : 'images/newsletter_hero.png';
                 const displayDate = new Date(item.published_at || item.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
                 const excerpt = getCleanExcerpt(item.description, item.title);
@@ -1216,10 +1247,19 @@
                     <div class="glass-card" style="padding: 0; overflow: hidden; border-radius: 24px; border: 1px solid rgba(0, 242, 254, 0.3); box-shadow: 0 0 25px rgba(0, 242, 254, 0.08); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 35px rgba(0,242,254,0.18)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 0 25px rgba(0, 242, 254, 0.08)';">
                         <div>
                             <div onclick="openArticleModal(${index})" style="height: 200px; background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.65)), url('${thumbUrl}') center/cover; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; transition: transform 0.3s ease;">
-                                <div style="position: absolute; top: 15px; right: 15px; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; color: var(--accent-primary); border: 1px solid rgba(0, 242, 254, 0.4); text-transform: uppercase; letter-spacing: 0.5px;">
+                                <div style="position: absolute; top: 15px; left: 15px; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; color: var(--accent-primary); border: 1px solid rgba(0, 242, 254, 0.4); text-transform: uppercase; letter-spacing: 0.5px;">
                                     ${category}
                                 </div>
-                                ${ytId ? `
+                                ${hasVideo ? `
+                                    <div style="position: absolute; top: 15px; right: 15px; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; color: #00f2fe; border: 1px solid rgba(0, 242, 254, 0.3); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 5px;">
+                                        <span>▶</span> <span>VIDEO</span>
+                                    </div>
+                                ` : `
+                                    <div style="position: absolute; top: 15px; right: 15px; background: rgba(10, 15, 29, 0.85); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 20px; font-size: 0.68rem; font-weight: 800; color: #ff9800; border: 1px solid rgba(255, 152, 0, 0.4); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 5px; box-shadow: 0 0 12px rgba(255, 152, 0, 0.15);">
+                                        <span>⏱</span> <span>VIDEO COMING SOON</span>
+                                    </div>
+                                `}
+                                ${hasVideo && ytId ? `
                                 <div onclick="event.stopPropagation(); openVideoModal('https://www.youtube.com/embed/${ytId}');" title="Play Video" style="width: 56px; height: 56px; background: rgba(0,0,0,0.7); border: 2px solid var(--accent-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); box-shadow: 0 0 20px rgba(0, 242, 254, 0.35); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
                                     <svg width="22" height="22" viewBox="0 0 24 24" fill="var(--accent-primary)" stroke="var(--accent-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 3px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                                 </div>
@@ -1238,9 +1278,8 @@
                             </div>
                         </div>
                         <div style="padding: 0 24px 24px 24px;">
-                            <button onclick="openArticleModal(${index})" style="width: 100%; padding: 12px 18px; background: rgba(255,255,255,0.05); border: 1px solid rgba(0,242,254,0.25); border-radius: 14px; color: white; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.25s ease;" onmouseover="this.style.background='rgba(0,242,254,0.15)'; this.style.borderColor='var(--accent-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(0,242,254,0.25)';">
-                                <span>Read Transmission</span>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            <button onclick="openArticleModal(${index})" style="width: 100%; padding: 12px 18px; background: rgba(255,255,255,0.05); border: 1px solid ${hasVideo ? 'rgba(0,242,254,0.25)' : 'rgba(255,152,0,0.3)'}; border-radius: 14px; color: white; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.25s ease;" onmouseover="this.style.background='${hasVideo ? 'rgba(0,242,254,0.15)' : 'rgba(255,152,0,0.15)'}'; this.style.borderColor='${hasVideo ? 'var(--accent-primary)' : '#ff9800'}';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='${hasVideo ? 'rgba(0,242,254,0.25)' : 'rgba(255,152,0,0.3)'}';">
+                                <span>${hasVideo ? 'WATCH PROTOCOL >' : 'READ PROTOCOL >'}</span>
                             </button>
                         </div>
                     </div>

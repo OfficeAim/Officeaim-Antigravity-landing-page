@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Calendar, ChevronRight, X, Clock, Newspaper, Youtube, Sparkles } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { extractYouTubeId, getYouTubeEmbedUrl, getYouTubeThumbnailUrl } from '../lib/youtube';
+import { extractYouTubeId, getYouTubeEmbedUrl, getYouTubeThumbnailUrl, isYouTubePublished } from '../lib/youtube';
 import { vlogs as fallbackVlogs } from './newsData';
 
 // Helper to extract clean excerpt for feed card, stripping repeated titles/metadata
@@ -116,11 +116,15 @@ const TransmissionArticleBody = ({ content, title, youtubeUrl }) => {
             if (lower.startsWith('date:') || lower.startsWith('fecha:')) continue;
             if (lower.startsWith('officeaim newsroom metadata:') || lower.startsWith('metadata:')) continue;
             if (lower.startsWith('---') || lower.startsWith('===')) continue;
+            if (lower.startsWith('youtube:') || lower.startsWith('video:') || lower === 'not published') continue;
             if (lower.includes('[insert_') && lower.includes('_embed_here]')) continue;
             hasEncounteredBody = true;
         }
 
-        // Filter standalone youtube link if it's already rendered in the media iframe
+        // Filter standalone youtube link or 'Not published' marker if it was placed in body
+        if (lower === 'not published' || lower.startsWith('youtube: not published') || lower.startsWith('video: not published')) {
+            continue;
+        }
         if (cleanYtUrl && (line === cleanYtUrl || line.replace('http:', 'https:') === cleanYtUrl)) {
             continue;
         }
@@ -432,7 +436,8 @@ const VlogNewsPage = ({ profile }) => {
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {newsItems.map((item, idx) => {
-                                const ytId = extractYouTubeId(item.youtube_url);
+                                const hasVideo = isYouTubePublished(item.youtube_url);
+                                const ytId = hasVideo ? extractYouTubeId(item.youtube_url) : null;
                                 const thumbnail = ytId ? getYouTubeThumbnailUrl(item.youtube_url) : null;
                                 const displayDate = new Date(item.published_at || item.created_at).toLocaleDateString('en-US', {
                                     month: 'short',
@@ -467,10 +472,15 @@ const VlogNewsPage = ({ profile }) => {
                                                     </div>
                                                 )}
                                                 
-                                                {ytId && (
+                                                {hasVideo ? (
                                                     <div className="absolute top-3 right-3 z-20 glass-card px-3 py-1 rounded-full border-white/10 flex items-center gap-1.5 bg-black/50 backdrop-blur-md">
                                                         <Play className="w-3 h-3 text-cyan-400 fill-cyan-400" />
                                                         <span className="text-[10px] font-bold tracking-wider">VIDEO</span>
+                                                    </div>
+                                                ) : (
+                                                    <div className="absolute top-3 right-3 z-20 px-3 py-1 rounded-full border border-orange-500/30 flex items-center gap-1.5 bg-[#0a0f1d]/85 backdrop-blur-md text-orange-400 shadow-[0_0_12px_rgba(255,152,0,0.15)]">
+                                                        <Clock className="w-3 h-3 text-orange-400" />
+                                                        <span className="text-[10px] font-bold tracking-wider">VIDEO COMING SOON</span>
                                                     </div>
                                                 )}
                                             </div>
@@ -499,7 +509,7 @@ const VlogNewsPage = ({ profile }) => {
                                                     setSelectedNews(item);
                                                 }}
                                             >
-                                                <span>Watch Protocol</span>
+                                                <span>{hasVideo ? 'WATCH PROTOCOL' : 'READ PROTOCOL'}</span>
                                                 <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                                             </button>
                                         </div>
@@ -540,8 +550,8 @@ const VlogNewsPage = ({ profile }) => {
                                 <X className="w-5 h-5" />
                             </button>
 
-                            {/* Media content: Adaptive YouTube Player */}
-                            {selectedNews.youtube_url && extractYouTubeId(selectedNews.youtube_url) ? (
+                            {/* Media content: Adaptive YouTube Player or Dark Tech Scheduled Banner */}
+                            {isYouTubePublished(selectedNews.youtube_url) ? (
                                 <div className="aspect-video w-full bg-black relative">
                                     <iframe 
                                         src={getYouTubeEmbedUrl(selectedNews.youtube_url, true)}
@@ -554,15 +564,20 @@ const VlogNewsPage = ({ profile }) => {
                                     />
                                 </div>
                             ) : (
-                                <div className="aspect-video w-full bg-[#070a12] flex flex-col items-center justify-center text-center p-8 border-b border-white/5 relative">
-                                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0a0f1c]"></div>
-                                    <Clock className="w-16 h-16 text-cyan-400/50 mb-4 animate-pulse relative z-10" />
-                                    <h3 className="text-xl font-black italic tracking-wide text-white relative z-10">
-                                        OFFICEAIM DISPATCH
-                                    </h3>
-                                    <p className="text-sm text-text-muted max-w-md mt-2 relative z-10">
-                                        Official intelligence transmission recorded directly from the OfficeAIM Autonomous Hub.
-                                    </p>
+                                <div className="bg-[#0A0F1D] border-b border-cyan-500/25 px-6 sm:px-8 py-6 relative overflow-hidden flex items-center gap-4">
+                                    <div className="absolute top-0 left-0 w-1.5 h-full bg-[#FF7A18] shadow-[0_0_12px_#FF7A18]"></div>
+                                    <div className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(255,152,0,0.15)] text-xl">
+                                        ⚡
+                                    </div>
+                                    <div className="pr-8">
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <span className="text-xs font-black uppercase tracking-wider text-orange-400">Video Broadcast Coming Soon</span>
+                                            <span className="text-[10px] bg-orange-500/15 border border-orange-500/30 text-orange-300 font-bold px-2 py-0.5 rounded-full font-mono">SCHEDULED</span>
+                                        </div>
+                                        <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed">
+                                            This briefing is scheduled. Read the full transmission below or check back shortly.
+                                        </p>
+                                    </div>
                                 </div>
                             )}
 
