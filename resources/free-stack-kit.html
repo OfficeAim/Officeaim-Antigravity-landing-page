@@ -257,6 +257,64 @@
             outline: none;
             display: block;
         }
+
+        /* Official 6 Links Footer Block */
+        .official-network-block {
+            max-width: 74rem;
+            margin: 4rem auto 2rem;
+            padding: 2.5rem;
+            background: #0A0F1D;
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            border-radius: 1.5rem;
+            box-shadow: 0 0 35px rgba(0, 240, 255, 0.08);
+        }
+
+        .network-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+            margin-top: 1.75rem;
+        }
+
+        @media (max-width: 768px) {
+            .network-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .network-link-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 0.75rem;
+            text-decoration: none;
+            color: #FFFFFF;
+            transition: all 0.25s ease;
+        }
+
+        .network-link-card:hover {
+            background: rgba(0, 240, 255, 0.08);
+            border-color: rgba(0, 240, 255, 0.6);
+            transform: translateX(4px);
+        }
+
+        .network-icon {
+            font-size: 1.5rem;
+        }
+
+        .network-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+
+        .network-sub {
+            font-size: 0.75rem;
+            color: #38bdf8;
+        }
     </style>
 </head>
 
@@ -269,8 +327,6 @@
                 <img src="../images/favicon.png" alt="OfficeAIM Logo" class="logo-img">
             </a>
             <ul class="nav-links">
-                <li><a href="../features.html" class="nav-link">Features</a></li>
-
                 <li class="nav-item-dropdown">
                     <a href="#" class="nav-link">Learn <svg class="dropdown-arrow" width="12" height="12"
                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -325,11 +381,11 @@
                                         <span>Bespoke vector design &amp; web coach</span>
                                     </div>
                                 </a>
-                                <a href="library-tracker.html" class="mega-link">
-                                    <div class="mega-icon">📚</div>
+                                <a href="qr-generator.html" class="mega-link">
+                                    <div class="mega-icon">🔲</div>
                                     <div class="mega-text">
-                                        <strong>Library &amp; Loan Tracker</strong>
-                                        <span>AI Vision inventory &amp; student loan management</span>
+                                        <strong>AI QR Generator</strong>
+                                        <span>Create custom, branded QR codes with zero subscriptions.</span>
                                     </div>
                                 </a>
                                 <a href="../gems.html" class="mega-link">
@@ -339,11 +395,11 @@
                                         <span>Create emails and prompts for your site</span>
                                     </div>
                                 </a>
-                                <a href="../gems.html#gemini" class="mega-link">
-                                    <div class="mega-icon">💎</div>
+                                <a href="https://lnkd.in/efYufA5e" target="_blank" rel="noopener noreferrer" class="mega-link">
+                                    <div class="mega-icon">🎁</div>
                                     <div class="mega-text">
-                                        <strong>15 Gem Agents</strong>
-                                        <span>Try Google Gemini integrations</span>
+                                        <strong>AI Skills Starter Pack (Free)</strong>
+                                        <span>Curated agent skills &amp; workflows</span>
                                     </div>
                                 </a>
                                 <a href="free-stack-kit.html" class="mega-link active-mega-link">
@@ -369,7 +425,7 @@
                 <li><a id="nav-news-link" href="../news.html" class="nav-link" style="color: var(--accent-primary);">News</a></li>
             </ul>
             <div class="nav-ctas">
-                <a href="../construction.html" class="btn btn-primary">Enter Campus →</a>
+                <a href="/hub" class="btn btn-primary">Enter Campus →</a>
             </div>
             <button class="mobile-menu-toggle" id="mobileMenuToggle">
                 <span></span><span></span><span></span>
@@ -478,7 +534,7 @@
             <h2>Ready to build with your specialist AI team?</h2>
             <p>Join the Student Campus to unlock real-time agent execution and automated pipelines.</p>
             <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2rem;">
-                <a href="../construction.html" class="btn-hero-primary" style="display:inline-flex;">
+                <a href="/hub" class="btn-hero-primary" style="display:inline-flex;">
                     Enter the Campus — Free
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2.5">
@@ -487,6 +543,63 @@
                 </a>
                 <a href="../pricing.html" class="btn-hero-secondary">View Pricing Plans</a>
             </div>
+        </div>
+    </section>
+
+    <!-- ===== OFFICIAL NETWORK BLOCK ===== -->
+    <section class="official-network-block">
+        <div style="text-align: center;">
+            <div class="section-label" style="display: inline-block; margin-bottom: 0.5rem;">OFFICIAL CHANNELS</div>
+            <h2 style="font-size: 1.75rem; font-weight: 800; color: white; margin: 0.5rem 0 0.5rem;">
+                Connect with the OfficeAIM Ecosystem
+            </h2>
+            <p style="color: #94A3B8; font-size: 0.9rem; margin: 0 auto; max-width: 36rem;">
+                Access our open tools, video masterclasses, and executive waitlist across verified channels.
+            </p>
+        </div>
+        <div class="network-grid">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfU9WOXw1BOpMwE9HO-rtSiIjju0nZrtlu_m-1dQICDH2IceQ/viewform" target="_blank" rel="noopener noreferrer" class="network-link-card">
+                <div class="network-icon">📋</div>
+                <div>
+                    <div class="network-title">Campus Waitlist</div>
+                    <div class="network-sub">Official Access Queue</div>
+                </div>
+            </a>
+            <a href="https://officeaimhq.netlify.app/" target="_blank" rel="noopener noreferrer" class="network-link-card">
+                <div class="network-icon">🌐</div>
+                <div>
+                    <div class="network-title">OfficeAIM HQ</div>
+                    <div class="network-sub">Production Website</div>
+                </div>
+            </a>
+            <a href="https://www.youtube.com/@Aimora-Officeaim?sub_confirmation=1" target="_blank" rel="noopener noreferrer" class="network-link-card">
+                <div class="network-icon">📺</div>
+                <div>
+                    <div class="network-title">YouTube Channel</div>
+                    <div class="network-sub">Video Protocols &amp; Vlogs</div>
+                </div>
+            </a>
+            <a href="https://www.instagram.com/office.aim/" target="_blank" rel="noopener noreferrer" class="network-link-card">
+                <div class="network-icon">📸</div>
+                <div>
+                    <div class="network-title">Instagram</div>
+                    <div class="network-sub">Daily AI Insights</div>
+                </div>
+            </a>
+            <a href="https://www.linkedin.com/in/office-aim-hq-b8a7013a8/" target="_blank" rel="noopener noreferrer" class="network-link-card">
+                <div class="network-icon">💼</div>
+                <div>
+                    <div class="network-title">LinkedIn</div>
+                    <div class="network-sub">Enterprise Updates</div>
+                </div>
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61584047901312" target="_blank" rel="noopener noreferrer" class="network-link-card">
+                <div class="network-icon">👥</div>
+                <div>
+                    <div class="network-title">Facebook Community</div>
+                    <div class="network-sub">Official Page</div>
+                </div>
+            </a>
         </div>
     </section>
 
@@ -511,7 +624,7 @@
                             <li><a href="../board.html">The Board</a></li>
                             <li><a href="../index.html#how">How It Works</a></li>
                             <li><a href="../gems.html">Free Gems &amp; Tools</a></li>
-                            <li><a href="../construction.html">Campus Login</a></li>
+                            <li><a href="/hub">Campus Login</a></li>
                         </ul>
                     </div>
                     <div class="footer-column">

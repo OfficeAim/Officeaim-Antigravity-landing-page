@@ -1414,16 +1414,19 @@ p {
         top: 100%;
         left: 0;
         width: 100%;
-        background: var(--bg-surface);
+        background: #0A0F1D;
+        background: rgba(10, 15, 29, 0.98);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
         flex-direction: column;
-        padding: 2rem;
-        gap: 1.5rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 2rem 1.75rem;
+        gap: 1.25rem;
+        border-bottom: 1px solid rgba(0, 240, 255, 0.2);
         text-align: left;
-        /* Better for mobile dropdowns */
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-        max-height: calc(100vh - 80px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 240, 255, 0.08);
+        max-height: calc(100vh - 70px);
         overflow-y: auto;
+        z-index: 99999;
     }
 
     .nav-links.active {
@@ -1627,17 +1630,45 @@ p {
 /* ============================================================
    MOBILE-ONLY NAVIGATION ACTIONS (Enter Campus & Command Center)
    ============================================================ */
-.mobile-only-nav-item {
+.mobile-only-nav-item,
+li.mobile-only-nav-item,
+.nav-links .mobile-only-nav-item,
+.nav-links li.mobile-only-nav-item {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    pointer-events: none !important;
+    position: absolute !important;
+    left: -9999px !important;
 }
 
 @media (max-width: 768px) {
-    .mobile-only-nav-item {
+    .nav-links.active .mobile-only-nav-item,
+    .nav-links.active li.mobile-only-nav-item {
         display: block !important;
-        width: 100%;
-        margin-top: 1rem;
-        padding-top: 1.25rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.12);
+        visibility: visible !important;
+        opacity: 1 !important;
+        width: 100% !important;
+        height: auto !important;
+        pointer-events: auto !important;
+        position: static !important;
+        left: 0 !important;
+        list-style: none !important;
+    }
+
+    .nav-links.active li.mobile-only-nav-item:first-of-type {
+        margin-top: 1.25rem !important;
+        padding-top: 1.25rem !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+    }
+
+    .nav-links.active li.mobile-only-nav-item:last-of-type {
+        margin-top: 0.75rem !important;
     }
 
     .mobile-nav-actions {

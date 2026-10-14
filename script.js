@@ -526,9 +526,18 @@ if (newsletterForm) {
 // 9) MOBILE MENU TOGGLE
 // ============================================================
 if (mobileMenuToggle) {
-    if (mobileMenuToggle) mobileMenuToggle.addEventListener('click', () => {
+    mobileMenuToggle.addEventListener('click', () => {
         const navLinks = document.querySelector('.nav-links');
+        if (!navLinks) return;
         navLinks.classList.toggle('active');
+
+        if (navLinks.classList.contains('active')) {
+            if (window.innerWidth <= 768) {
+                ensureMobileNavCTAs();
+            }
+        } else {
+            navLinks.querySelectorAll('.mobile-only-nav-item').forEach(el => el.remove());
+        }
 
         // Toggle animation for burger icon
         const spans = mobileMenuToggle.querySelectorAll('span');
@@ -545,37 +554,44 @@ if (mobileMenuToggle) {
     });
 }
 
-// Automatically ensure mobile action shortcuts exist in hamburger menu across all public pages
+// Clean up mobile shortcuts on desktop resize
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+        const navLinks = document.querySelector('.nav-links');
+        if (navLinks) {
+            navLinks.classList.remove('active');
+            navLinks.querySelectorAll('.mobile-only-nav-item').forEach(el => el.remove());
+        }
+    }
+});
+
+// Automatically ensure mobile action shortcuts exist ONLY in mobile viewport
 function ensureMobileNavCTAs() {
+    if (window.innerWidth > 768) return; // Strict guard: never execute in desktop
+
     const navLinks = document.querySelector('.nav-links');
     if (!navLinks || navLinks.querySelector('.mobile-only-nav-item')) return;
 
     const campusLi = document.createElement('li');
     campusLi.className = 'mobile-only-nav-item';
-    campusLi.style.cssText = 'width: 100%; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid rgba(255, 255, 255, 0.12); list-style: none;';
+    campusLi.style.cssText = 'list-style: none; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid rgba(255, 255, 255, 0.12); width: 100%;';
     campusLi.innerHTML = `
-        <a href="/hub" class="btn-campus-mobile" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 13px 20px; background: linear-gradient(135deg, rgba(0, 240, 255, 0.18), rgba(0, 112, 243, 0.3)); border: 1px solid rgba(0, 240, 255, 0.55); border-radius: 14px; color: #00f0ff !important; font-size: 0.95rem !important; font-weight: 800 !important; text-transform: uppercase; letter-spacing: 1.2px; text-decoration: none; box-shadow: 0 0 20px rgba(0, 240, 255, 0.16); box-sizing: border-box;">
+        <a href="/hub" class="btn-campus-mobile" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 13px 20px; background: linear-gradient(135deg, rgba(0, 240, 255, 0.18), rgba(0, 112, 243, 0.3)); border: 1px solid rgba(0, 240, 255, 0.55); border-radius: 14px; color: #00f0ff; font-size: 0.95rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; text-decoration: none; box-shadow: 0 0 20px rgba(0, 240, 255, 0.16);">
             <span>Enter Campus →</span>
         </a>
     `;
 
     const adminLi = document.createElement('li');
     adminLi.className = 'mobile-only-nav-item';
-    adminLi.style.cssText = 'width: 100%; margin-top: 0.75rem; list-style: none;';
+    adminLi.style.cssText = 'list-style: none; margin-top: 0.75rem; width: 100%;';
     adminLi.innerHTML = `
-        <a href="/admin/news" class="btn-admin-mobile" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px 20px; background: rgba(255, 122, 0, 0.14); border: 1px solid rgba(255, 122, 0, 0.45); border-radius: 14px; color: #ff9800 !important; font-size: 0.9rem !important; font-weight: 800 !important; text-transform: uppercase; letter-spacing: 1.2px; text-decoration: none; box-shadow: 0 0 16px rgba(255, 122, 0, 0.14); box-sizing: border-box;">
+        <a href="/admin/news" class="btn-admin-mobile" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px 20px; background: rgba(255, 122, 0, 0.14); border: 1px solid rgba(255, 122, 0, 0.45); border-radius: 14px; color: #ff9800; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; text-decoration: none; box-shadow: 0 0 16px rgba(255, 122, 0, 0.14);">
             <span>⚡ Command Center</span>
         </a>
     `;
 
     navLinks.appendChild(campusLi);
     navLinks.appendChild(adminLi);
-}
-
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', ensureMobileNavCTAs);
-} else {
-    ensureMobileNavCTAs();
 }
 
 // ============================================================

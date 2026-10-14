@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OfficeAIM — AI QR Generator Studio</title>
+    <meta name="description"
+        content="Build your own branded QR studio. Generate unlimited high-resolution QR codes with custom colors and embedded logos directly in your browser. 100% Free.">
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700;1,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../landing-new.css">
+    <link rel="stylesheet" href="../pricing-page.css">
+    <style>
+        :root {
+            --bg-base: #070A12;
+            --bg-surface: #0A0F1D;
+            --cyan-glow: #00F0FF;
+            --orange-accent: #FF7A00;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: #FFFFFF;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .resource-hero {
+            padding: 8.5rem 1.5rem 3.5rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .badge-live-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1rem;
+            border-radius: 9999px;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.35);
+            color: var(--cyan-glow);
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+        }
+
+        .hero-title-gradient {
+            font-size: 3.25rem;
+            font-weight: 900;
+            line-height: 1.15;
+            letter-spacing: -1px;
+            margin-bottom: 1.25rem;
+            color: #FFFFFF;
+        }
+
+        .hero-title-gradient span {
+            background: linear-gradient(135deg, #00F0FF 0%, #3B82F6 60%, #FF7A00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            max-width: 44rem;
+            margin: 0 auto 2.5rem;
+            font-size: 1.1rem;
+            line-height: 1.65;
+            color: #94A3B8;
+        }
+
+        /* Interactive Studio Container */
+        .studio-stage-wrap {
+            max-width: 74rem;
+            margin: 0 auto 5rem;
+            padding: 0 1.5rem;
+        }
+
+        .studio-frame-box {
+            background: #0A0F1D;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 35px rgba(0, 240, 255, 0.1);
+            position: relative;
+        }
+
+        .studio-top-bar {
+            background: rgba(15, 23, 42, 0.85);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+        }
+
+        .studio-dots {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .studio-dot {
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+        }
+
+        .studio-iframe {
+            width: 100%;
+            height: 720px;
+            border: none;
+            background: #070A12;
+            display: block;
+        }
+
+        .btn-launch-fullscreen {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.8rem 1.6rem;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(0, 112, 243, 0.3));
+            border: 1px solid var(--cyan-glow);
+            border-radius: 0.75rem;
+            color: #FFFFFF;
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+        }
+
+        .btn-launch-fullscreen:hover {
+            background: rgba(0, 240, 255, 0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.35);
+        }
+
+        /* 3-Step Guide Grid */
+        .steps-section {
+            max-width: 74rem;
+            margin: 0 auto 6rem;
+            padding: 0 1.5rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .section-eyebrow {
+            color: var(--cyan-glow);
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin: 0;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+            .studio-iframe {
+                height: 580px;
+            }
+        }
+
+        .step-card {
+            background: rgba(15, 27, 46, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1.25rem;
+            padding: 2.25rem;
+            position: relative;
+            backdrop-filter: blur(16px);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 240, 255, 0.4);
+        }
+
+        .step-number {
+            width: 2.75rem;
+            height: 2.75rem;
+            border-radius: 0.75rem;
+            background: rgba(0, 240, 255, 0.12);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            color: var(--cyan-glow);
+            font-weight: 800;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+        }
+
+        .step-card h3 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin: 0 0 0.75rem;
+        }
+
+        .step-card p {
+            color: #94A3B8;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Business Lesson & Comparison Matrix */
+        .matrix-section {
+            max-width: 74rem;
+            margin: 0 auto 6rem;
+            padding: 0 1.5rem;
+        }
+
+        .matrix-box {
+            background: #0A0F1D;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1.5rem;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            margin: 2.5rem 0;
+        }
+
+        @media (max-width: 800px) {
+            .matrix-grid {
+                grid-template-columns: 1fr;
+            }
+            .matrix-box {
+                padding: 1.75rem;
+            }
+        }
+
+        .matrix-col {
+            border-radius: 1rem;
+            padding: 2rem;
+        }
+
+        .col-commercial {
+            background: rgba(239, 68, 68, 0.05);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+        }
+
+        .col-ai {
+            background: rgba(0, 240, 255, 0.06);
+            border: 1px solid rgba(0, 240, 255, 0.35);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.08);
+        }
+
+        .matrix-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0.3rem 0.8rem;
+            border-radius: 9999px;
+            margin-bottom: 1rem;
+        }
+
+        .badge-red {
+            background: rgba(239, 68, 68, 0.2);
+            color: #F87171;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+        }
+
+        .badge-cyan-tag {
+            background: rgba(0, 240, 255, 0.2);
+            color: var(--cyan-glow);
+            border: 1px solid rgba(0, 240, 255, 0.4);
+        }
+
+        .matrix-list {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .matrix-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #CBD5E1;
+        }
+
+        /* Prompt Tutorial Box */
+        .prompt-box {
+            margin-top: 2.5rem;
+            background: #070A12;
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            border-radius: 1rem;
+            padding: 1.75rem;
+            position: relative;
+        }
+
+        .prompt-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--cyan-glow);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .prompt-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.88rem;
+            line-height: 1.6;
+            color: #E2E8F0;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            white-space: pre-wrap;
+        }
+
+        /* Official 6 Links Footer Block */
+        .official-network-block {
+            max-width: 74rem;
+            margin: 0 auto 6rem;
+            padding: 2.5rem;
+            background: #0A0F1D;
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            border-radius: 1.5rem;
+            box-shadow: 0 0 35px rgba(0, 240, 255, 0.08);
+        }
+
+        .network-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+            margin-top: 1.75rem;
+        }
+
+        @media (max-width: 768px) {
+            .network-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .network-link-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 0.75rem;
+            text-decoration: none;
+            color: #FFFFFF;
+            transition: all 0.25s ease;
+        }
+
+        .network-link-card:hover {
+            background: rgba(0, 240, 255, 0.08);
+            border-color: var(--cyan-glow);
+            transform: translateX(4px);
+        }
+
+        .network-icon {
+            font-size: 1.5rem;
+        }
+
+        .network-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+
+        .network-sub {
+            font-size: 0.75rem;
+            color: var(--cyan-glow);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ===== GLOBAL NAVBAR ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">
+                <img src="../images/favicon.png" alt="OfficeAIM" class="logo-img">
+            </a>
+            <ul class="nav-links">
+                <li class="nav-item-dropdown">
+                    <a href="#learn" class="nav-link">Learn <svg class="dropdown-arrow" width="12" height="12"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-inner">
+                            <div class="mega-menu-col">
+                                <h4>Learning Paths</h4>
+                                <a href="../courses.html" class="mega-link">
+                                    <div class="mega-icon">🎓</div>
+                                    <div class="mega-text">
+                                        <strong>Curriculum</strong>
+                                        <span>Full AI agent engineering track</span>
+                                    </div>
+                                </a>
+                                <a href="../use-cases.html" class="mega-link">
+                                    <div class="mega-icon">💼</div>
+                                    <div class="mega-text">
+                                        <strong>Use Cases</strong>
+                                        <span>Real-world business applications</span>
+                                    </div>
+                                </a>
+                                <a href="../blueprint.html" class="mega-link">
+                                    <div class="mega-icon">📄</div>
+                                    <div class="mega-text">
+                                        <strong>The Blueprint</strong>
+                                        <span>State of AI Agents 2026</span>
+                                    </div>
+                                </a>
+                                <a href="../security.html" class="mega-link">
+                                    <div class="mega-icon">🛡️</div>
+                                    <div class="mega-text">
+                                        <strong>Security &amp; Trust</strong>
+                                        <span>Data privacy &amp; encryption</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item-dropdown">
+                    <a href="#resources" class="nav-link active-nav">Resources <svg class="dropdown-arrow" width="12" height="12"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-inner">
+                            <div class="mega-menu-col">
+                                <h4>Free Tools &amp; Blueprints</h4>
+                                <a href="website-creator.html" class="mega-link">
+                                    <div class="mega-icon">🎨</div>
+                                    <div class="mega-text">
+                                        <strong>AI SVG Logo Lab</strong>
+                                        <span>Bespoke vector design &amp; web coach</span>
+                                    </div>
+                                </a>
+                                <a href="qr-generator.html" class="mega-link active-nav" style="border-left: 2px solid var(--cyan-glow); background: rgba(0, 240, 255, 0.05);">
+                                    <div class="mega-icon">🔲</div>
+                                    <div class="mega-text">
+                                        <strong>AI QR Generator</strong>
+                                        <span>Create custom, branded QR codes with zero subscriptions.</span>
+                                    </div>
+                                </a>
+                                <a href="../gems.html" class="mega-link">
+                                    <div class="mega-icon">⭐</div>
+                                    <div class="mega-text">
+                                        <strong>Prompt Creator</strong>
+                                        <span>Create emails and prompts for your site</span>
+                                    </div>
+                                </a>
+                                <a href="https://lnkd.in/efYufA5e" target="_blank" rel="noopener noreferrer" class="mega-link">
+                                    <div class="mega-icon">🎁</div>
+                                    <div class="mega-text">
+                                        <strong>AI Skills Starter Pack (Free)</strong>
+                                        <span>Curated agent skills &amp; workflows</span>
+                                    </div>
+                                </a>
+                                <a href="free-stack-kit.html" class="mega-link">
+                                    <div class="mega-icon">📦</div>
+                                    <div class="mega-text">
+                                        <strong>Free Stack Kit</strong>
+                                        <span>Curated tools &amp; step-by-step stack</span>
+                                    </div>
+                                </a>
+                                <a href="../board.html" class="mega-link">
+                                    <div class="mega-icon">👥</div>
+                                    <div class="mega-text">
+                                        <strong>The AI Board</strong>
+                                        <span>Meet your 19 specialist agents — free to explore</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="../pricing.html" class="nav-link">Pricing</a></li>
+                <li><a id="nav-news-link" href="../news.html" class="nav-link" style="color: var(--accent-primary);">News</a></li>
+            </ul>
+            <div class="nav-ctas">
+                <a href="/hub" class="btn btn-primary">Enter Campus →</a>
+            </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== SECTION A: HERO & VISION ===== -->
+    <section class="resource-hero">
+        <div class="container">
+            <div class="badge-live-pill">
+                <span>⚡ Interactive Studio Tool</span>
+            </div>
+            <h1 class="hero-title-gradient">
+                Build Your Own Free <span>Branded QR Studio</span>
+            </h1>
+            <p class="hero-subtitle">
+                Stop paying monthly subscriptions for basic marketing tools. Generate unlimited, high-resolution QR codes with custom colors and embedded logos directly in your browser.
+            </p>
+            <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                <a href="https://officeaim.github.io/qr-generator/" target="_blank" rel="noopener noreferrer" class="btn-launch-fullscreen">
+                    <span>🚀 Launch Full Screen Generator</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+                <a href="#guide" class="portfolio-link-btn" style="background: rgba(255,255,255,0.05); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.15);">
+                    <span>How It Works ↓</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION B: INTERACTIVE STUDIO EMBED ===== -->
+    <section class="studio-stage-wrap">
+        <div class="studio-frame-box">
+            <div class="studio-top-bar">
+                <div class="studio-dots">
+                    <span class="studio-dot" style="background: #EF4444;"></span>
+                    <span class="studio-dot" style="background: #F59E0B;"></span>
+                    <span class="studio-dot" style="background: #10B981;"></span>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #64748B; margin-left: 0.75rem;">https://officeaim.github.io/qr-generator/</span>
+                </div>
+                <a href="https://officeaim.github.io/qr-generator/" target="_blank" rel="noopener noreferrer" style="color: var(--cyan-glow); font-size: 0.8rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 0.35rem;">
+                    <span>Open Standalone Tab ↗</span>
+                </a>
+            </div>
+            <iframe class="studio-iframe" src="https://officeaim.github.io/qr-generator/" title="OfficeAIM AI QR Generator Studio" loading="lazy" allow="clipboard-write"></iframe>
+        </div>
+    </section>
+
+    <!-- ===== SECTION C: QUICK START GUIDE ===== -->
+    <section class="steps-section" id="guide">
+        <div class="section-header">
+            <div class="section-eyebrow">WORKFLOW PLAYBOOK</div>
+            <h2 class="section-title">Quick Start Guide (3 Simple Steps)</h2>
+        </div>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">01</div>
+                <h3>Enter Destination</h3>
+                <p>Input your destination URL, landing page, LinkedIn profile, or contact card. The engine validates syntax and creates real-time vector matrix points instantly.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">02</div>
+                <h3>Customize Brand Identity</h3>
+                <p>Pick custom foreground and background colors to match your brand palette. Optionally paste your logo URL to embed clean brand imagery directly into the center.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">03</div>
+                <h3>Export Vector / High-Res</h3>
+                <p>Download directly as high-resolution PNG or SVG vectors. Unlimited scans, permanent client-side rendering, and zero expiration dates.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION D: BUSINESS LESSON & MATRIX ===== -->
+    <section class="matrix-section">
+        <div class="matrix-box">
+            <div style="text-align: center; max-width: 48rem; margin: 0 auto;">
+                <div class="section-eyebrow" style="color: var(--orange-accent);">THE AI BUSINESS LESSON</div>
+                <h2 style="font-size: 2rem; font-weight: 800; color: white; margin: 0.5rem 0 1rem;">
+                    Replacing Costly SaaS with AI-Generated Micro-Tools
+                </h2>
+                <p style="color: #94A3B8; font-size: 0.95rem; line-height: 1.6;">
+                    Marketing platforms charge $15 to $49/month for branded QR codes, lock your links behind paywalls, and expire codes if you cancel. With modern AI tools like Google Gemini, you can engineer and host your own studio for $0.
+                </p>
+            </div>
+
+            <div class="matrix-grid">
+                <div class="matrix-col col-commercial">
+                    <span class="matrix-badge badge-red">Typical Commercial Services</span>
+                    <h3 style="color: #F87171; font-size: 1.25rem; font-weight: 800; margin: 0;">$180 – $588 / Year</h3>
+                    <ul class="matrix-list">
+                        <li>❌ Monthly recurring software subscriptions</li>
+                        <li>❌ Logo embedding gated behind "Pro" tiers</li>
+                        <li>❌ Scan limits and artificial throttling</li>
+                        <li>❌ Redirect servers lock your domain to their platform</li>
+                        <li>❌ QR codes stop working if you cancel membership</li>
+                    </ul>
+                </div>
+                <div class="matrix-col col-ai">
+                    <span class="matrix-badge badge-cyan-tag">OfficeAIM &amp; AI-Powered Choice</span>
+                    <h3 style="color: var(--cyan-glow); font-size: 1.25rem; font-weight: 800; margin: 0;">$0 / Forever (Open Source)</h3>
+                    <ul class="matrix-list">
+                        <li>✅ 100% Free client-side execution</li>
+                        <li>✅ Embedded custom logos and bespoke brand colors</li>
+                        <li>✅ Unlimited scans with zero rate limits</li>
+                        <li>✅ Direct link resolution: zero middleman servers</li>
+                        <li>✅ Fully owned and hostable on GitHub Pages in 5 minutes</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Mini Tutorial: Gemini Prompt -->
+            <div class="prompt-box">
+                <div class="prompt-label">
+                    <span>⚡ Replicate this in 5 minutes with Google Gemini</span>
+                    <span style="color: #94A3B8;">Single-File Architecture</span>
+                </div>
+                <div class="prompt-code">"You are an expert Frontend Architect. Build a standalone, production-ready QR Code Studio in a single index.html file using vanilla JS and QRCode.js via CDN. It must feature:
+1. Destination URL input with instant real-time live preview.
+2. Color pickers for brand foreground and background colors.
+3. Logo upload / URL embed in center with error fallback.
+4. Export as 1024x1024 High-Res PNG with direct download button.
+5. Premium Dark Tech UI styling (#0A0F1D, Cyber Cyan accents, Plus Jakarta Sans)."</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SECTION E: OFFICIAL NETWORK BLOCK ===== -->
+    <section class="official-network-block">
+        <div style="text-align: center;">
+            <div class="section-eyebrow">OFFICIAL CHANNELS</div>
+            <h2 style="font-size: 1.75rem; font-weight: 800; color: white; margin: 0.5rem 0 0.5rem;">
+                Connect with the OfficeAIM Ecosystem
+            </h2>
+            <p style="color: #94A3B8; font-size: 0.9rem; margin: 0 auto; max-width: 36rem;">
+                Access our open tools, video masterclasses, and executive waitlist across verified channels.
+            </p>
+        </div>
+        <div class="network-grid">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfU9WOXw1BOpMwE9HO-rtSiIjju0nZrtlu_m-1dQICDH2IceQ/viewform" target="_blank" rel="noopener noreferrer" class="network-link-card">
+                <div class="network-icon">📋</div>
+                <div>
+                    <div class="network-title">Campus Waitlist</div>
+                    <div class="network-sub">Official Access Queue</div>
+                </div>
+            </a>
+            <a href="https://officeaimhq.netlify.app/" target="_blank" rel="noopener noreferrer" class="network-link-card">
+                <div class="network-icon">🌐</div>
+                <div>
+                    <div class="network-title">OfficeAIM HQ</div>
+                    <div class="network-sub">Production Website</div>
+                </div>
+            </a>
+            <a href="https://www.youtube.com/@Aimora-Officeaim?sub_confirmation=1" target="_blank" rel="noopener noreferrer" class="network-link-card">
+                <div class="network-icon">📺</div>
+                <div>
+                    <div class="network-title">YouTube Channel</div>
+                    <div class="network-sub">Video Protocols &amp; Vlogs</div>
+                </div>
+            </a>
+            <a href="https://www.instagram.com/office.aim/" target="_blank" rel="noopener noreferrer" class="network-link-card">
+                <div class="network-icon">📸</div>
+                <div>
+                    <div class="network-title">Instagram</div>
+                    <div class="network-sub">Daily AI Insights</div>
+                </div>
+            </a>
+            <a href="https://www.linkedin.com/in/office-aim-hq-b8a7013a8/" target="_blank" rel="noopener noreferrer" class="network-link-card">
+                <div class="network-icon">💼</div>
+                <div>
+                    <div class="network-title">LinkedIn</div>
+                    <div class="network-sub">Enterprise Updates</div>
+                </div>
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61584047901312" target="_blank" rel="noopener noreferrer" class="network-link-card">
+                <div class="network-icon">👥</div>
+                <div>
+                    <div class="network-title">Facebook Community</div>
+                    <div class="network-sub">Official Page</div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer" style="border-top: 1px solid rgba(255, 255, 255, 0.05); padding: 4rem 1.5rem; text-align: center;">
+        <div class="container">
+            <p style="color: #64748B; font-size: 0.85rem; margin: 0;">
+                © 2026 OfficeAIM. Autonomous AI Systems &amp; Next-Gen Business Infrastructure.
+            </p>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+
+</html>
