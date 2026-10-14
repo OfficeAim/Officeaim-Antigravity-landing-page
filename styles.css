@@ -1623,3 +1623,80 @@ p {
         grid-template-columns: 1fr;
     }
 }
+
+/* ============================================================
+   MOBILE-ONLY NAVIGATION ACTIONS (Enter Campus & Command Center)
+   ============================================================ */
+.mobile-only-nav-item {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .mobile-only-nav-item {
+        display: block !important;
+        width: 100%;
+        margin-top: 1rem;
+        padding-top: 1.25rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .mobile-nav-actions {
+        display: flex !important;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .btn-campus-mobile {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 13px 20px;
+        background: linear-gradient(135deg, rgba(0, 240, 255, 0.18), rgba(0, 112, 243, 0.3));
+        border: 1px solid rgba(0, 240, 255, 0.55);
+        border-radius: 14px;
+        color: #00f0ff !important;
+        font-size: 0.95rem !important;
+        font-weight: 800 !important;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        text-decoration: none;
+        box-shadow: 0 0 20px rgba(0, 240, 255, 0.16);
+        transition: all 0.25s ease;
+    }
+
+    .btn-campus-mobile:hover,
+    .btn-campus-mobile:active {
+        background: rgba(0, 240, 255, 0.3);
+        transform: translateY(-1px);
+        box-shadow: 0 0 25px rgba(0, 240, 255, 0.28);
+    }
+
+    .btn-admin-mobile {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 12px 20px;
+        background: rgba(255, 122, 0, 0.14);
+        border: 1px solid rgba(255, 122, 0, 0.45);
+        border-radius: 14px;
+        color: #ff9800 !important;
+        font-size: 0.9rem !important;
+        font-weight: 800 !important;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        text-decoration: none;
+        box-shadow: 0 0 16px rgba(255, 122, 0, 0.14);
+        transition: all 0.25s ease;
+    }
+
+    .btn-admin-mobile:hover,
+    .btn-admin-mobile:active {
+        background: rgba(255, 122, 0, 0.25);
+        transform: translateY(-1px);
+        box-shadow: 0 0 22px rgba(255, 122, 0, 0.25);
+    }
+}

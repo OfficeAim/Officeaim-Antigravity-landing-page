@@ -416,9 +416,21 @@
 
                 <li><a href="pricing.html" class="nav-link">Pricing</a></li>
                 <li><a id="nav-news-link" href="news.html" class="nav-link active-nav" style="color: var(--accent-primary);">News</a></li>
+
+                <!-- Mobile-Only Action Shortcuts -->
+                <li class="mobile-only-nav-item" style="width: 100%; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid rgba(255, 255, 255, 0.12); list-style: none;">
+                    <a href="/hub" class="btn-campus-mobile" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 13px 20px; background: linear-gradient(135deg, rgba(0, 240, 255, 0.18), rgba(0, 112, 243, 0.3)); border: 1px solid rgba(0, 240, 255, 0.55); border-radius: 14px; color: #00f0ff !important; font-size: 0.95rem !important; font-weight: 800 !important; text-transform: uppercase; letter-spacing: 1.2px; text-decoration: none; box-shadow: 0 0 20px rgba(0, 240, 255, 0.16); box-sizing: border-box;">
+                        <span>Enter Campus →</span>
+                    </a>
+                </li>
+                <li class="mobile-only-nav-item" style="width: 100%; margin-top: 0.75rem; list-style: none;">
+                    <a href="/admin/news" class="btn-admin-mobile" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px 20px; background: rgba(255, 122, 0, 0.14); border: 1px solid rgba(255, 122, 0, 0.45); border-radius: 14px; color: #ff9800 !important; font-size: 0.9rem !important; font-weight: 800 !important; text-transform: uppercase; letter-spacing: 1.2px; text-decoration: none; box-shadow: 0 0 16px rgba(255, 122, 0, 0.14); box-sizing: border-box;">
+                        <span>⚡ Command Center</span>
+                    </a>
+                </li>
             </ul>
             <div class="nav-ctas">
-                <a href="construction.html" class="btn btn-primary">Enter Campus →</a>
+                <a href="/hub" class="btn btn-primary">Enter Campus →</a>
             </div>
             <button class="mobile-menu-toggle" id="mobileMenuToggle">
                 <span></span><span></span><span></span>
@@ -933,9 +945,6 @@
                 return false;
             }
             if (trimmed.includes('not published') || trimmed.includes('private') || trimmed.includes('scheduled')) {
-                return false;
-            }
-            if (trimmed.includes('r1zqdjvawx4')) {
                 return false;
             }
             return !!extractYouTubeId(url.trim());

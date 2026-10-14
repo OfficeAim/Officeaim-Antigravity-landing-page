@@ -57,10 +57,6 @@ export const isYouTubePublished = (url) => {
     if (trimmed.includes('not published') || trimmed.includes('private') || trimmed.includes('scheduled')) {
         return false;
     }
-    // Known private/unreleased placeholder video IDs
-    if (trimmed.includes('r1zqdjvawx4')) {
-        return false;
-    }
     return !!extractYouTubeId(url.trim());
 };
 
