@@ -8,6 +8,21 @@
   SECRETS_SCAN_ENABLED = "false"
 
 [[redirects]]
+  from = "/pricing"
+  to = "/community.html"
+  status = 301
+
+[[redirects]]
+  from = "/pricing.html"
+  to = "/community.html"
+  status = 301
+
+[[redirects]]
+  from = "/community"
+  to = "/community.html"
+  status = 200
+
+[[redirects]]
   from = "/admin/*"
   to = "/hub/index.html"
   status = 200

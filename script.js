@@ -680,3 +680,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     console.log('OfficeAim Landing Page Loaded ✓');
 });
+
+// ============================================================
+// 14) GLOBAL PROMPT COPY HELPER
+// ============================================================
+window.copyPrompt = function (elementId, btn) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    const text = el.innerText || el.textContent;
+    navigator.clipboard.writeText(text).then(() => {
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = '<span>✓ Copied!</span>';
+        btn.style.borderColor = '#10B981';
+        btn.style.color = '#10B981';
+        setTimeout(() => {
+            btn.innerHTML = originalHtml;
+            btn.style.borderColor = '';
+            btn.style.color = '';
+        }, 2000);
+    }).catch(err => {
+        console.error('Copy prompt failed:', err);
+    });
+};
+

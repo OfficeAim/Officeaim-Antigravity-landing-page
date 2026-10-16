@@ -13,9 +13,9 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700;1,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="../styles.css">
-    <link rel="stylesheet" href="../landing-new.css">
-    <link rel="stylesheet" href="../pricing-page.css">
+    <link rel="stylesheet" href="../styles.css?v=20261016">
+    <link rel="stylesheet" href="../landing-new.css?v=20261016">
+    <link rel="stylesheet" href="../pricing-page.css?v=20261016">
     <style>
         :root {
             --bg-base: #070A12;
@@ -122,6 +122,220 @@
             border: none;
             background: #070A12;
             display: block;
+        }
+
+        /* High-Contrast Dark Tech QR Studio Native Controls */
+        .native-qr-studio {
+            padding: 2.5rem;
+            background: #0B1120;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 2.5rem;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .native-qr-studio {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+            }
+        }
+
+        .qr-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .qr-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #F8FAFC;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .qr-label-hint {
+            font-size: 0.75rem;
+            color: #94A3B8;
+            font-weight: 500;
+            text-transform: none;
+            letter-spacing: normal;
+        }
+
+        .high-contrast-input {
+            background: #070A12;
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            color: #F8FAFC;
+            font-size: 0.95rem;
+            font-family: inherit;
+            padding: 0.85rem 1rem;
+            border-radius: 0.75rem;
+            outline: none;
+            transition: all 0.2s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .high-contrast-input:focus {
+            border-color: #00F0FF;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            background: #0D1527;
+        }
+
+        .high-contrast-input::placeholder {
+            color: #64748B;
+            opacity: 1;
+        }
+
+        .qr-controls-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        @media (max-width: 500px) {
+            .qr-controls-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .qr-color-field {
+            background: #070A12;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 0.75rem;
+            padding: 0.6rem 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+
+        .qr-color-picker {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 2.25rem;
+            height: 2.25rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            background: none;
+            padding: 0;
+        }
+
+        .qr-color-picker::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .qr-color-picker::-webkit-color-swatch {
+            border: none;
+            border-radius: 0.5rem;
+        }
+
+        .qr-actions-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        .btn-generate-live {
+            flex: 1;
+            padding: 0.9rem 1.5rem;
+            background: #00F0FF;
+            color: #070A12;
+            font-weight: 800;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-generate-live:hover {
+            background: #38bdf8;
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+        }
+
+        .btn-download-qr {
+            padding: 0.9rem 1.5rem;
+            background: #F97316;
+            color: #FFFFFF;
+            font-weight: 800;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 20px rgba(249, 115, 22, 0.3);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-download-qr:hover {
+            background: #ea580c;
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(249, 115, 22, 0.5);
+        }
+
+        /* QR Preview Panel */
+        .qr-preview-panel {
+            background: #070A12;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 1.25rem;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 420px;
+            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .qr-preview-box {
+            background: #0B1120;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-width: 320px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .qr-preview-box img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 0.5rem;
+        }
+
+        .qr-preview-meta {
+            margin-top: 1.25rem;
+            color: #94A3B8;
+            font-size: 0.85rem;
         }
 
         .btn-launch-fullscreen {
@@ -498,18 +712,11 @@
                                         <span>Create emails and prompts for your site</span>
                                     </div>
                                 </a>
-                                <a href="https://lnkd.in/efYufA5e" target="_blank" rel="noopener noreferrer" class="mega-link">
-                                    <div class="mega-icon">🎁</div>
-                                    <div class="mega-text">
-                                        <strong>AI Skills Starter Pack (Free)</strong>
-                                        <span>Curated agent skills &amp; workflows</span>
-                                    </div>
-                                </a>
-                                <a href="free-stack-kit.html" class="mega-link">
+                                 <a href="free-stack-kit.html" class="mega-link">
                                     <div class="mega-icon">📦</div>
                                     <div class="mega-text">
                                         <strong>Free Stack Kit</strong>
-                                        <span>Curated tools &amp; step-by-step stack</span>
+                                        <span>Curated agent skills, workflows &amp; step-by-step stack</span>
                                     </div>
                                 </a>
                                 <a href="../board.html" class="mega-link">
@@ -523,7 +730,7 @@
                         </div>
                     </div>
                 </li>
-                <li><a href="../pricing.html" class="nav-link">Pricing</a></li>
+                <li><a href="../community.html" class="nav-link">Community</a></li>
                 <li><a id="nav-news-link" href="../news.html" class="nav-link" style="color: var(--accent-primary);">News</a></li>
             </ul>
             <div class="nav-ctas">
@@ -548,8 +755,8 @@
                 Stop paying monthly subscriptions for basic marketing tools. Generate unlimited, high-resolution QR codes with custom colors and embedded logos directly in your browser.
             </p>
             <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-                <a href="https://officeaim.github.io/qr-generator/" target="_blank" rel="noopener noreferrer" class="btn-launch-fullscreen">
-                    <span>🚀 Launch Full Screen Generator</span>
+                <a href="#studio-box" class="btn-launch-fullscreen">
+                    <span>🚀 Launch Studio Generator</span>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                 </a>
                 <a href="#guide" class="portfolio-link-btn" style="background: rgba(255,255,255,0.05); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.15);">
@@ -560,20 +767,98 @@
     </section>
 
     <!-- ===== SECTION B: INTERACTIVE STUDIO EMBED ===== -->
-    <section class="studio-stage-wrap">
+    <section class="studio-stage-wrap" id="studio-box">
         <div class="studio-frame-box">
             <div class="studio-top-bar">
                 <div class="studio-dots">
                     <span class="studio-dot" style="background: #EF4444;"></span>
                     <span class="studio-dot" style="background: #F59E0B;"></span>
                     <span class="studio-dot" style="background: #10B981;"></span>
-                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #64748B; margin-left: 0.75rem;">https://officeaim.github.io/qr-generator/</span>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #94A3B8; margin-left: 0.75rem;">AI QR Code Generator • Native High-Contrast Studio</span>
                 </div>
-                <a href="https://officeaim.github.io/qr-generator/" target="_blank" rel="noopener noreferrer" style="color: var(--cyan-glow); font-size: 0.8rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 0.35rem;">
-                    <span>Open Standalone Tab ↗</span>
-                </a>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <a href="https://officeaim.github.io/qr-generator/" target="_blank" rel="noopener noreferrer" style="color: var(--cyan-glow); font-size: 0.8rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 0.35rem;">
+                        <span>Open Standalone Tab ↗</span>
+                    </a>
+                </div>
             </div>
-            <iframe class="studio-iframe" src="https://officeaim.github.io/qr-generator/" title="OfficeAIM AI QR Generator Studio" loading="lazy" allow="clipboard-write"></iframe>
+
+            <!-- Native High-Contrast Dark Tech QR Studio -->
+            <div class="native-qr-studio">
+                <div class="qr-form-side">
+                    <div class="qr-form-group">
+                        <label class="qr-label" for="native-qr-url">
+                            <span>Destination URL or Link</span>
+                            <span class="qr-label-hint">(Website, social, or profile)</span>
+                        </label>
+                        <input id="native-qr-url" type="url" value="https://officeaimhq.netlify.app" placeholder="https://yourdomain.com" class="high-contrast-input">
+                    </div>
+
+                    <div class="qr-controls-grid">
+                        <div class="qr-form-group" style="margin-bottom:0;">
+                            <label class="qr-label" for="native-qr-size">
+                                <span>Export Size</span>
+                                <span class="qr-label-hint">(px)</span>
+                            </label>
+                            <input id="native-qr-size" type="number" value="400" min="200" max="1200" step="50" class="high-contrast-input">
+                        </div>
+
+                        <div class="qr-form-group" style="margin-bottom:0;">
+                            <label class="qr-label" for="native-qr-logo">
+                                <span>Center Logo URL</span>
+                                <span class="qr-label-hint">(Optional)</span>
+                            </label>
+                            <input id="native-qr-logo" type="text" placeholder="https://.../logo.png" class="high-contrast-input">
+                        </div>
+                    </div>
+
+                    <div class="qr-controls-grid">
+                        <div class="qr-form-group" style="margin-bottom:0;">
+                            <label class="qr-label">
+                                <span>QR Code Color</span>
+                            </label>
+                            <div class="qr-color-field">
+                                <span style="font-size:0.85rem; color:#F8FAFC; font-weight:600;" id="dark-color-hex">#00F0FF</span>
+                                <input id="native-qr-dark" type="color" value="#00F0FF" class="qr-color-picker">
+                            </div>
+                        </div>
+
+                        <div class="qr-form-group" style="margin-bottom:0;">
+                            <label class="qr-label">
+                                <span>Background Color</span>
+                            </label>
+                            <div class="qr-color-field">
+                                <span style="font-size:0.85rem; color:#F8FAFC; font-weight:600;" id="light-color-hex">#070A12</span>
+                                <input id="native-qr-light" type="color" value="#070A12" class="qr-color-picker">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="qr-actions-row">
+                        <button type="button" id="native-qr-generate-btn" class="btn-generate-live">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                            <span>Generate Live QR</span>
+                        </button>
+                        <button type="button" id="native-qr-download-btn" class="btn-download-qr">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            <span>Download PNG</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="qr-preview-panel">
+                    <div class="qr-preview-box">
+                        <img id="native-qr-preview-img" alt="QR Code Real-time Preview" src="" style="display:none;">
+                        <div id="native-qr-placeholder" style="color: #64748B; padding: 3rem 1rem;">
+                            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🔲</div>
+                            <div style="font-size: 0.9rem; font-weight: 600; color: #94A3B8;">Rendering Vector QR...</div>
+                        </div>
+                    </div>
+                    <div class="qr-preview-meta">
+                        <span id="qr-status-text">⚡ Instant client-side vector synthesis</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -644,9 +929,15 @@
             <div class="prompt-box">
                 <div class="prompt-label">
                     <span>⚡ Replicate this in 5 minutes with Google Gemini</span>
-                    <span style="color: #94A3B8;">Single-File Architecture</span>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <span style="color: #94A3B8;">Single-File Architecture</span>
+                        <button type="button" class="btn-copy-prompt" onclick="copyPrompt('qr-gemini-prompt', this)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            <span>Copy Prompt</span>
+                        </button>
+                    </div>
                 </div>
-                <div class="prompt-code">"You are an expert Frontend Architect. Build a standalone, production-ready QR Code Studio in a single index.html file using vanilla JS and QRCode.js via CDN. It must feature:
+                <div class="prompt-code" id="qr-gemini-prompt">"You are an expert Frontend Architect. Build a standalone, production-ready QR Code Studio in a single index.html file using vanilla JS and QRCode.js via CDN. It must feature:
 1. Destination URL input with instant real-time live preview.
 2. Color pickers for brand foreground and background colors.
 3. Logo upload / URL embed in center with error fallback.
@@ -723,6 +1014,130 @@
     </footer>
 
     <script src="../script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script>
+        (function initNativeQR() {
+            const urlInput = document.getElementById('native-qr-url');
+            const sizeInput = document.getElementById('native-qr-size');
+            const darkColor = document.getElementById('native-qr-dark');
+            const lightColor = document.getElementById('native-qr-light');
+            const logoInput = document.getElementById('native-qr-logo');
+            const generateBtn = document.getElementById('native-qr-generate-btn');
+            const downloadBtn = document.getElementById('native-qr-download-btn');
+            const previewImg = document.getElementById('native-qr-preview-img');
+            const placeholder = document.getElementById('native-qr-placeholder');
+            const darkHex = document.getElementById('dark-color-hex');
+            const lightHex = document.getElementById('light-color-hex');
+            const statusText = document.getElementById('qr-status-text');
+
+            if (!urlInput || !generateBtn) return;
+
+            darkColor.addEventListener('input', (e) => {
+                if (darkHex) darkHex.textContent = e.target.value.toUpperCase();
+                generateQR();
+            });
+            lightColor.addEventListener('input', (e) => {
+                if (lightHex) lightHex.textContent = e.target.value.toUpperCase();
+                generateQR();
+            });
+            urlInput.addEventListener('input', debounce(generateQR, 400));
+            sizeInput.addEventListener('input', debounce(generateQR, 400));
+            logoInput.addEventListener('input', debounce(generateQR, 600));
+
+            function debounce(fn, ms) {
+                let timer;
+                return (...args) => {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => fn(...args), ms);
+                };
+            }
+
+            async function generateQR() {
+                const url = (urlInput.value || '').trim();
+                if (!url) return;
+                const size = Math.min(Math.max(Number(sizeInput.value) || 400, 150), 1200);
+                const opts = {
+                    width: size,
+                    margin: 2,
+                    color: {
+                        dark: darkColor.value,
+                        light: lightColor.value
+                    }
+                };
+
+                try {
+                    if (typeof QRCode === 'undefined') {
+                        return;
+                    }
+                    if (statusText) statusText.textContent = 'Rendering vector matrix...';
+                    const dataUrl = await QRCode.toDataURL(url, opts);
+                    const logoUrl = (logoInput.value || '').trim();
+
+                    if (!logoUrl) {
+                        previewImg.src = dataUrl;
+                        previewImg.style.display = 'block';
+                        placeholder.style.display = 'none';
+                        if (statusText) statusText.textContent = '✓ Ready: 100% Client-Side Render';
+                        return;
+                    }
+
+                    const img = new Image();
+                    img.crossOrigin = 'anonymous';
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0);
+
+                        const logo = new Image();
+                        logo.crossOrigin = 'anonymous';
+                        logo.onload = () => {
+                            const logoSize = img.width * 0.22;
+                            const x = (img.width - logoSize) / 2;
+                            const y = (img.height - logoSize) / 2;
+                            ctx.fillStyle = lightColor.value || '#FFFFFF';
+                            const pad = logoSize * 0.12;
+                            ctx.fillRect(x - pad, y - pad, logoSize + pad * 2, logoSize + pad * 2);
+                            ctx.drawImage(logo, x, y, logoSize, logoSize);
+                            previewImg.src = canvas.toDataURL('image/png');
+                            previewImg.style.display = 'block';
+                            placeholder.style.display = 'none';
+                            if (statusText) statusText.textContent = '✓ Branded logo embedded successfully';
+                        };
+                        logo.onerror = () => {
+                            previewImg.src = dataUrl;
+                            previewImg.style.display = 'block';
+                            placeholder.style.display = 'none';
+                            if (statusText) statusText.textContent = '✓ Rendered without logo (check URL)';
+                        };
+                        logo.src = logoUrl;
+                    };
+                    img.src = dataUrl;
+                } catch (err) {
+                    console.error('Error rendering QR:', err);
+                    if (statusText) statusText.textContent = '⚠️ Error generating QR code';
+                }
+            }
+
+            generateBtn.addEventListener('click', generateQR);
+            downloadBtn.addEventListener('click', () => {
+                if (!previewImg.src) {
+                    generateQR();
+                    return;
+                }
+                const a = document.createElement('a');
+                a.href = previewImg.src;
+                a.download = 'officeaim-qr-code.png';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            });
+
+            // Initial load
+            setTimeout(generateQR, 400);
+        })();
+    </script>
 </body>
 
 </html>

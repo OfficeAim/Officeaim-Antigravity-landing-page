@@ -1164,3 +1164,296 @@
 .footer-logo:hover {
     filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3)) brightness(1.4);
 }
+
+/* ============================================================
+   SHARED: HOW IT WORKS (3-STEP GUIDE), AI BUSINESS LESSON & PROMPT BOX
+   Standardized from qr-generator.html
+   ============================================================ */
+:root {
+    --cyan-glow: #00F0FF;
+}
+
+.steps-section {
+    max-width: 74rem !important;
+    margin: 4rem auto 6rem !important;
+    padding: 0 1.5rem !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+}
+
+.section-header {
+    text-align: center !important;
+    margin-bottom: 3.5rem !important;
+}
+
+.section-eyebrow {
+    color: var(--cyan-glow, #00F0FF) !important;
+    font-size: 0.75rem !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.section-title {
+    font-size: clamp(1.8rem, 4vw, 2.25rem) !important;
+    font-weight: 800 !important;
+    color: #FFFFFF !important;
+    margin: 0 !important;
+    letter-spacing: -0.5px !important;
+    line-height: 1.2 !important;
+}
+
+.steps-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 2rem !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+}
+
+@media (max-width: 900px) {
+    .steps-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+    }
+}
+
+.step-card {
+    background: #0B1120 !important;
+    background: rgba(15, 27, 46, 0.65) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 1.25rem !important;
+    padding: 2.25rem !important;
+    position: relative !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+}
+
+.step-card:hover {
+    transform: translateY(-4px) !important;
+    border-color: rgba(0, 240, 255, 0.4) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 240, 255, 0.1) !important;
+}
+
+.step-card .step-number,
+.steps-section .step-number {
+    width: 2.75rem !important;
+    height: 2.75rem !important;
+    border-radius: 0.75rem !important;
+    background: rgba(0, 240, 255, 0.12) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    color: var(--cyan-glow, #00F0FF) !important;
+    font-weight: 800 !important;
+    font-size: 1.1rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-bottom: 1.5rem !important;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.15) !important;
+    line-height: 1 !important;
+    flex-shrink: 0 !important;
+}
+
+.step-card h3 {
+    font-size: 1.25rem !important;
+    font-weight: 800 !important;
+    color: #FFFFFF !important;
+    margin: 0 0 0.75rem !important;
+    line-height: 1.3 !important;
+}
+
+.step-card p {
+    color: #94A3B8 !important;
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+    margin: 0 !important;
+}
+
+/* Business Lesson & Comparison Matrix */
+.matrix-section {
+    max-width: 74rem !important;
+    margin: 0 auto 6rem !important;
+    padding: 0 1.5rem !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+}
+
+.matrix-box {
+    background: #0A0F1D !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 1.5rem !important;
+    padding: 3rem !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4) !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+}
+
+.matrix-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 2.5rem !important;
+    margin: 2.5rem 0 !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+}
+
+@media (max-width: 800px) {
+    .matrix-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+    }
+    .matrix-box {
+        padding: 1.5rem !important;
+    }
+}
+
+.matrix-col {
+    border-radius: 1rem !important;
+    padding: 2rem !important;
+    box-sizing: border-box !important;
+}
+
+@media (max-width: 480px) {
+    .matrix-col {
+        padding: 1.25rem !important;
+    }
+}
+
+.col-commercial {
+    background: rgba(239, 68, 68, 0.05) !important;
+    border: 1px solid rgba(239, 68, 68, 0.25) !important;
+}
+
+.col-ai {
+    background: rgba(0, 240, 255, 0.06) !important;
+    border: 1px solid rgba(0, 240, 255, 0.35) !important;
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.08) !important;
+}
+
+.matrix-badge {
+    display: inline-block !important;
+    font-size: 0.7rem !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    padding: 0.3rem 0.8rem !important;
+    border-radius: 9999px !important;
+    margin-bottom: 1rem !important;
+}
+
+.badge-red {
+    background: rgba(239, 68, 68, 0.2) !important;
+    color: #F87171 !important;
+    border: 1px solid rgba(239, 68, 68, 0.4) !important;
+}
+
+.badge-cyan-tag {
+    background: rgba(0, 240, 255, 0.2) !important;
+    color: var(--cyan-glow, #00F0FF) !important;
+    border: 1px solid rgba(0, 240, 255, 0.4) !important;
+}
+
+.matrix-col h3 {
+    margin: 0 !important;
+    font-size: 1.25rem !important;
+    font-weight: 800 !important;
+    line-height: 1.3 !important;
+}
+
+.matrix-list {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 1.5rem 0 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+}
+
+.matrix-list li {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+    font-size: 0.95rem !important;
+    line-height: 1.5 !important;
+    color: #CBD5E1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Prompt Tutorial Box */
+.prompt-box {
+    margin-top: 2.5rem !important;
+    background: #070A12 !important;
+    border: 1px solid rgba(0, 240, 255, 0.25) !important;
+    border-radius: 1rem !important;
+    padding: 1.75rem !important;
+    position: relative !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+}
+
+@media (max-width: 480px) {
+    .prompt-box {
+        padding: 1.25rem !important;
+    }
+}
+
+.prompt-label {
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.75rem !important;
+    color: var(--cyan-glow, #00F0FF) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    margin-bottom: 0.75rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 1rem !important;
+    flex-wrap: wrap !important;
+}
+
+.prompt-code {
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.88rem !important;
+    line-height: 1.6 !important;
+    color: #E2E8F0 !important;
+    background: rgba(0, 0, 0, 0.4) !important;
+    padding: 1.25rem !important;
+    border-radius: 0.75rem !important;
+    overflow-x: auto !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+    box-sizing: border-box !important;
+}
+
+.btn-copy-prompt {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.4rem !important;
+    padding: 0.4rem 0.85rem !important;
+    background: rgba(0, 240, 255, 0.12) !important;
+    border: 1px solid rgba(0, 240, 255, 0.35) !important;
+    color: var(--cyan-glow, #00F0FF) !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    border-radius: 0.5rem !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+}
+
+.btn-copy-prompt:hover {
+    background: rgba(0, 240, 255, 0.25) !important;
+    border-color: var(--cyan-glow, #00F0FF) !important;
+    color: #FFFFFF !important;
+    transform: translateY(-1px) !important;
+}
