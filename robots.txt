@@ -23,4 +23,4 @@ User-agent: CCBot
 Allow: /
 
 # Sitemap reference
-Sitemap: https://officeaim.com/sitemap.xml
+Sitemap: https://officeaimhq.netlify.app/sitemap.xml
