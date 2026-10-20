@@ -1,0 +1,26 @@
+# robots.txt for OfficeAIM (https://officeaim.com)
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /_backups/
+Disallow: /tmp/
+Disallow: /_trash/
+
+# Explicit permissions for AI crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# Sitemap reference
+Sitemap: https://officeaim.com/sitemap.xml

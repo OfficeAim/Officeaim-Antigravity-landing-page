@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OfficeAIM Skills — Modular production-grade AI agent skills</title>
+    <meta name="description"
+        content="Free, installable AI agent skills. Copy complete, production-grade system instructions and launch them directly into ChatGPT, Claude, Gemini, Perplexity, or local models.">
+    <meta name="google-site-verification" content="6OajNDeOete8oREc17Z_cYlseER3lADZjnLLHCQL8AQ" />
+    <link rel="canonical" href="https://officeaim.com/skills.html" />
+
+    <!-- Open Graph / WhatsApp Share Preview -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://officeaim.com/skills.html">
+    <meta property="og:title" content="OfficeAIM Skills — Modular production-grade AI agent skills">
+    <meta property="og:description"
+        content="Free, installable AI agent skills. Copy complete, production-grade system instructions and launch them directly into ChatGPT, Claude, Gemini, Perplexity, or local models.">
+    <meta property="og:image" content="https://officeaim.com/images/hero.webp">
+
+    <!-- Twitter Preview -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://officeaim.com/skills.html">
+    <meta name="twitter:title" content="OfficeAIM Skills — Modular production-grade AI agent skills">
+    <meta name="twitter:description"
+        content="Free, installable AI agent skills. Copy complete, production-grade system instructions and launch them directly into ChatGPT, Claude, Gemini, Perplexity, or local models.">
+    <meta name="twitter:image" content="https://officeaim.com/images/hero.webp">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=20261019">
+    <link rel="stylesheet" href="landing-new.css?v=20261019">
+    <link rel="stylesheet" href="gems-page.css?v=20261019">
+    <style>
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .skill-card {
+            background: rgba(13, 19, 33, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+        }
+
+        .skill-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(34, 211, 238, 0.4);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(6, 182, 212, 0.15);
+        }
+
+        .skill-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .skill-icon-wrap {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .skill-tag {
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            background: rgba(34, 211, 238, 0.1);
+            color: var(--accent-secondary, #00F0FF);
+            border: 1px solid rgba(34, 211, 238, 0.25);
+            display: inline-block;
+            margin-bottom: 0.35rem;
+        }
+
+        .skill-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            letter-spacing: -0.01em;
+        }
+
+        .skill-desc {
+            font-size: 0.9rem;
+            color: #94A3B8;
+            line-height: 1.6;
+            margin: 0.75rem 0 1.5rem;
+            flex-grow: 1;
+        }
+
+        .skill-actions {
+            margin-top: auto;
+        }
+
+        .btn-launch-trigger {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.25), rgba(8, 145, 178, 0.35));
+            border: 1px solid rgba(6, 182, 212, 0.5);
+            color: #ffffff;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-launch-trigger:hover {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+            transform: translateY(-1px);
+        }
+
+        /* Filter Tabs */
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 2rem 0 1rem;
+        }
+
+        .filter-tab {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #94A3B8;
+            padding: 0.5rem 1.25rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-tab.active, .filter-tab:hover {
+            background: rgba(34, 211, 238, 0.15);
+            border-color: rgba(34, 211, 238, 0.4);
+            color: #ffffff;
+        }
+
+        /* Guide Card */
+        .install-guide-card {
+            background: linear-gradient(135deg, rgba(13, 19, 33, 0.85), rgba(20, 29, 50, 0.85));
+            border: 1px solid rgba(34, 211, 238, 0.25);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin: 3.5rem auto 0;
+            max-width: 1000px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Prompt Cowboy Style Launcher Modal */
+        .cowboy-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(4, 7, 15, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 999999;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .cowboy-modal {
+            background: #0B1120;
+            border: 1px solid rgba(34, 211, 238, 0.35);
+            border-radius: 18px;
+            max-width: 580px;
+            width: 100%;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(6, 182, 212, 0.2);
+            animation: cowboyPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes cowboyPop {
+            0% { transform: scale(0.92); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .cowboy-header {
+            padding: 1.5rem 1.75rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .cowboy-header-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .cowboy-header h3 {
+            color: #ffffff;
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .cowboy-close-btn {
+            background: transparent;
+            border: none;
+            color: #94A3B8;
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0.25rem;
+        }
+
+        .cowboy-close-btn:hover {
+            color: #ffffff;
+        }
+
+        .cowboy-copy-alert {
+            margin: 0 1.75rem 1.25rem;
+            background: rgba(34, 211, 238, 0.12);
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #E2E8F0;
+            font-size: 0.88rem;
+        }
+
+        .cowboy-copy-alert strong {
+            color: var(--accent-secondary, #00F0FF);
+        }
+
+        .cowboy-launcher-grid {
+            padding: 0 1.75rem 1.75rem;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        @media (max-width: 520px) {
+            .cowboy-launcher-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cowboy-tile {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .cowboy-tile:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(34, 211, 238, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .cowboy-tile-icon {
+            font-size: 1.5rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .cowboy-tile-text strong {
+            display: block;
+            font-size: 0.92rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .cowboy-tile-text span {
+            font-size: 0.75rem;
+            color: #94A3B8;
+        }
+
+        .cowboy-drawer-toggle {
+            padding: 1rem 1.75rem;
+            background: rgba(0, 0, 0, 0.25);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-size: 0.82rem;
+            color: #94A3B8;
+        }
+
+        .cowboy-drawer-toggle:hover {
+            color: #ffffff;
+        }
+
+        .cowboy-drawer-body {
+            display: none;
+            max-height: 280px;
+            overflow-y: auto;
+            background: #070B14;
+            padding: 1.25rem 1.75rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 0.85rem;
+            color: #CBD5E1;
+            line-height: 1.6;
+        }
+
+        .prompt-header {
+            display: block;
+            color: var(--accent-secondary, #00F0FF);
+            font-weight: 700;
+            margin-top: 1.15rem;
+            margin-bottom: 0.35rem;
+            font-size: 0.92rem;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.15);
+            padding-bottom: 0.2rem;
+            letter-spacing: -0.01em;
+        }
+
+        .prompt-header:first-child {
+            margin-top: 0;
+        }
+
+        .prompt-marker {
+            color: #F59E0B;
+            background: rgba(245, 158, 11, 0.12);
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            font-weight: 600;
+            display: inline-block;
+            margin: 0.1rem 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sticky Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="images/favicon.png" alt="OfficeAIM logo" class="logo-img">
+            </a>
+            <ul class="nav-links">
+                <li><a href="learn.html" class="nav-link">Learn</a></li>
+                <li class="nav-item-dropdown">
+                    <a href="#resources" class="nav-link" style="color: var(--accent-secondary); font-weight: 700;">Resources <svg class="dropdown-arrow" width="12" height="12"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-inner">
+                            <div class="mega-menu-col">
+                                <h4>Free tools &amp; generators</h4>
+                                <a href="skills.html" class="mega-link active-mega-link">
+                                    <div class="mega-icon">⚡</div>
+                                    <div class="mega-text">
+                                        <strong>Skills</strong>
+                                        <span>15 modular agent skills ready to install</span>
+                                    </div>
+                                </a>
+                                <a href="prompt-generator.html" class="mega-link">
+                                    <div class="mega-icon">⭐</div>
+                                    <div class="mega-text">
+                                        <strong>Prompt Generator</strong>
+                                        <span>Parametric meta-prompts calibrated for LLMs</span>
+                                    </div>
+                                </a>
+                                <a href="resources/website-creator.html" class="mega-link">
+                                    <div class="mega-icon">🎨</div>
+                                    <div class="mega-text">
+                                        <strong>AI SVG Logo Lab</strong>
+                                        <span>Vector design studio &amp; web architecture coach</span>
+                                    </div>
+                                </a>
+                                <a href="resources/qr-generator.html" class="mega-link">
+                                    <div class="mega-icon">🔲</div>
+                                    <div class="mega-text">
+                                        <strong>AI QR Generator</strong>
+                                        <span>Branded high-contrast QR codes, zero fees</span>
+                                    </div>
+                                </a>
+                                <a href="resources/free-stack-kit.html" class="mega-link">
+                                    <div class="mega-icon">📦</div>
+                                    <div class="mega-text">
+                                        <strong>Free Stack Kit</strong>
+                                        <span>Curated agent skills pack &amp; step-by-step guide</span>
+                                    </div>
+                                </a>
+                                <a href="board.html" class="mega-link">
+                                    <div class="mega-icon">👥</div>
+                                    <div class="mega-text">
+                                        <strong>The AI Board</strong>
+                                        <span>Meet your 19 specialist agents — free to explore</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="community.html" class="nav-link">Community</a></li>
+                <li><a id="nav-news-link" href="news.html" class="nav-link">News</a></li>
+            </ul>
+            <div class="nav-ctas">
+                <a href="/hub" class="btn btn-primary">Enter Campus →</a>
+            </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="page-hero-bg">
+            <div class="hero-grid"></div>
+            <div class="hero-glow-right"></div>
+        </div>
+        <div class="container"
+            style="position:relative; z-index:1; padding-top:8rem; padding-bottom:3rem; text-align:center; display: flex; flex-direction: column; align-items: center;">
+            <div class="section-label" style="margin-bottom: 1rem; text-transform: none;">100% free educational architecture</div>
+            <h1 class="page-hero-title" style="max-width: 1200px; line-height: 1.25;">Modular AI agent skills</h1>
+            <p class="page-hero-desc" style="max-width: 900px; margin: 1.5rem auto 0; line-height: 1.6;">
+                15 battle-tested, pre-calibrated skill modules. Click any skill to copy the complete system prompt and launch directly into your favorite LLM (ChatGPT, Claude, Gemini, Perplexity, or local models).
+            </p>
+            <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-top: 2rem;">
+                <a href="#modules" class="btn-hero-primary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <span>Browse skills ↓</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+                <a href="#how-to-install" class="btn-hero-secondary" style="background: rgba(255,255,255,0.05); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.15);">
+                    <span>Installation guide</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SKILLS CATALOG ===== -->
+    <section class="container" id="modules" style="padding-bottom: 4rem; position: relative; z-index: 1;">
+        <!-- Filter Tabs -->
+        <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">All skills (15)</button>
+            <button class="filter-tab" data-filter="content">Content &amp; social</button>
+            <button class="filter-tab" data-filter="marketing">Marketing &amp; funnels</button>
+            <button class="filter-tab" data-filter="strategy">Business strategy</button>
+            <button class="filter-tab" data-filter="support">Support &amp; operations</button>
+        </div>
+
+        <div class="skills-grid" id="skillsContainer">
+            <!-- 1. Content Calendar Strategist -->
+            <div class="skill-card" data-category="content">
+                <div class="skill-header">
+                    <div class="skill-icon-wrap">🗓️</div>
+                    <div>
+                        <span class="skill-tag">Content</span>
+                        <h3 class="skill-title">Content calendar strategist</h3>
+                    </div>
+                </div>
+                <p class="skill-desc">
+                    Plans multi-week content cycles using the 60/25/15 funnel ratio (reach, trust, conversion) and weekly narrative arcs without blank-page anxiety.
+                </p>
+                <div class="skill-actions">
+                    <button class="btn-launch-trigger" onclick="openSkillLauncher(1)">
+                        <span>Copy &amp; launch skill ⚡</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 2. Social Media Copywriter -->
+            <div class="skill-card" data-category="content">
+                <div class="skill-header">
+                    <div class="skill-icon-wrap">✍️</div>
+                    <div>
+                        <span class="skill-tag">Social</span>
+                        <h3 class="skill-title">Social media copywriter</h3>
+                    </div>
+                </div>
+                <p class="skill-desc">
+                    Generates platform-native copy, master hooks, and visual formats using PAS, BAB, and ELA frameworks tuned for LinkedIn and X engagement.
+                </p>
+                <div class="skill-actions">
+                    <button class="btn-launch-trigger" onclick="openSkillLauncher(2)">
+                        <span>Copy &amp; launch skill ⚡</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3. Newsletter Architect -->
+            <div class="skill-card" data-category="content">
+                <div class="skill-header">
+                    <div class="skill-icon-wrap">📧</div>
+                    <div>
+                        <span class="skill-tag">Editorial</span>
+                        <h3 class="skill-title">Newsletter architect</h3>
+                    </div>
+                </div>
+                <p class="skill-desc">
+                    Structures high-retention email publications with compelling curiosity hooks, modular sections, and high-CTR transition mechanisms.
+                </p>
+                <div class="skill-actions">
+                    <button class="btn-launch-trigger" onclick="openSkillLauncher(3)">
+                        <span>Copy &amp; launch skill ⚡</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 4. Email Marketing Specialist -->
+            <div class="skill-card" data-category="marketing">
+                <div class="skill-header">
+                    <div class="skill-icon-wrap">💌</div>
+                    <div>
+                        <span class="skill-tag">Conversion</span>
+                        <h3 class="skill-title">Email marketing specialist</h3>
+                    </div>
+                </div>
+                <p class="skill-desc">
+                    Designs automated email flows, nurture sequences, cart abandonment triggers, and promotional campaigns optimized for open rates.
+                </p>
+                <div class="skill-actions">
+                    <button class="btn-launch-trigger" onclick="openSkillLauncher(4)">
+                        <span>Copy &amp; launch skill ⚡</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 5. Technical Support Tech -->
+            <div class="skill-card" data-category="support">
+                <div class="skill-header">
+                    <div class="skill-icon-wrap">🛠️</div>
+                    <div>
+                        <span class="skill-tag">Support</span>
+                        <h3 class="skill-title">Technical support technician</h3>
+                    </div>
+                </div>
+                <p class="skill-desc">
+                    Diagnoses errors, isolates bugs, and formulates empathetic, crystal-clear step-by-step troubleshooting solutions for end users.
+                </p>
+                <div class="skill-actions">
+                    <button class="btn-launch-trigger" onclick="openSkillLauncher(5)">
+                        <span>Copy &amp; launch skill ⚡</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 6. Executive Summary Analyst -->
+            <div class="skill-card" data-category="strategy">
+                <div class="skill-header">
+                    <div class="skill-icon-wrap">📊</div>
+                    <div>
+                        <span class="skill-tag">Analysis</span>
+                        <h3 class="skill-title">Executive summary analyst</h3>
+                    </div>
+                </div>
+                <p class="skill-desc">
+                    Condenses dense whitepapers, complex datasets, and financial statements into high-impact, decision-ready executive briefings.
+                </p>
+                <div class="skill-actions">
+                    <button class="btn-launch-trigger" onclick="openSkillLauncher(6)">
+                        <span>Copy &amp; launch skill ⚡</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 7. Interactive Storyteller -->
+            <div class="skill-card" data-category="content">
+                <div class="skill-header">
+                    <div class="skill-icon-wrap">📖</div>
+                    <div>
+                        <span class="skill-tag">Creative</span>
+                        <h3 class="skill-title">Interactive storyteller</h3>
+                    </div>
+                </div>
+                <p class="skill-desc">
+                    Crafts branching narrative arcs, immersive brand storytelling, case study scripts, and educational scenarios that command attention.
+                </p>
+                <div class="skill-actions">
+                    <button class="btn-launch-trigger" onclick="openSkillLauncher(7)">
+                        <span>Copy &amp; launch skill ⚡</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 8. Content Curator & Blogger -->
+            <div class="skill-card" data-category="content">
+                <div class="skill-header">
+                    <div class="skill-icon-wrap">🖊️</div>
+                    <div>
+                        <span class="skill-tag">Editorial</span>
+                        <h3 class="skill-title">Content curator &amp; blogger</h3>
+                    </div>
+                </div>
+                <p class="skill-desc">
+                    Curates industry developments, synthesizes technical trends, and writes authoritative long-form blog articles optimized for discovery.
+                </p>
+                <div class="skill-actions">
+                    <button class="btn-launch-trigger" onclick="openSkillLauncher(8)">
+                        <span>Copy &amp; launch skill ⚡</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 9. Buyer Persona Architect -->
+            <div class="skill-card" data-category="marketing">
+                <div class="skill-header">
+                    <div class="skill-icon-wrap">🎯</div>
+                    <div>
+                        <span class="skill-tag">Research</span>
+                        <h3 class="skill-title">Buyer persona architect</h3>
+                    </div>
+                </div>
+                <p class="skill-desc">
+                    Constructs psychographic buyer profiles detailing goals, core anxieties, decision-making biases, and precise trigger phrases that spur action.
+                </p>
+                <div class="skill-actions">
+                    <button class="btn-launch-trigger" onclick="openSkillLauncher(9)">
+                        <span>Copy &amp; launch skill ⚡</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 10. Pain Point Analyzer -->
+            <div class="skill-card" data-category="strategy">
+                <div class="skill-header">
+                    <div class="skill-icon-wrap">🧠</div>
+                    <div>
+                        <span class="skill-tag">Discovery</span>
+                        <h3 class="skill-title">Pain point analyzer</h3>
+                    </div>
+                </div>
+                <p class="skill-desc">
+                    Extracts hidden customer frustrations from reviews, forum discussions, and feedback logs to build irresistible product features.
+                </p>
+                <div class="skill-actions">
+                    <button class="btn-launch-trigger" onclick="openSkillLauncher(10)">
+                        <span>Copy &amp; launch skill ⚡</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 11. GTM Strategist -->
+            <div class="skill-card" data-category="strategy">
+                <div class="skill-header">
+                    <div class="skill-icon-wrap">🚀</div>
+                    <div>
+                        <span class="skill-tag">Launch</span>
+                        <h3 class="skill-title">Go-to-market strategist</h3>
+                    </div>
+                </div>
+                <p class="skill-desc">
+                    Outlines complete go-to-market roadmaps, product launch milestones, distribution channel priorities, and early adopter acquisition playbooks.
+                </p>
+                <div class="skill-actions">
+                    <button class="btn-launch-trigger" onclick="openSkillLauncher(11)">
+                        <span>Copy &amp; launch skill ⚡</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 12. Feasibility Analyst -->
+            <div class="skill-card" data-category="strategy">
+                <div class="skill-header">
+                    <div class="skill-icon-wrap">🔍</div>
+                    <div>
+                        <span class="skill-tag">Validation</span>
+                        <h3 class="skill-title">Feasibility analyst</h3>
+                    </div>
+                </div>
+                <p class="skill-desc">
+                    Subjects business models to rigorous pre-mortems, evaluating unit economics, technical complexity, and market size before writing code.
+                </p>
+                <div class="skill-actions">
+                    <button class="btn-launch-trigger" onclick="openSkillLauncher(12)">
+                        <span>Copy &amp; launch skill ⚡</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 13. Value Proposition Architect -->
+            <div class="skill-card" data-category="marketing">
+                <div class="skill-header">
+                    <div class="skill-icon-wrap">🏆</div>
+                    <div>
+                        <span class="skill-tag">Positioning</span>
+                        <h3 class="skill-title">Value proposition architect</h3>
+                    </div>
+                </div>
+                <p class="skill-desc">
+                    Formulates differentiated value propositions and category-defining positioning statements using Steve Blank and Strategyzer frameworks.
+                </p>
+                <div class="skill-actions">
+                    <button class="btn-launch-trigger" onclick="openSkillLauncher(13)">
+                        <span>Copy &amp; launch skill ⚡</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 14. Funnel Optimization Expert -->
+            <div class="skill-card" data-category="marketing">
+                <div class="skill-header">
+                    <div class="skill-icon-wrap">📈</div>
+                    <div>
+                        <span class="skill-tag">Conversion</span>
+                        <h3 class="skill-title">Funnel optimization expert</h3>
+                    </div>
+                </div>
+                <p class="skill-desc">
+                    Audits conversion bottlenecks across digital funnels, optimizing copy, call-to-action friction, and landing page layouts.
+                </p>
+                <div class="skill-actions">
+                    <button class="btn-launch-trigger" onclick="openSkillLauncher(14)">
+                        <span>Copy &amp; launch skill ⚡</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 15. Pricing Strategy Analyst -->
+            <div class="skill-card" data-category="strategy">
+                <div class="skill-header">
+                    <div class="skill-icon-wrap">💰</div>
+                    <div>
+                        <span class="skill-tag">Economics</span>
+                        <h3 class="skill-title">Pricing strategy analyst</h3>
+                    </div>
+                </div>
+                <p class="skill-desc">
+                    Architects tier models (freemium, per-seat, usage-based), Van Westendorp price sensitivity surveys, and willingness-to-pay experiments.
+                </p>
+                <div class="skill-actions">
+                    <button class="btn-launch-trigger" onclick="openSkillLauncher(15)">
+                        <span>Copy &amp; launch skill ⚡</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- How to Install Guide -->
+        <div class="install-guide-card" id="how-to-install">
+            <div class="section-label" style="color: var(--accent-secondary); margin-bottom: 0.5rem; text-transform: none;">How to use these modules</div>
+            <h2 style="font-size: 1.6rem; color: #ffffff; margin-bottom: 1rem; font-weight: 700;">Install finished skills in any model in 30 seconds</h2>
+            <p style="color: #94A3B8; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem;">
+                Each module is delivered as a natural, guided system prompt with plain-language role definitions, real OfficeAIM working examples, and bracketed markers to adapt to your brand in seconds.
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem;">
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 1.25rem; border-radius: 10px;">
+                    <h4 style="color: #38bdf8; margin-bottom: 0.5rem; font-size: 1rem; font-weight: 600;">1. In ChatGPT or Claude</h4>
+                    <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.5;">Click "Copy &amp; launch", select your model tile, and paste directly into the conversation or project instructions.</p>
+                </div>
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 1.25rem; border-radius: 10px;">
+                    <h4 style="color: #38bdf8; margin-bottom: 0.5rem; font-size: 1rem; font-weight: 600;">2. In Google Gemini</h4>
+                    <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.5;">Open Gemini directly from the launcher and paste into the prompt box or your personal Gem manager.</p>
+                </div>
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 1.25rem; border-radius: 10px;">
+                    <h4 style="color: #38bdf8; margin-bottom: 0.5rem; font-size: 1rem; font-weight: 600;">3. In OpenCode or local LLMs</h4>
+                    <p style="font-size: 0.85rem; color: #94A3B8; line-height: 1.5;">Paste the copied system instructions into your IDE assistant rules (`.cursorrules`, Antigravity `SKILL.md`, or Ollama modelfiles).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Prompt Cowboy Style Launcher Modal -->
+    <div class="cowboy-backdrop" id="cowboyBackdrop">
+        <div class="cowboy-modal">
+            <div class="cowboy-header">
+                <div class="cowboy-header-title">
+                    <span id="cowboyIcon" style="font-size: 1.5rem;">⚡</span>
+                    <div>
+                        <h3 id="cowboyTitle" style="font-size: 1.25rem; font-weight: 700; color: #ffffff;">Skill ready</h3>
+                        <span style="font-size: 0.78rem; color: #94A3B8;">Natural guided prompt copied to clipboard</span>
+                    </div>
+                </div>
+                <button class="cowboy-close-btn" onclick="closeCowboyModal()">&times;</button>
+            </div>
+
+            <div class="cowboy-copy-alert">
+                <span style="font-size: 1.25rem; color: #00F0FF;">✓</span>
+                <div>
+                    <strong style="color: #ffffff; display: block; margin-bottom: 0.15rem;">Prompt copied to clipboard!</strong>
+                    <div style="font-size: 0.82rem; color: #94A3B8; line-height: 1.4;">
+                        Select your preferred AI platform below to launch and paste (Cmd+V / Ctrl+V):
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Launch Tiles -->
+            <div class="cowboy-launcher-grid">
+                <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" class="cowboy-tile" onclick="trackLaunch('ChatGPT')">
+                    <div class="cowboy-tile-icon">💬</div>
+                    <div class="cowboy-tile-text">
+                        <strong>ChatGPT</strong>
+                        <span>Open chat &amp; paste</span>
+                    </div>
+                </a>
+
+                <a href="https://claude.ai/new" target="_blank" rel="noopener noreferrer" class="cowboy-tile" onclick="trackLaunch('Claude')">
+                    <div class="cowboy-tile-icon">🧠</div>
+                    <div class="cowboy-tile-text">
+                        <strong>Claude</strong>
+                        <span>Open Anthropic Claude</span>
+                    </div>
+                </a>
+
+                <a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer" class="cowboy-tile" onclick="trackLaunch('Gemini')">
+                    <div class="cowboy-tile-icon">✨</div>
+                    <div class="cowboy-tile-text">
+                        <strong>Google Gemini</strong>
+                        <span>Launch in Gemini</span>
+                    </div>
+                </a>
+
+                <a href="https://www.perplexity.ai/" target="_blank" rel="noopener noreferrer" class="cowboy-tile" onclick="trackLaunch('Perplexity')">
+                    <div class="cowboy-tile-icon">🔍</div>
+                    <div class="cowboy-tile-text">
+                        <strong>Perplexity</strong>
+                        <span>Search &amp; reasoning</span>
+                    </div>
+                </a>
+
+                <div class="cowboy-tile" style="grid-column: span 2;" onclick="copyAgainAlert()">
+                    <div class="cowboy-tile-icon">💻</div>
+                    <div class="cowboy-tile-text">
+                        <strong>OpenCode / Local AI (Cursor, Ollama, Antigravity)</strong>
+                        <span>Prompt is in clipboard — ready to paste into system instructions</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expandable Prompt Preview Drawer -->
+            <div class="cowboy-drawer-toggle" onclick="togglePromptDrawer()">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span>👁️</span>
+                    <span>Preview guided prompt &amp; customization markers</span>
+                </div>
+                <span id="drawerArrow" style="font-weight: 700; color: #00F0FF;">↓</span>
+            </div>
+            <div class="cowboy-drawer-body" id="cowboyDrawerBody">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                    <span style="font-size: 0.78rem; color: #94A3B8; font-weight: 600;">Replace the amber [bracketed markers] with your project details:</span>
+                    <button onclick="copyAgainAlert()" style="background: rgba(34,211,238,0.15); border: 1px solid rgba(34,211,238,0.3); color: #00F0FF; font-size: 0.75rem; padding: 0.25rem 0.6rem; border-radius: 6px; cursor: pointer; font-weight: 600;">Copy again 📋</button>
+                </div>
+                <div id="cowboyDrawerContent" style="white-space: pre-wrap;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="images/logo_premium.png" alt="OfficeAIM logo" class="footer-logo">
+                    <p class="footer-tagline">Learn. Build. Automate.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Platform</h4>
+                        <ul>
+                            <li><a href="learn.html">Learn</a></li>
+                            <li><a href="skills.html">Skills</a></li>
+                            <li><a href="prompt-generator.html">Prompt generator</a></li>
+                            <li><a href="community.html">Community</a></li>
+                            <li><a href="/hub">Campus login</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Connect</h4>
+                        <ul>
+                            <li><a href="https://www.instagram.com/office.aim/" target="_blank">Instagram</a></li>
+                            <li><a href="https://www.youtube.com/@Aimora-Officeaim" target="_blank">YouTube</a></li>
+                            <li><a href="https://www.facebook.com/profile.php?id=61584047901312" target="_blank">Facebook</a></li>
+                            <li><a href="https://www.linkedin.com/in/office-aim-hq-b8a7013a8/" target="_blank">LinkedIn</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 OfficeAIM. Autonomous AI Systems &amp; Next-Gen Business Infrastructure. All tools are open-source and free for educational use. · <a href="policy.html" style="color: inherit; text-decoration: none;">Privacy &amp; terms</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Skill Data & Prompt Cowboy Engine -->
+    <script>
+        const ATTRIBUTION_NOTICE = `# Attribution & Open License
+Generated courtesy of OfficeAIM (https://officeaim.com | @office.aim).
+Free for open personal, educational, and commercial adaptation. You are encouraged to customize parameters, brand voice, and colors to match your organization.
+
+`;
+
+        const SKILL_MODULES = {
+            1: {
+                title: "Content calendar strategist",
+                icon: "🗓️",
+                prompt: ATTRIBUTION_NOTICE + `# Role & Purpose
+You are an expert Content Calendar Strategist. Your mission is to structure high-performing, multi-platform editorial calendars that balance audience growth, community trust, and business conversions without creator burnout.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent plans 4-week publishing cycles across YouTube, LinkedIn, and the weekly email newsletter. It schedules 60% educational tutorials, 25% technical deep dives & proof, and 15% interactive campus conversions, ensuring readers receive immense value before any call to action.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Project / Brand Name: [Insert your company, product, or project name here]
+- Target Audience: [Describe your ideal customer, student, or reader here]
+- Primary Publishing Channels: [e.g. LinkedIn, X, Instagram, YouTube, Newsletter]
+- Brand Voice & Tone: [e.g. Direct, educational, conversational, bold]
+- Brand Colors & Visual Style: [Insert your primary & accent colors, e.g. Navy #0A0F1D, Cyan #00F0FF, Amber #FF7A00]
+- Primary Conversion Goal: [e.g. Free newsletter signups, demo bookings, course enrollment]
+
+# Operating Rules & Guidelines
+1. Apply the 60/25/15 content ratio: 60% top-of-funnel education (reach), 25% mid-funnel proof & case studies (trust), 15% bottom-of-funnel clear offers (conversion).
+2. For every post, provide a 3-second hook that challenges standard assumptions.
+3. Include visual cues or slide layout recommendations for each post.
+4. Conclude each piece with a single, low-friction next step.`
+            },
+            2: {
+                title: "Social media copywriter",
+                icon: "✍️",
+                prompt: ATTRIBUTION_NOTICE + `# Role & Purpose
+You are an elite Social Media Copywriter specializing in high-engagement, platform-native short-form copy for LinkedIn, X (Twitter), and Instagram carousels.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent distills dense technical Jamstack architectures and multi-agent workflows into punchy 150-word LinkedIn posts that command attention, stop the scroll, and generate dozens of engaged developer comments.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Project / Brand Name: [Insert your company, product, or project name here]
+- Core Topic / Breakthrough: [Insert your main idea, lesson learned, or product feature here]
+- Target Audience: [Describe your target reader and their daily work frustrations here]
+- Brand Voice & Tone: [e.g. Punchy, insightful, zero fluff, authoritative yet empathetic]
+- Visual Style & Emojis: [Specify your preferred emojis, clean line breaks, and formatting style here]
+- Call to Action: [Insert your destination link or question to spark comments here]
+
+# Operating Rules & Guidelines
+1. Use the PAS (Problem -> Agitate -> Solve) or BAB (Before -> After -> Bridge) framework.
+2. Write for rapid mobile scanning: 1 to 2 sentences per paragraph with generous whitespace.
+3. Hook the reader immediately in line 1. Never open with pleasantries or filler.
+4. End with an open-ended question that makes it effortless for readers to comment.`
+            },
+            3: {
+                title: "Newsletter architect",
+                icon: "📧",
+                prompt: ATTRIBUTION_NOTICE + `# Role & Purpose
+You are a Newsletter Architect who designs and writes high-retention weekly editorial publications that readers look forward to receiving, opening, and reading in full.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent crafts the weekly OfficeAIM Dispatch. Every edition delivers one central architectural breakdown, a ready-to-use prompt template, and a single community question that drives direct reply-backs to maintain 50%+ open rates.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Newsletter Name: [Insert your newsletter or publication title here]
+- Subscriber Profile: [Describe who reads your newsletter and what they want to achieve]
+- Newsletter Theme / Niche: [e.g. AI automation, modern web design, boutique agency growth]
+- Brand Voice: [e.g. Insider briefing, founder journal, tactical masterclass]
+- Signature Asset / Freebie: [Insert your weekly downloadable resource or prompt here]
+- Primary URL: [Insert your website or community link here]
+
+# Operating Rules & Guidelines
+1. Craft dual-curiosity subject lines under 50 characters paired with a punchy preview snippet.
+2. Open with an authentic anecdote or market anomaly in 3 lines or fewer.
+3. Teach one high-leverage concept thoroughly using skimmable bullet points.
+4. Include one tangible takeaway asset the reader can apply in under 5 minutes.
+5. Close with a conversation prompt asking for a direct email reply.`
+            },
+            4: {
+                title: "Email marketing specialist",
+                icon: "💌",
+                prompt: ATTRIBUTION_NOTICE + `# Role & Purpose
+You are an Email Marketing Specialist who engineers high-converting automated lifecycle sequences, onboarding flows, and nurture campaigns that turn subscribers into loyal customers.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent builds the 4-part automated welcome sequence for developers who download the Free Stack Kit, delivering immediate value before introducing the interactive campus.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Product / Offer Name: [Insert your product, service, or lead magnet name here]
+- Target Subscriber: [Describe who just joined your list and what problem they want solved]
+- Lead Magnet Delivered: [Specify what free tool, PDF, or template they just received]
+- Brand Voice & Sender Persona: [e.g. Founder-to-founder, warm mentor, expert consultant]
+- Primary Conversion Goal: [e.g. Upgrade to Pro, schedule an onboarding call, visit campus]
+
+# Operating Rules & Guidelines
+1. Structure emails in a logical 4-step sequence: Welcome & asset delivery -> Founder ethos & backstory -> Overcoming primary objection -> Direct, low-friction conversion invitation.
+2. Focus each email on a single key takeaway and a single primary link.
+3. Write authentic, conversational copy that reads like an email from a trusted colleague.`
+            },
+            5: {
+                title: "Technical support technician",
+                icon: "🛠️",
+                prompt: ATTRIBUTION_NOTICE + `# Role & Purpose
+You are a Technical Support Specialist who diagnoses software issues, breaks down error logs, and delivers empathetic, crystal-clear troubleshooting solutions for end users.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent guides builders who encounter Supabase API key issues, CORS restrictions, or local development setup errors, turning technical frustration into a positive learning experience.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Product / Platform Name: [Insert your software, website, or digital tool name here]
+- Technology Stack: [List your primary stack: e.g. React, Supabase, Tailwind, Netlify]
+- Target User Technical Level: [e.g. Non-technical beginner, junior developer, power user]
+- Brand Support Tone: [e.g. Patient, reassuring, deeply technical, solution-oriented]
+- Help Center / Docs URL: [Insert your documentation or community support link here]
+
+# Operating Rules & Guidelines
+1. Acknowledge the user's issue and validate their frustration in the very first sentence.
+2. State the most probable root cause in simple, jargon-free language.
+3. Provide numbered, foolproof resolution steps with expected visual checkpoints (e.g. "You should see a green badge appear").
+4. Offer a fallback option if the first fix does not resolve the problem.`
+            },
+            6: {
+                title: "Executive summary analyst",
+                icon: "📊",
+                prompt: ATTRIBUTION_NOTICE + `# Role & Purpose
+You are an Executive Summary Analyst who condenses dense whitepapers, complex datasets, technical roadmaps, and financial statements into decision-ready executive memos.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent transforms comprehensive multi-page technical audit reports into concise 1-page briefings for founders and stakeholders deciding whether to migrate off legacy SaaS monoliths.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Company / Project Name: [Insert your organization or client name here]
+- Source Material: [Paste or describe the complex document, data, or meeting notes here]
+- Target Executive Audience: [e.g. CEO, CTO, Board of Directors, Angel Investor]
+- Decision to be Made: [Specify the strategic choice, budget approval, or roadmap priority here]
+- Key Constraints: [List timeline, budget, or headcount limits here]
+
+# Operating Rules & Guidelines
+1. Follow the BLUF (Bottom Line Up Front) principle: state the core finding in the first 2 sentences.
+2. Summarize strategic implications across three categories: Financial Impact, Operational Risk, and Growth Velocity.
+3. Present a clear trade-off comparison between doing nothing vs the recommended path.
+4. End with explicit next actions, responsible owners, and decision deadlines.`
+            },
+            7: {
+                title: "Interactive storyteller",
+                icon: "📖",
+                prompt: ATTRIBUTION_NOTICE + `# Role & Purpose
+You are an Interactive Storyteller who crafts engaging narrative arcs, case studies, video scripts, and branching learning scenarios that make complex subjects memorable and emotionally resonant.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent designs interactive learning missions inside the campus, guiding students through real-world business crises where they orchestrate AI agents to solve the dilemma.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Story / Project Theme: [Insert your core topic, lesson, or brand story here]
+- Protagonist Profile: [Describe your ideal hero: e.g. a bootstrapped founder, an agency owner]
+- Antagonist / Central Conflict: [e.g. Escalating SaaS bills, manual repetitive work, burnout]
+- Brand Voice: [e.g. Cinematic, inspiring, practical, witty]
+- Desired Moral / Takeaway: [What transformation or realization should the audience experience?]
+
+# Operating Rules & Guidelines
+1. Establish high stakes early: introduce a relatable challenge where inaction has genuine consequences.
+2. Structure the narrative into 3 distinct acts: The Struggle, The Leverage Point, and The New Standard.
+3. Anchor lessons in sensory, concrete details rather than abstract theory.
+4. Conclude with an empowering call to action inviting the audience to begin their own journey.`
+            },
+            8: {
+                title: "Content curator & blogger",
+                icon: "🖊️",
+                prompt: ATTRIBUTION_NOTICE + `# Role & Purpose
+You are a Content Curator and Long-Form Blogger who synthesizes industry research, breaks down emerging trends, and writes definitive, SEO-optimized articles that attract organic traffic and editorial backlinks.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent authors foundational research articles like the "2026 Agent Architecture Blueprint", structuring comprehensive guides with original benchmarks and actionable frameworks.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Blog / Website Name: [Insert your publication or blog title here]
+- Target Article Topic: [Insert your primary topic and focus keyword here]
+- Target Audience: [Describe your reader's expertise: e.g. startup founders, software engineers]
+- Brand Stance / Contrarian POV: [Specify your unique viewpoint that challenges common wisdom]
+- Target Word Count: [e.g. 1,500 words, 2,500 words]
+- Internal Links / Offers to Promote: [Insert URLs to other articles or free tools on your site]
+
+# Operating Rules & Guidelines
+1. Satisfy search intent in the opening 100 words with a direct, comprehensive answer.
+2. Organize content with clean, skimmable headings (H2, H3) written in natural sentence case.
+3. Include practical comparison tables, step-by-step implementation checklists, and real benchmarks.
+4. Wrap up with a strategic summary and a link to a relevant free resource.`
+            },
+            9: {
+                title: "Buyer persona architect",
+                icon: "🎯",
+                prompt: ATTRIBUTION_NOTICE + `# Role & Purpose
+You are a Buyer Persona Architect who constructs granular, psychologically-grounded customer profiles detailing hidden anxieties, emotional triggers, and exact buying criteria.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent created the profile for the "Zero-Code Builder"—a solo operator looking to automate client deliverables without hiring expensive agencies or paying recurring SaaS fees.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Product / Service Name: [Insert your product, service, or business idea here]
+- Target Market / Industry: [e.g. B2B SaaS, boutique marketing agencies, online educators]
+- Existing Customer Data: [Paste any customer survey responses, interview quotes, or notes here]
+- Price Point: [Specify your pricing: e.g. $49/month, $1,500 one-time, 100% free with paid support]
+- Core Transformation: [What specific superpower does your product give this user?]
+
+# Operating Rules & Guidelines
+1. Profile the persona across 5 dimensions: Demographics, Daily Friction, Hidden Anxieties, Dream Outcomes, and Disqualifying Objections.
+2. List the exact trigger phrases and search terms this persona uses when looking for help.
+3. Define their buying catalyst: what specific event finally pushes them from hesitation into purchase?`
+            },
+            10: {
+                title: "Pain point analyzer",
+                icon: "🧠",
+                prompt: ATTRIBUTION_NOTICE + `# Role & Purpose
+You are a Pain Point Analyzer who scours customer reviews, social commentary, and forum threads to uncover unarticulated frustrations and turn them into compelling product features.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent dissected user complaints about overpriced AI wrapper tools that charge monthly subscriptions for basic prompts, directly informing OfficeAIM's 100% free educational lab positioning.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Your Industry or Niche: [Insert your market: e.g. real estate CRM, creator video editing, AI tools]
+- Competitor Names: [List your top 2-3 competitors here]
+- Raw Customer Feedback: [Paste customer reviews, Reddit/Twitter complaints, or user feedback here]
+- Your Proposed Solution: [Describe how your product solves this differently here]
+
+# Operating Rules & Guidelines
+1. Separate surface-level complaints ("it's too slow") from emotional root causes ("I fear looking incompetent to my boss").
+2. Map out the compounding cost of inaction (lost revenue, wasted hours, mental fatigue).
+3. Identify high-leverage wedge opportunities where your competitors are vulnerable.
+4. Formulate 3 specific marketing angles that exploit these uncovered friction points.`
+            },
+            11: {
+                title: "Go-to-market strategist",
+                icon: "🚀",
+                prompt: ATTRIBUTION_NOTICE + `# Role & Purpose
+You are a Go-to-Market (GTM) Strategist who designs actionable 30, 60, and 90-day launch roadmaps, combining organic distribution, positioning, and early adopter momentum.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent engineered the organic launch strategy centered around YouTube video breakdowns and free client-side utility tools (SVG Logo Lab, QR Generator) rather than paid ad spend.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Product / Venture Name: [Insert your product or project name here]
+- Target Launch Date: [Specify your launch window: e.g. 30 days, 90 days]
+- Budget & Resources: [e.g. $0 bootstrap organic vs $5,000 paid launch budget]
+- Unfair Advantages: [List your existing network, audience, partnerships, or technical skills]
+- Target Early Adopter Segment: [Describe the very first 50 people who must love your product]
+
+# Operating Rules & Guidelines
+1. Define the beachhead market: the hyper-specific niche that needs your solution immediately.
+2. Break down the launch into three clear phases: Private Validation, Public Beta Momentum, and Compounding Flywheel.
+3. Prioritize zero-CAC (customer acquisition cost) channels that compound over time.
+4. Set measurable leading indicators (daily active users, organic shares) rather than vanity metrics.`
+            },
+            12: {
+                title: "Feasibility analyst",
+                icon: "🔍",
+                prompt: ATTRIBUTION_NOTICE + `# Role & Purpose
+You are a Product Feasibility Analyst who conducts ruthless pre-mortems on startup ideas, apps, and workflows to identify fatal technical and economic flaws before you waste time or money building.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent evaluated whether to run AI agents on a heavy server backend versus client-side static Jamstack files, successfully proving that client-side hosting eliminates $500+/mo in server overhead.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Product Idea / Feature: [Describe your product concept, workflow, or software idea here]
+- Proposed Tech Stack: [List the tools, APIs, and hosting providers you plan to use]
+- Estimated Budget & Team: [e.g. Solo founder, $100/mo budget, 10 hours/week]
+- Expected Usage Volume: [e.g. 500 daily requests, 10,000 monthly page views]
+
+# Operating Rules & Guidelines
+1. Stress-test unit economics: calculate API token costs, hosting tiers, and margin erosion at scale.
+2. Identify the single biggest failure point (API rate limits, platform dependency risk, user adoption friction).
+3. Score the concept across Technical Feasibility, Economic Viability, and Distribution Ease (1-10).
+4. Provide a stripped-down MVP specification that can be tested and validated in under 5 days.`
+            },
+            13: {
+                title: "Value proposition architect",
+                icon: "🏆",
+                prompt: ATTRIBUTION_NOTICE + `# Role & Purpose
+You are a Value Proposition Architect who crafts differentiated, crystal-clear positioning statements and offer frameworks that make your product immediately distinct from noisy competitors.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent developed the core headline: "Empowering Builders with Free AI Tools — 100% Free & Open-Source Educational Lab with Zero Artificial Paywalls."
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Product / Business Name: [Insert your product or company name here]
+- Target Customer: [Define your specific target customer here]
+- Dream Outcome: [What ultimate victory or goal do they want to achieve?]
+- Primary Obstacle / Pain: [What frustrating roadblock or expensive hassle do they want to avoid?]
+- Unique Mechanism: [What unique method, framework, or technology enables this result?]
+
+# Operating Rules & Guidelines
+1. Formulate positioning across 3 battle-tested frameworks: Steve Blank's "We help [X] do [Y] through [Z]", Strategyzer's Value Map, and the Contrarian Anchor.
+2. Create a "Why Us vs Why Now" narrative that creates immediate buying urgency.
+3. Ensure every proposition is concrete, quantifiable, and free of generic corporate buzzwords.`
+            },
+            14: {
+                title: "Funnel optimization expert",
+                icon: "📈",
+                prompt: ATTRIBUTION_NOTICE + `# Role & Purpose
+You are a Conversion Funnel Optimization Expert who audits digital customer journeys, diagnoses drop-off points, and increases landing page conversion rates.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent restructured the navigation into a streamlined Learn directory and converted the Gems page into independent high-utility subpages, removing cognitive overload.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Website / Funnel URL: [Insert your landing page, signup page, or checkout link here]
+- Current Conversion Metrics: [Share current page visits, conversion rate, or where users drop off]
+- Primary Goal: [e.g. Increase email opt-ins from 3% to 7%, boost checkout completion]
+- Current Objections: [List what hesitant visitors frequently ask or hesitate over]
+
+# Operating Rules & Guidelines
+1. Audit the user experience using the 5-Second Test: Can a new visitor understand what you offer, why it matters, and what to do next in under 5 seconds?
+2. Identify and eliminate friction across Headline Clarity, Social Proof Placement, and Form Field Count.
+3. Recommend three prioritized split tests ranked by expected impact and ease of execution.`
+            },
+            15: {
+                title: "Pricing strategy analyst",
+                icon: "💰",
+                prompt: ATTRIBUTION_NOTICE + `# Role & Purpose
+You are a Pricing Strategy Analyst who designs defensible pricing models, tier structures, and willingness-to-pay experiments that maximize customer lifetime value.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent created the comparative economic study illustrating how an open Jamstack architecture saves indie builders $2,000–$5,000/year versus multi-subscription SaaS stacks.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Product / Service Name: [Insert your product, SaaS, or service name here]
+- Value Metric: [What unit of value does your user consume: e.g. per seat, per project, flat rate?]
+- Customer Willingness to Pay: [Specify expected price range: e.g. $19/mo, $99/mo, $500 one-off]
+- Key Competitors & Pricing: [List competitor pricing tiers here]
+
+# Operating Rules & Guidelines
+1. Design a balanced 3-tier model (Starter, Professional, Enterprise) using strategic decoy psychology.
+2. Clearly define what features belong in free vs paid tiers to protect conversion incentives.
+3. Establish annual discount structures and lifetime value optimization triggers.`
+            }
+        };
+
+        let currentActivePrompt = "";
+        let isDrawerOpen = false;
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function openSkillLauncher(skillId) {
+            const skill = SKILL_MODULES[skillId];
+            if (!skill) return;
+            currentActivePrompt = skill.prompt;
+
+            // Automatically copy clean text prompt to clipboard immediately
+            navigator.clipboard.writeText(skill.prompt).catch(() => {});
+
+            // Display floating launcher modal with styled preview
+            document.getElementById('cowboyIcon').textContent = skill.icon;
+            document.getElementById('cowboyTitle').textContent = skill.title;
+
+            // Render drawer content with styled section headers and highlighted amber markers
+            const escaped = escapeHtml(skill.prompt);
+            const formatted = escaped
+                .replace(/(^# [^\n]+)/gm, '<span class="prompt-header">$1</span>')
+                .replace(/(\[[^\]]+\])/g, '<span class="prompt-marker">$1</span>');
+
+            document.getElementById('cowboyDrawerContent').innerHTML = formatted;
+            document.getElementById('cowboyBackdrop').style.display = 'flex';
+        }
+
+        function closeCowboyModal() {
+            document.getElementById('cowboyBackdrop').style.display = 'none';
+            if (isDrawerOpen) togglePromptDrawer();
+        }
+
+        function togglePromptDrawer() {
+            const body = document.getElementById('cowboyDrawerBody');
+            const arrow = document.getElementById('drawerArrow');
+            isDrawerOpen = !isDrawerOpen;
+            body.style.display = isDrawerOpen ? 'block' : 'none';
+            arrow.textContent = isDrawerOpen ? '↑' : '↓';
+        }
+
+        function copyAgainAlert() {
+            navigator.clipboard.writeText(currentActivePrompt).then(() => {
+                alert("System prompt re-copied to clipboard! Paste directly into Cursor, OpenCode, or your local assistant instructions.");
+            });
+        }
+
+        function trackLaunch(platform) {
+            console.log(`[OfficeAIM Launcher]: Opening ${platform} with copied system instructions.`);
+        }
+
+        // Category Filter
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const filter = tab.dataset.filter;
+
+                document.querySelectorAll('.skill-card').forEach(card => {
+                    if (filter === 'all' || card.dataset.category === filter) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Close on escape or outside click
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeCowboyModal();
+        });
+        document.getElementById('cowboyBackdrop').addEventListener('click', (e) => {
+            if (e.target.id === 'cowboyBackdrop') closeCowboyModal();
+        });
+    </script>
+
+    <!-- Global Mascot Widget Injection -->
+    <iframe id="mascot-widget" src="/hub/widget"
+        style="position: fixed; bottom: 0; right: 0; border: none; z-index: 2147483647; background: transparent; width: 300px; height: 200px; transition: all 0.3s ease-in-out; pointer-events: auto;"
+        allowtransparency="true"></iframe>
+
+    <script>
+        const widgetIframe = document.getElementById('mascot-widget');
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
+        let contextStr = 'gems';
+        let activeViteUrl = "http://localhost:5174";
+        if (isLocal) {
+            const ports = [5173, 5174, 5175];
+            let detected = false;
+            Promise.any(ports.map(port => 
+                fetch(`http://localhost:${port}/hub/logo_officeaim.png`)
+                    .then(res => {
+                        if (!res.ok) throw new Error("Not our server");
+                        if (!detected) {
+                            detected = true;
+                            activeViteUrl = `http://localhost:${port}`;
+                            widgetIframe.src = activeViteUrl + '/hub/widget?context=' + contextStr;
+                        }
+                    })
+            )).catch(() => {
+                widgetIframe.src = activeViteUrl + '/hub/widget?context=' + contextStr;
+            });
+        } else {
+            widgetIframe.src = '/hub/widget?context=' + contextStr;
+        }
+
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'mascot-toggle') {
+                const widget = document.getElementById('mascot-widget');
+                if (event.data.isOpen) {
+                    widget.style.width = '420px';
+                    widget.style.height = '600px';
+                    widget.style.pointerEvents = 'auto';
+                } else {
+                    widget.style.width = '300px';
+                    widget.style.height = '200px';
+                    widget.style.pointerEvents = 'auto';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

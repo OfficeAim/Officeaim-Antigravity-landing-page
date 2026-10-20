@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OfficeAIM Learn — Clean learning paths for autonomous AI systems</title>
+    <meta name="description"
+        content="Choose your learning path on OfficeAIM. Simple, zero-friction directory to master AI agents, workflows, and modern decoupled Jamstack architectures.">
+    <meta name="google-site-verification" content="6OajNDeOete8oREc17Z_cYlseER3lADZjnLLHCQL8AQ" />
+    <link rel="canonical" href="https://officeaim.com/learn.html" />
+
+    <!-- Open Graph / WhatsApp Share Preview -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://officeaim.com/learn.html">
+    <meta property="og:title" content="OfficeAIM Learn — Clean learning paths for autonomous AI systems">
+    <meta property="og:description"
+        content="Choose your learning path on OfficeAIM. Simple, zero-friction directory to master AI agents, workflows, and modern decoupled Jamstack architectures.">
+    <meta property="og:image" content="https://officeaim.com/images/hero.webp">
+
+    <!-- Twitter Preview -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://officeaim.com/learn.html">
+    <meta name="twitter:title" content="OfficeAIM Learn — Clean learning paths for autonomous AI systems">
+    <meta name="twitter:description"
+        content="Choose your learning path on OfficeAIM. Simple, zero-friction directory to master AI agents, workflows, and modern decoupled Jamstack architectures.">
+    <meta name="twitter:image" content="https://officeaim.com/images/hero.webp">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=20261019">
+    <link rel="stylesheet" href="landing-new.css?v=20261019">
+    <style>
+        .learn-container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .learn-hero {
+            padding: 8rem 0 3rem;
+            text-align: center;
+        }
+
+        .learn-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.9rem;
+            background: rgba(34, 211, 238, 0.08);
+            border: 1px solid rgba(34, 211, 238, 0.25);
+            border-radius: 9999px;
+            font-size: 0.78rem;
+            color: var(--accent-secondary, #00F0FF);
+            letter-spacing: 0.5px;
+            margin-bottom: 1.25rem;
+        }
+
+        .learn-title {
+            font-size: clamp(2.2rem, 5vw, 3.2rem);
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .learn-subtitle {
+            font-size: 1.1rem;
+            color: #94A3B8;
+            max-width: 680px;
+            margin: 0 auto 3.5rem;
+            line-height: 1.6;
+        }
+
+        /* 3 Clear Paths */
+        .paths-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.75rem;
+            margin-bottom: 4rem;
+        }
+
+        .path-card {
+            background: rgba(13, 19, 33, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 2.25rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            backdrop-filter: blur(12px);
+            transition: all 0.25s ease;
+            position: relative;
+        }
+
+        .path-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(34, 211, 238, 0.4);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 25px rgba(6, 182, 212, 0.15);
+        }
+
+        .path-card.featured {
+            border-color: rgba(34, 211, 238, 0.35);
+            background: linear-gradient(180deg, rgba(13, 19, 33, 0.85), rgba(8, 14, 28, 0.95));
+        }
+
+        .path-number {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent-secondary, #00F0FF);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .path-card h3 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.75rem;
+            line-height: 1.35;
+        }
+
+        .path-card p {
+            font-size: 0.92rem;
+            color: #94A3B8;
+            line-height: 1.6;
+            margin-bottom: 1.75rem;
+        }
+
+        .path-meta {
+            display: inline-block;
+            font-size: 0.75rem;
+            color: #64748B;
+            margin-bottom: 1.5rem;
+        }
+
+        .path-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .path-btn-primary {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.25);
+        }
+
+        .path-btn-primary:hover {
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .path-btn-secondary {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+        }
+
+        .path-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Secondary Support Strip */
+        .support-strip {
+            background: rgba(8, 12, 22, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 1.75rem 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 5rem;
+        }
+
+        .support-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .support-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .support-item h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+        }
+
+        .support-item p {
+            font-size: 0.82rem;
+            color: #94A3B8;
+            line-height: 1.5;
+            margin-bottom: 0.4rem;
+        }
+
+        .support-item a {
+            color: var(--accent-secondary, #00F0FF);
+            font-size: 0.8rem;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .support-item a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sticky Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="images/favicon.png" alt="OfficeAIM logo" class="logo-img">
+            </a>
+            <ul class="nav-links">
+                <li><a href="learn.html" class="nav-link" style="color: var(--accent-secondary); font-weight: 700;">Learn</a></li>
+                <li class="nav-item-dropdown">
+                    <a href="#resources" class="nav-link">Resources <svg class="dropdown-arrow" width="12" height="12"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-inner">
+                            <div class="mega-menu-col">
+                                <h4>Free tools &amp; generators</h4>
+                                <a href="skills.html" class="mega-link">
+                                    <div class="mega-icon">⚡</div>
+                                    <div class="mega-text">
+                                        <strong>Skills</strong>
+                                        <span>15 modular agent skills ready to install</span>
+                                    </div>
+                                </a>
+                                <a href="prompt-generator.html" class="mega-link">
+                                    <div class="mega-icon">⭐</div>
+                                    <div class="mega-text">
+                                        <strong>Prompt Generator</strong>
+                                        <span>Parametric meta-prompts calibrated for LLMs</span>
+                                    </div>
+                                </a>
+                                <a href="resources/website-creator.html" class="mega-link">
+                                    <div class="mega-icon">🎨</div>
+                                    <div class="mega-text">
+                                        <strong>AI SVG Logo Lab</strong>
+                                        <span>Vector design studio &amp; web architecture coach</span>
+                                    </div>
+                                </a>
+                                <a href="resources/qr-generator.html" class="mega-link">
+                                    <div class="mega-icon">🔲</div>
+                                    <div class="mega-text">
+                                        <strong>AI QR Generator</strong>
+                                        <span>Branded high-contrast QR codes, zero fees</span>
+                                    </div>
+                                </a>
+                                <a href="resources/free-stack-kit.html" class="mega-link">
+                                    <div class="mega-icon">📦</div>
+                                    <div class="mega-text">
+                                        <strong>Free Stack Kit</strong>
+                                        <span>Curated agent skills pack &amp; step-by-step guide</span>
+                                    </div>
+                                </a>
+                                <a href="board.html" class="mega-link">
+                                    <div class="mega-icon">👥</div>
+                                    <div class="mega-text">
+                                        <strong>The AI Board</strong>
+                                        <span>Meet your 19 specialist agents — free to explore</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="community.html" class="nav-link">Community</a></li>
+                <li><a id="nav-news-link" href="news.html" class="nav-link">News</a></li>
+            </ul>
+            <div class="nav-ctas">
+                <a href="/hub" class="btn btn-primary">Enter Campus →</a>
+            </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="learn-container">
+        <header class="learn-hero">
+            <div class="learn-badge">
+                <span>⚡ Zero-friction educational directory</span>
+            </div>
+            <h1 class="learn-title">Choose your learning path</h1>
+            <p class="learn-subtitle">
+                Everything on OfficeAIM is 100% free and open-source. Select where you want to start based on your immediate goal:
+            </p>
+        </header>
+
+        <!-- 3 Primary Paths -->
+        <section class="paths-grid">
+            <!-- Path 1: Workflow Guide -->
+            <div class="path-card">
+                <div>
+                    <span class="path-number">Path 01 · Hands-on tutorial</span>
+                    <h3>Build your first automated workflow</h3>
+                    <p>
+                        A step-by-step walkthrough showing how to orchestrate six free specialist AI agents to automate real business deliverables without coding.
+                    </p>
+                </div>
+                <div>
+                    <span class="path-meta">⏱️ 15 min read · Beginner friendly</span>
+                    <a href="use-cases.html" class="path-btn path-btn-secondary">
+                        Open Workflow Guide →
+                    </a>
+                </div>
+            </div>
+
+            <!-- Path 2: The 2026 Blueprint -->
+            <div class="path-card featured">
+                <div>
+                    <span class="path-number">Path 02 · Architectural research</span>
+                    <h3>Understand the 2026 agent blueprint</h3>
+                    <p>
+                        Explore our comprehensive report on the transition from simple chat prompts to decoupled Jamstack architectures and autonomous multi-agent pipelines.
+                    </p>
+                </div>
+                <div>
+                    <span class="path-meta">⏱️ 25 min read · Technical overview</span>
+                    <a href="blueprint.html" class="path-btn path-btn-primary">
+                        Read the Blueprint →
+                    </a>
+                </div>
+            </div>
+
+            <!-- Path 3: Interactive Campus -->
+            <div class="path-card">
+                <div>
+                    <span class="path-number">Path 03 · Live practice</span>
+                    <h3>Step into the interactive campus</h3>
+                    <p>
+                        Access your private board of 19 specialist personas. Test real prompts, diagnose workflows with your mascot guide, and save sessions to your vault.
+                    </p>
+                </div>
+                <div>
+                    <span class="path-meta">⏱️ Self-paced · Instant access</span>
+                    <a href="/hub" class="path-btn path-btn-secondary">
+                        Enter Campus Free →
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Secondary Support Strip -->
+        <section class="support-strip">
+            <div class="support-item">
+                <div class="support-icon">🛡️</div>
+                <div>
+                    <h4>Data sovereignty &amp; trust</h4>
+                    <p>Learn how our tools execute client-side without holding your data hostage.</p>
+                    <a href="security.html">Read security architecture →</a>
+                </div>
+            </div>
+            <div class="support-item">
+                <div class="support-icon">📦</div>
+                <div>
+                    <h4>Free stack kit download</h4>
+                    <p>Instant access to the Master Guide markdown and Antigravity agent skills pack.</p>
+                    <a href="resources/free-stack-kit.html">Download stack kit →</a>
+                </div>
+            </div>
+            <div class="support-item">
+                <div class="support-icon">💬</div>
+                <div>
+                    <h4>Community &amp; support</h4>
+                    <p>Connect on YouTube, Instagram, and Facebook to exchange prompts and troubleshoot.</p>
+                    <a href="community.html">Join community channels →</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" style="border-top: 1px solid rgba(255, 255, 255, 0.05); padding: 4rem 1.5rem; text-align: center;">
+        <div class="container">
+            <p style="color: #64748B; font-size: 0.85rem; margin: 0 0 0.5rem;">
+                © 2026 OfficeAIM. Autonomous AI Systems &amp; Next-Gen Business Infrastructure.
+            </p>
+            <p style="color: #475569; font-size: 0.78rem; margin: 0;">
+                All tools are open-source and free for educational use. · <a href="policy.html" style="color: inherit; text-decoration: none;">Privacy &amp; terms</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="script.js?v=20261019"></script>
+
+    <!-- Global Mascot Widget Injection -->
+    <iframe id="mascot-widget" src="/hub/widget"
+        style="position: fixed; bottom: 0; right: 0; border: none; z-index: 2147483647; background: transparent; width: 300px; height: 200px; transition: all 0.3s ease-in-out; pointer-events: auto;"
+        allowtransparency="true"></iframe>
+
+    <script>
+        const widgetIframe = document.getElementById('mascot-widget');
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
+        let contextStr = 'landing';
+        let activeViteUrl = "http://localhost:5174";
+        if (isLocal) {
+            const ports = [5173, 5174, 5175];
+            let detected = false;
+            Promise.any(ports.map(port => 
+                fetch(`http://localhost:${port}/hub/logo_officeaim.png`)
+                    .then(res => {
+                        if (!res.ok) throw new Error("Not our server");
+                        if (!detected) {
+                            detected = true;
+                            activeViteUrl = `http://localhost:${port}`;
+                            widgetIframe.src = activeViteUrl + '/hub/widget?context=' + contextStr;
+                        }
+                    })
+            )).catch(() => {
+                widgetIframe.src = activeViteUrl + '/hub/widget?context=' + contextStr;
+            });
+        } else {
+            widgetIframe.src = '/hub/widget?context=' + contextStr;
+        }
+
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'mascot-toggle') {
+                const widget = document.getElementById('mascot-widget');
+                if (event.data.isOpen) {
+                    widget.style.width = '420px';
+                    widget.style.height = '600px';
+                    widget.style.pointerEvents = 'auto';
+                } else {
+                    widget.style.width = '300px';
+                    widget.style.height = '200px';
+                    widget.style.pointerEvents = 'auto';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -49,7 +49,9 @@ Estimación del tiempo de desarrollo basado en las sesiones de trabajo registrad
 | **11/10/2026** | ~4.0 horas | YouTube CTA card for unreleased videos, Sentence Case titles, links formatting & 6-channel footer, mobile publisher (/admin/news) with Smart Paste, Netlify deploy |
 | **14/10/2026** | ~2.5 horas | Suno v6 unlock, desktop navbar fortification (eliminated duplicates), deprecated Features, created AI QR Generator, synced Resources with AI Skills Starter Pack |
 | **16/10/2026** | ~2.0 horas | Strategic Community transition (archived pricing), native AI QR Studio, standardized How It Works & Business Lesson across 4 pages, navbar cleanup & deploy |
-| **TOTAL** | **~145.75 horas** | **Semana 7 de Desarrollo Intenso** |
+| **19/10/2026** | ~0.5 horas | Google site verification, subpágina dedicada de Skills y Prompt Generator, copy 100% en inglés, bento grid de comunidad y disclaimer |
+| **20/10/2026** | ~1.8 horas | Header con Resources dropdown, Learn minimalista (learn.html), Skills Prompt Cowboy launcher multi-LLM, auditoría 20 puntos SEO en Knowledge Hub, sitemap.xml, robots.txt, llms.txt, canonicals y Open Graph |
+| **TOTAL** | **~148.05 horas** | **Semana 7 de Desarrollo Intenso** |
 ---
 *Nota: Estos tiempos son aproximados basados en la duración de las sesiones de terminal.*
 

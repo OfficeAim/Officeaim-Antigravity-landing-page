@@ -391,6 +391,7 @@ const mobileMenuToggle = document.getElementById('mobileMenuToggle');
 // 4) TEMPLATE SWITCHING
 // ============================================================
 function renderForm(templateName) {
+    if (!formArea) return;
     currentTemplate = templateName;
     const template = promptTemplates[templateName];
 
