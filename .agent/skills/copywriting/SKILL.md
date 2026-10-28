@@ -1,5 +1,6 @@
 ---
-description: Copywriting framework for landing pages, pricing, feature pages, and marketing — clarity over cleverness, benefits over features
+name: copywriting
+description: "Copywriting framework for landing pages, pricing, feature pages, and marketing — clarity over cleverness, benefits over features."
 ---
 
 # Copywriting

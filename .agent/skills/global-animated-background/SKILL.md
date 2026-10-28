@@ -1,5 +1,6 @@
 ---
-description: Blueprint for implementing the global animated viewport background grid
+name: global-animated-background
+description: "Blueprint for implementing the global animated viewport background grid."
 ---
 
 # 🌌 Global Animated Background (Antigravity Style)

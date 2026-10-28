@@ -1,5 +1,6 @@
 ---
-description: Supabase Postgres best practices — query optimization, schema design, RLS, indexes, connection pooling. Apply when writing SQL, designing schemas, or reviewing database performance.
+name: supabase-postgres-best-practices
+description: "Supabase Postgres best practices — query optimization, schema design, RLS, indexes, connection pooling. Apply when writing SQL, designing schemas, or reviewing database performance."
 ---
 
 # Supabase Postgres Best Practices

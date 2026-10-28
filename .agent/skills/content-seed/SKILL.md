@@ -1,3 +1,8 @@
+---
+name: content-seed
+description: "Automatiza la transformación de investigaciones de NotebookLM o archivos PDF en el ADN educativo de OfficeAIM (Módulos, Lecciones y Quizzes)."
+---
+
 # Skill: Content Seed
 
 ## Descripción

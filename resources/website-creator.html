@@ -53,8 +53,8 @@
     </script>
 
     <!-- Custom CSS Styles -->
+    <link rel="stylesheet" href="../styles.css?v=20261019">
     <link rel="stylesheet" href="../landing-new.css?v=20261016">
-    <link rel="stylesheet" href="../pricing-page.css?v=20261016">
     <style>
         body {
             background-color: #070A12;
@@ -138,58 +138,126 @@
     <div class="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-brand-cyan/5 blur-[120px] pointer-events-none z-0"></div>
     <div class="absolute top-[35%] left-[40%] w-[30vw] h-[30vw] rounded-full bg-brand-emerald/3 blur-[120px] pointer-events-none z-0"></div>
 
-    <!-- Header Navigation -->
-    <header class="relative z-10 w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between border-b border-white/[0.04]">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-orange to-brand-orange/40 flex items-center justify-center shadow-[0_0_20px_rgba(249,115,22,0.3)] hover:scale-105 transition-transform">
-                <span class="font-outfit font-black text-xl italic tracking-tighter text-white">AIM</span>
+    <!-- Global Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">
+                <div class="logo-icon">⚡</div>
+                <span class="logo-text">Office<span class="logo-highlight">AIM</span></span>
+            </a>
+
+            <div class="nav-links" id="navLinks">
+                <a href="../learn.html" class="nav-link">Learn</a>
+                
+                <!-- Resources Dropdown -->
+                <div class="nav-dropdown-wrapper">
+                    <button class="nav-link nav-dropdown-trigger" aria-expanded="false">
+                        Resources <span class="dropdown-chevron">▾</span>
+                    </button>
+                    <div class="nav-mega-dropdown">
+                        <a href="../skills.html" class="mega-dropdown-item">
+                            <span class="mega-item-icon">⚡</span>
+                            <div class="mega-item-text">
+                                <span class="mega-item-title">Skills</span>
+                                <span class="mega-item-desc">26 modular agent skills ready to install</span>
+                            </div>
+                        </a>
+                        <a href="../prompt-generator.html" class="mega-dropdown-item">
+                            <span class="mega-item-icon">✨</span>
+                            <div class="mega-item-text">
+                                <span class="mega-item-title">Prompt Generator</span>
+                                <span class="mega-item-desc">AI prompt optimizer for Gemini &amp; Claude</span>
+                            </div>
+                        </a>
+                        <a href="../gems.html" class="mega-dropdown-item">
+                            <span class="mega-item-icon">💎</span>
+                            <div class="mega-item-text">
+                                <span class="mega-item-title">Gems</span>
+                                <span class="mega-item-desc">Custom AI agent blueprints &amp; instructions</span>
+                            </div>
+                        </a>
+                        <a href="workflows.html" class="mega-dropdown-item">
+                            <span class="mega-item-icon">⚡</span>
+                            <div class="mega-item-text">
+                                <span class="mega-item-title">n8n Automation Vault</span>
+                                <span class="mega-item-desc">98 production JSON workflows ready to import</span>
+                            </div>
+                        </a>
+                        <a href="qr-generator.html" class="mega-dropdown-item">
+                            <span class="mega-item-icon">📱</span>
+                            <div class="mega-item-text">
+                                <span class="mega-item-title">QR Code Studio</span>
+                                <span class="mega-item-desc">Free instant custom SVG &amp; PNG QR codes</span>
+                            </div>
+                        </a>
+                        <a href="../logo-studio.html" class="mega-dropdown-item">
+                            <span class="mega-item-icon">🎨</span>
+                            <div class="mega-item-text">
+                                <span class="mega-item-title">AI SVG Logo Lab</span>
+                                <span class="mega-item-desc">Vector geometric logos &amp; prompts</span>
+                            </div>
+                        </a>
+                        <a href="./website-creator.html" class="mega-dropdown-item active-mega-link">
+                            <span class="mega-item-icon">🌐</span>
+                            <div class="mega-item-text">
+                                <span class="mega-item-title">Web Blueprint Studio</span>
+                                <span class="mega-item-desc">Interactive Jamstack architect &amp; AI compiler</span>
+                            </div>
+                        </a>
+                        <a href="https://stocked-aid.lovable.app" target="_blank" rel="noopener noreferrer" class="mega-dropdown-item">
+                            <span class="mega-item-icon">📦</span>
+                            <div class="mega-item-text">
+                                <span class="mega-item-title">Stocked Aid (Inventario IA) ↗</span>
+                                <span class="mega-item-desc">Control de caducidades, stock por visión y exportación multi-hoja</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <a href="../community.html" class="nav-link">Community</a>
+                <a href="../news.html" class="nav-link">News</a>
             </div>
-            <div>
-                <span class="font-outfit font-black uppercase tracking-widest text-xs text-white leading-none">OfficeAIM</span>
-                <p class="text-[9px] text-brand-orange font-bold uppercase tracking-wider leading-none mt-0.5">Web Blueprint Studio</p>
+
+            <div class="nav-actions">
+                <a href="https://officeaim-hub.vercel.app" class="btn-nav-primary">
+                    <span>Enter Campus</span>
+                    <span class="btn-arrow">→</span>
+                </a>
+                <button class="nav-toggle" id="navToggle" aria-label="Open menu">
+                    <span></span><span></span><span></span>
+                </button>
             </div>
         </div>
-        
-        <div class="flex items-center gap-3">
-            <a href="#how-it-works-section" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/[0.03] border border-white/10 hover:border-brand-orange/40 transition-all text-[11px] font-bold text-gray-300 hover:text-white">
-                <span>How It Works ↓</span>
-            </a>
-            <a href="#roadmap-section" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/[0.03] border border-white/10 hover:border-brand-orange/40 transition-all text-[11px] font-bold text-gray-300 hover:text-white">
-                <span>9-Step Stack Roadmap</span>
-                <span class="text-brand-orange">↓</span>
-            </a>
-            <a href="../community.html" class="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/[0.03] border border-white/10 hover:border-brand-orange/40 transition-all text-[11px] font-bold text-gray-300 hover:text-white">
-                <span>Community</span>
-            </a>
-            <a href="../index.html" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.03] border border-white/10 hover:bg-white/[0.08] hover:border-white/20 transition-all text-xs font-bold italic tracking-wide text-white/80 hover:text-white">
-                <svg class="w-4 h-4 text-brand-orange shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                Return to Home
-            </a>
-        </div>
-    </header>
+    </nav>
 
     <!-- Main Container -->
-    <main class="relative z-10 w-full max-w-7xl mx-auto px-6 py-12">
+    <main class="relative z-10 w-full max-w-7xl mx-auto px-6 pt-28 pb-12">
         
         <!-- Header Text -->
         <div class="max-w-3xl mb-12 text-left">
-            <h1 class="text-3xl md:text-5xl font-outfit font-black tracking-tight italic uppercase text-white leading-tight">
-                Web <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">Blueprint Studio</span> for Your Site
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-orange/10 border border-brand-orange/30 text-brand-orange text-[10px] font-bold tracking-wider mb-3">
+                <span>🌐 100% Free &amp; Open-Source Architecture Studio</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl font-outfit font-extrabold tracking-tight text-white leading-tight">
+                Web <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">blueprint studio</span> for your site
             </h1>
             <p class="mt-4 text-sm md:text-base text-gray-400 font-medium leading-relaxed">
-                Design your website's architecture, configure booking paths, and generate a technical prompt optimized for AI code compilers (like Lovable, v0, or Cursor). <span class="text-white">Everything is transparent, under your control, with $0 hidden markup costs.</span>
+                Design your website's architecture, configure booking paths, and generate a complete technical dossier (Frontend AI prompt, Supabase SQL schema, and Git/DNS launch guide) for AI code compilers like Lovable, v0, or Cursor. <span class="text-white">Everything is transparent, under your control, with $0 hidden markup costs.</span>
             </p>
             <div class="mt-6 flex flex-wrap gap-3">
-                <a href="#wizard-section" class="px-5 py-2.5 rounded-xl bg-brand-orange hover:bg-orange-600 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-brand-orange/20">
-                    Configure Blueprint →
+                <a href="#wizard-section" class="px-5 py-2.5 rounded-xl bg-brand-orange hover:bg-orange-600 text-white font-bold text-xs tracking-wide transition-all shadow-lg shadow-brand-orange/20">
+                    Configure blueprint →
                 </a>
-                <a href="#how-it-works-section" class="px-5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 hover:border-brand-cyan/40 text-gray-300 hover:text-white font-bold text-xs uppercase tracking-wider transition-all">
-                    How It Works ↓
+                <a href="#roadmap-section" class="px-5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 hover:border-brand-orange/40 text-gray-300 hover:text-white font-bold text-xs tracking-wide transition-all">
+                    9-step stack roadmap ↓
+                </a>
+                <a href="#how-it-works-section" class="px-5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 hover:border-brand-cyan/40 text-gray-300 hover:text-white font-bold text-xs tracking-wide transition-all">
+                    How it works ↓
                 </a>
             </div>
         </div>
 
-        <!-- Desktop Grid Grid Layout -->
+        <!-- Desktop Grid Layout -->
         <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
             
             <!-- Left Side: Interactive Wizard Form -->
@@ -202,8 +270,8 @@
                             <span class="font-outfit font-black text-brand-orange text-lg" id="step-number-indicator">01</span>
                         </div>
                         <div>
-                            <span class="text-[9px] uppercase tracking-widest font-black text-brand-orange italic leading-none block">Active Phase</span>
-                            <span class="text-sm font-bold text-white tracking-wide" id="step-title-indicator">Brand Identity</span>
+                            <span class="text-[9px] uppercase tracking-widest font-black text-brand-orange leading-none block">Active phase</span>
+                            <span class="text-sm font-bold text-white tracking-wide" id="step-title-indicator">Brand identity</span>
                         </div>
                     </div>
                     
@@ -222,8 +290,35 @@
                     <!-- PHASE 1: BRAND IDENTITY -->
                     <!-- ============================================ -->
                     <div class="step-phase active-phase" id="phase-1">
+                        <!-- Human Quick-Start Presets Bar -->
+                        <div class="mb-6 p-4 rounded-2xl bg-white/[0.02] border border-brand-cyan/20">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                                <span class="text-xs font-bold text-white flex items-center gap-1.5">
+                                    <span class="text-brand-cyan">✨</span> Not sure where to start? Pick your business goal to auto-configure the wizard:
+                                </span>
+                                <span class="text-[10px] font-mono text-brand-cyan uppercase tracking-wider" id="preset-status-badge">1-click presets</span>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                                <button type="button" onclick="applyQuickPreset('booking')" data-preset-btn="booking"
+                                    class="preset-quick-btn text-left p-3 rounded-xl bg-black/30 border border-white/10 hover:border-brand-orange/50 transition-all group">
+                                    <div class="text-xs font-bold text-white group-hover:text-brand-orange transition-colors">📅 Service &amp; booking business</div>
+                                    <p class="text-[10px] text-gray-400 mt-1 leading-snug">Calendar slots + reviews + custom webhook dispatch</p>
+                                </button>
+                                <button type="button" onclick="applyQuickPreset('whatsapp')" data-preset-btn="whatsapp"
+                                    class="preset-quick-btn text-left p-3 rounded-xl bg-black/30 border border-white/10 hover:border-brand-emerald/50 transition-all group">
+                                    <div class="text-xs font-bold text-white group-hover:text-brand-emerald transition-colors">💬 Local business &amp; WhatsApp leads</div>
+                                    <p class="text-[10px] text-gray-400 mt-1 leading-snug">Fast landing page + direct click-to-chat WhatsApp funnel</p>
+                                </button>
+                                <button type="button" onclick="applyQuickPreset('saas')" data-preset-btn="saas"
+                                    class="preset-quick-btn text-left p-3 rounded-xl bg-black/30 border border-white/10 hover:border-brand-cyan/50 transition-all group">
+                                    <div class="text-xs font-bold text-white group-hover:text-brand-cyan transition-colors">⚡ Digital product / SaaS MVP</div>
+                                    <p class="text-[10px] text-gray-400 mt-1 leading-snug">Dark Tech UI + feature catalog + email lead capture</p>
+                                </button>
+                            </div>
+                        </div>
+
                         <h2 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
-                            <span class="text-brand-orange">1.</span> Define Your Brand Core
+                            <span class="text-brand-orange">1.</span> Define your brand core
                         </h2>
                         
                         <div class="space-y-6">
@@ -592,8 +687,8 @@
                     <!-- Success Header -->
                     <div class="flex items-start justify-between border-b border-white/[0.05] pb-4 mb-4">
                         <div>
-                            <span class="text-[9px] font-black uppercase tracking-widest text-brand-orange italic">Blueprint Compiled Successfully</span>
-                            <h3 class="text-xl font-outfit font-black text-white mt-0.5 uppercase italic" id="success-title">This is how your site will look</h3>
+                            <span class="text-[9px] font-black uppercase tracking-widest text-brand-orange">Blueprint compiled successfully</span>
+                            <h3 class="text-xl font-outfit font-extrabold text-white mt-0.5" id="success-title">This is how your site will look</h3>
                         </div>
                         <div class="w-8 h-8 rounded-full bg-brand-emerald/10 border border-brand-emerald/30 flex items-center justify-center text-brand-emerald shrink-0">
                             <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
@@ -665,32 +760,48 @@
                     </div>
 
                     <!-- ============================================ -->
-                    <!-- WEBMASTER EXPANDABLE ACCORDION (COLLAPSIBLE) -->
+                    <!-- WEBMASTER EXPANDABLE ACCORDION (3-TAB TECHNICAL DOSSIER) -->
                     <!-- ============================================ -->
                     <div class="border border-white/10 rounded-2xl overflow-hidden bg-black/25 mb-4 shrink-0">
-                        <button type="button" id="webmaster-accordion-toggle" class="w-full px-4 py-3 bg-[#0d1222]/50 hover:bg-[#0d1222] transition-colors flex items-center justify-between text-[9px] font-black uppercase tracking-widest text-brand-orange italic select-none">
-                            <span>⚙️ Webmaster Panel: AI Developer Prompt (Lovable / Cursor)</span>
+                        <button type="button" id="webmaster-accordion-toggle" class="w-full px-4 py-3 bg-[#0d1222]/50 hover:bg-[#0d1222] transition-colors flex items-center justify-between text-[10px] font-bold tracking-wider text-brand-orange select-none">
+                            <span>⚙️ Post-canvas technical dossier (Frontend AI prompt · Supabase SQL · Git &amp; DNS guide)</span>
                             <svg class="w-4 h-4 text-brand-orange transform transition-transform duration-300" id="accordion-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
                         
                         <!-- Collapsible Body content -->
                         <div class="hidden flex-col p-4 border-t border-white/5 bg-black/15" id="webmaster-accordion-content">
-                            <!-- Explanatory note for the Webmaster -->
-                            <p class="text-[9.5px] text-gray-400 leading-normal mb-3 font-medium">
-                                This technical developer prompt has already been securely sent to your sheets via webhook. Use it in Lovable to build a connected application:
+                            <!-- 3-Tab Switcher Bar -->
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-1.5 p-1 bg-black/40 rounded-xl border border-white/10 mb-3 select-none">
+                                <button type="button" onclick="switchDossierTab('prompt')" data-dossier-tab="prompt"
+                                    class="dossier-tab-btn py-2 px-3 rounded-lg text-[10px] font-bold text-white bg-brand-orange shadow-md transition-all text-left sm:text-center">
+                                    🎨 1. Frontend AI prompt
+                                </button>
+                                <button type="button" onclick="switchDossierTab('sql')" data-dossier-tab="sql"
+                                    class="dossier-tab-btn py-2 px-3 rounded-lg text-[10px] font-bold text-gray-400 hover:text-white transition-all text-left sm:text-center">
+                                    🗄️ 2. Supabase SQL schema
+                                </button>
+                                <button type="button" onclick="switchDossierTab('launch')" data-dossier-tab="launch"
+                                    class="dossier-tab-btn py-2 px-3 rounded-lg text-[10px] font-bold text-gray-400 hover:text-white transition-all text-left sm:text-center">
+                                    🚀 3. Git &amp; DNS launch guide
+                                </button>
+                            </div>
+
+                            <!-- Explanatory note for the active tab -->
+                            <p class="text-[10px] text-gray-400 leading-normal mb-3 font-medium" id="dossier-tab-desc">
+                                Copy this master prompt and paste it directly into Lovable, v0, or Cursor to compile your responsive React + Tailwind frontend with your custom SVG logo embedded:
                             </p>
                             
                             <!-- Terminal Code Area -->
-                            <div class="relative w-full h-[140px] bg-[#020408]/95 rounded-xl border border-white/[0.06] p-3 flex flex-col font-mono text-[9px] text-brand-cyan/90 overflow-hidden shadow-inner">
+                            <div class="relative w-full h-[180px] bg-[#020408]/95 rounded-xl border border-white/[0.06] p-3 flex flex-col font-mono text-[9.5px] text-brand-cyan/90 overflow-hidden shadow-inner">
                                 <!-- Terminal Bar -->
                                 <div class="flex items-center justify-between pb-2 border-b border-white/5 mb-2 select-none text-[8px] text-gray-500 uppercase font-black tracking-widest">
                                     <div class="flex items-center gap-1.5">
                                         <span class="w-1.5 h-1.5 rounded-full bg-red-500/50 block"></span>
                                         <span class="w-1.5 h-1.5 rounded-full bg-yellow-500/50 block"></span>
                                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500/50 block"></span>
-                                        <span class="ml-2 font-mono text-[8px]">blueprint_prompt.md</span>
+                                        <span class="ml-2 font-mono text-[8.5px] text-gray-300" id="dossier-filename-label">blueprint_prompt.md</span>
                                     </div>
-                                    <span class="text-gray-500 font-bold">React Dev Engine</span>
+                                    <span class="text-brand-cyan font-bold" id="dossier-engine-label">React Dev Engine</span>
                                 </div>
                                 
                                 <!-- Terminal Text Display -->
@@ -700,11 +811,12 @@
                             </div>
                             
                             <!-- Copy button inside accordion -->
-                            <div class="mt-3 flex">
-                                <button type="button" id="copy-prompt-btn" class="px-4 py-2 rounded-lg bg-brand-orange hover:bg-brand-orange/90 transition-all text-[9px] font-black uppercase tracking-wider text-white shadow-md flex items-center gap-2">
+                            <div class="mt-3 flex items-center justify-between gap-2 flex-wrap">
+                                <button type="button" id="copy-prompt-btn" class="px-4 py-2 rounded-lg bg-brand-orange hover:bg-brand-orange/90 transition-all text-[10px] font-bold tracking-wide text-white shadow-md flex items-center gap-2">
                                     <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="copy-btn-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
-                                    <span id="copy-btn-text">Copy Technical Prompt</span>
+                                    <span id="copy-btn-text">Copy frontend AI prompt</span>
                                 </button>
+                                <span class="text-[9.5px] text-gray-500 font-mono">100% sovereign code · zero vendor lock-in</span>
                             </div>
                         </div>
                     </div>
@@ -719,7 +831,7 @@
 
             </section>
 
-            <!-- Right Side: Platform Cost & Partnership Info -->
+            <!-- Right Side: Platform Cost & Open-Source Sovereignty Info -->
             <aside class="md:col-span-4 space-y-6">
                 
                 <!-- Transparent Cost Panel (Jamstack 2026 Architecture) -->
@@ -730,8 +842,8 @@
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z"></path></svg>
                             </div>
                             <div>
-                                <h3 class="font-outfit font-black uppercase text-xs tracking-wider text-white">Jamstack 2026 Costs</h3>
-                                <p class="text-[9px] text-brand-cyan font-bold uppercase tracking-wider">Zero Hidden Markups</p>
+                                <h3 class="font-outfit font-extrabold text-xs tracking-wide text-white">Jamstack 2026 costs</h3>
+                                <p class="text-[9px] text-brand-cyan font-bold uppercase tracking-wider">Zero hidden markups</p>
                             </div>
                         </div>
                         <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-brand-emerald/10 text-brand-emerald border border-brand-emerald/30 font-bold">Verified Stack</span>
@@ -881,24 +993,27 @@
                     </div>
                 </div>
 
-                <!-- Revenue Share Partnership info panel -->
+                <!-- 100% Free & Open-Source Sovereignty Panel (Post-19 Oct Alignment) -->
                 <div class="glass-card rounded-3xl p-6 border-brand-orange/20 glow-orange">
-                    <div class="flex items-center gap-2 mb-4">
-                        <div class="w-8 h-8 rounded-lg bg-brand-orange/10 flex items-center justify-center text-brand-orange shrink-0">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    <div class="flex items-center justify-between gap-2 mb-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-lg bg-brand-orange/10 flex items-center justify-center text-brand-orange shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                            </div>
+                            <h3 class="font-outfit font-extrabold text-xs tracking-wide text-white">100% free &amp; open-source lab</h3>
                         </div>
-                        <h3 class="font-outfit font-black uppercase text-xs tracking-wider text-white">Results Partnership</h3>
+                        <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-brand-orange/15 text-brand-orange border border-brand-orange/30 font-bold">$0 Fees</span>
                     </div>
                     
                     <div class="space-y-3 text-[11px] text-gray-300 leading-relaxed font-medium">
                         <p>
-                            🤝 <strong class="text-white">Zero Upfront Labor Costs:</strong> We design and build your initial application code for $0 upfront software development fee.
+                            🔓 <strong class="text-white">Zero Agency Markups:</strong> Every prompt, SVG logo, and SQL schema generated here is 100% free with zero subscriptions or booking commissions.
                         </p>
                         <p>
-                            📈 <strong class="text-white">Performance-Based:</strong> We only receive a small agreed commission (e.g. a small fee per verified booking) when your first customer books and pays through the system.
+                            🛡️ <strong class="text-white">100% Code &amp; Data Sovereignty:</strong> You own your GitHub repository, your Supabase database, and your Stripe account directly from day one.
                         </p>
                         <p>
-                            🤖 <strong class="text-white">Real-Time Auditing:</strong> An integrated webhook triggers encrypted alerts to our tech support on every payment, assuring complete, automatic auditing.
+                            🤝 <strong class="text-white">Community-Driven Support:</strong> Need help connecting your webhooks or DNS records? Join our builders in the <a href="../community.html" class="text-brand-cyan hover:underline font-bold">OfficeAIM Community →</a>
                         </p>
                     </div>
                 </div>
@@ -912,11 +1027,11 @@
         <!-- ============================================ -->
         <section class="mt-16 pt-12 border-t border-white/[0.08]" id="roadmap-section">
             <div class="max-w-3xl mb-10 text-left">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-orange/10 border border-brand-orange/30 text-brand-orange text-[10px] font-black uppercase tracking-widest mb-3">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-orange/10 border border-brand-orange/30 text-brand-orange text-[10px] font-bold uppercase tracking-widest mb-3">
                     <span>✨ Decoupled Jamstack 2026</span>
                 </div>
-                <h2 class="text-2xl md:text-4xl font-outfit font-black tracking-tight uppercase italic text-white">
-                    The 9-Step <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">Integration Roadmap</span>
+                <h2 class="text-2xl md:text-4xl font-outfit font-extrabold tracking-tight text-white">
+                    The 9-step <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">integration roadmap</span>
                 </h2>
                 <p class="mt-3 text-xs md:text-sm text-gray-400 leading-relaxed font-medium">
                     In a modern decoupled setup, each specialized tool excels at its core duty with zero vendor lock-in. Here is how your data travels seamlessly from inception to commercial scale:
@@ -1074,8 +1189,8 @@
             <div class="mt-8 glass-card rounded-2xl p-6 border border-white/[0.06]">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                        <h4 class="text-base font-outfit font-black uppercase text-white flex items-center gap-2">
-                            <span class="text-brand-orange">★</span> Social Proof Decision Matrix
+                        <h4 class="text-base font-outfit font-extrabold text-white flex items-center gap-2">
+                            <span class="text-brand-orange">★</span> Social proof decision matrix
                         </h4>
                         <p class="text-xs text-gray-400 mt-1 font-medium">
                             Evaluation across top 3 social proof engines for projects starting with a $0 initial budget.
@@ -1124,23 +1239,23 @@
         <section class="steps-section" id="how-it-works-section" style="margin-top: 5rem; margin-bottom: 4rem;">
             <div class="section-header">
                 <div class="section-eyebrow">WORKFLOW PLAYBOOK</div>
-                <h2 class="section-title">How It Works (3 Simple Steps)</h2>
+                <h2 class="section-title">How it works (3 simple steps)</h2>
             </div>
             <div class="steps-grid">
                 <div class="step-card">
                     <div class="step-number">01</div>
-                    <h3>Define Brand Core &amp; Logo</h3>
+                    <h3>Define brand core &amp; logo</h3>
                     <p>Configure your business identity, dynamic color aesthetics, and generate high-end multi-layer vector SVG logos tailored to your brand.</p>
                 </div>
                 <div class="step-card">
                     <div class="step-number">02</div>
-                    <h3>Structure &amp; Logic</h3>
+                    <h3>Structure &amp; logic</h3>
                     <p>Select your decoupled Jamstack architecture, booking logic, and webhook integration rules (Make, Zapier, or custom APIs) with zero server lock-in.</p>
                 </div>
                 <div class="step-card">
                     <div class="step-number">03</div>
-                    <h3>Export Production Prompt</h3>
-                    <p>Export the comprehensive master technical prompt calibrated for AI code compilers (Lovable, v0, Cursor, or Gemini) to build your site in minutes.</p>
+                    <h3>Export 3-part technical dossier</h3>
+                    <p>Export the Frontend AI prompt, the Supabase PostgreSQL + RLS schema, and the Git/DNS launch guide to build and deploy your site in minutes.</p>
                 </div>
             </div>
         </section>
@@ -1151,7 +1266,7 @@
                 <div style="text-align: center; max-width: 48rem; margin: 0 auto;">
                     <div class="section-eyebrow" style="color: #f97316;">THE AI BUSINESS LESSON</div>
                     <h2 style="font-size: 2rem; font-weight: 800; color: white; margin: 0.5rem 0 1rem;">
-                        Replacing Costly Web Agencies with Decoupled Blueprints
+                        Replacing costly web agencies with decoupled blueprints
                     </h2>
                     <p style="color: #94A3B8; font-size: 0.95rem; line-height: 1.6;">
                         Web agencies charge thousands for basic sites and lock you into monthly hosting markups. By designing your blueprint with AI, you build on modern serverless infrastructure for $0.
@@ -1827,15 +1942,146 @@
         }
 
         // ===================================================
-        // PROMPT COMPILER & DATA DISPATCH ENGINE
+        // PROMPT COMPILER, 3-TAB DOSSIER & QUICK PRESETS ENGINE
         // ===================================================
         const form = document.getElementById('creator-wizard-form');
         const successPanel = document.getElementById('success-panel');
         const promptOutput = document.getElementById('compiled-prompt-output');
         const copyBtn = document.getElementById('copy-prompt-btn');
         const restartBtn = document.getElementById('restart-btn');
+        const dossierTabDesc = document.getElementById('dossier-tab-desc');
+        const dossierFilenameLabel = document.getElementById('dossier-filename-label');
+        const dossierEngineLabel = document.getElementById('dossier-engine-label');
         
         let compiledPromptString = "";
+        let compiledSqlString = "";
+        let compiledLaunchGuideString = "";
+        let activeDossierTab = "prompt";
+
+        // 1-Click Human Quick-Start Presets
+        function applyQuickPreset(presetType) {
+            const nameInput = document.getElementById('business-name');
+            const colorSelect = document.getElementById('color-aesthetic');
+            const detailsInput = document.getElementById('project-details');
+            const presetBadge = document.getElementById('preset-status-badge');
+
+            const presets = {
+                booking: {
+                    defaultName: 'Apex Wellness Studio',
+                    color: 'Clean Corporate Blue',
+                    projectType: 'Service Booking Platform',
+                    pages: ['Home', 'Services/Catalog', 'Reviews', 'Contact Form'],
+                    details: 'Interactive service catalog with transparent pricing tiers, real-time appointment slot selector, verified customer testimonials wall, and automated booking confirmation dispatch.',
+                    cta: 'Submit Booking to Custom Webhook',
+                    webhook: 'https://hook.eu1.make.com/demo-booking-endpoint',
+                    badgeText: 'Preset active: Service & booking'
+                },
+                whatsapp: {
+                    defaultName: 'Rioplatense Dental & Care',
+                    color: 'Warm Organic Earth',
+                    projectType: 'Landing Page',
+                    pages: ['Home', 'About Us', 'Services/Catalog', 'Reviews'],
+                    details: 'High-conversion local business landing page featuring core treatments, location map, trust badges, and instant one-click WhatsApp consultation routing.',
+                    cta: 'Direct to WhatsApp',
+                    whatsapp: '+31 6 1234 5678',
+                    badgeText: 'Preset active: Local & WhatsApp'
+                },
+                saas: {
+                    defaultName: 'NexusFlow AI',
+                    color: 'Modern Dark Tech',
+                    projectType: 'E-Commerce / Catalog',
+                    pages: ['Home', 'Services/Catalog', 'Reviews', 'Contact Form'],
+                    details: 'Next-generation SaaS product showcase with interactive feature matrix, transparent pricing toggle, developer documentation preview, and early-access lead capture.',
+                    cta: 'Submit Form to Email',
+                    badgeText: 'Preset active: SaaS / Digital MVP'
+                }
+            };
+
+            const cfg = presets[presetType];
+            if (!cfg) return;
+
+            if (!nameInput.value.trim()) {
+                nameInput.value = cfg.defaultName;
+            }
+            colorSelect.value = cfg.color;
+
+            // Set projectType radio
+            const radios = form.querySelectorAll('input[name="projectType"]');
+            radios.forEach(r => {
+                r.checked = (r.value === cfg.projectType);
+            });
+
+            // Set corePages checkboxes
+            const checkboxes = form.querySelectorAll('input[name="corePages"]');
+            checkboxes.forEach(cb => {
+                if (cb.value === 'Home') {
+                    cb.checked = true;
+                } else {
+                    cb.checked = cfg.pages.includes(cb.value);
+                }
+            });
+
+            detailsInput.value = cfg.details;
+            primaryCta.value = cfg.cta;
+            primaryCta.dispatchEvent(new Event('change'));
+
+            if (cfg.whatsapp) {
+                whatsappNumberInput.value = cfg.whatsapp;
+            }
+            if (cfg.webhook) {
+                webhookUrlInput.value = cfg.webhook;
+            }
+
+            // Visual highlight on active preset button
+            document.querySelectorAll('.preset-quick-btn').forEach(btn => {
+                const isSelected = btn.getAttribute('data-preset-btn') === presetType;
+                btn.classList.toggle('border-brand-orange', isSelected);
+                btn.classList.toggle('bg-brand-orange/10', isSelected);
+                btn.classList.toggle('border-white/10', !isSelected);
+            });
+
+            if (presetBadge) {
+                presetBadge.innerText = cfg.badgeText;
+                presetBadge.className = "text-[10px] font-mono text-brand-emerald font-bold uppercase tracking-wider";
+            }
+        }
+        window.applyQuickPreset = applyQuickPreset;
+
+        // 3-Tab Technical Dossier Switcher
+        function switchDossierTab(tabKey) {
+            activeDossierTab = tabKey;
+            const copyBtnText = document.getElementById('copy-btn-text');
+
+            document.querySelectorAll('.dossier-tab-btn').forEach(btn => {
+                const isTarget = btn.getAttribute('data-dossier-tab') === tabKey;
+                if (isTarget) {
+                    btn.className = "dossier-tab-btn py-2 px-3 rounded-lg text-[10px] font-bold text-white bg-brand-orange shadow-md transition-all text-left sm:text-center";
+                } else {
+                    btn.className = "dossier-tab-btn py-2 px-3 rounded-lg text-[10px] font-bold text-gray-400 hover:text-white transition-all text-left sm:text-center";
+                }
+            });
+
+            if (tabKey === 'prompt') {
+                promptOutput.innerText = compiledPromptString;
+                dossierFilenameLabel.innerText = "blueprint_prompt.md";
+                dossierEngineLabel.innerText = "React Dev Engine";
+                dossierTabDesc.innerText = "Copy this master prompt and paste it directly into Lovable, v0, or Cursor to compile your responsive React + Tailwind frontend with your custom SVG logo embedded:";
+                copyBtnText.innerText = "Copy frontend AI prompt";
+            } else if (tabKey === 'sql') {
+                promptOutput.innerText = compiledSqlString;
+                dossierFilenameLabel.innerText = "supabase_schema.sql";
+                dossierEngineLabel.innerText = "PostgreSQL 16 + RLS";
+                dossierTabDesc.innerText = "Paste this idempotent SQL migration directly into your Supabase SQL Editor to provision your leads and bookings tables with strict Row-Level Security (RLS):";
+                copyBtnText.innerText = "Copy Supabase SQL schema";
+            } else if (tabKey === 'launch') {
+                promptOutput.innerText = compiledLaunchGuideString;
+                dossierFilenameLabel.innerText = "launch_playbook.sh";
+                dossierEngineLabel.innerText = "Git + Edge DNS";
+                dossierTabDesc.innerText = "Follow this step-by-step deployment checklist to push your repository to GitHub and route your Hostinger domain to Vercel or Netlify with automatic SSL:";
+                copyBtnText.innerText = "Copy Git & DNS launch guide";
+            }
+        }
+        window.switchDossierTab = switchDossierTab;
 
         function generateBlueprint() {
             // Read form values
@@ -1888,7 +2134,7 @@
                 }
             }
 
-            // Compile structural prompt template
+            // 1. Compile Tab 1: Frontend AI Prompt
             compiledPromptString = `Act as an expert full-stack React developer and premium UI/UX designer. Create a fully functional, highly responsive, and pixel-perfect ${projectType} application named "${businessName}" using Vite, React, Tailwind CSS, and Lucide React icons.
 
 CRITICAL REQUIREMENTS:
@@ -1903,10 +2149,118 @@ APPLICATION ARCHITECTURE & LOGIC:
 
 Proceed to assemble the clean component hierarchy and deliver a production-ready interface layout.`;
 
-            // 1. Display in hidden success panel terminal
-            promptOutput.innerText = compiledPromptString;
+            // 2. Compile Tab 2: Supabase PostgreSQL + RLS Schema
+            const safeSlug = (businessName || 'brand').toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '') || 'brand';
+            compiledSqlString = `-- ============================================================================
+-- OFFICEAIM JAMSTACK 2026: SUPABASE POSTGRESQL + RLS SCHEMA
+-- Project: ${businessName} (${projectType})
+-- Paste this script directly into your Supabase SQL Editor and click "Run".
+-- ============================================================================
+
+create extension if not exists "pgcrypto";
+
+-- 1. Leads & Contact Inquiries Table
+create table if not exists public.${safeSlug}_leads (
+    id uuid primary key default gen_random_uuid(),
+    full_name text not null,
+    email text not null,
+    phone text,
+    message text,
+    source_page text default 'Home',
+    status text not null default 'new' check (status in ('new', 'contacted', 'qualified', 'archived')),
+    created_at timestamptz not null default now()
+);
+
+-- 2. Service Bookings & Appointments Table
+create table if not exists public.${safeSlug}_bookings (
+    id uuid primary key default gen_random_uuid(),
+    customer_name text not null,
+    customer_email text not null,
+    customer_phone text,
+    service_requested text not null,
+    preferred_slot text not null,
+    booking_status text not null default 'pending' check (booking_status in ('pending', 'confirmed', 'completed', 'cancelled')),
+    webhook_dispatched boolean not null default false,
+    notes text,
+    created_at timestamptz not null default now()
+);
+
+-- 3. Enable Row-Level Security (RLS)
+alter table public.${safeSlug}_leads enable row level security;
+alter table public.${safeSlug}_bookings enable row level security;
+
+-- 4. Public Insert Policies (Allow anonymous website visitors to submit forms/bookings)
+drop policy if exists "Allow public lead submissions" on public.${safeSlug}_leads;
+create policy "Allow public lead submissions"
+    on public.${safeSlug}_leads
+    for insert
+    to anon, authenticated
+    with check (true);
+
+drop policy if exists "Allow public booking submissions" on public.${safeSlug}_bookings;
+create policy "Allow public booking submissions"
+    on public.${safeSlug}_bookings
+    for insert
+    to anon, authenticated
+    with check (true);
+
+-- 5. Admin Read/Update Policies (Only authenticated staff can view or manage records)
+drop policy if exists "Allow authenticated admins to view leads" on public.${safeSlug}_leads;
+create policy "Allow authenticated admins to view leads"
+    on public.${safeSlug}_leads
+    for select
+    to authenticated
+    using (true);
+
+drop policy if exists "Allow authenticated admins to manage bookings" on public.${safeSlug}_bookings;
+create policy "Allow authenticated admins to manage bookings"
+    on public.${safeSlug}_bookings
+    for all
+    to authenticated
+    using (true)
+    with check (true);`;
+
+            // 3. Compile Tab 3: Git & DNS Launch Guide
+            const domainSlug = (businessName || 'your-business').toLowerCase().replace(/[^a-z0-9]/g, '') || 'your-business';
+            compiledLaunchGuideString = `# ============================================================================
+# OFFICEAIM LAUNCH PLAYBOOK: GIT, VERCEL EDGE & HOSTINGER DNS
+# Project: ${businessName} | Domain target: https://www.${domainSlug}.com
+# ============================================================================
+
+# STEP 1: INITIALIZE GIT & PUSH TO GITHUB
+git init
+git add .
+git commit -m "feat: initial Jamstack blueprint for ${businessName}"
+git branch -M main
+git remote add origin https://github.com/YOUR_GITHUB_USERNAME/${domainSlug}-web.git
+git push -u origin main
+
+# STEP 2: CONNECT VERCEL (OR NETLIFY) FOR CONTINUOUS DEPLOYMENT
+# 1. Log into https://vercel.com and click "Add New Project"
+# 2. Import your "${domainSlug}-web" GitHub repository
+# 3. Add Environment Variables:
+#    VITE_SUPABASE_URL="https://YOUR_PROJECT_ID.supabase.co"
+#    VITE_SUPABASE_ANON_KEY="YOUR_SUPABASE_PUBLIC_ANON_KEY"
+${ctaValue === 'Submit Booking to Custom Webhook' ? `#    VITE_BOOKING_WEBHOOK_URL="${webhookUrl || 'https://hook.eu1.make.com/your-webhook'}"\n` : ''}# 4. Click "Deploy" — your site is live on Vercel's Edge CDN in ~45 seconds.
+
+# STEP 3: CONFIGURE HOSTINGER DNS RECORDS (${domainSlug}.com)
+# Open Hostinger hPanel -> Domains -> ${domainSlug}.com -> DNS / Nameservers:
+# ----------------------------------------------------------------------------
+# Type    | Name  | Points to / Target                | TTL
+# ----------------------------------------------------------------------------
+# A       | @     | 76.76.21.21                       | 3600 (1 hour)
+# CNAME   | www   | cname.vercel-dns.com              | 3600 (1 hour)
+# ----------------------------------------------------------------------------
+
+# STEP 4: POST-LAUNCH VERIFICATION CHECKLIST
+# [ ] Verify HTTPS SSL certificate is active on https://www.${domainSlug}.com
+# [ ] Submit a test ${ctaValue === 'Direct to WhatsApp' ? `WhatsApp click-to-chat (${whatsappNumber || '+00 0000000'})` : ctaValue === 'Submit Booking to Custom Webhook' ? 'booking slot and inspect webhook HTTP 200 payload' : 'contact form and verify row in Supabase Table Editor'}
+# [ ] Embed Senja testimonial widget and PostHog analytics snippet`;
+
+            // Reset dossier to Tab 1 ("prompt") and populate terminal
+            switchDossierTab('prompt');
             
-            // 2. BUILD THE PREMIUM DYNAMIC INTERACTIVE WEBSITE MOCK PREVIEW FOR CLIENT!
+            // 4. BUILD THE PREMIUM DYNAMIC INTERACTIVE WEBSITE MOCK PREVIEW FOR CLIENT!
             buildWebsiteMock({
                 businessName,
                 targetLanguage,
@@ -2273,26 +2627,38 @@ Proceed to assemble the clean component hierarchy and deliver a production-ready
             }
         }
 
-        // Copy Clipboard utility
+        // Copy Clipboard utility (dynamic across all 3 Dossier tabs)
         copyBtn.addEventListener('click', () => {
-            navigator.clipboard.writeText(compiledPromptString).then(() => {
+            const activeContent = activeDossierTab === 'sql'
+                ? compiledSqlString
+                : activeDossierTab === 'launch'
+                    ? compiledLaunchGuideString
+                    : compiledPromptString;
+
+            const defaultBtnLabel = activeDossierTab === 'sql'
+                ? "Copy Supabase SQL schema"
+                : activeDossierTab === 'launch'
+                    ? "Copy Git & DNS launch guide"
+                    : "Copy frontend AI prompt";
+
+            navigator.clipboard.writeText(activeContent).then(() => {
                 const btnText = document.getElementById('copy-btn-text');
                 const btnIcon = document.getElementById('copy-btn-icon');
                 
                 // Swap layout state for absolute visual feedback
-                btnText.innerText = "Copied!";
+                btnText.innerText = "Copied! ✓";
                 copyBtn.classList.remove('bg-brand-orange');
                 copyBtn.classList.add('bg-brand-emerald');
                 btnIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>`;
                 
                 setTimeout(() => {
-                    btnText.innerText = "Copy Technical Prompt";
+                    btnText.innerText = defaultBtnLabel;
                     copyBtn.classList.add('bg-brand-orange');
                     copyBtn.classList.remove('bg-brand-emerald');
                     btnIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>`;
                 }, 2000);
             }).catch(err => {
-                console.error("Failed to copy prompt:", err);
+                console.error("Failed to copy dossier artifact:", err);
             });
         });
 
@@ -2301,6 +2667,17 @@ Proceed to assemble the clean component hierarchy and deliver a production-ready
             // Reset form fields
             form.reset();
             
+            // Reset preset highlights
+            document.querySelectorAll('.preset-quick-btn').forEach(btn => {
+                btn.classList.remove('border-brand-orange', 'bg-brand-orange/10');
+                btn.classList.add('border-white/10');
+            });
+            const presetBadge = document.getElementById('preset-status-badge');
+            if (presetBadge) {
+                presetBadge.innerText = "1-click presets";
+                presetBadge.className = "text-[10px] font-mono text-brand-cyan uppercase tracking-wider";
+            }
+
             // Trigger conditional visibility checks
             primaryCta.dispatchEvent(new Event('change'));
             
@@ -2318,6 +2695,16 @@ Proceed to assemble the clean component hierarchy and deliver a production-ready
             // Return to step 1
             goToPhase(1);
         });
+
+        // Mobile navbar toggle support
+        const navToggleBtn = document.getElementById('navToggle');
+        const navLinksMenu = document.getElementById('navLinks');
+        if (navToggleBtn && navLinksMenu) {
+            navToggleBtn.addEventListener('click', () => {
+                navLinksMenu.classList.toggle('open');
+                navToggleBtn.classList.toggle('active');
+            });
+        }
 
     </script>
 </body>

@@ -28,3 +28,11 @@ Antes de responder que terminaste:
 5. Si no pudiste registrar algo, escribe exactamente `REGISTRO PENDIENTE` y explica por qué.
 
 La sincronización es documental: el código permanece en OfficeAIM y el conocimiento reutilizable en Knowledge-Hub. Nunca crees una copia de Knowledge-Hub dentro del repositorio.
+
+---
+
+# Regla Inquebrantable de Idioma y Estilo en el Sitio Web OfficeAIM (Post-19 Oct)
+
+1. **Todo el output visible en páginas web (`*.html`, componentes React públicos, títulos, subtítulos, filtros, botones, placeholders, descripciones de tarjetas y prompts/workflows) DEBE estar SIEMPRE 100% en INGLÉS**, incluso si el usuario redacta el pedido o los ejemplos de etiquetas en español.
+2. **Sentence Case obligatorio:** Todos los titulares (`h1`, `h2`, `h3`, títulos de tarjetas) deben usar *sentence case* natural en inglés (solo la primera letra y nombres propios como `OfficeAIM`, `n8n`, `Supabase`, `Gemini`, `SQL`, `JSON`, `AI`, `LLM` en mayúscula).
+3. **Nunca preguntar si una página pública va en español o en inglés:** Asumir y aplicar siempre 100% inglés para la interfaz web, manteniendo la conversación con el usuario en español rioplatense.

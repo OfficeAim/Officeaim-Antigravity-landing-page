@@ -1,5 +1,6 @@
 ---
-description: Website audit skill — run systematic SEO, performance, and accessibility audits using the squirrel CLI tool. Use when the user asks to audit a website or find issues.
+name: audit-website
+description: "Website audit skill — run systematic SEO, performance, and accessibility audits using the squirrel CLI tool. Use when the user asks to audit a website or find issues."
 ---
 
 # Website Audit Skill

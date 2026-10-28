@@ -1,5 +1,6 @@
 ---
-description: Page Conversion Rate Optimization — analyze and improve any page's conversion rate using a structured CRO framework
+name: page-cro
+description: "Page Conversion Rate Optimization — analyze and improve any page's conversion rate using a structured CRO framework."
 ---
 
 # Page Conversion Rate Optimization (CRO)

@@ -1,3 +1,8 @@
+---
+name: skill-creator
+description: "Habilidad maestra (meta-habilidad) encargada de fabricar y estandarizar nuevas habilidades del ecosistema OfficeAIM bajo la arquitectura Antigravity."
+---
+
 # Skill: OfficeAIM_Skill_Creator
 
 Esta es la habilidad maestra (meta-habilidad) encargada de fabricar todas las demás habilidades del ecosistema OfficeAIM. Su propósito es garantizar que cada pieza de automatización cumpla con los estándares de lujo, arquitectura y metodología de Antigravity.

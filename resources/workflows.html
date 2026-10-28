@@ -1,0 +1,2022 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OfficeAIM — n8n Automation Vault (98 Ready-to-Import Workflows)</title>
+    <meta name="description"
+        content="Explore 98 production-ready n8n automation pipelines ready to copy, download, and import directly into your n8n canvas. AI agents, webhooks, Supabase, and notifications.">
+    <meta name="google-site-verification" content="6OajNDeOete8oREc17Z_cYlseER3lADZjnLLHCQL8AQ" />
+    <link rel="canonical" href="https://officeaim.com/resources/workflows.html" />
+
+    <!-- Open Graph / WhatsApp Share Preview -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://officeaim.com/resources/workflows.html">
+    <meta property="og:title" content="OfficeAIM — n8n Automation Vault (98 Ready-to-Import Workflows)">
+    <meta property="og:description"
+        content="Production-ready automation pipelines ready to copy, download, and import directly into your n8n canvas.">
+    <meta property="og:image" content="https://officeaim.com/images/hero.webp">
+
+    <!-- Twitter Preview -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://officeaim.com/resources/workflows.html">
+    <meta name="twitter:title" content="OfficeAIM — n8n Automation Vault (98 Ready-to-Import Workflows)">
+    <meta name="twitter:description"
+        content="Production-ready automation pipelines ready to copy, download, and import directly into your n8n canvas.">
+    <meta name="twitter:image" content="https://officeaim.com/images/hero.webp">
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css?v=20261019">
+    <link rel="stylesheet" href="../landing-new.css?v=20261019">
+    <style>
+        body {
+            background-color: #0A0F1D;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .workflows-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8rem 1.5rem 5rem;
+        }
+
+        .workflows-hero {
+            text-align: center;
+            margin-bottom: 2.75rem;
+        }
+
+        .workflows-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.95rem;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 9999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #00F0FF;
+            margin-bottom: 1rem;
+            letter-spacing: 0.4px;
+        }
+
+        .workflows-title {
+            font-size: clamp(2.2rem, 5vw, 3.25rem);
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 0.85rem;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .workflows-subtitle {
+            font-size: 1.08rem;
+            color: #94A3B8;
+            max-width: 740px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .workflows-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .workflows-search-wrap {
+            position: relative;
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .workflows-search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748B;
+            font-size: 1rem;
+            pointer-events: none;
+        }
+
+        .workflows-search-input {
+            width: 100%;
+            background: rgba(13, 19, 33, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            padding: 0.9rem 1rem 0.9rem 2.85rem;
+            color: #ffffff;
+            font-size: 0.94rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        .workflows-search-input:focus {
+            outline: none;
+            border-color: #00F0FF;
+            box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.15);
+        }
+
+        .workflows-filters {
+            display: flex;
+            justify-content: center;
+            gap: 0.55rem;
+            flex-wrap: wrap;
+        }
+
+        .wf-filter-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #94A3B8;
+            padding: 0.55rem 1.15rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .wf-filter-btn:hover,
+        .wf-filter-btn.active {
+            background: rgba(0, 240, 255, 0.15);
+            border-color: #00F0FF;
+            color: #ffffff;
+            box-shadow: 0 0 16px rgba(0, 240, 255, 0.18);
+        }
+
+        .workflows-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .workflow-card {
+            background: rgba(13, 19, 33, 0.82);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 1.65rem;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.25s ease;
+            backdrop-filter: blur(12px);
+        }
+
+        .workflow-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 240, 255, 0.45);
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45), 0 0 20px rgba(0, 240, 255, 0.14);
+        }
+
+        .wf-card-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.95rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .wf-card-emoji {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .wf-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.35rem;
+        }
+
+        .wf-card-tag {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #00F0FF;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.28);
+            padding: 0.16rem 0.58rem;
+            border-radius: 6px;
+        }
+
+        .wf-node-badge {
+            display: inline-block;
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: #FF7A00;
+            background: rgba(255, 122, 0, 0.1);
+            border: 1px solid rgba(255, 122, 0, 0.28);
+            padding: 0.15rem 0.5rem;
+            border-radius: 6px;
+        }
+
+        .wf-card-title {
+            font-size: 1.12rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+            line-height: 1.35;
+        }
+
+        .wf-card-desc {
+            font-size: 0.88rem;
+            color: #94A3B8;
+            line-height: 1.58;
+            margin: 0 0 1.25rem;
+            flex-grow: 1;
+        }
+
+        .wf-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.65rem;
+            margin-top: auto;
+        }
+
+        .btn-wf-copy {
+            padding: 0.7rem 0.85rem;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 240, 255, 0.45);
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.16), rgba(6, 182, 212, 0.28));
+            color: #ffffff;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-wf-copy:hover {
+            background: linear-gradient(135deg, #00F0FF, #06b6d4);
+            color: #0A0F1D;
+            box-shadow: 0 0 16px rgba(0, 240, 255, 0.35);
+        }
+
+        .btn-wf-copy.copied {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: #10B981;
+            color: #10B981;
+        }
+
+        .btn-wf-download {
+            padding: 0.7rem 0.85rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 122, 0, 0.4);
+            background: rgba(255, 122, 0, 0.12);
+            color: #ffffff;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-wf-download:hover {
+            background: #FF7A00;
+            color: #ffffff;
+            box-shadow: 0 0 16px rgba(255, 122, 0, 0.35);
+        }
+
+        .workflows-empty {
+            display: none;
+            text-align: center;
+            padding: 3rem 1.5rem;
+            color: #94A3B8;
+            background: rgba(13, 19, 33, 0.6);
+            border: 1px dashed rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+        }
+
+        .import-guide-box {
+            margin-top: 4rem;
+            background: rgba(13, 19, 33, 0.78);
+            border: 1px solid rgba(0, 240, 255, 0.22);
+            border-radius: 18px;
+            padding: 2.25rem;
+        }
+
+        .import-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .import-step-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1.25rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sticky Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">
+                <img src="../images/favicon.png" alt="OfficeAIM logo" class="logo-img">
+            </a>
+            <ul class="nav-links">
+                <li><a href="../learn.html" class="nav-link">Learn</a></li>
+                <li class="nav-item-dropdown">
+                    <a href="#resources" class="nav-link" style="color: var(--accent-secondary); font-weight: 700;">Resources <svg class="dropdown-arrow" width="12" height="12"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-inner">
+                            <div class="mega-menu-col">
+                                <h4>Resource vault &amp; generators</h4>
+                                <a href="../skills.html" class="mega-link">
+                                    <div class="mega-icon">⚡</div>
+                                    <div class="mega-text">
+                                        <strong>Skills</strong>
+                                        <span>26 modular agent skills ready to install</span>
+                                    </div>
+                                </a>
+                                <a href="./workflows.html" class="mega-link active-mega-link">
+                                    <div class="mega-icon">🔄</div>
+                                    <div class="mega-text">
+                                        <strong>n8n Automation Vault</strong>
+                                        <span>98 ready-to-import n8n JSON pipelines</span>
+                                    </div>
+                                </a>
+                                <a href="../prompt-generator.html" class="mega-link">
+                                    <div class="mega-icon">⭐</div>
+                                    <div class="mega-text">
+                                        <strong>Prompt Generator</strong>
+                                        <span>Parametric meta-prompts calibrated for LLMs</span>
+                                    </div>
+                                </a>
+                                <a href="./website-creator.html" class="mega-link">
+                                    <div class="mega-icon">🎨</div>
+                                    <div class="mega-text">
+                                        <strong>AI SVG Logo Lab</strong>
+                                        <span>Vector design studio &amp; web architecture coach</span>
+                                    </div>
+                                </a>
+                                <a href="./qr-generator.html" class="mega-link">
+                                    <div class="mega-icon">🔲</div>
+                                    <div class="mega-text">
+                                        <strong>AI QR Generator</strong>
+                                        <span>Branded high-contrast QR codes, zero fees</span>
+                                    </div>
+                                </a>
+                                <a href="./free-stack-kit.html" class="mega-link">
+                                    <div class="mega-icon">📦</div>
+                                    <div class="mega-text">
+                                        <strong>Free Stack Kit</strong>
+                                        <span>Curated agent skills pack &amp; step-by-step guide</span>
+                                    </div>
+                                </a>
+                                <a href="../board.html" class="mega-link">
+                                    <div class="mega-icon">👥</div>
+                                    <div class="mega-text">
+                                        <strong>The AI Board</strong>
+                                        <span>Meet your 19 specialist agents — free to explore</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="../community.html" class="nav-link">Community</a></li>
+                <li><a id="nav-news-link" href="../news.html" class="nav-link">News</a></li>
+            </ul>
+            <div class="nav-ctas">
+                <a href="/hub" class="btn btn-primary">Enter Campus →</a>
+            </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="workflows-container">
+        <header class="workflows-hero">
+            <div class="workflows-badge">
+                <span>⚡ OfficeAIM resource vault · 98 verified JSON blueprints</span>
+            </div>
+            <h1 class="workflows-title">n8n automation vault</h1>
+            <p class="workflows-subtitle">
+                Production-ready automation pipelines ready to copy, download, and import directly into your n8n canvas. Zero lock-in, 100% open-source JSON schemas.
+            </p>
+        </header>
+
+        <section class="workflows-controls" aria-label="Workflow filters and search">
+            <div class="workflows-search-wrap">
+                <span class="workflows-search-icon">🔍</span>
+                <input
+                    type="search"
+                    id="workflowSearchInput"
+                    class="workflows-search-input"
+                    placeholder="Search by workflow title, node, or integration (e.g. Gemini, OpenAI, Postgres, Telegram, Webhook)..."
+                    aria-label="Search workflows by keyword"
+                />
+            </div>
+
+            <div class="workflows-filters" id="workflowFilterTabs">
+                <button class="wf-filter-btn active" data-category="all">All workflows (98)</button>
+                <button class="wf-filter-btn" data-category="AI &amp; LLMs">AI &amp; LLMs (19)</button>
+                <button class="wf-filter-btn" data-category="Webhooks &amp; APIs">Webhooks &amp; APIs (26)</button>
+                <button class="wf-filter-btn" data-category="Databases &amp; Supabase">Databases &amp; Supabase (19)</button>
+                <button class="wf-filter-btn" data-category="Email &amp; notifications">Email &amp; notifications (34)</button>
+            </div>
+        </section>
+
+        <section id="workflowsGrid" class="workflows-grid" aria-live="polite"></section>
+        <div id="workflowsEmpty" class="workflows-empty">
+            No workflows found matching that keyword. Try another search term or select "All workflows".
+        </div>
+
+        <!-- How to Import Guide -->
+        <section class="import-guide-box" id="how-to-import">
+            <span style="font-size: 0.78rem; font-weight: 700; color: #00F0FF; letter-spacing: 0.5px;">QUICK IMPORT PLAYBOOK</span>
+            <h2 style="font-size: 1.55rem; font-weight: 800; color: #ffffff; margin: 0.35rem 0 0.5rem;">How to import these pipelines into n8n in 15 seconds</h2>
+            <p style="font-size: 0.92rem; color: #94A3B8; margin: 0;">Every workflow in this vault is a standard n8n JSON schema that works in both n8n Cloud and self-hosted Docker instances:</p>
+
+            <div class="import-steps-grid">
+                <div class="import-step-card">
+                    <h3 style="font-size: 0.98rem; font-weight: 700; color: #00F0FF; margin: 0 0 0.4rem;">1. Copy JSON or download file</h3>
+                    <p style="font-size: 0.84rem; color: #94A3B8; line-height: 1.55; margin: 0;">Click <strong>"Copy JSON 📋"</strong> on any card to copy the raw workflow schema to your clipboard, or click <strong>"Download .json ⬇️"</strong> to save the file locally.</p>
+                </div>
+                <div class="import-step-card">
+                    <h3 style="font-size: 0.98rem; font-weight: 700; color: #00F0FF; margin: 0 0 0.4rem;">2. Paste directly on your n8n canvas</h3>
+                    <p style="font-size: 0.84rem; color: #94A3B8; line-height: 1.55; margin: 0;">Open your n8n workflow editor and press <strong>Cmd+V</strong> (Mac) or <strong>Ctrl+V</strong> (Windows) directly on the canvas, or select <em>Import from File</em> in the top-right menu.</p>
+                </div>
+                <div class="import-step-card">
+                    <h3 style="font-size: 0.98rem; font-weight: 700; color: #00F0FF; margin: 0 0 0.4rem;">3. Bind your API credentials</h3>
+                    <p style="font-size: 0.84rem; color: #94A3B8; line-height: 1.55; margin: 0;">Open the highlighted trigger or AI nodes to select your own API keys (Gemini, OpenAI, Supabase, Telegram, or SMTP) and toggle the workflow active.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" style="border-top: 1px solid rgba(255, 255, 255, 0.05); padding: 4rem 1.5rem; text-align: center;">
+        <div class="container">
+            <p style="color: #64748B; font-size: 0.85rem; margin: 0 0 0.5rem;">
+                © 2026 OfficeAIM. Autonomous AI Systems &amp; Next-Gen Business Infrastructure.
+            </p>
+            <p style="color: #475569; font-size: 0.78rem; margin: 0;">
+                All tools are open-source and free for educational use. · <a href="../policy.html" style="color: inherit; text-decoration: none;">Privacy &amp; terms</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="../script.js?v=20261019"></script>
+    <script>
+        const N8N_WORKFLOWS_DATA = [
+    {
+        "id": "wf-1",
+        "fileName": "0KZs18Ti2KXKoLIr_✨🩷Automated_Social_Media_Content_Publishing_Factory_+_System_Prompt_Composition.json",
+        "title": "Automated social media content publishing factory + system prompt composition",
+        "category": "AI & LLMs",
+        "emoji": "🤖",
+        "nodeCount": 55,
+        "topNodes": [
+            "Chat trigger",
+            "Tool workflow",
+            "Memory buffer window"
+        ],
+        "description": "Orchestrates a 55-node n8n pipeline integrating Chat trigger, Tool workflow, Memory buffer window for automated execution and data routing."
+    },
+    {
+        "id": "wf-2",
+        "fileName": "0wfomsVO0TQtQkwU_Complete_Guide_to_Setting_Up_and_Generating_TOTP_Codes_in_n8n_🔐.json",
+        "title": "Complete guide to setting up and generating TOTP codes in n8n",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 2,
+        "topNodes": [
+            "Manual trigger",
+            "TOTP"
+        ],
+        "description": "Orchestrates a 2-node n8n pipeline integrating Manual trigger, TOTP for automated execution and data routing."
+    },
+    {
+        "id": "wf-3",
+        "fileName": "11_Plex_Automatic_Throttler.json",
+        "title": "Plex automatic throttler",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 12,
+        "topNodes": [
+            "Webhook",
+            "HTTP request"
+        ],
+        "description": "Orchestrates a 12-node n8n pipeline integrating Webhook, HTTP request for automated execution and data routing."
+    },
+    {
+        "id": "wf-4",
+        "fileName": "11_What_To_Eat.json",
+        "title": "What to eat",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 9,
+        "topNodes": [
+            "Cron",
+            "HTTP request",
+            "Email send"
+        ],
+        "description": "Orchestrates a 9-node n8n pipeline integrating Cron, HTTP request, Email send for automated execution and data routing."
+    },
+    {
+        "id": "wf-5",
+        "fileName": "11_workflow_11.json",
+        "title": "Google Sheets to Dropbox scheduled spreadsheet backup",
+        "category": "Databases & Supabase",
+        "emoji": "🗄️",
+        "nodeCount": 4,
+        "topNodes": [
+            "Google sheets",
+            "Spreadsheet file",
+            "Dropbox"
+        ],
+        "description": "Orchestrates a 4-node n8n pipeline integrating Google sheets, Spreadsheet file, Dropbox for automated execution and data routing."
+    },
+    {
+        "id": "wf-6",
+        "fileName": "12_Create_Onfleet_tasks_from_Spreadsheets.json",
+        "title": "Create Onfleet tasks from spreadsheets",
+        "category": "Databases & Supabase",
+        "emoji": "🗄️",
+        "nodeCount": 3,
+        "topNodes": [
+            "Onfleet",
+            "Read binary file",
+            "Spreadsheet file"
+        ],
+        "description": "Orchestrates a 3-node n8n pipeline integrating Onfleet, Read binary file, Spreadsheet file for automated execution and data routing."
+    },
+    {
+        "id": "wf-7",
+        "fileName": "12_Find_a_New_Book.json",
+        "title": "Find a new book",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 13,
+        "topNodes": [
+            "Manual trigger",
+            "Cron",
+            "HTTP request"
+        ],
+        "description": "Orchestrates a 13-node n8n pipeline integrating Manual trigger, Cron, HTTP request for automated execution and data routing."
+    },
+    {
+        "id": "wf-8",
+        "fileName": "13_Creating_an_Onfleet_Task_for_a_new_Shopify_Fulfillment.json",
+        "title": "Creating an Onfleet task for a new Shopify fulfillment",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 2,
+        "topNodes": [
+            "Shopify trigger",
+            "Onfleet"
+        ],
+        "description": "Orchestrates a 2-node n8n pipeline integrating Shopify trigger, Onfleet for automated execution and data routing."
+    },
+    {
+        "id": "wf-9",
+        "fileName": "13_Mattermost_Webhook.json",
+        "title": "Mattermost webhook",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 3,
+        "topNodes": [
+            "Webhook",
+            "HTTP request",
+            "Mattermost"
+        ],
+        "description": "Orchestrates a 3-node n8n pipeline integrating Webhook, HTTP request, Mattermost for automated execution and data routing."
+    },
+    {
+        "id": "wf-10",
+        "fileName": "13_Receive_updates_when_a_form_is_submitted_in_Mautic,_and_send_a_confirmation_SMS.json",
+        "title": "Receive updates when a form is submitted in Mautic, and send a confirmation SMS",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 2,
+        "topNodes": [
+            "Mautic trigger",
+            "Twilio"
+        ],
+        "description": "Orchestrates a 2-node n8n pipeline integrating Mautic trigger, Twilio for automated execution and data routing."
+    },
+    {
+        "id": "wf-11",
+        "fileName": "13_workflow_13.json",
+        "title": "HTTP XML feed parser and Dropbox file archiver",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 5,
+        "topNodes": [
+            "XML",
+            "HTTP request",
+            "Dropbox"
+        ],
+        "description": "Orchestrates a 5-node n8n pipeline integrating XML, HTTP request, Dropbox for automated execution and data routing."
+    },
+    {
+        "id": "wf-12",
+        "fileName": "14_Activity_Encouragement.json",
+        "title": "Activity encouragement",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 5,
+        "topNodes": [
+            "Strava",
+            "Email send",
+            "Cron"
+        ],
+        "description": "Orchestrates a 5-node n8n pipeline integrating Strava, Email send, Cron for automated execution and data routing."
+    },
+    {
+        "id": "wf-13",
+        "fileName": "14_Add_a_subscriber_to_a_list_and_create_and_send_a_campaign.json",
+        "title": "Add a subscriber to a list and create and send a campaign",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 3,
+        "topNodes": [
+            "Manual trigger",
+            "Sendy"
+        ],
+        "description": "Orchestrates a 3-node n8n pipeline integrating Manual trigger, Sendy for automated execution and data routing."
+    },
+    {
+        "id": "wf-14",
+        "fileName": "14_Onfleet_Driver_signup_message_in_Slack.json",
+        "title": "Onfleet driver signup message in Slack",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 2,
+        "topNodes": [
+            "Onfleet trigger",
+            "Slack"
+        ],
+        "description": "Orchestrates a 2-node n8n pipeline integrating Onfleet trigger, Slack for automated execution and data routing."
+    },
+    {
+        "id": "wf-15",
+        "fileName": "14_Update_Crypto_Values.json",
+        "title": "Update crypto values",
+        "category": "Databases & Supabase",
+        "emoji": "🗄️",
+        "nodeCount": 8,
+        "topNodes": [
+            "Coin gecko",
+            "Airtable",
+            "Cron"
+        ],
+        "description": "Orchestrates a 8-node n8n pipeline integrating Coin gecko, Airtable, Cron for automated execution and data routing."
+    },
+    {
+        "id": "wf-16",
+        "fileName": "14_extract_swifts.json",
+        "title": "Automated SWIFT code web scraper to MongoDB",
+        "category": "Databases & Supabase",
+        "emoji": "🗄️",
+        "nodeCount": 23,
+        "topNodes": [
+            "Manual trigger",
+            "HTTP request",
+            "HTML extract"
+        ],
+        "description": "Orchestrates a 23-node n8n pipeline integrating Manual trigger, HTTP request, HTML extract for automated execution and data routing."
+    },
+    {
+        "id": "wf-17",
+        "fileName": "15_Bubble_Data_Access.json",
+        "title": "Bubble data access",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 2,
+        "topNodes": [
+            "Manual trigger",
+            "HTTP request"
+        ],
+        "description": "Orchestrates a 2-node n8n pipeline integrating Manual trigger, HTTP request for automated execution and data routing."
+    },
+    {
+        "id": "wf-18",
+        "fileName": "15_Tools___Backup_Gitlab.json",
+        "title": "Tools / backup GitLab",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 7,
+        "topNodes": [
+            "Manual trigger",
+            "Execute command",
+            "Cron"
+        ],
+        "description": "Orchestrates a 7-node n8n pipeline integrating Manual trigger, Execute command, Cron for automated execution and data routing."
+    },
+    {
+        "id": "wf-19",
+        "fileName": "16_User_Request_Management.json",
+        "title": "User request management",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 7,
+        "topNodes": [
+            "Click up",
+            "Typeform trigger"
+        ],
+        "description": "Orchestrates a 7-node n8n pipeline integrating Click up, Typeform trigger for automated execution and data routing."
+    },
+    {
+        "id": "wf-20",
+        "fileName": "17j2efAe10uXRc4p_Auto_WordPress_Blog_Generator_(GPT_+_Postgres_+_WP_Media).json",
+        "title": "Auto WordPress blog generator (GPT + Postgres + WP media)",
+        "category": "AI & LLMs",
+        "emoji": "🤖",
+        "nodeCount": 22,
+        "topNodes": [
+            "Schedule trigger",
+            "Open AI",
+            "HTTP request"
+        ],
+        "description": "Orchestrates a 22-node n8n pipeline integrating Schedule trigger, Open AI, HTTP request for automated execution and data routing."
+    },
+    {
+        "id": "wf-21",
+        "fileName": "18_Gender_Inclusive_Language.json",
+        "title": "Gender inclusive language",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 3,
+        "topNodes": [
+            "Webhook",
+            "Mattermost"
+        ],
+        "description": "Orchestrates a 3-node n8n pipeline integrating Webhook, Mattermost for automated execution and data routing."
+    },
+    {
+        "id": "wf-22",
+        "fileName": "19_Snowflake_CSV.json",
+        "title": "Snowflake CSV",
+        "category": "Databases & Supabase",
+        "emoji": "🗄️",
+        "nodeCount": 5,
+        "topNodes": [
+            "Manual trigger",
+            "HTTP request",
+            "Spreadsheet file"
+        ],
+        "description": "Orchestrates a 5-node n8n pipeline integrating Manual trigger, HTTP request, Spreadsheet file for automated execution and data routing."
+    },
+    {
+        "id": "wf-23",
+        "fileName": "1GOrjyc9mtZCMvCr_Structured_Data_Extract,_Data_Mining_with_Bright_Data_&_Google_Gemini.json",
+        "title": "Structured data extract, data mining with bright data & Google Gemini",
+        "category": "AI & LLMs",
+        "emoji": "🤖",
+        "nodeCount": 16,
+        "topNodes": [
+            "Manual trigger",
+            "Chain LLM",
+            "HTTP request"
+        ],
+        "description": "Orchestrates a 16-node n8n pipeline integrating Manual trigger, Chain LLM, HTTP request for automated execution and data routing."
+    },
+    {
+        "id": "wf-24",
+        "fileName": "1V1gcK6vyczRqdZC_Printify_Automation_-_Update_Title_and_Description_-_AlexK1919.json",
+        "title": "Printify automation - update title and description",
+        "category": "AI & LLMs",
+        "emoji": "🤖",
+        "nodeCount": 20,
+        "topNodes": [
+            "Manual trigger",
+            "HTTP request",
+            "Tool calculator"
+        ],
+        "description": "Orchestrates a 20-node n8n pipeline integrating Manual trigger, HTTP request, Tool calculator for automated execution and data routing."
+    },
+    {
+        "id": "wf-25",
+        "fileName": "1ZfA8Do3j7lCB3zF_Blockchain_DEX_Screener_Insights_Agent.json",
+        "title": "Blockchain DEX screener insights agent",
+        "category": "AI & LLMs",
+        "emoji": "🤖",
+        "nodeCount": 15,
+        "topNodes": [
+            "Chat trigger",
+            "Open AI",
+            "Memory buffer window"
+        ],
+        "description": "Orchestrates a 15-node n8n pipeline integrating Chat trigger, Open AI, Memory buffer window for automated execution and data routing."
+    },
+    {
+        "id": "wf-26",
+        "fileName": "1_Add_a_event_to_Calender.json",
+        "title": "Add a event to calender",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 2,
+        "topNodes": [
+            "Manual trigger",
+            "Google calendar"
+        ],
+        "description": "Orchestrates a 2-node n8n pipeline integrating Manual trigger, Google calendar for automated execution and data routing."
+    },
+    {
+        "id": "wf-27",
+        "fileName": "1_Add_text_to_an_image_downloaded_from_the_internet.json",
+        "title": "Add text to an image downloaded from the internet",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 3,
+        "topNodes": [
+            "Manual trigger",
+            "Edit image",
+            "HTTP request"
+        ],
+        "description": "Orchestrates a 3-node n8n pipeline integrating Manual trigger, Edit image, HTTP request for automated execution and data routing."
+    },
+    {
+        "id": "wf-28",
+        "fileName": "1_Create_Nextcloud_Deck_card_from_email.json",
+        "title": "Create nextcloud deck card from email",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 3,
+        "topNodes": [
+            "Email read IMAP",
+            "HTTP request"
+        ],
+        "description": "Orchestrates a 3-node n8n pipeline integrating Email read IMAP, HTTP request for automated execution and data routing."
+    },
+    {
+        "id": "wf-29",
+        "fileName": "1_Create_entry_in_Mailchimp_from_Airtable.json",
+        "title": "Create entry in Mailchimp from Airtable",
+        "category": "Databases & Supabase",
+        "emoji": "🗄️",
+        "nodeCount": 3,
+        "topNodes": [
+            "Cron",
+            "Airtable",
+            "Mailchimp"
+        ],
+        "description": "Orchestrates a 3-node n8n pipeline integrating Cron, Airtable, Mailchimp for automated execution and data routing."
+    },
+    {
+        "id": "wf-30",
+        "fileName": "1_Daily_Journal_Reminder.json",
+        "title": "Daily journal reminder",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 3,
+        "topNodes": [
+            "Cron",
+            "Telegram"
+        ],
+        "description": "Orchestrates a 3-node n8n pipeline integrating Cron, Telegram for automated execution and data routing."
+    },
+    {
+        "id": "wf-31",
+        "fileName": "1_Dialpad_to_Syncro.json",
+        "title": "Dialpad to syncro",
+        "category": "Databases & Supabase",
+        "emoji": "🗄️",
+        "nodeCount": 19,
+        "topNodes": [
+            "HTTP request",
+            "Webhook",
+            "Google sheets"
+        ],
+        "description": "Orchestrates a 19-node n8n pipeline integrating HTTP request, Webhook, Google sheets for automated execution and data routing."
+    },
+    {
+        "id": "wf-32",
+        "fileName": "1_Google_Cal_to_Zoom_meeting.json",
+        "title": "Google cal to Zoom meeting",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 6,
+        "topNodes": [
+            "Manual trigger",
+            "Zoom",
+            "Date time"
+        ],
+        "description": "Orchestrates a 6-node n8n pipeline integrating Manual trigger, Zoom, Date time for automated execution and data routing."
+    },
+    {
+        "id": "wf-33",
+        "fileName": "1_Google_Sheet_to_Mailchimp.json",
+        "title": "Google sheet to Mailchimp",
+        "category": "Databases & Supabase",
+        "emoji": "🗄️",
+        "nodeCount": 4,
+        "topNodes": [
+            "Manual trigger",
+            "Google sheets",
+            "Mailchimp"
+        ],
+        "description": "Orchestrates a 4-node n8n pipeline integrating Manual trigger, Google sheets, Mailchimp for automated execution and data routing."
+    },
+    {
+        "id": "wf-34",
+        "fileName": "1_ImapEmail,_XmlToJson,_POST-HTTP-Request.json",
+        "title": "Imapemail, xmltojson, post-http-request",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 5,
+        "topNodes": [
+            "Email read IMAP",
+            "Move binary data",
+            "XML"
+        ],
+        "description": "Orchestrates a 5-node n8n pipeline integrating Email read IMAP, Move binary data, XML for automated execution and data routing."
+    },
+    {
+        "id": "wf-35",
+        "fileName": "1_My_workflow.json",
+        "title": "Batch spreadsheet reader and automated email dispatcher",
+        "category": "Databases & Supabase",
+        "emoji": "🗄️",
+        "nodeCount": 6,
+        "topNodes": [
+            "Manual trigger",
+            "Email send",
+            "Read binary file"
+        ],
+        "description": "Orchestrates a 6-node n8n pipeline integrating Manual trigger, Email send, Read binary file for automated execution and data routing."
+    },
+    {
+        "id": "wf-36",
+        "fileName": "1_Send_SMS_to_numbers_stored_in_Airtable_with_Twilio.json",
+        "title": "Send SMS to numbers stored in Airtable with Twilio",
+        "category": "Databases & Supabase",
+        "emoji": "🗄️",
+        "nodeCount": 3,
+        "topNodes": [
+            "Manual trigger",
+            "Airtable",
+            "Twilio"
+        ],
+        "description": "Orchestrates a 3-node n8n pipeline integrating Manual trigger, Airtable, Twilio for automated execution and data routing."
+    },
+    {
+        "id": "wf-37",
+        "fileName": "1_Send_Typeforms_leads_via_Whatsapp_(Twilio).json",
+        "title": "Send typeforms leads via WhatsApp (Twilio)",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 3,
+        "topNodes": [
+            "Typeform trigger",
+            "Twilio"
+        ],
+        "description": "Orchestrates a 3-node n8n pipeline integrating Typeform trigger, Twilio for automated execution and data routing."
+    },
+    {
+        "id": "wf-38",
+        "fileName": "1_Send_a_message_on_Twake.json",
+        "title": "Send a message on twake",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 2,
+        "topNodes": [
+            "Manual trigger",
+            "Twake"
+        ],
+        "description": "Orchestrates a 2-node n8n pipeline integrating Manual trigger, Twake for automated execution and data routing."
+    },
+    {
+        "id": "wf-39",
+        "fileName": "1_TwitterWorkflow.json",
+        "title": "Twitterworkflow",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 6,
+        "topNodes": [
+            "Manual trigger",
+            "Twitter",
+            "Rocketchat"
+        ],
+        "description": "Orchestrates a 6-node n8n pipeline integrating Manual trigger, Twitter, Rocketchat for automated execution and data routing."
+    },
+    {
+        "id": "wf-40",
+        "fileName": "1_Twitter_notifications.json",
+        "title": "Twitter notifications",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 5,
+        "topNodes": [
+            "Twitter",
+            "Cron",
+            "Mattermost"
+        ],
+        "description": "Orchestrates a 5-node n8n pipeline integrating Twitter, Cron, Mattermost for automated execution and data routing."
+    },
+    {
+        "id": "wf-41",
+        "fileName": "1_Website_check.json",
+        "title": "Website check",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 5,
+        "topNodes": [
+            "HTTP request",
+            "Discord",
+            "Cron"
+        ],
+        "description": "Orchestrates a 5-node n8n pipeline integrating HTTP request, Discord, Cron for automated execution and data routing."
+    },
+    {
+        "id": "wf-42",
+        "fileName": "1_Wordpress-to-csv.json",
+        "title": "Wordpress-to-csv",
+        "category": "Databases & Supabase",
+        "emoji": "🗄️",
+        "nodeCount": 4,
+        "topNodes": [
+            "Manual trigger",
+            "WordPress",
+            "Spreadsheet file"
+        ],
+        "description": "Orchestrates a 4-node n8n pipeline integrating Manual trigger, WordPress, Spreadsheet file for automated execution and data routing."
+    },
+    {
+        "id": "wf-43",
+        "fileName": "1_cheems.json",
+        "title": "Scheduled multi-interval Discord community bot",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 6,
+        "topNodes": [
+            "Cron",
+            "Discord"
+        ],
+        "description": "Orchestrates a 6-node n8n pipeline integrating Cron, Discord for automated execution and data routing."
+    },
+    {
+        "id": "wf-44",
+        "fileName": "1_workflow_1.json",
+        "title": "Binary spreadsheet parser to PostgreSQL database",
+        "category": "Databases & Supabase",
+        "emoji": "🗄️",
+        "nodeCount": 3,
+        "topNodes": [
+            "Read binary file",
+            "Spreadsheet file",
+            "Postgres"
+        ],
+        "description": "Orchestrates a 3-node n8n pipeline integrating Read binary file, Spreadsheet file, Postgres for automated execution and data routing."
+    },
+    {
+        "id": "wf-45",
+        "fileName": "1blBTEfOEjamDB0N_Email_form.json",
+        "title": "Email form",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 4,
+        "topNodes": [
+            "Hunter",
+            "Form trigger",
+            "Send grid"
+        ],
+        "description": "Orchestrates a 4-node n8n pipeline integrating Hunter, Form trigger, Send grid for automated execution and data routing."
+    },
+    {
+        "id": "wf-46",
+        "fileName": "1dnr1k4MAVbDiBmO_Get_event_triggered_notifications___updates_on_preferred_messaging_channels_with_TwentyCRM.json",
+        "title": "Get event triggered notifications / updates on preferred messaging channels with twentycrm",
+        "category": "Databases & Supabase",
+        "emoji": "🗄️",
+        "nodeCount": 6,
+        "topNodes": [
+            "Google sheets",
+            "Webhook",
+            "Gmail"
+        ],
+        "description": "Orchestrates a 6-node n8n pipeline integrating Google sheets, Webhook, Gmail for automated execution and data routing."
+    },
+    {
+        "id": "wf-47",
+        "fileName": "1g8EAij2RwhNN70t_xSend_and_check_TTS_(Text-to-speech)_voice_calls_end_email_verification.json",
+        "title": "Send and check TTS (text-to-speech) voice calls end email verification",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 13,
+        "topNodes": [
+            "HTTP request",
+            "Form trigger",
+            "Email send"
+        ],
+        "description": "Orchestrates a 13-node n8n pipeline integrating HTTP request, Form trigger, Email send for automated execution and data routing."
+    },
+    {
+        "id": "wf-48",
+        "fileName": "20_Create,_update_and_get_a_contact_in_Google_Contacts.json",
+        "title": "Create, update and get a contact in Google contacts",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 4,
+        "topNodes": [
+            "Manual trigger",
+            "Google contacts"
+        ],
+        "description": "Orchestrates a 4-node n8n pipeline integrating Manual trigger, Google contacts for automated execution and data routing."
+    },
+    {
+        "id": "wf-49",
+        "fileName": "21IdmArlNT9LlaFf_Automate_Google_Analytics_Reporting_-_AlexK1919.json",
+        "title": "Automate Google analytics reporting",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 19,
+        "topNodes": [
+            "Manual trigger",
+            "Google analytics",
+            "Gmail"
+        ],
+        "description": "Orchestrates a 19-node n8n pipeline integrating Manual trigger, Google analytics, Gmail for automated execution and data routing."
+    },
+    {
+        "id": "wf-50",
+        "fileName": "21_Upload_video,_create_playlist_and_add_video_to_playlist.json",
+        "title": "Upload video, create playlist and add video to playlist",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 5,
+        "topNodes": [
+            "Manual trigger",
+            "You tube",
+            "Read binary file"
+        ],
+        "description": "Orchestrates a 5-node n8n pipeline integrating Manual trigger, You tube, Read binary file for automated execution and data routing."
+    },
+    {
+        "id": "wf-51",
+        "fileName": "22PddLUgcjSJbT1w_MongoDB_Agent.json",
+        "title": "MongoDB agent",
+        "category": "AI & LLMs",
+        "emoji": "🤖",
+        "nodeCount": 6,
+        "topNodes": [
+            "Open AI",
+            "Mongo db tool",
+            "Memory buffer window"
+        ],
+        "description": "Orchestrates a 6-node n8n pipeline integrating Open AI, Mongo db tool, Memory buffer window for automated execution and data routing."
+    },
+    {
+        "id": "wf-52",
+        "fileName": "23GPrqZjHnIVvTEa_Backup_n8n_Workflows_to_Bitbucket.json",
+        "title": "Backup n8n workflows to Bitbucket",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 9,
+        "topNodes": [
+            "Schedule trigger",
+            "n8n",
+            "HTTP request"
+        ],
+        "description": "Orchestrates a 9-node n8n pipeline integrating Schedule trigger, n8n, HTTP request for automated execution and data routing."
+    },
+    {
+        "id": "wf-53",
+        "fileName": "23_Zendesk-to-slack.json",
+        "title": "Zendesk-to-slack",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 5,
+        "topNodes": [
+            "Manual trigger",
+            "Cron",
+            "Slack"
+        ],
+        "description": "Orchestrates a 5-node n8n pipeline integrating Manual trigger, Cron, Slack for automated execution and data routing."
+    },
+    {
+        "id": "wf-54",
+        "fileName": "25_Add_subscriber_to_form,_create_tag_and_subscriber_to_the_tag.json",
+        "title": "Add subscriber to form, create tag and subscriber to the tag",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 4,
+        "topNodes": [
+            "Manual trigger",
+            "Convert kit"
+        ],
+        "description": "Orchestrates a 4-node n8n pipeline integrating Manual trigger, Convert kit for automated execution and data routing."
+    },
+    {
+        "id": "wf-55",
+        "fileName": "2DT5BW5tOdy87AUl_Streamline_Your_Zoom_Meetings_with_Secure,_Automated_Stripe_Payments.json",
+        "title": "Streamline your Zoom meetings with secure, automated Stripe payments",
+        "category": "Databases & Supabase",
+        "emoji": "🗄️",
+        "nodeCount": 15,
+        "topNodes": [
+            "Zoom",
+            "HTTP request",
+            "Gmail"
+        ],
+        "description": "Orchestrates a 15-node n8n pipeline integrating Zoom, HTTP request, Gmail for automated execution and data routing."
+    },
+    {
+        "id": "wf-56",
+        "fileName": "2DzQ1FH11S3Gp6wn_YogiAI.json",
+        "title": "YogiAI Azure OpenAI assistant with Google Sheets memory",
+        "category": "AI & LLMs",
+        "emoji": "🤖",
+        "nodeCount": 25,
+        "topNodes": [
+            "Azure open AI",
+            "Google sheets",
+            "Output parser autofixing"
+        ],
+        "description": "Orchestrates a 25-node n8n pipeline integrating Azure open AI, Google sheets, Output parser autofixing for automated execution and data routing."
+    },
+    {
+        "id": "wf-57",
+        "fileName": "2Eba0OHGtOmoTWOU_RAG_AI_Agent_with_Milvus_and_Cohere.json",
+        "title": "RAG AI agent with Milvus and Cohere",
+        "category": "AI & LLMs",
+        "emoji": "🤖",
+        "nodeCount": 13,
+        "topNodes": [
+            "Document default data loader",
+            "Embeddings Cohere",
+            "Chat trigger"
+        ],
+        "description": "Orchestrates a 13-node n8n pipeline integrating Document default data loader, Embeddings Cohere, Chat trigger for automated execution and data routing."
+    },
+    {
+        "id": "wf-58",
+        "fileName": "2LFEJVoSkeZMndiM_YT_AI_News_Playlist_Creator_AI_News_Form_Updater.json",
+        "title": "YouTube AI news playlist creator/ai news form updater",
+        "category": "AI & LLMs",
+        "emoji": "🤖",
+        "nodeCount": 15,
+        "topNodes": [
+            "Google sheets",
+            "HTTP request",
+            "You tube"
+        ],
+        "description": "Orchestrates a 15-node n8n pipeline integrating Google sheets, HTTP request, You tube for automated execution and data routing."
+    },
+    {
+        "id": "wf-59",
+        "fileName": "2NhqmUqW3KruEkaE_Exponential_Backoff_for_Google_APIs.json",
+        "title": "Exponential backoff for Google APIs",
+        "category": "Databases & Supabase",
+        "emoji": "🗄️",
+        "nodeCount": 7,
+        "topNodes": [
+            "Manual trigger",
+            "Stop and error",
+            "Google sheets"
+        ],
+        "description": "Orchestrates a 7-node n8n pipeline integrating Manual trigger, Stop and error, Google sheets for automated execution and data routing."
+    },
+    {
+        "id": "wf-60",
+        "fileName": "2_Add_task_to_tasklist.json",
+        "title": "Add task to tasklist",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 2,
+        "topNodes": [
+            "Manual trigger",
+            "Google tasks"
+        ],
+        "description": "Orchestrates a 2-node n8n pipeline integrating Manual trigger, Google tasks for automated execution and data routing."
+    },
+    {
+        "id": "wf-61",
+        "fileName": "2_Daily_Text_Affirmations.json",
+        "title": "Daily text affirmations",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 3,
+        "topNodes": [
+            "Cron",
+            "HTTP request",
+            "Telegram"
+        ],
+        "description": "Orchestrates a 3-node n8n pipeline integrating Cron, HTTP request, Telegram for automated execution and data routing."
+    },
+    {
+        "id": "wf-62",
+        "fileName": "2_Discord_Intro.json",
+        "title": "Discord intro",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 2,
+        "topNodes": [
+            "Manual trigger",
+            "Discord"
+        ],
+        "description": "Orchestrates a 2-node n8n pipeline integrating Manual trigger, Discord for automated execution and data routing."
+    },
+    {
+        "id": "wf-63",
+        "fileName": "2_RSS_to_Telegram.json",
+        "title": "RSS to Telegram",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 6,
+        "topNodes": [
+            "Telegram",
+            "RSS feed read",
+            "Cron"
+        ],
+        "description": "Orchestrates a 6-node n8n pipeline integrating Telegram, RSS feed read, Cron for automated execution and data routing."
+    },
+    {
+        "id": "wf-64",
+        "fileName": "2_Syncro_to_Clockify.json",
+        "title": "Syncro to clockify",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 2,
+        "topNodes": [
+            "Webhook",
+            "Clockify"
+        ],
+        "description": "Orchestrates a 2-node n8n pipeline integrating Webhook, Clockify for automated execution and data routing."
+    },
+    {
+        "id": "wf-65",
+        "fileName": "2_Telegram_Weather_Workflow.json",
+        "title": "Telegram weather workflow",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 3,
+        "topNodes": [
+            "Telegram trigger",
+            "Open weather map",
+            "Telegram"
+        ],
+        "description": "Orchestrates a 3-node n8n pipeline integrating Telegram trigger, Open weather map, Telegram for automated execution and data routing."
+    },
+    {
+        "id": "wf-66",
+        "fileName": "2_post_to_mattermost_v2.json",
+        "title": "POST to Mattermost v2",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 5,
+        "topNodes": [
+            "RSS feed read",
+            "HTTP request",
+            "Cron"
+        ],
+        "description": "Orchestrates a 5-node n8n pipeline integrating RSS feed read, HTTP request, Cron for automated execution and data routing."
+    },
+    {
+        "id": "wf-67",
+        "fileName": "2_workflow_2.json",
+        "title": "PostgreSQL query export to binary spreadsheet file",
+        "category": "Databases & Supabase",
+        "emoji": "🗄️",
+        "nodeCount": 3,
+        "topNodes": [
+            "Postgres",
+            "Spreadsheet file",
+            "Write binary file"
+        ],
+        "description": "Orchestrates a 3-node n8n pipeline integrating Postgres, Spreadsheet file, Write binary file for automated execution and data routing."
+    },
+    {
+        "id": "wf-68",
+        "fileName": "2ddwHvuidKc6lZia_AI_Agent_-_Cv_Resume_-_Automated_Screening_,_Sorting_,_Rating_and_Tracker_System.json",
+        "title": "AI agent - CV resume - automated screening , sorting , rating and tracker system",
+        "category": "AI & LLMs",
+        "emoji": "🤖",
+        "nodeCount": 11,
+        "topNodes": [
+            "Google docs",
+            "Google drive trigger",
+            "Google drive"
+        ],
+        "description": "Orchestrates a 11-node n8n pipeline integrating Google docs, Google drive trigger, Google drive for automated execution and data routing."
+    },
+    {
+        "id": "wf-69",
+        "fileName": "2pMoIW58KP6ZeGir_Luma_AI_Dream_Machine_-_Simple_v1_-_AK.json",
+        "title": "Luma AI dream machine - simple v1",
+        "category": "AI & LLMs",
+        "emoji": "🤖",
+        "nodeCount": 6,
+        "topNodes": [
+            "Manual trigger",
+            "HTTP request",
+            "Airtable"
+        ],
+        "description": "Orchestrates a 6-node n8n pipeline integrating Manual trigger, HTTP request, Airtable for automated execution and data routing."
+    },
+    {
+        "id": "wf-70",
+        "fileName": "2qIFnWXdHJJs4oBk_DSP_Certificate_w__Google_Forms.json",
+        "title": "DSP certificate w/ Google forms",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 7,
+        "topNodes": [
+            "Google sheets trigger",
+            "Google drive",
+            "Google slides"
+        ],
+        "description": "Orchestrates a 7-node n8n pipeline integrating Google sheets trigger, Google drive, Google slides for automated execution and data routing."
+    },
+    {
+        "id": "wf-71",
+        "fileName": "3BkxvtCbF6hHGUgM_N8N_Financial_Tracker_Telegram_Invoices_to_Notion_with_AI_Summaries_&_Reports.json",
+        "title": "N8n financial tracker Telegram invoices to Notion with AI summaries & reports",
+        "category": "AI & LLMs",
+        "emoji": "🤖",
+        "nodeCount": 15,
+        "topNodes": [
+            "Google Gemini",
+            "Chain LLM",
+            "Schedule trigger"
+        ],
+        "description": "Orchestrates a 15-node n8n pipeline integrating Google Gemini, Chain LLM, Schedule trigger for automated execution and data routing."
+    },
+    {
+        "id": "wf-72",
+        "fileName": "3JsfhcDcjqxx0hr3_Extract_And_Decode_Google_News_RSS_URLs_to_Clean_Article_Links.json",
+        "title": "Extract and decode Google news RSS URLs to clean article links",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 10,
+        "topNodes": [
+            "Manual trigger",
+            "RSS feed read",
+            "HTTP request"
+        ],
+        "description": "Orchestrates a 10-node n8n pipeline integrating Manual trigger, RSS feed read, HTTP request for automated execution and data routing."
+    },
+    {
+        "id": "wf-73",
+        "fileName": "3Lih0LVosR8dZbla_Create_AI-Ready_Vector_Datasets_for_LLMs_with_Bright_Data,_Gemini_&_Pinecone.json",
+        "title": "Create ai-ready vector datasets for LLMs with bright data, Gemini & Pinecone",
+        "category": "AI & LLMs",
+        "emoji": "🤖",
+        "nodeCount": 16,
+        "topNodes": [
+            "Manual trigger",
+            "Agent",
+            "Vector store Pinecone"
+        ],
+        "description": "Orchestrates a 16-node n8n pipeline integrating Manual trigger, Agent, Vector store Pinecone for automated execution and data routing."
+    },
+    {
+        "id": "wf-74",
+        "fileName": "3McL3itHTso0Cy10_Automated_PDF_to_HTML_Conversion.json",
+        "title": "Automated PDF to HTML conversion",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 5,
+        "topNodes": [
+            "Google drive trigger",
+            "HTTP request",
+            "Google drive"
+        ],
+        "description": "Orchestrates a 5-node n8n pipeline integrating Google drive trigger, HTTP request, Google drive for automated execution and data routing."
+    },
+    {
+        "id": "wf-75",
+        "fileName": "3_Clockify_to_Syncro.json",
+        "title": "Clockify to syncro",
+        "category": "Databases & Supabase",
+        "emoji": "🗄️",
+        "nodeCount": 12,
+        "topNodes": [
+            "Webhook",
+            "Google sheets",
+            "HTTP request"
+        ],
+        "description": "Orchestrates a 12-node n8n pipeline integrating Webhook, Google sheets, HTTP request for automated execution and data routing."
+    },
+    {
+        "id": "wf-76",
+        "fileName": "3_Daily_poems_in_Telegram.json",
+        "title": "Daily poems in Telegram",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 4,
+        "topNodes": [
+            "Cron",
+            "Telegram",
+            "HTTP request"
+        ],
+        "description": "Orchestrates a 4-node n8n pipeline integrating Cron, Telegram, HTTP request for automated execution and data routing."
+    },
+    {
+        "id": "wf-77",
+        "fileName": "3_Mailchimp.json",
+        "title": "Mailchimp",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 2,
+        "topNodes": [
+            "Manual trigger",
+            "Mailchimp"
+        ],
+        "description": "Orchestrates a 2-node n8n pipeline integrating Manual trigger, Mailchimp for automated execution and data routing."
+    },
+    {
+        "id": "wf-78",
+        "fileName": "3_NameCheap_Dynamic_DNS_(DDNS).json",
+        "title": "Namecheap dynamic DNS (DDNS)",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 7,
+        "topNodes": [
+            "Cron",
+            "HTTP request"
+        ],
+        "description": "Orchestrates a 7-node n8n pipeline integrating Cron, HTTP request for automated execution and data routing."
+    },
+    {
+        "id": "wf-79",
+        "fileName": "3_Orlen.json",
+        "title": "Scheduled Gmail attachment archiver to Google Drive",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 10,
+        "topNodes": [
+            "Manual trigger",
+            "Cron",
+            "Google drive"
+        ],
+        "description": "Orchestrates a 10-node n8n pipeline integrating Manual trigger, Cron, Google drive for automated execution and data routing."
+    },
+    {
+        "id": "wf-80",
+        "fileName": "3_StatsInstagram.json",
+        "title": "Statsinstagram",
+        "category": "Databases & Supabase",
+        "emoji": "🗄️",
+        "nodeCount": 5,
+        "topNodes": [
+            "Mattermost",
+            "Date time",
+            "Cron"
+        ],
+        "description": "Orchestrates a 5-node n8n pipeline integrating Mattermost, Date time, Cron for automated execution and data routing."
+    },
+    {
+        "id": "wf-81",
+        "fileName": "3_TheHive.json",
+        "title": "TheHive security incident alert router to SIGNL4",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 7,
+        "topNodes": [
+            "The hive",
+            "Signl4",
+            "Webhook"
+        ],
+        "description": "Orchestrates a 7-node n8n pipeline integrating The hive, Signl4, Webhook for automated execution and data routing."
+    },
+    {
+        "id": "wf-82",
+        "fileName": "3_XML_Conversion.json",
+        "title": "XML conversion",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 3,
+        "topNodes": [
+            "Manual trigger",
+            "XML"
+        ],
+        "description": "Orchestrates a 3-node n8n pipeline integrating Manual trigger, XML for automated execution and data routing."
+    },
+    {
+        "id": "wf-83",
+        "fileName": "3_rss-telegram.json",
+        "title": "Scheduled RSS feed batch reader to Telegram channel",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 18,
+        "topNodes": [
+            "Cron",
+            "Telegram",
+            "RSS feed read"
+        ],
+        "description": "Orchestrates a 18-node n8n pipeline integrating Cron, Telegram, RSS feed read for automated execution and data routing."
+    },
+    {
+        "id": "wf-84",
+        "fileName": "3_workflow_3.json",
+        "title": "Webhook image processing and HTTP delivery pipeline",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 3,
+        "topNodes": [
+            "Webhook",
+            "Edit image",
+            "HTTP request"
+        ],
+        "description": "Orchestrates a 3-node n8n pipeline integrating Webhook, Edit image, HTTP request for automated execution and data routing."
+    },
+    {
+        "id": "wf-85",
+        "fileName": "3b1q6ZJTxeONrpUV_Error_Alert_and_Summarizer.json",
+        "title": "Error alert and summarizer",
+        "category": "AI & LLMs",
+        "emoji": "🤖",
+        "nodeCount": 11,
+        "topNodes": [
+            "Error trigger",
+            "Open AI",
+            "Output parser structured"
+        ],
+        "description": "Orchestrates a 11-node n8n pipeline integrating Error trigger, Open AI, Output parser structured for automated execution and data routing."
+    },
+    {
+        "id": "wf-86",
+        "fileName": "3tJcVzt2OqeyjfnH_Analyze_email_headers_for_IPs_and_spoofing__3.json",
+        "title": "Forensic email header IP and spoofing analyzer via webhook",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 27,
+        "topNodes": [
+            "Webhook",
+            "Respond to webhook",
+            "Item lists"
+        ],
+        "description": "Orchestrates a 27-node n8n pipeline integrating Webhook, Respond to webhook, Item lists for automated execution and data routing."
+    },
+    {
+        "id": "wf-87",
+        "fileName": "3wbxkdT6hilhq0Na_Workflow_Results_to_Markdown_Notes_in_Your_Obsidian_Vault,_via_Google_Drive.json",
+        "title": "Workflow results to markdown notes in your Obsidian vault, via Google drive",
+        "category": "AI & LLMs",
+        "emoji": "🤖",
+        "nodeCount": 11,
+        "topNodes": [
+            "Google drive",
+            "Execute workflow trigger",
+            "Agent"
+        ],
+        "description": "Orchestrates a 11-node n8n pipeline integrating Google drive, Execute workflow trigger, Agent for automated execution and data routing."
+    },
+    {
+        "id": "wf-88",
+        "fileName": "4AG83ybt0S3WQbkS_Daily_AI_News_Translation_&_Summary_with_GPT-4_and_Telegram_Delivery.json",
+        "title": "Daily AI news translation & summary with GPT-4 and Telegram delivery",
+        "category": "AI & LLMs",
+        "emoji": "🤖",
+        "nodeCount": 9,
+        "topNodes": [
+            "Schedule trigger",
+            "HTTP request",
+            "Agent"
+        ],
+        "description": "Orchestrates a 9-node n8n pipeline integrating Schedule trigger, HTTP request, Agent for automated execution and data routing."
+    },
+    {
+        "id": "wf-89",
+        "fileName": "4Tq5HZBdETVe7jEb_⚡AI-Powered_YouTube_Playlist_&_Video_Summarization_and_Analysis_v2.json",
+        "title": "Ai-powered YouTube playlist & video summarization and analysis v2",
+        "category": "AI & LLMs",
+        "emoji": "🤖",
+        "nodeCount": 60,
+        "topNodes": [
+            "Google Gemini",
+            "Agent",
+            "Chain LLM"
+        ],
+        "description": "Orchestrates a 60-node n8n pipeline integrating Google Gemini, Agent, Chain LLM for automated execution and data routing."
+    },
+    {
+        "id": "wf-90",
+        "fileName": "4_Email.json",
+        "title": "IMAP email security analyzer with TheHive and Cortex",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 15,
+        "topNodes": [
+            "Email read IMAP",
+            "The hive",
+            "Cortex"
+        ],
+        "description": "Orchestrates a 15-node n8n pipeline integrating Email read IMAP, The hive, Cortex for automated execution and data routing."
+    },
+    {
+        "id": "wf-91",
+        "fileName": "4_Save_Telegram_reply_to_journal_spreadsheet.json",
+        "title": "Save Telegram reply to journal spreadsheet",
+        "category": "Databases & Supabase",
+        "emoji": "🗄️",
+        "nodeCount": 3,
+        "topNodes": [
+            "Google sheets",
+            "Telegram trigger"
+        ],
+        "description": "Orchestrates a 3-node n8n pipeline integrating Google sheets, Telegram trigger for automated execution and data routing."
+    },
+    {
+        "id": "wf-92",
+        "fileName": "4_Zammad_Open_Tickets.json",
+        "title": "Zammad open tickets",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 5,
+        "topNodes": [
+            "Manual trigger",
+            "Zammad",
+            "Zulip"
+        ],
+        "description": "Orchestrates a 5-node n8n pipeline integrating Manual trigger, Zammad, Zulip for automated execution and data routing."
+    },
+    {
+        "id": "wf-93",
+        "fileName": "4_post_to_wallabag.json",
+        "title": "POST to wallabag",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 9,
+        "topNodes": [
+            "Manual trigger",
+            "HTTP request",
+            "Cron"
+        ],
+        "description": "Orchestrates a 9-node n8n pipeline integrating Manual trigger, HTTP request, Cron for automated execution and data routing."
+    },
+    {
+        "id": "wf-94",
+        "fileName": "4_workflow_4.json",
+        "title": "GitHub repository event trigger to Slack channel",
+        "category": "Email & notifications",
+        "emoji": "✉️",
+        "nodeCount": 4,
+        "topNodes": [
+            "GitHub trigger",
+            "Slack"
+        ],
+        "description": "Orchestrates a 4-node n8n pipeline integrating GitHub trigger, Slack for automated execution and data routing."
+    },
+    {
+        "id": "wf-95",
+        "fileName": "4aKofiCShqdDSsIS_Import_Odoo_Product_Images_from_Google_Drive.json",
+        "title": "Import Odoo product images from Google drive",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 19,
+        "topNodes": [
+            "Google drive",
+            "Schedule trigger",
+            "Summarize"
+        ],
+        "description": "Orchestrates a 19-node n8n pipeline integrating Google drive, Schedule trigger, Summarize for automated execution and data routing."
+    },
+    {
+        "id": "wf-96",
+        "fileName": "4nBQyhwqDqmXY2AL_Automated_Image_Metadata_Tagging_(Community_Node).json",
+        "title": "Automated image metadata tagging (community node)",
+        "category": "AI & LLMs",
+        "emoji": "🤖",
+        "nodeCount": 6,
+        "topNodes": [
+            "Google drive trigger",
+            "Google drive",
+            "Open AI"
+        ],
+        "description": "Orchestrates a 6-node n8n pipeline integrating Google drive trigger, Google drive, Open AI for automated execution and data routing."
+    },
+    {
+        "id": "wf-97",
+        "fileName": "4rXRDurF4mQKrHyB_comentarios_automaticos.json",
+        "title": "Automated webhook comment responder with OpenRouter AI agent",
+        "category": "AI & LLMs",
+        "emoji": "🤖",
+        "nodeCount": 9,
+        "topNodes": [
+            "Webhook",
+            "Respond to webhook",
+            "Agent"
+        ],
+        "description": "Orchestrates a 9-node n8n pipeline integrating Webhook, Respond to webhook, Agent for automated execution and data routing."
+    },
+    {
+        "id": "wf-98",
+        "fileName": "4wPgPbxtojrUO7Dx_Google_Page_Entity_Extraction_Template.json",
+        "title": "Google page entity extraction template",
+        "category": "Webhooks & APIs",
+        "emoji": "⚡",
+        "nodeCount": 5,
+        "topNodes": [
+            "Respond to webhook",
+            "HTTP request",
+            "Webhook"
+        ],
+        "description": "Orchestrates a 5-node n8n pipeline integrating Respond to webhook, HTTP request, Webhook for automated execution and data routing."
+    }
+];
+
+        let activeWfCategory = "all";
+        let currentWfSearch = "";
+        const wfJsonCache = new Map();
+
+        function escapeWfHtml(str) {
+            const div = document.createElement("div");
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function getWorkflowFileUrl(fileName) {
+            return "../N8N%20workflows/" + encodeURIComponent(fileName);
+        }
+
+        async function fetchWorkflowJsonText(fileName) {
+            if (wfJsonCache.has(fileName)) {
+                return wfJsonCache.get(fileName);
+            }
+            const response = await fetch(getWorkflowFileUrl(fileName));
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status} while loading ${fileName}`);
+            }
+            const rawText = await response.text();
+            wfJsonCache.set(fileName, rawText);
+            return rawText;
+        }
+
+        function renderWorkflowsVault() {
+            const grid = document.getElementById("workflowsGrid");
+            const emptyState = document.getElementById("workflowsEmpty");
+            if (!grid) return;
+
+            const query = currentWfSearch.trim().toLowerCase();
+            const filtered = N8N_WORKFLOWS_DATA.filter((wf) => {
+                const matchesCategory =
+                    activeWfCategory === "all" || wf.category === activeWfCategory;
+                const matchesQuery =
+                    !query ||
+                    wf.title.toLowerCase().includes(query) ||
+                    wf.category.toLowerCase().includes(query) ||
+                    wf.description.toLowerCase().includes(query) ||
+                    wf.fileName.toLowerCase().includes(query) ||
+                    wf.topNodes.join(" ").toLowerCase().includes(query);
+                return matchesCategory && matchesQuery;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = "";
+                emptyState.style.display = "block";
+                return;
+            }
+
+            emptyState.style.display = "none";
+            grid.innerHTML = filtered
+                .map((wf) => {
+                    const downloadUrl = getWorkflowFileUrl(wf.fileName);
+                    return `
+                <article class="workflow-card" data-category="${escapeWfHtml(wf.category)}">
+                    <div class="wf-card-top">
+                        <div class="wf-card-emoji" aria-hidden="true">${wf.emoji}</div>
+                        <div>
+                            <div class="wf-meta-row">
+                                <span class="wf-card-tag">${escapeWfHtml(wf.category)}</span>
+                                <span class="wf-node-badge">${wf.nodeCount} nodes</span>
+                            </div>
+                            <h2 class="wf-card-title">${escapeWfHtml(wf.title)}</h2>
+                        </div>
+                    </div>
+                    <p class="wf-card-desc">${escapeWfHtml(wf.description)}</p>
+                    <div class="wf-actions">
+                        <button type="button" class="btn-wf-copy" data-wf-id="${escapeWfHtml(wf.id)}">
+                            <span>Copy JSON 📋</span>
+                        </button>
+                        <a href="${downloadUrl}" download="${escapeWfHtml(wf.fileName)}" class="btn-wf-download">
+                            <span>Download .json ⬇️</span>
+                        </a>
+                    </div>
+                </article>
+            `;
+                })
+                .join("");
+
+            grid.querySelectorAll(".btn-wf-copy").forEach((btn) => {
+                btn.addEventListener("click", async () => {
+                    const wfId = btn.getAttribute("data-wf-id");
+                    const found = N8N_WORKFLOWS_DATA.find((w) => w.id === wfId);
+                    if (!found) return;
+
+                    const originalHtml = btn.innerHTML;
+                    btn.innerHTML = "<span>Loading...</span>";
+                    try {
+                        const rawJson = await fetchWorkflowJsonText(found.fileName);
+                        await navigator.clipboard.writeText(rawJson);
+                        btn.classList.add("copied");
+                        btn.innerHTML = "<span>Copied! ✓</span>";
+                        setTimeout(() => {
+                            btn.classList.remove("copied");
+                            btn.innerHTML = originalHtml;
+                        }, 1800);
+                    } catch (err) {
+                        console.error("Failed to copy workflow JSON:", err);
+                        btn.innerHTML = "<span>Error copying</span>";
+                        setTimeout(() => {
+                            btn.innerHTML = originalHtml;
+                        }, 1800);
+                    }
+                });
+            });
+        }
+
+        document.querySelectorAll("#workflowFilterTabs .wf-filter-btn").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                document
+                    .querySelectorAll("#workflowFilterTabs .wf-filter-btn")
+                    .forEach((b) => b.classList.remove("active"));
+                btn.classList.add("active");
+                activeWfCategory = btn.getAttribute("data-category");
+                renderWorkflowsVault();
+            });
+        });
+
+        const workflowSearchInput = document.getElementById("workflowSearchInput");
+        if (workflowSearchInput) {
+            workflowSearchInput.addEventListener("input", (e) => {
+                currentWfSearch = e.target.value || "";
+                renderWorkflowsVault();
+            });
+        }
+
+        renderWorkflowsVault();
+    </script>
+
+    <!-- Global Mascot Widget Injection -->
+    <iframe id="mascot-widget" src="/hub/widget"
+        style="position: fixed; bottom: 0; right: 0; border: none; z-index: 2147483647; background: transparent; width: 300px; height: 200px; transition: all 0.3s ease-in-out; pointer-events: auto;"
+        allowtransparency="true"></iframe>
+
+    <script>
+        const widgetIframe = document.getElementById("mascot-widget");
+        const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.protocol === "file:";
+        let contextStr = "landing";
+        let activeViteUrl = "http://localhost:5174";
+        if (isLocal) {
+            const ports = [5173, 5174, 5175];
+            let detected = false;
+            Promise.any(ports.map(port =>
+                fetch(`http://localhost:${port}/hub/logo_officeaim.png`)
+                    .then(res => {
+                        if (!res.ok) throw new Error("Not our server");
+                        if (!detected) {
+                            detected = true;
+                            activeViteUrl = `http://localhost:${port}`;
+                            widgetIframe.src = activeViteUrl + "/hub/widget?context=" + contextStr;
+                        }
+                    })
+            )).catch(() => {
+                widgetIframe.src = activeViteUrl + "/hub/widget?context=" + contextStr;
+            });
+        } else {
+            widgetIframe.src = "/hub/widget?context=" + contextStr;
+        }
+
+        window.addEventListener("message", (event) => {
+            if (event.data && event.data.type === "mascot-toggle") {
+                const widget = document.getElementById("mascot-widget");
+                if (event.data.isOpen) {
+                    widget.style.width = "420px";
+                    widget.style.height = "600px";
+                    widget.style.pointerEvents = "auto";
+                } else {
+                    widget.style.width = "300px";
+                    widget.style.height = "200px";
+                    widget.style.pointerEvents = "auto";
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

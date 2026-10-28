@@ -1,3 +1,8 @@
+---
+name: visual-layer
+description: "Automatiza la generación de prompts de imagen y activos visuales para el AI Lab de OfficeAIM con estética Luxury Future Tech."
+---
+
 # Skill: Visual Layer
 
 ## Descripción

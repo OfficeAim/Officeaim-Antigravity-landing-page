@@ -1,3 +1,8 @@
+---
+name: sql-seed
+description: "Automatiza la generación de migraciones SQL robustas e idempotentes para poblar el LMS OfficeAIM en Supabase PostgreSQL."
+---
+
 # Skill: SQL Seed Generator
 
 ## Descripción

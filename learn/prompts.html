@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OfficeAIM Prompt Vault — Guided engineering prompt library</title>
+    <meta name="description"
+        content="Engineering prompts ready to copy, customize, and inject into your AI workflows (ChatGPT, Gemini, Claude). Automation, code, agents, and UX strategy.">
+    <meta name="google-site-verification" content="6OajNDeOete8oREc17Z_cYlseER3lADZjnLLHCQL8AQ" />
+    <link rel="canonical" href="https://officeaim.com/learn/prompts" />
+
+    <!-- Open Graph / WhatsApp Share Preview -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://officeaim.com/learn/prompts">
+    <meta property="og:title" content="OfficeAIM Prompt Vault — Guided engineering prompt library">
+    <meta property="og:description"
+        content="Engineering prompts ready to copy, customize, and inject into your AI workflows (ChatGPT, Gemini, Claude).">
+    <meta property="og:image" content="https://officeaim.com/images/hero.webp">
+
+    <!-- Twitter Preview -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://officeaim.com/learn/prompts">
+    <meta name="twitter:title" content="OfficeAIM Prompt Vault — Guided engineering prompt library">
+    <meta name="twitter:description"
+        content="Engineering prompts ready to copy, customize, and inject into your AI workflows (ChatGPT, Gemini, Claude).">
+    <meta name="twitter:image" content="https://officeaim.com/images/hero.webp">
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css?v=20261019">
+    <link rel="stylesheet" href="../landing-new.css?v=20261019">
+    <style>
+        body {
+            background-color: #0A0F1D;
+            color: #ffffff;
+        }
+
+        .vault-page-container {
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 8rem 1.5rem 5rem;
+        }
+
+        .vault-breadcrumb {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.82rem;
+            color: #94A3B8;
+            margin-bottom: 1.5rem;
+        }
+
+        .vault-breadcrumb a {
+            color: #00F0FF;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .vault-breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .vault-header {
+            text-align: center;
+            margin-bottom: 2.75rem;
+        }
+
+        .vault-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.95rem;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 9999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #00F0FF;
+            margin-bottom: 1rem;
+        }
+
+        .vault-title {
+            font-size: clamp(2.2rem, 5vw, 3.2rem);
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 0.85rem;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .vault-subtitle {
+            font-size: 1.08rem;
+            color: #94A3B8;
+            max-width: 760px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .vault-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .vault-search-wrap {
+            position: relative;
+            max-width: 580px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .vault-search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748B;
+            font-size: 1rem;
+            pointer-events: none;
+        }
+
+        .vault-search-input {
+            width: 100%;
+            background: rgba(13, 19, 33, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            padding: 0.9rem 1rem 0.9rem 2.8rem;
+            color: #ffffff;
+            font-size: 0.94rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        .vault-search-input:focus {
+            outline: none;
+            border-color: #00F0FF;
+            box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.15);
+        }
+
+        .vault-filters {
+            display: flex;
+            justify-content: center;
+            gap: 0.55rem;
+            flex-wrap: wrap;
+        }
+
+        .vault-filter-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #94A3B8;
+            padding: 0.55rem 1.15rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .vault-filter-btn:hover,
+        .vault-filter-btn.active {
+            background: rgba(0, 240, 255, 0.15);
+            border-color: #00F0FF;
+            color: #ffffff;
+            box-shadow: 0 0 16px rgba(0, 240, 255, 0.18);
+        }
+
+        .vault-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .prompt-vault-card {
+            background: rgba(13, 19, 33, 0.82);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 1.65rem;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.25s ease;
+            backdrop-filter: blur(12px);
+        }
+
+        .prompt-vault-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 240, 255, 0.45);
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45), 0 0 20px rgba(0, 240, 255, 0.14);
+        }
+
+        .prompt-card-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.95rem;
+            margin-bottom: 0.85rem;
+        }
+
+        .prompt-card-emoji {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .prompt-card-tag {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #00F0FF;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.28);
+            padding: 0.18rem 0.58rem;
+            border-radius: 6px;
+            margin-bottom: 0.35rem;
+        }
+
+        .prompt-card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+            line-height: 1.35;
+        }
+
+        .prompt-card-desc {
+            font-size: 0.9rem;
+            color: #94A3B8;
+            line-height: 1.58;
+            margin: 0 0 1rem;
+        }
+
+        .prompt-snippet-box {
+            background: rgba(4, 7, 15, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 10px;
+            padding: 0.9rem;
+            font-family: 'Inter', monospace;
+            font-size: 0.79rem;
+            color: #CBD5E1;
+            line-height: 1.55;
+            margin-bottom: 1.2rem;
+            max-height: 150px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .vault-param {
+            color: #FF7A00;
+            background: rgba(255, 122, 0, 0.12);
+            border: 1px solid rgba(255, 122, 0, 0.35);
+            padding: 0.05rem 0.35rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .btn-copy-prompt {
+            margin-top: auto;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 240, 255, 0.45);
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.16), rgba(6, 182, 212, 0.28));
+            color: #ffffff;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-copy-prompt:hover {
+            background: linear-gradient(135deg, #00F0FF, #06b6d4);
+            color: #0A0F1D;
+            box-shadow: 0 0 18px rgba(0, 240, 255, 0.35);
+        }
+
+        .btn-copy-prompt.copied {
+            background: rgba(255, 122, 0, 0.2);
+            border-color: #FF7A00;
+            color: #FF7A00;
+        }
+
+        .vault-empty {
+            display: none;
+            text-align: center;
+            padding: 3rem 1.5rem;
+            color: #94A3B8;
+            background: rgba(13, 19, 33, 0.6);
+            border: 1px dashed rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+        }
+
+        /* Cowboy Multi-LLM Launcher Modal (Prompt Vault) */
+        .cowboy-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(3, 6, 14, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 999999;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .cowboy-modal {
+            background: #0B1120;
+            border: 1px solid rgba(34, 211, 238, 0.35);
+            border-radius: 18px;
+            max-width: 580px;
+            width: 100%;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(6, 182, 212, 0.2);
+            animation: cowboyPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes cowboyPop {
+            0% { transform: scale(0.92); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .cowboy-header {
+            padding: 1.5rem 1.75rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .cowboy-header-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .cowboy-header h3 {
+            color: #ffffff;
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .cowboy-close-btn {
+            background: transparent;
+            border: none;
+            color: #94A3B8;
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0.25rem;
+        }
+
+        .cowboy-close-btn:hover {
+            color: #ffffff;
+        }
+
+        .cowboy-copy-alert {
+            margin: 0 1.75rem 1.25rem;
+            background: rgba(34, 211, 238, 0.12);
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #E2E8F0;
+            font-size: 0.88rem;
+        }
+
+        .cowboy-launcher-grid {
+            padding: 0 1.75rem 1.75rem;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        @media (max-width: 520px) {
+            .cowboy-launcher-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cowboy-tile {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .cowboy-tile:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(34, 211, 238, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .cowboy-tile-icon {
+            font-size: 1.5rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .cowboy-tile-text strong {
+            display: block;
+            font-size: 0.92rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .cowboy-tile-text span {
+            font-size: 0.75rem;
+            color: #94A3B8;
+        }
+
+        .cowboy-drawer-toggle {
+            padding: 1rem 1.75rem;
+            background: rgba(0, 0, 0, 0.25);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-size: 0.82rem;
+            color: #94A3B8;
+        }
+
+        .cowboy-drawer-toggle:hover {
+            color: #ffffff;
+        }
+
+        .cowboy-drawer-body {
+            display: none;
+            max-height: 280px;
+            overflow-y: auto;
+            background: #070B14;
+            padding: 1.25rem 1.75rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 0.85rem;
+            color: #CBD5E1;
+            line-height: 1.6;
+        }
+
+        .prompt-header {
+            display: block;
+            color: var(--accent-secondary, #00F0FF);
+            font-weight: 700;
+            margin-top: 1.15rem;
+            margin-bottom: 0.35rem;
+            font-size: 0.92rem;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.15);
+            padding-bottom: 0.2rem;
+            letter-spacing: -0.01em;
+        }
+
+        .prompt-header:first-child {
+            margin-top: 0;
+        }
+
+        .prompt-marker {
+            color: #F59E0B;
+            background: rgba(245, 158, 11, 0.12);
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            font-weight: 600;
+            display: inline-block;
+            margin: 0.1rem 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sticky Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">
+                <img src="../images/favicon.png" alt="OfficeAIM logo" class="logo-img">
+            </a>
+            <ul class="nav-links">
+                <li><a href="../learn.html" class="nav-link" style="color: var(--accent-secondary); font-weight: 700;">Learn</a></li>
+                <li class="nav-item-dropdown">
+                    <a href="#resources" class="nav-link">Resources <svg class="dropdown-arrow" width="12" height="12"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-inner">
+                            <div class="mega-menu-col">
+                                <h4>Free tools &amp; generators</h4>
+                                <a href="../skills.html" class="mega-link">
+                                    <div class="mega-icon">⚡</div>
+                                    <div class="mega-text">
+                                        <strong>Skills</strong>
+                                        <span>26 modular agent skills ready to install</span>
+                                    </div>
+                                </a>
+                                <a href="../prompt-generator.html" class="mega-link">
+                                    <div class="mega-icon">⭐</div>
+                                    <div class="mega-text">
+                                        <strong>Prompt Generator</strong>
+                                        <span>Parametric meta-prompts calibrated for LLMs</span>
+                                    </div>
+                                </a>
+                                <a href="../resources/website-creator.html" class="mega-link">
+                                    <div class="mega-icon">🎨</div>
+                                    <div class="mega-text">
+                                        <strong>AI SVG Logo Lab</strong>
+                                        <span>Vector design studio &amp; web architecture coach</span>
+                                    </div>
+                                </a>
+                                <a href="../resources/qr-generator.html" class="mega-link">
+                                    <div class="mega-icon">🔲</div>
+                                    <div class="mega-text">
+                                        <strong>AI QR Generator</strong>
+                                        <span>Branded high-contrast QR codes, zero fees</span>
+                                    </div>
+                                </a>
+                                <a href="../resources/workflows.html" class="mega-link">
+                                    <div class="mega-icon">🔄</div>
+                                    <div class="mega-text">
+                                        <strong>n8n Automation Vault</strong>
+                                        <span>98 ready-to-import n8n JSON pipelines</span>
+                                    </div>
+                                </a>
+                                <a href="../resources/free-stack-kit.html" class="mega-link">
+                                    <div class="mega-icon">📦</div>
+                                    <div class="mega-text">
+                                        <strong>Free Stack Kit</strong>
+                                        <span>Curated agent skills pack &amp; step-by-step guide</span>
+                                    </div>
+                                </a>
+                                <a href="../board.html" class="mega-link">
+                                    <div class="mega-icon">👥</div>
+                                    <div class="mega-text">
+                                        <strong>The AI Board</strong>
+                                        <span>Meet your 19 specialist agents — free to explore</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="../community.html" class="nav-link">Community</a></li>
+                <li><a id="nav-news-link" href="../news.html" class="nav-link">News</a></li>
+            </ul>
+            <div class="nav-ctas">
+                <a href="/hub" class="btn btn-primary">Enter Campus →</a>
+            </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="vault-page-container">
+        <div class="vault-breadcrumb">
+            <a href="../learn.html">← Back to Learn</a>
+            <span>/</span>
+            <span>Prompt vault</span>
+        </div>
+
+        <header class="vault-header">
+            <div class="vault-eyebrow">
+                <span>⚡ Guided engineering prompt library</span>
+            </div>
+            <h1 class="vault-title">OfficeAIM prompt vault</h1>
+            <p class="vault-subtitle">
+                Engineering prompts ready to copy, customize, and inject into your AI workflows (ChatGPT, Gemini, Claude). Replace the amber <span class="vault-param">[bracketed variables]</span> with your project details before sending.
+            </p>
+        </header>
+
+        <section class="vault-controls" aria-label="Prompt filters and search">
+            <div class="vault-search-wrap">
+                <span class="vault-search-icon">🔍</span>
+                <input
+                    type="search"
+                    id="vaultSearchInput"
+                    class="vault-search-input"
+                    placeholder="Search by keyword, stack, or use case (e.g. Supabase, n8n, RLS, UX, JSON)..."
+                    aria-label="Search prompts by keyword"
+                />
+            </div>
+
+            <div class="vault-filters" id="vaultFilterTabs">
+                <button class="vault-filter-btn active" data-category="all">All prompts (15)</button>
+                <button class="vault-filter-btn" data-category="Automation">Automation</button>
+                <button class="vault-filter-btn" data-category="Code &amp; dev">Code &amp; dev</button>
+                <button class="vault-filter-btn" data-category="Agents &amp; workflows">Agents &amp; workflows</button>
+                <button class="vault-filter-btn" data-category="Technical copywriting">Technical copywriting</button>
+                <button class="vault-filter-btn" data-category="Strategy &amp; UX">Strategy &amp; UX</button>
+            </div>
+        </section>
+
+        <section id="promptVaultGrid" class="vault-grid" aria-live="polite"></section>
+        <div id="promptVaultEmpty" class="vault-empty">
+            No prompts found matching that query. Try another keyword or select "All prompts".
+        </div>
+    </main>
+
+    <!-- Prompt Cowboy Style Multi-LLM Launcher Modal -->
+    <div class="cowboy-backdrop" id="cowboyBackdrop">
+        <div class="cowboy-modal">
+            <div class="cowboy-header">
+                <div class="cowboy-header-title">
+                    <span id="cowboyIcon" style="font-size: 1.5rem;">⚡</span>
+                    <div>
+                        <h3 id="cowboyTitle" style="font-size: 1.25rem; font-weight: 700; color: #ffffff;">Prompt ready</h3>
+                        <span style="font-size: 0.78rem; color: #94A3B8;">Natural guided prompt copied to clipboard</span>
+                    </div>
+                </div>
+                <button class="cowboy-close-btn" onclick="closeCowboyModal()">&times;</button>
+            </div>
+
+            <div class="cowboy-copy-alert">
+                <span style="font-size: 1.25rem; color: #00F0FF;">✓</span>
+                <div>
+                    <strong style="color: #ffffff; display: block; margin-bottom: 0.15rem;">Prompt copied to clipboard!</strong>
+                    <div style="font-size: 0.82rem; color: #94A3B8; line-height: 1.4;">
+                        Select your preferred AI platform below to launch and paste (Cmd+V / Ctrl+V):
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Launch Tiles -->
+            <div class="cowboy-launcher-grid">
+                <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" class="cowboy-tile" onclick="trackLaunch('ChatGPT')">
+                    <div class="cowboy-tile-icon">💬</div>
+                    <div class="cowboy-tile-text">
+                        <strong>ChatGPT</strong>
+                        <span>Open chat &amp; paste</span>
+                    </div>
+                </a>
+
+                <a href="https://claude.ai/new" target="_blank" rel="noopener noreferrer" class="cowboy-tile" onclick="trackLaunch('Claude')">
+                    <div class="cowboy-tile-icon">🧠</div>
+                    <div class="cowboy-tile-text">
+                        <strong>Claude</strong>
+                        <span>Open Anthropic Claude</span>
+                    </div>
+                </a>
+
+                <a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer" class="cowboy-tile" onclick="trackLaunch('Gemini')">
+                    <div class="cowboy-tile-icon">✨</div>
+                    <div class="cowboy-tile-text">
+                        <strong>Google Gemini</strong>
+                        <span>Launch in Gemini</span>
+                    </div>
+                </a>
+
+                <a href="https://www.perplexity.ai/" target="_blank" rel="noopener noreferrer" class="cowboy-tile" onclick="trackLaunch('Perplexity')">
+                    <div class="cowboy-tile-icon">🔍</div>
+                    <div class="cowboy-tile-text">
+                        <strong>Perplexity</strong>
+                        <span>Search &amp; reasoning</span>
+                    </div>
+                </a>
+
+                <div class="cowboy-tile" style="grid-column: span 2;" onclick="copyAgainAlert()">
+                    <div class="cowboy-tile-icon">💻</div>
+                    <div class="cowboy-tile-text">
+                        <strong>OpenCode / Local AI (Cursor, Ollama, Antigravity)</strong>
+                        <span>Prompt is in clipboard — ready to paste into system instructions</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expandable Prompt Preview Drawer -->
+            <div class="cowboy-drawer-toggle" onclick="togglePromptDrawer()">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span>👁️</span>
+                    <span>Preview guided prompt &amp; customization markers</span>
+                </div>
+                <span id="drawerArrow" style="font-weight: 700; color: #00F0FF;">↓</span>
+            </div>
+            <div class="cowboy-drawer-body" id="cowboyDrawerBody">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                    <span style="font-size: 0.78rem; color: #94A3B8; font-weight: 600;">Replace the amber [bracketed markers] with your project details:</span>
+                    <button onclick="copyAgainAlert()" style="background: rgba(34,211,238,0.15); border: 1px solid rgba(34,211,238,0.3); color: #00F0FF; font-size: 0.75rem; padding: 0.25rem 0.6rem; border-radius: 6px; cursor: pointer; font-weight: 600;">Copy again 📋</button>
+                </div>
+                <div id="cowboyDrawerContent" style="white-space: pre-wrap;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" style="border-top: 1px solid rgba(255, 255, 255, 0.05); padding: 4rem 1.5rem; text-align: center;">
+        <div class="container">
+            <p style="color: #64748B; font-size: 0.85rem; margin: 0 0 0.5rem;">
+                © 2026 OfficeAIM. Autonomous AI Systems &amp; Next-Gen Business Infrastructure.
+            </p>
+            <p style="color: #475569; font-size: 0.78rem; margin: 0;">
+                All tools are open-source and free for educational use. · <a href="../policy.html" style="color: inherit; text-decoration: none;">Privacy &amp; terms</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        const PROMPT_VAULT_DATA = [
+            {
+                id: "auto-n8n-webhook",
+                emoji: "⚡",
+                title: "n8n & Supabase webhook flow architect",
+                category: "Automation",
+                description: "Designs fault-tolerant automated pipelines connecting database events to external services without middleware servers.",
+                prompt: `# Attribution & Open License
+Generated courtesy of OfficeAIM (https://officeaim.com | @office.aim). Free for open personal, educational, and commercial adaptation. You are encouraged to customize parameters, brand voice, and colors to match your organization.
+
+# Role & Purpose
+You are a Senior Automation Architect specializing in n8n and Supabase. Your mission is to design deterministic, fault-tolerant webhook pipelines that connect database events to external APIs with zero middleware overhead.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent connects new student onboarding rows in Supabase directly to Brevo transactional emails and Telegram admin notifications through an n8n webhook with HMAC header validation and automatic retry backoff.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Trigger Event: [Insert Trigger Event, e.g. INSERT on Supabase leads table]
+- Destination Service: [Insert Destination Service, e.g. Brevo SMTP, Slack, Stripe, Google Sheets]
+- Incoming Payload Schema: [Paste JSON Payload Schema Here]
+- Retry & Error Handling Rule: [Define Retry / Error Fallback Rule]
+
+# Operating Rules & Guidelines
+1. Deliver the node-by-node n8n architecture (Webhook -> Set/Transform -> IF -> HTTP Request / Native Node -> Error Trigger).
+2. Provide exact JSON and JavaScript expressions to map and sanitize the incoming payload.
+3. Include security configuration to validate request headers (Header Auth / HMAC Secret) before processing.`
+            },
+            {
+                id: "auto-json-transformer",
+                emoji: "🔄",
+                title: "Raw data to structured JSON transformer",
+                category: "Automation",
+                description: "Converts messy text, emails, or transcripts into validated JSON payloads ready for APIs or SQL insertion.",
+                prompt: `# Attribution & Open License
+Generated courtesy of OfficeAIM (https://officeaim.com | @office.aim). Free for open personal, educational, and commercial adaptation. You are encouraged to customize parameters, brand voice, and colors to match your organization.
+
+# Role & Purpose
+You are a Structured Data Extraction and Normalization Engine. Your mission is to parse unstructured emails, meeting transcripts, or scraped text and output strictly validated JSON payloads ready for REST APIs or PostgreSQL insertion.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent transforms raw YouTube research transcripts from NotebookLM into clean JSON lesson seeds with strict ISO timestamps, module slugs, and quiz arrays ready for automated SQL seeding.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Raw Input Data: [Paste Raw Text, Email, or Transcript Here]
+- Required Schema Fields: [Insert Required JSON Keys, e.g. full_name, email, intent, urgency_score]
+- Typing & Null Handling Rules: [Define Data Types & Null Fallback Rules]
+
+# Operating Rules & Guidelines
+1. Respond ONLY with a valid JSON block, with zero preamble or markdown commentary.
+2. Normalize all dates to ISO 8601 (YYYY-MM-DDTHH:MM:SSZ) and strip redundant whitespace.
+3. If a required field is missing from the source, assign null and append a "_validation_warnings" array listing the missing keys.`
+            },
+            {
+                id: "auto-brevo-transactional",
+                emoji: "📬",
+                title: "Transactional email & alert sequence orchestrator",
+                category: "Automation",
+                description: "Automates operational emails and real-time system alerts triggered by user state changes.",
+                prompt: `# Attribution & Open License
+Generated courtesy of OfficeAIM (https://officeaim.com | @office.aim). Free for open personal, educational, and commercial adaptation. You are encouraged to customize parameters, brand voice, and colors to match your organization.
+
+# Role & Purpose
+You are a Lifecycle & Transactional Email Automation Engineer. Your mission is to architect event-driven email sequences and instant webhook alerts with idempotency protection and high-deliverability templates.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent dispatches instant booking confirmations and blueprint summaries via Brevo SMTP whenever a builder completes the Web Blueprint Studio wizard, ensuring zero duplicate sends.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- User Action / System Event: [Insert User Action or State Change]
+- SMTP / API Provider: [Insert Provider, e.g. Brevo API, Resend, Supabase Edge Function]
+- Dynamic Merge Variables: [Insert Dynamic Email Variables, e.g. {{first_name}}, {{booking_slot}}]
+- Primary Call-to-Action Goal: [Define Primary CTA Goal]
+
+# Operating Rules & Guidelines
+1. Provide the exact JSON payload for the POST request to the transactional email API.
+2. Include idempotency key logic to prevent duplicate sends during network retries.
+3. Write high-contrast plain-text and clean HTML message bodies with zero corporate filler.`
+            },
+            {
+                id: "dev-rls-supabase",
+                emoji: "🛡️",
+                title: "PostgreSQL RLS policy & schema auditor",
+                category: "Code & dev",
+                description: "Audits Supabase tables to generate airtight Row-Level Security policies, performance indexes, and idempotent SQL migrations.",
+                prompt: `# Attribution & Open License
+Generated courtesy of OfficeAIM (https://officeaim.com | @office.aim). Free for open personal, educational, and commercial adaptation. You are encouraged to customize parameters, brand voice, and colors to match your organization.
+
+# Role & Purpose
+You are a PostgreSQL Database Architect and Supabase Security Specialist. Your mission is to audit relational schemas and generate airtight Row-Level Security (RLS) policies, foreign-key indexes, and idempotent SQL migrations.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent hardens the Campus Hub and Library Tracker tables in Supabase, ensuring students only read/update their own records while whitelisted admin UUIDs retain full telemetry visibility.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Current SQL Schema: [Paste Raw SQL Schema Here]
+- System User Roles: [Insert User Roles, e.g. anon, authenticated, admin]
+- Access Rules per Table: [Define Read/Write Access Rules per Table]
+
+# Operating Rules & Guidelines
+1. Write ALTER TABLE ... ENABLE ROW LEVEL SECURITY statements for every exposed table.
+2. Generate granular policies for SELECT, INSERT, UPDATE, and DELETE using (select auth.uid()) to optimize the query planner.
+3. Add B-Tree or GIN indexes on all foreign keys and RLS-filtered columns.
+4. Wrap the script in a safe, idempotent transaction (DROP POLICY IF EXISTS before creation).`
+            },
+            {
+                id: "dev-cleanroom-refactor",
+                emoji: "🧹",
+                title: "Clean-room frontend component refactorer",
+                category: "Code & dev",
+                description: "Rewrites monolithic UI components into modular, accessible, zero-bloat code while preserving visual parity.",
+                prompt: `# Attribution & Open License
+Generated courtesy of OfficeAIM (https://officeaim.com | @office.aim). Free for open personal, educational, and commercial adaptation. You are encouraged to customize parameters, brand voice, and colors to match your organization.
+
+# Role & Purpose
+You are a Staff Frontend Architect. Your mission is to refactor monolithic UI components into clean, modular, accessible, and zero-bloat production code while strictly preserving visual parity.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent refactors complex React dashboard views and standalone HTML studios to eliminate redundant re-renders, enforce WCAG 2.1 AA contrast, and keep bundle sizes ultra-light.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Technology Stack: [Insert Tech Stack, e.g. React + Tailwind, Vanilla HTML/CSS/JS]
+- Current Source Code: [Paste Raw Code Here]
+- Performance & UI Constraints: [Define Performance or Layout Constraints]
+
+# Operating Rules & Guidelines
+1. Eliminate redundant state, unnecessary side effects, and dead code without altering functional behavior.
+2. Enforce semantic accessibility (ARIA attributes, keyboard navigation, and focus-visible states).
+3. Decouple data logic from presentation and return complete, copy-pasteable code with zero "// TODO" placeholders.`
+            },
+            {
+                id: "dev-forensic-debugger",
+                emoji: "🐛",
+                title: "Forensic async & CORS error debugger",
+                category: "Code & dev",
+                description: "Isolates the root cause of network failures, rejected promises, or CORS blocks and delivers the exact production patch.",
+                prompt: `# Attribution & Open License
+Generated courtesy of OfficeAIM (https://officeaim.com | @office.aim). Free for open personal, educational, and commercial adaptation. You are encouraged to customize parameters, brand voice, and colors to match your organization.
+
+# Role & Purpose
+You are a Production Systems Diagnostics and Debugging Engineer. Your mission is to isolate the exact root cause of async race conditions, CORS rejections, and API timeouts, delivering a complete surgical fix.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent diagnosed and resolved concurrent Web Speech API synthesis loops in the Mascot Assistant and YouTube iframe origin blocks across local and Netlify Edge environments.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Error Log / Stack Trace: [Paste Error Log or Stack Trace Here]
+- Execution Environment: [Insert Runtime Environment, e.g. Vite Local, Netlify Edge, iOS Safari]
+- Affected Code Snippet: [Paste Affected Code Snippet Here]
+
+# Operating Rules & Guidelines
+1. State the Exact Root Cause in a concise 2-sentence technical explanation.
+2. Provide complete patched code with explicit error boundaries (try/catch, request timeouts, HTTP status validation).
+3. Include a quick verification command or browser test step to confirm the regression is closed.`
+            },
+            {
+                id: "agent-system-prompt",
+                emoji: "🤖",
+                title: "Deterministic agent system prompt designer",
+                category: "Agents & workflows",
+                description: "Structures master system instructions with role boundaries, negative constraints, strict output schemas, and edge-case rules.",
+                prompt: `# Attribution & Open License
+Generated courtesy of OfficeAIM (https://officeaim.com | @office.aim). Free for open personal, educational, and commercial adaptation. You are encouraged to customize parameters, brand voice, and colors to match your organization.
+
+# Role & Purpose
+You are a Principal Prompt Engineer specializing in Autonomous AI Agents. Your mission is to craft deterministic System Prompts with unambiguous role boundaries, negative constraints, and strict output schemas.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent architects the system instructions for the 19 specialist agents on the AI Board (including Gema and the Admin Command Pilot), guaranteeing zero persona drift or hallucinated tool calls.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Agent Role & Identity: [Insert Agent Role & Persona]
+- Primary Task & Measurable Objective: [Define Primary Task]
+- Expected Output Format: [Insert Output Format, e.g. Markdown, JSON, SQL]
+- Strict Negative Constraints: [List What the Agent Must Never Do]
+
+# Operating Rules & Guidelines
+1. Structure the generated System Prompt into 5 clean blocks: # Role & Mission, # Input Contract, # Step-by-Step Execution Protocol, # Negative Constraints, and # Output Template.
+2. Include fallback handling for incomplete or ambiguous user inputs.
+3. Ban generic filler phrases so the agent responds with immediate technical signal.`
+            },
+            {
+                id: "agent-multi-router",
+                emoji: "🧠",
+                title: "Multi-agent router & task decomposer",
+                category: "Agents & workflows",
+                description: "Breaks complex projects into sequential or parallel specialist agent tasks with explicit input/output handoff contracts.",
+                prompt: `# Attribution & Open License
+Generated courtesy of OfficeAIM (https://officeaim.com | @office.aim). Free for open personal, educational, and commercial adaptation. You are encouraged to customize parameters, brand voice, and colors to match your organization.
+
+# Role & Purpose
+You are a Master Multi-Agent Systems Orchestrator. Your mission is to decompose complex software or content goals into an executable graph of specialist agents with strict input/output handoff contracts.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent coordinates the 5-rule routing protocol where Gema triages user goals and delegates specialized tasks across architecture, copywriting, SQL seeding, and visual QA agents.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Global Project Objective: [Describe Global Project Objective]
+- Available Agents or Tools: [List Available Agents or MCP Tools]
+- Final Validation Criterion: [Define Final Quality Gate Criterion]
+
+# Operating Rules & Guidelines
+1. Map the sequential and parallel execution graph specifying which specialist agent owns each stage.
+2. Define the exact handoff contract (data schema Agent A passes as input to Agent B).
+3. Establish a cross-verification Quality Gate protocol before marking the workflow complete.`
+            },
+            {
+                id: "agent-gemini-vision",
+                emoji: "👁️",
+                title: "Structured OCR extractor with Gemini Vision",
+                category: "Agents & workflows",
+                description: "Calibrates multimodal vision models to extract inventories, invoices, or UI screenshots into high-precision JSON arrays.",
+                prompt: `# Attribution & Open License
+Generated courtesy of OfficeAIM (https://officeaim.com | @office.aim). Free for open personal, educational, and commercial adaptation. You are encouraged to customize parameters, brand voice, and colors to match your organization.
+
+# Role & Purpose
+You are a Multimodal Computer Vision Specialist (Gemini Flash / Pro Vision). Your mission is to extract structured tabular and inventory data from photos, invoices, or UI screenshots into high-precision JSON arrays.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent powers the Library & Loan Tracker and Stocked Aid vision scanners, extracting multiple book titles, authors, and expiration dates from a single shelf photo in under 3 seconds.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Image or Document Type: [Describe Image Type, e.g. Book shelf photo, Invoice, UI Screenshot]
+- Fields to Extract per Item: [Insert Target Fields per Item]
+- Output Normalization Language: [Insert Output Language, e.g. English, Dutch, Spanish]
+
+# Operating Rules & Guidelines
+1. Return a JSON array where each element represents a distinct item detected in the image.
+2. Include a "confidence_score" (0.0 to 1.0) for each extracted record.
+3. If text is partially occluded or blurry, mark the field as "[illegible]" rather than guessing or hallucinating values.`
+            },
+            {
+                id: "copy-antihype-value",
+                emoji: "🎯",
+                title: "Anti-hype value proposition writer for builders",
+                category: "Technical copywriting",
+                description: "Translates complex technical features into clear, measurable, outcome-driven headlines that pass the 5-second test.",
+                prompt: `# Attribution & Open License
+Generated courtesy of OfficeAIM (https://officeaim.com | @office.aim). Free for open personal, educational, and commercial adaptation. You are encouraged to customize parameters, brand voice, and colors to match your organization.
+
+# Role & Purpose
+You are a Product Marketing Architect specializing in developer tools and technical SaaS. Your mission is to translate complex engineering capabilities into clear, outcome-driven copy with zero corporate buzzwords.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent writes the hero headlines, 3-step "How it works" playbooks, and cost-comparison matrices across our open-source studios so visitors grasp the exact value in under 5 seconds.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Product / Tool Name: [Insert Product or Tool Name]
+- Technical Problem Solved: [Describe Technical Problem Solved]
+- Ideal User Profile: [Insert Target Builder or User Profile]
+- Concrete Time or Cost Savings Metric: [Define Measurable Savings Metric]
+
+# Operating Rules & Guidelines
+1. Deliver 3 Hero Headline + Subheadline options in clean sentence case that pass the 5-Second Clarity Test.
+2. Structure 3 Feature -> Technical Mechanism -> Measurable Outcome blocks.
+3. Provide high-contrast microcopy for the primary CTA button and a zero-friction trust guarantee.`
+            },
+            {
+                id: "copy-readme-docs",
+                emoji: "📘",
+                title: "Executable technical documentation & README generator",
+                category: "Technical copywriting",
+                description: "Creates quickstart guides, text architecture diagrams, and foolproof installation steps for code repositories.",
+                prompt: `# Attribution & Open License
+Generated courtesy of OfficeAIM (https://officeaim.com | @office.aim). Free for open personal, educational, and commercial adaptation. You are encouraged to customize parameters, brand voice, and colors to match your organization.
+
+# Role & Purpose
+You are a Staff Developer Advocate and Technical Writer. Your mission is to author scannable, executable README.md files and architectural playbooks that let any developer run a repository in under 5 minutes.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent documents our Jamstack 2026 starter kits, Supabase migration guides, and Antigravity SKILL.md blueprints with copy-pasteable terminal commands and Mermaid data-flow diagrams.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Project / Repository Name: [Insert Repository Name]
+- Core Technology Stack: [Insert Tech Stack]
+- Install Commands & Environment Variables: [List Install Commands & Env Variable Names]
+
+# Operating Rules & Guidelines
+1. Start with a 2-sentence architectural overview followed by a Mermaid.js data flow diagram.
+2. Document prerequisites and environment configuration (.env.example) without exposing secrets.
+3. Write a quickstart guide in 5 copy-pasteable commands or fewer, plus a top-3 troubleshooting table.`
+            },
+            {
+                id: "copy-launch-post",
+                emoji: "🚀",
+                title: "Developer community launch post architect",
+                category: "Technical copywriting",
+                description: "Crafts technical launch posts for LinkedIn, X, or Product Hunt focused on real architecture and practical builder value.",
+                prompt: `# Attribution & Open License
+Generated courtesy of OfficeAIM (https://officeaim.com | @office.aim). Free for open personal, educational, and commercial adaptation. You are encouraged to customize parameters, brand voice, and colors to match your organization.
+
+# Role & Purpose
+You are a Technical Founder sharing engineering milestones in public (Build in Public). Your mission is to craft high-signal launch posts for LinkedIn, X, and Product Hunt that resonate with builders and decision-makers.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent structures our weekly release announcements for the AI QR Studio, SVG Logo Lab, and 26-skill library, focusing on the agency costs eliminated and the underlying open architecture.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Shipped Milestone or Feature: [Insert Shipped Milestone or Tool]
+- How It Works Under the Hood: [Explain Core Architectural Mechanism]
+- Project or Live Demo URL: [Insert Project or Demo URL]
+
+# Operating Rules & Guidelines
+1. Open in line 1 with the exact technical friction or cost you eliminated (never start with "I'm excited to announce").
+2. Break down the key architectural decisions in 3 scannable bullet points.
+3. Conclude with an open-ended engineering question to spark developer discussion.`
+            },
+            {
+                id: "ux-onboarding-audit",
+                emoji: "🔍",
+                title: "Onboarding UX friction & drop-off analyzer",
+                category: "Strategy & UX",
+                description: "Audits every step of user signup and activation to strip unnecessary form fields and accelerate time-to-first-value.",
+                prompt: `# Attribution & Open License
+Generated courtesy of OfficeAIM (https://officeaim.com | @office.aim). Free for open personal, educational, and commercial adaptation. You are encouraged to customize parameters, brand voice, and colors to match your organization.
+
+# Role & Purpose
+You are a Principal Product Designer and Conversion Optimization (CRO) Specialist. Your mission is to audit user onboarding flows, eliminate unnecessary cognitive load, and minimize Time-to-First-Value (TTFV).
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent simplified our Learn directory to 3 direct paths and added 1-click Quick-Start Presets to the Web Blueprint Studio so visitors generate their first deliverable in under 30 seconds.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Current Step-by-Step Flow: [Describe Current Onboarding Flow Step by Step]
+- Core Activation Action (Aha! Moment): [Insert Core Activation Action]
+- Observed Drop-Off Point or User Complaints: [Paste User Complaints or Drop-Off Notes]
+
+# Operating Rules & Guidelines
+1. Build a friction map scoring each step across Cognitive Load, Mechanical Effort, and Trust Anxiety.
+2. Propose a streamlined flow that eliminates at least 40% of clicks or form fields.
+3. Design interactive Empty States that guide the user to their first win immediately.`
+            },
+            {
+                id: "ux-jamstack-economics",
+                emoji: "⚖️",
+                title: "Jamstack vs SaaS unit economics evaluator",
+                category: "Strategy & UX",
+                description: "Calculates real infrastructure costs, API rate limits, and annual savings of decoupled architectures vs monthly SaaS subscriptions.",
+                prompt: `# Attribution & Open License
+Generated courtesy of OfficeAIM (https://officeaim.com | @office.aim). Free for open personal, educational, and commercial adaptation. You are encouraged to customize parameters, brand voice, and colors to match your organization.
+
+# Role & Purpose
+You are a Cloud Infrastructure Financial Architect and Jamstack Strategist. Your mission is to calculate transparent unit economics comparing recurring SaaS bloat against decoupled serverless stacks.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent models the Jamstack 2026 Cost Calculator ($1/mo MVP vs $113/mo Pro Scale across Gemini, Hostinger, GitHub, Vercel, Supabase, Stripe, Brevo, Senja, and PostHog).
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Current SaaS Tools & Monthly Spend: [List Current SaaS Tools & Monthly Cost]
+- Estimated Monthly Traffic or Active Users: [Insert Monthly Users or Request Volume]
+- Proposed Decoupled Stack: [Insert Proposed Stack, e.g. Vercel + Supabase + Gemini Flash]
+
+# Operating Rules & Guidelines
+1. Deliver a 12-month and 24-month Total Cost of Ownership (TCO) comparison table (MVP Stage vs Scale Stage).
+2. Identify hidden rate-limit bottlenecks (bandwidth, API token usage, database row limits).
+3. Provide a zero-downtime phased migration plan to retire redundant recurring subscriptions.`
+            },
+            {
+                id: "ux-vertical-slice-mvp",
+                emoji: "🗺️",
+                title: "Vertical-slice MVP scope architect",
+                category: "Strategy & UX",
+                description: "Cuts software scope down to a single end-to-end functional workflow that can be shipped and validated in under 5 days.",
+                prompt: `# Attribution & Open License
+Generated courtesy of OfficeAIM (https://officeaim.com | @office.aim). Free for open personal, educational, and commercial adaptation. You are encouraged to customize parameters, brand voice, and colors to match your organization.
+
+# Role & Purpose
+You are a Staff Product Manager and Lean MVP Architect. Your mission is to apply ruthless scope triage, cutting bloated roadmaps down to a single end-to-end "Vertical Slice" that can ship in 5 days.
+
+# Working Example from OfficeAIM
+At OfficeAIM, this agent scoped the standalone AI QR Code Studio and Library Vision Tracker so each tool launched as a self-contained, zero-dependency web application in a single sprint.
+
+# Customization Markers (Adapt to Your Project)
+Replace the bracketed markers below with your own project details before sending:
+- Full Product Concept: [Describe Full Product Idea]
+- #1 Critical User Action: [Define the Single Most Important User Action]
+- Timeline & Budget Constraint: [Insert Timeline & Budget Limit]
+
+# Operating Rules & Guidelines
+1. Define the strict "Golden Path": the only 3 screens or components required to validate core value today.
+2. Create the v1.0 Feature Graveyard listing features explicitly banned from the initial build and why.
+3. Output a 5-day engineering execution schedule with verifiable daily deliverables.`
+            }
+        ];
+
+        let activeVaultCategory = "all";
+        let currentVaultSearch = "";
+        let currentActivePrompt = "";
+        let isDrawerOpen = false;
+
+        function escapeVaultHtml(str) {
+            const div = document.createElement("div");
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function openVaultPromptLauncher(promptId) {
+            const found = PROMPT_VAULT_DATA.find((p) => p.id === promptId);
+            if (!found) return;
+
+            currentActivePrompt = found.prompt;
+            navigator.clipboard.writeText(currentActivePrompt).catch((err) => {
+                console.warn("Clipboard write failed:", err);
+            });
+
+            document.getElementById("cowboyIcon").textContent = found.emoji;
+            document.getElementById("cowboyTitle").textContent = found.title;
+
+            const escaped = escapeVaultHtml(found.prompt);
+            const formatted = escaped
+                .replace(/(^# [^\n]+)/gm, '<span class="prompt-header">$1</span>')
+                .replace(/(\[[^\]]+\])/g, '<span class="prompt-marker">$1</span>');
+
+            document.getElementById("cowboyDrawerContent").innerHTML = formatted;
+            document.getElementById("cowboyBackdrop").style.display = "flex";
+        }
+        window.openVaultPromptLauncher = openVaultPromptLauncher;
+
+        function closeCowboyModal() {
+            document.getElementById("cowboyBackdrop").style.display = "none";
+            if (isDrawerOpen) togglePromptDrawer();
+        }
+        window.closeCowboyModal = closeCowboyModal;
+
+        function togglePromptDrawer() {
+            const body = document.getElementById("cowboyDrawerBody");
+            const arrow = document.getElementById("drawerArrow");
+            isDrawerOpen = !isDrawerOpen;
+            body.style.display = isDrawerOpen ? "block" : "none";
+            arrow.textContent = isDrawerOpen ? "↑" : "↓";
+        }
+        window.togglePromptDrawer = togglePromptDrawer;
+
+        function copyAgainAlert() {
+            navigator.clipboard.writeText(currentActivePrompt).then(() => {
+                alert("Guided prompt re-copied to clipboard! Paste directly into ChatGPT, Claude, Gemini, or your local IDE instructions.");
+            });
+        }
+        window.copyAgainAlert = copyAgainAlert;
+
+        function trackLaunch(platform) {
+            console.log(`[OfficeAIM Prompt Vault Launcher]: Opening ${platform} with copied guided prompt.`);
+        }
+        window.trackLaunch = trackLaunch;
+
+        function renderPromptVault() {
+            const grid = document.getElementById("promptVaultGrid");
+            const emptyState = document.getElementById("promptVaultEmpty");
+            if (!grid) return;
+
+            const query = currentVaultSearch.trim().toLowerCase();
+            const filtered = PROMPT_VAULT_DATA.filter((item) => {
+                const matchesCategory =
+                    activeVaultCategory === "all" || item.category === activeVaultCategory;
+                const matchesQuery =
+                    !query ||
+                    item.title.toLowerCase().includes(query) ||
+                    item.category.toLowerCase().includes(query) ||
+                    item.description.toLowerCase().includes(query) ||
+                    item.prompt.toLowerCase().includes(query);
+                return matchesCategory && matchesQuery;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = "";
+                emptyState.style.display = "block";
+                return;
+            }
+
+            emptyState.style.display = "none";
+            grid.innerHTML = filtered
+                .map(
+                    (item) => `
+                <article class="prompt-vault-card" data-category="${escapeVaultHtml(item.category)}">
+                    <div class="prompt-card-top">
+                        <div class="prompt-card-emoji" aria-hidden="true">${item.emoji}</div>
+                        <div>
+                            <span class="prompt-card-tag">${escapeVaultHtml(item.category)}</span>
+                            <h2 class="prompt-card-title">${escapeVaultHtml(item.title)}</h2>
+                        </div>
+                    </div>
+                    <p class="prompt-card-desc">${escapeVaultHtml(item.description)}</p>
+                    <button type="button" class="btn-copy-prompt" onclick="openVaultPromptLauncher('${escapeVaultHtml(item.id)}')">
+                        <span>Copy &amp; launch prompt ⚡</span>
+                    </button>
+                </article>
+            `
+                )
+                .join("");
+        }
+
+        document.querySelectorAll("#vaultFilterTabs .vault-filter-btn").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                document
+                    .querySelectorAll("#vaultFilterTabs .vault-filter-btn")
+                    .forEach((b) => b.classList.remove("active"));
+                btn.classList.add("active");
+                activeVaultCategory = btn.getAttribute("data-category");
+                renderPromptVault();
+            });
+        });
+
+        const vaultSearchInput = document.getElementById("vaultSearchInput");
+        if (vaultSearchInput) {
+            vaultSearchInput.addEventListener("input", (e) => {
+                currentVaultSearch = e.target.value || "";
+                renderPromptVault();
+            });
+        }
+
+        window.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") closeCowboyModal();
+        });
+        document.getElementById("cowboyBackdrop").addEventListener("click", (e) => {
+            if (e.target.id === "cowboyBackdrop") closeCowboyModal();
+        });
+
+        renderPromptVault();
+    </script>
+</body>
+
+</html>

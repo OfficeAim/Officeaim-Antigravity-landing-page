@@ -51,7 +51,8 @@ Estimación del tiempo de desarrollo basado en las sesiones de trabajo registrad
 | **16/10/2026** | ~2.0 horas | Strategic Community transition (archived pricing), native AI QR Studio, standardized How It Works & Business Lesson across 4 pages, navbar cleanup & deploy |
 | **19/10/2026** | ~0.5 horas | Google site verification, subpágina dedicada de Skills y Prompt Generator, copy 100% en inglés, bento grid de comunidad y disclaimer |
 | **20/10/2026** | ~1.8 horas | Header con Resources dropdown, Learn minimalista (learn.html), Skills Prompt Cowboy launcher multi-LLM, auditoría 20 puntos SEO en Knowledge Hub, sitemap.xml, robots.txt, llms.txt, canonicals y Open Graph |
-| **TOTAL** | **~148.05 horas** | **Semana 7 de Desarrollo Intenso** |
+| **28/10/2026** | ~1.5 horas | Saneamiento YAML en `.agent/skills/`, expansión a 26 Skills, OfficeAIM Prompt Vault (`/learn/prompts`) con Launcher Cowboy Multi-LLM, n8n Automation Vault (`resources/workflows.html` con 98 workflows) y Dossier Técnico de 3 pestañas en Web Blueprint Studio |
+| **TOTAL** | **~149.55 horas** | **Semana 8 de Desarrollo Intenso** |
 ---
 *Nota: Estos tiempos son aproximados basados en la duración de las sesiones de terminal.*
 

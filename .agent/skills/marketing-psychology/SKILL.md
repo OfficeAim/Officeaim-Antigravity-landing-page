@@ -1,5 +1,6 @@
 ---
-description: Marketing Psychology — apply behavioral triggers, cognitive biases, and persuasion principles when writing copy, designing CTAs, structuring pricing, or building trust on any page
+name: marketing-psychology
+description: "Marketing Psychology — apply behavioral triggers, cognitive biases, and persuasion principles when writing copy, designing CTAs, structuring pricing, or building trust on any page."
 ---
 
 # Marketing Psychology
