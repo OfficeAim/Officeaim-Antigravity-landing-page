@@ -36,3 +36,16 @@ La sincronización es documental: el código permanece en OfficeAIM y el conocim
 1. **Todo el output visible en páginas web (`*.html`, componentes React públicos, títulos, subtítulos, filtros, botones, placeholders, descripciones de tarjetas y prompts/workflows) DEBE estar SIEMPRE 100% en INGLÉS**, incluso si el usuario redacta el pedido o los ejemplos de etiquetas en español.
 2. **Sentence Case obligatorio:** Todos los titulares (`h1`, `h2`, `h3`, títulos de tarjetas) deben usar *sentence case* natural en inglés (solo la primera letra y nombres propios como `OfficeAIM`, `n8n`, `Supabase`, `Gemini`, `SQL`, `JSON`, `AI`, `LLM` en mayúscula).
 3. **Nunca preguntar si una página pública va en español o en inglés:** Asumir y aplicar siempre 100% inglés para la interfaz web, manteniendo la conversación con el usuario en español rioplatense.
+
+---
+
+# Guía Canónica e Inviolable de Arquitectura, RLS y Diseño (Suite de 6 Documentos Maestros)
+
+Cualquier nuevo componente, página, función serverless o tabla en Supabase debe cumplir estrictamente con las especificaciones de los **6 Documentos Maestros** alojados en `/Users/rodyfigueroa/Movies/Knowledge-Hub Obsidian/Knowledge-Hub/01-Proyectos/OfficeAIM/`:
+
+1. `01-PRD-Product-Requirements.md` (`[1] Product Requirement Document`)
+2. `02-TRD-Technical-Requirements.md` (`[2] Technical Requirement Document`)
+3. `03-App-Flow-Architecture.md` (`[3] App Flow`)
+4. `04-Design-Brief.md` (`[4] Design Brief`)
+5. `05-Backend-and-Database-Schema.md` (`[5] Backend & Background Schema`)
+6. `06-Implementation-Plan-and-Gaps.md` (`[6] Implementation Plan & Gap Analysis`)

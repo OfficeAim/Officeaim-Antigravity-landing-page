@@ -1,6 +1,17 @@
-# OfficeAim Landing Page
+# OfficeAim Landing Page & Ecosystem
 
-Premium dark landing page with innovation magazine aesthetic for OfficeAim.
+Premium dark landing page, open-source AI Resource Vault, and interactive SaaS LMS Campus (`https://officeaimhq.netlify.app` / `https://officeaim.com`).
+
+## 🛡️ Guía Canónica e Inviolable de Arquitectura, RLS y Diseño (Knowledge-Hub)
+
+Cualquier nuevo componente, página estática, vista React en `/hub`, función serverless o tabla/política RLS en Supabase **DEBE cumplir estrictamente** con las especificaciones de los **6 Documentos Maestros** alojados en la bóveda central de Obsidian (`/Users/rodyfigueroa/Movies/Knowledge-Hub Obsidian/Knowledge-Hub/01-Proyectos/OfficeAIM/`):
+
+1. **[01-PRD — Product Requirements Document](file:///Users/rodyfigueroa/Movies/Knowledge-Hub%20Obsidian/Knowledge-Hub/01-Proyectos/OfficeAIM/01-PRD-Product-Requirements.md):** Filosofía *100% Free & Open-Source Sovereignty* (Post-19 Oct), perfiles de usuario, inventario de módulos y KPIs.
+2. **[02-TRD — Technical Requirements Document](file:///Users/rodyfigueroa/Movies/Knowledge-Hub%20Obsidian/Knowledge-Hub/01-Proyectos/OfficeAIM/02-TRD-Technical-Requirements.md):** Arquitectura híbrida Jamstack (Static Root + React 19 Vite SPA en `/hub`), contrato del header `.navbar`, Launcher Multi-LLM Cowboy y seguridad.
+3. **[03-App-Flow — App Flow & User Journey Architecture](file:///Users/rodyfigueroa/Movies/Knowledge-Hub%20Obsidian/Knowledge-Hub/01-Proyectos/OfficeAIM/03-App-Flow-Architecture.md):** Mapa global de rutas y flujos de usuario en `skills.html`, `/learn/prompts`, `/resources/workflows.html`, `website-creator.html` y `/hub`.
+4. **[04-Design-Brief — Design Brief & Visual Identity System](file:///Users/rodyfigueroa/Movies/Knowledge-Hub%20Obsidian/Knowledge-Hub/01-Proyectos/OfficeAIM/04-Design-Brief.md):** Estética *Luxury Future Tech / Cyber Dark* (`#070A12`, `#0A0F1D`, `#00F0FF`, `#FF7A00`, `#10B981`), tipografía (`Outfit`, `Plus Jakarta Sans`, `JetBrains Mono`) y regla inquebrantable de **100% inglés con *sentence case***.
+5. **[05-Backend-Schema — Backend, Background Workflows & Database Schema](file:///Users/rodyfigueroa/Movies/Knowledge-Hub%20Obsidian/Knowledge-Hub/01-Proyectos/OfficeAIM/05-Backend-and-Database-Schema.md):** Diagrama ERD de las 9 tablas en Supabase PostgreSQL, políticas RLS, funciones `SECURITY DEFINER` (`SET search_path = ''`), IndexedDB offline y los 98 pipelines de n8n.
+6. **[06-Implementation-Plan — Implementation Plan, Audit & Gap Analysis](file:///Users/rodyfigueroa/Movies/Knowledge-Hub%20Obsidian/Knowledge-Hub/01-Proyectos/OfficeAIM/06-Implementation-Plan-and-Gaps.md):** Matriz de madurez actual, diagnóstico de brechas técnicas (Gaps #1 a #5) y hoja de ruta oficial.
 
 ## 🎨 Design System
 

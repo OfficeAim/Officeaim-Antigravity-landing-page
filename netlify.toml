@@ -43,6 +43,16 @@
   status = 200
 
 [[redirects]]
+  from = "/resources/website-creator"
+  to = "/resources/website-creator.html"
+  status = 200
+
+[[redirects]]
+  from = "/skills"
+  to = "/skills.html"
+  status = 200
+
+[[redirects]]
   from = "/admin/*"
   to = "/hub/index.html"
   status = 200

@@ -129,6 +129,25 @@
         .terminal-scroll::-webkit-scrollbar-thumb:hover {
             background: rgba(255,255,255,0.2);
         }
+
+        /* Protect canonical OfficeAIM navbar from Tailwind Preflight resets */
+        .navbar .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar .dropdown-arrow {
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+        .navbar .mega-link.active-mega-link {
+            border-left: 2px solid #00F0FF;
+            background: rgba(0, 240, 255, 0.06);
+        }
     </style>
 </head>
 <body class="min-h-screen relative antialiased selection:bg-brand-orange selection:text-white">
@@ -140,98 +159,88 @@
 
     <!-- Global Navigation Bar -->
     <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <a href="../index.html" class="nav-logo">
-                <div class="logo-icon">⚡</div>
-                <span class="logo-text">Office<span class="logo-highlight">AIM</span></span>
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">
+                <img src="../images/favicon.png" alt="OfficeAIM logo" class="logo-img">
             </a>
-
-            <div class="nav-links" id="navLinks">
-                <a href="../learn.html" class="nav-link">Learn</a>
-                
-                <!-- Resources Dropdown -->
-                <div class="nav-dropdown-wrapper">
-                    <button class="nav-link nav-dropdown-trigger" aria-expanded="false">
-                        Resources <span class="dropdown-chevron">▾</span>
-                    </button>
-                    <div class="nav-mega-dropdown">
-                        <a href="../skills.html" class="mega-dropdown-item">
-                            <span class="mega-item-icon">⚡</span>
-                            <div class="mega-item-text">
-                                <span class="mega-item-title">Skills</span>
-                                <span class="mega-item-desc">26 modular agent skills ready to install</span>
+            <ul class="nav-links">
+                <li><a href="../learn.html" class="nav-link">Learn</a></li>
+                <li class="nav-item-dropdown">
+                    <a href="#resources" class="nav-link" style="color: var(--accent-secondary); font-weight: 700;">Resources <svg class="dropdown-arrow" width="12" height="12"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-inner">
+                            <div class="mega-menu-col">
+                                <h4>Resource vault &amp; generators</h4>
+                                <a href="../skills.html" class="mega-link">
+                                    <div class="mega-icon">⚡</div>
+                                    <div class="mega-text">
+                                        <strong>Skills</strong>
+                                        <span>26 modular agent skills ready to install</span>
+                                    </div>
+                                </a>
+                                <a href="./workflows.html" class="mega-link">
+                                    <div class="mega-icon">🔄</div>
+                                    <div class="mega-text">
+                                        <strong>n8n Automation Vault</strong>
+                                        <span>98 ready-to-import n8n JSON pipelines</span>
+                                    </div>
+                                </a>
+                                <a href="../prompt-generator.html" class="mega-link">
+                                    <div class="mega-icon">⭐</div>
+                                    <div class="mega-text">
+                                        <strong>Prompt Generator</strong>
+                                        <span>Parametric meta-prompts calibrated for LLMs</span>
+                                    </div>
+                                </a>
+                                <a href="./website-creator.html" class="mega-link active-mega-link">
+                                    <div class="mega-icon">🎨</div>
+                                    <div class="mega-text">
+                                        <strong>AI SVG Logo Lab &amp; Web Studio</strong>
+                                        <span>Vector design studio &amp; web architecture coach</span>
+                                    </div>
+                                </a>
+                                <a href="./qr-generator.html" class="mega-link">
+                                    <div class="mega-icon">🔲</div>
+                                    <div class="mega-text">
+                                        <strong>AI QR Generator</strong>
+                                        <span>Branded high-contrast QR codes, zero fees</span>
+                                    </div>
+                                </a>
+                                <a href="./free-stack-kit.html" class="mega-link">
+                                    <div class="mega-icon">📦</div>
+                                    <div class="mega-text">
+                                        <strong>Free Stack Kit</strong>
+                                        <span>Curated agent skills pack &amp; step-by-step guide</span>
+                                    </div>
+                                </a>
+                                <a href="../board.html" class="mega-link">
+                                    <div class="mega-icon">👥</div>
+                                    <div class="mega-text">
+                                        <strong>The AI Board</strong>
+                                        <span>Meet your 19 specialist agents — free to explore</span>
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                        <a href="../prompt-generator.html" class="mega-dropdown-item">
-                            <span class="mega-item-icon">✨</span>
-                            <div class="mega-item-text">
-                                <span class="mega-item-title">Prompt Generator</span>
-                                <span class="mega-item-desc">AI prompt optimizer for Gemini &amp; Claude</span>
-                            </div>
-                        </a>
-                        <a href="../gems.html" class="mega-dropdown-item">
-                            <span class="mega-item-icon">💎</span>
-                            <div class="mega-item-text">
-                                <span class="mega-item-title">Gems</span>
-                                <span class="mega-item-desc">Custom AI agent blueprints &amp; instructions</span>
-                            </div>
-                        </a>
-                        <a href="workflows.html" class="mega-dropdown-item">
-                            <span class="mega-item-icon">⚡</span>
-                            <div class="mega-item-text">
-                                <span class="mega-item-title">n8n Automation Vault</span>
-                                <span class="mega-item-desc">98 production JSON workflows ready to import</span>
-                            </div>
-                        </a>
-                        <a href="qr-generator.html" class="mega-dropdown-item">
-                            <span class="mega-item-icon">📱</span>
-                            <div class="mega-item-text">
-                                <span class="mega-item-title">QR Code Studio</span>
-                                <span class="mega-item-desc">Free instant custom SVG &amp; PNG QR codes</span>
-                            </div>
-                        </a>
-                        <a href="../logo-studio.html" class="mega-dropdown-item">
-                            <span class="mega-item-icon">🎨</span>
-                            <div class="mega-item-text">
-                                <span class="mega-item-title">AI SVG Logo Lab</span>
-                                <span class="mega-item-desc">Vector geometric logos &amp; prompts</span>
-                            </div>
-                        </a>
-                        <a href="./website-creator.html" class="mega-dropdown-item active-mega-link">
-                            <span class="mega-item-icon">🌐</span>
-                            <div class="mega-item-text">
-                                <span class="mega-item-title">Web Blueprint Studio</span>
-                                <span class="mega-item-desc">Interactive Jamstack architect &amp; AI compiler</span>
-                            </div>
-                        </a>
-                        <a href="https://stocked-aid.lovable.app" target="_blank" rel="noopener noreferrer" class="mega-dropdown-item">
-                            <span class="mega-item-icon">📦</span>
-                            <div class="mega-item-text">
-                                <span class="mega-item-title">Stocked Aid (Inventario IA) ↗</span>
-                                <span class="mega-item-desc">Control de caducidades, stock por visión y exportación multi-hoja</span>
-                            </div>
-                        </a>
+                        </div>
                     </div>
-                </div>
-
-                <a href="../community.html" class="nav-link">Community</a>
-                <a href="../news.html" class="nav-link">News</a>
+                </li>
+                <li><a href="../community.html" class="nav-link">Community</a></li>
+                <li><a id="nav-news-link" href="../news.html" class="nav-link">News</a></li>
+            </ul>
+            <div class="nav-ctas">
+                <a href="/hub" class="btn btn-primary">Enter Campus →</a>
             </div>
-
-            <div class="nav-actions">
-                <a href="https://officeaim-hub.vercel.app" class="btn-nav-primary">
-                    <span>Enter Campus</span>
-                    <span class="btn-arrow">→</span>
-                </a>
-                <button class="nav-toggle" id="navToggle" aria-label="Open menu">
-                    <span></span><span></span><span></span>
-                </button>
-            </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <span></span><span></span><span></span>
+            </button>
         </div>
     </nav>
 
     <!-- Main Container -->
-    <main class="relative z-10 w-full max-w-7xl mx-auto px-6 pt-28 pb-12">
+    <main class="relative z-10 w-full max-w-7xl mx-auto px-6 pt-12 pb-12">
         
         <!-- Header Text -->
         <div class="max-w-3xl mb-12 text-left">

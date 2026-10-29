@@ -1,4 +1,17 @@
 {
-  "session_start": "2026-10-28T13:28:15+01:00",
+  "session_start": "2026-10-29T09:31:15+01:00",
+  "canonical_architecture_guide": {
+    "title": "Guía Canónica e Inviolable de Arquitectura, RLS y Diseño — OfficeAIM",
+    "enforcement_rule": "Todo nuevo componente, página, función serverless o tabla en Supabase debe cumplir estrictamente con las especificaciones de estos 6 documentos maestros.",
+    "vault_directory": "/Users/rodyfigueroa/Movies/Knowledge-Hub Obsidian/Knowledge-Hub/01-Proyectos/OfficeAIM",
+    "documents": {
+      "01_PRD": "/Users/rodyfigueroa/Movies/Knowledge-Hub Obsidian/Knowledge-Hub/01-Proyectos/OfficeAIM/01-PRD-Product-Requirements.md",
+      "02_TRD": "/Users/rodyfigueroa/Movies/Knowledge-Hub Obsidian/Knowledge-Hub/01-Proyectos/OfficeAIM/02-TRD-Technical-Requirements.md",
+      "03_App_Flow": "/Users/rodyfigueroa/Movies/Knowledge-Hub Obsidian/Knowledge-Hub/01-Proyectos/OfficeAIM/03-App-Flow-Architecture.md",
+      "04_Design_Brief": "/Users/rodyfigueroa/Movies/Knowledge-Hub Obsidian/Knowledge-Hub/01-Proyectos/OfficeAIM/04-Design-Brief.md",
+      "05_Backend_Schema": "/Users/rodyfigueroa/Movies/Knowledge-Hub Obsidian/Knowledge-Hub/01-Proyectos/OfficeAIM/05-Backend-and-Database-Schema.md",
+      "06_Implementation_Plan": "/Users/rodyfigueroa/Movies/Knowledge-Hub Obsidian/Knowledge-Hub/01-Proyectos/OfficeAIM/06-Implementation-Plan-and-Gaps.md"
+    }
+  },
   "changes": []
 }
