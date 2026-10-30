@@ -792,11 +792,18 @@ const MascotAssistant = ({ profile, isAdminDashboard = false }) => {
         }
 
         // --- NORMAL LLM HANDLING ---
+        const WAITLIST_FORM_URL = '#waitlist';
+        const isSpanishQuery = /[áéíóúñ¿¡]|\b(hola|buenas|como|cómo|que|qué|cuando|cuándo|donde|dónde|quiero|puedo|campus|lista|espera|ayuda|precio|gratis|curso|agentes|registro|registrarme)\b/i.test(trimmed);
+
         try {
             const historyForApi = messages.slice(1).concat(userMsg);
-            // If we are in the admin dashboard, we pass 'ADMIN' to trigger the AIM admin persona override in the factory
+            // External visitors default to 'FREE' and are never blocked
             const userTier = isAdminDashboard ? 'ADMIN' : (context === 'website-creator' ? 'WEBSITE-CREATOR' : (profile?.tier || 'FREE'));
             const result = await callAgent('MASCOT', trimmed, historyForApi, userTier);
+
+            if (!result || !result.text || !result.text.trim()) {
+                throw new Error('Empty response from Gemini API');
+            }
 
             // Intercept Triage Trigger
             if (result.text.includes('[START_BUG_TRIAGE]')) {
@@ -806,8 +813,17 @@ const MascotAssistant = ({ profile, isAdminDashboard = false }) => {
                 setMessages(prev => [...prev, { role: 'agent', content: result.text }]);
             }
         } catch (err) {
-            console.error('Mascot chat error:', err);
-            setMessages(prev => [...prev, { role: 'agent', content: "Oops, I had a momentary glitch. 🔧 Can you try again?" }]);
+            console.warn('Mascot chat fallback activated:', err);
+            const friendlyFallback = isSpanishQuery
+                ? "¡Hola! Estoy recibiendo muchas consultas en este momento. Por favor, únete a nuestra **Lista de Espera** para recibir actualizaciones prioritarias."
+                : "Hi! I'm receiving a high volume of inquiries right now. Please join our **Official Waitlist** to receive priority updates and early Campus access.";
+            const ctaLabel = isSpanishQuery ? "Unirse a la Lista de Espera →" : "Join Official Waitlist →";
+            setMessages(prev => [...prev, {
+                role: 'agent',
+                content: friendlyFallback,
+                ctaUrl: WAITLIST_FORM_URL,
+                ctaLabel
+            }]);
         } finally {
             setIsTyping(false);
         }
@@ -1063,10 +1079,30 @@ const MascotAssistant = ({ profile, isAdminDashboard = false }) => {
                                                 ? (isAdminDashboard ? 'bg-cyan-500/10 border border-cyan-500/20 text-white shadow-[0_0_10px_rgba(0,242,254,0.05)]' : 'bg-orange-500/10 border border-orange-500/20 text-white')
                                                 : 'bg-white/[0.03] border border-white/5 text-white/80'
                                                 }`}>
-                                                {msg.content.split('**').map((part, i) =>
-                                                    i % 2 === 1
-                                                        ? <strong key={i} className={`font-black ${isAdminDashboard ? 'text-cyan-300' : 'text-orange-300'}`}>{part}</strong>
-                                                        : <span key={i}>{part}</span>
+                                                <div>
+                                                    {msg.content.split('**').map((part, i) =>
+                                                        i % 2 === 1
+                                                            ? <strong key={i} className={`font-black ${isAdminDashboard ? 'text-cyan-300' : 'text-orange-300'}`}>{part}</strong>
+                                                            : <span key={i}>{part}</span>
+                                                    )}
+                                                </div>
+                                                {msg.ctaUrl && (
+                                                    <a
+                                                        href={msg.ctaUrl}
+                                                        onClick={(e) => {
+                                                            if (msg.ctaUrl === '#waitlist') {
+                                                                e.preventDefault();
+                                                                if (window.parent && window.parent !== window) {
+                                                                    window.parent.postMessage({ type: 'open-waitlist-modal' }, '*');
+                                                                } else {
+                                                                    window.location.href = '/hub/login';
+                                                                }
+                                                            }
+                                                        }}
+                                                        className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-white font-bold text-[10px] uppercase tracking-wider shadow-md transition-all cursor-pointer"
+                                                    >
+                                                        <span>{msg.ctaLabel || 'Join Official Waitlist →'}</span>
+                                                    </a>
                                                 )}
                                             </div>
                                         </div>
@@ -1096,8 +1132,8 @@ const MascotAssistant = ({ profile, isAdminDashboard = false }) => {
                                             onChange={(e) => setInput(e.target.value)}
                                             onKeyDown={handleKeyDown}
                                             placeholder={isListening 
-                                                ? (isAdminDashboard ? "Escuchando, Señor... lo escucho" : "Escuchando... hablá ahora") 
-                                                : (isAdminDashboard ? "Preguntame o pedime un cambio, Señor..." : "Preguntame sobre el campus...")
+                                                ? (isAdminDashboard ? "Escuchando, Señor... lo escucho" : "Listening... speak now") 
+                                                : (isAdminDashboard ? "Preguntame o pedime un cambio, Señor..." : "Ask me anything about OfficeAIM...")
                                             }
                                             disabled={isTyping}
                                             className={`flex-grow bg-white/5 border rounded-xl px-3 py-2 text-[11px] focus:outline-none transition-all placeholder:text-white/20 disabled:opacity-50 ${

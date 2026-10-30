@@ -577,7 +577,7 @@ function ensureMobileNavCTAs() {
     campusLi.className = 'mobile-only-nav-item';
     campusLi.style.cssText = 'list-style: none; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid rgba(255, 255, 255, 0.12); width: 100%;';
     campusLi.innerHTML = `
-        <a href="/hub" class="btn-campus-mobile" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 13px 20px; background: linear-gradient(135deg, rgba(0, 240, 255, 0.18), rgba(0, 112, 243, 0.3)); border: 1px solid rgba(0, 240, 255, 0.55); border-radius: 14px; color: #00f0ff; font-size: 0.95rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; text-decoration: none; box-shadow: 0 0 20px rgba(0, 240, 255, 0.16);">
+        <a href="#waitlist" data-campus-gate="true" onclick="if(window.openCampusWaitlistModal){event.preventDefault();window.openCampusWaitlistModal();}" class="btn-campus-mobile" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 13px 20px; background: linear-gradient(135deg, rgba(0, 240, 255, 0.18), rgba(0, 112, 243, 0.3)); border: 1px solid rgba(0, 240, 255, 0.55); border-radius: 14px; color: #00f0ff; font-size: 0.95rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; text-decoration: none; box-shadow: 0 0 20px rgba(0, 240, 255, 0.16);">
             <span>Enter Campus →</span>
         </a>
     `;
@@ -601,6 +601,11 @@ function ensureMobileNavCTAs() {
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         const href = this.getAttribute('href');
+        if (href === '#waitlist') {
+            e.preventDefault();
+            if (window.openCampusWaitlistModal) window.openCampusWaitlistModal();
+            return;
+        }
         if (href !== '#' && href !== '') {
             e.preventDefault();
             const target = document.querySelector(href);
@@ -621,6 +626,7 @@ let lastScroll = 0;
 const navbar = document.getElementById('navbar');
 
 window.addEventListener('scroll', () => {
+    if (!navbar) return;
     const currentScroll = window.pageYOffset;
 
     if (currentScroll > 100) {
@@ -658,25 +664,551 @@ document.querySelectorAll('.benefit-card, .starter-card, .example-card, .feature
 });
 
 // ============================================================
-// 13) INITIALIZE
+// 13) INITIALIZE & NATIVE INTERACTIVE WAITLIST MODAL (SUPABASE)
 // ============================================================
+const OA_SUPABASE_URL = 'https://guemwhrdqmbneoccucht.supabase.co';
+const OA_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1ZW13aHJkcW1ibmVvY2N1Y2h0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5MTExODgsImV4cCI6MjA4NjQ4NzE4OH0.VvKIYP7lJSxa_a3e8-Gb3xGfukJzmmacUUt79WA-OM8';
+
+function resolveOfficeAimPath(relativePath) {
+    const clean = relativePath.replace(/^\/+/, '');
+    const path = window.location.pathname || '';
+    if (path.includes('/resources/') || path.includes('/learn/')) {
+        return '../' + clean;
+    }
+    return clean;
+}
+
+function getDynamicWaitlistRecommendation(role, bottleneck, stack) {
+    const r = (role || '').toLowerCase();
+    const b = (bottleneck || '').toLowerCase();
+    const s = (stack || '').toLowerCase();
+
+    if (b.includes('website') || b.includes('web') || r.includes('entrepreneur') || r.includes('builder')) {
+        return {
+            badge: 'Tailored path · Full-stack architecture',
+            headline: 'Launch your first full-stack blueprint',
+            message: 'Awesome! While we open the Campus, test our Web Blueprint Studio to design your first full-stack app.',
+            primaryLabel: 'Open Web Blueprint Studio →',
+            primaryUrl: resolveOfficeAimPath('resources/website-creator.html'),
+            secondaryLabel: 'Explore 26 AI skills →',
+            secondaryUrl: resolveOfficeAimPath('skills.html')
+        };
+    }
+
+    if (b.includes('automate') || b.includes('n8n') || r.includes('automation') || r.includes('operator') || s === 'n8n') {
+        return {
+            badge: 'Tailored path · Autonomous pipelines',
+            headline: 'Deploy production-ready n8n pipelines',
+            message: 'We recommend exploring the n8n Vault with 98 ready-to-copy automation workflows.',
+            primaryLabel: 'Explore the n8n Vault (98 workflows) →',
+            primaryUrl: resolveOfficeAimPath('resources/workflows.html'),
+            secondaryLabel: 'Open the Prompt Vault →',
+            secondaryUrl: resolveOfficeAimPath('learn/prompts.html')
+        };
+    }
+
+    return {
+        badge: 'Tailored path · Prompt engineering & AI skills',
+        headline: 'Master prompts and modular AI skills',
+        message: 'Start today with our 26 AI skills and the OfficeAIM Prompt Vault.',
+        primaryLabel: 'Open the OfficeAIM Prompt Vault →',
+        primaryUrl: resolveOfficeAimPath('learn/prompts.html'),
+        secondaryLabel: 'Explore the 26 AI skills →',
+        secondaryUrl: resolveOfficeAimPath('skills.html')
+    };
+}
+
+window.openCampusWaitlistModal = function () {
+    let modal = document.getElementById('oa-campus-waitlist-modal');
+    if (!modal) {
+        const styleEl = document.createElement('style');
+        styleEl.id = 'oa-waitlist-modal-styles';
+        styleEl.textContent = `
+            #oa-campus-waitlist-modal * { box-sizing: border-box; }
+            .oa-wl-input, .oa-wl-select {
+                width: 100%;
+                padding: 0.78rem 0.95rem;
+                border-radius: 12px;
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                background: rgba(15, 23, 42, 0.75);
+                color: #F8FAFC;
+                font-size: 0.9rem;
+                font-family: 'Plus Jakarta Sans', sans-serif;
+                outline: none;
+                transition: border-color 0.2s, box-shadow 0.2s;
+            }
+            .oa-wl-input:focus, .oa-wl-select:focus {
+                border-color: #00F0FF;
+                box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.14);
+            }
+            .oa-wl-input::placeholder { color: #64748B; }
+            .oa-wl-label {
+                display: block;
+                font-size: 0.75rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                color: #94A3B8;
+                margin-bottom: 0.42rem;
+                text-align: left;
+            }
+            .oa-wl-option-grid {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+            }
+            .oa-wl-option-btn {
+                width: 100%;
+                text-align: left;
+                padding: 0.72rem 0.95rem;
+                border-radius: 12px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                background: rgba(255, 255, 255, 0.03);
+                color: #E2E8F0;
+                font-size: 0.86rem;
+                font-weight: 600;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                transition: all 0.18s ease;
+                font-family: 'Plus Jakarta Sans', sans-serif;
+            }
+            .oa-wl-option-btn:hover {
+                border-color: rgba(0, 240, 255, 0.4);
+                background: rgba(0, 240, 255, 0.06);
+            }
+            .oa-wl-option-btn.active {
+                border-color: #FF7A18;
+                background: rgba(255, 122, 24, 0.14);
+                color: #FFFFFF;
+                box-shadow: 0 0 18px rgba(255, 122, 24, 0.18);
+            }
+            .oa-wl-pill-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.45rem;
+                margin-top: 0.35rem;
+            }
+            .oa-wl-pill {
+                padding: 0.45rem 0.85rem;
+                border-radius: 999px;
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                background: rgba(255, 255, 255, 0.04);
+                color: #CBD5E1;
+                font-size: 0.78rem;
+                font-weight: 700;
+                cursor: pointer;
+                transition: all 0.18s ease;
+            }
+            .oa-wl-pill.active {
+                border-color: #00F0FF;
+                background: rgba(0, 240, 255, 0.15);
+                color: #00F0FF;
+            }
+        `;
+        document.head.appendChild(styleEl);
+
+        modal = document.createElement('div');
+        modal.id = 'oa-campus-waitlist-modal';
+        modal.setAttribute('role', 'dialog');
+        modal.setAttribute('aria-modal', 'true');
+        modal.style.cssText = 'position:fixed;inset:0;z-index:2147483646;display:flex;align-items:center;justify-content:center;padding:1rem;background:rgba(3,7,18,0.86);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);opacity:0;transition:opacity 0.25s ease;overflow-y:auto;';
+        modal.innerHTML = `
+            <div style="position:relative;width:100%;max-width:540px;background:linear-gradient(165deg,rgba(13,19,33,0.98),rgba(7,10,18,0.99));border:1px solid rgba(255,122,24,0.38);border-radius:24px;padding:2rem 1.85rem;text-align:left;color:#F8FAFC;box-shadow:0 25px 60px -12px rgba(0,0,0,0.85),0 0 40px rgba(255,122,24,0.14);font-family:'Plus Jakarta Sans',sans-serif;max-height:92vh;overflow-y:auto;">
+                <button type="button" id="oa-campus-waitlist-close" aria-label="Close modal" style="position:absolute;top:1rem;right:1rem;width:34px;height:34px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:#94A3B8;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;">×</button>
+                
+                <div id="oa-wl-header-area" style="text-align:center;margin-bottom:1.35rem;">
+                    <div style="display:inline-flex;align-items:center;gap:6px;padding:0.35rem 0.9rem;border-radius:999px;background:rgba(255,122,24,0.12);border:1px solid rgba(255,122,24,0.3);color:#FF7A18;font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.85rem;">
+                        <span>⚡ Priority access · Waitlist open</span>
+                    </div>
+                    <h2 style="font-size:1.65rem;font-weight:800;line-height:1.2;margin:0 0 0.55rem;color:#FFFFFF;letter-spacing:-0.02em;">We are building the Campus</h2>
+                    <p style="font-size:0.88rem;line-height:1.55;color:#94A3B8;margin:0 auto;max-width:440px;">
+                        The OfficeAIM Campus and its 19 specialized AI agents are in their final stabilization phase. Complete your profile below for priority access and an instant tailored resource.
+                    </p>
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:1.15rem;">
+                        <div id="oa-wl-prog-1" style="flex:1;height:5px;border-radius:999px;background:#FF7A18;transition:background 0.25s;"></div>
+                        <div id="oa-wl-prog-2" style="flex:1;height:5px;border-radius:999px;background:rgba(255,255,255,0.12);transition:background 0.25s;"></div>
+                        <div id="oa-wl-prog-3" style="flex:1;height:5px;border-radius:999px;background:rgba(255,255,255,0.12);transition:background 0.25s;"></div>
+                    </div>
+                    <div id="oa-wl-step-caption" style="font-size:0.72rem;font-weight:700;color:#00F0FF;text-transform:uppercase;letter-spacing:0.08em;margin-top:0.5rem;">
+                        Step 1 of 3 · Contact &amp; VIP access
+                    </div>
+                </div>
+
+                <form id="oa-waitlist-native-form" novalidate>
+                    <!-- STEP 1 -->
+                    <div id="oa-wl-step-1">
+                        <div style="margin-bottom:0.95rem;">
+                            <label class="oa-wl-label" for="oa-wl-name">1. Full name *</label>
+                            <input type="text" id="oa-wl-name" class="oa-wl-input" placeholder="e.g. Alex Rivera" required />
+                        </div>
+                        <div style="margin-bottom:0.95rem;">
+                            <label class="oa-wl-label" for="oa-wl-email">2. Email address *</label>
+                            <input type="email" id="oa-wl-email" class="oa-wl-input" placeholder="alex@company.com" required />
+                        </div>
+                        <div style="margin-bottom:1.25rem;">
+                            <label class="oa-wl-label" for="oa-wl-phone">3. WhatsApp / phone number <span style="color:#64748B;font-weight:500;text-transform:none;">(Optional — for 1-click VIP alerts)</span></label>
+                            <input type="tel" id="oa-wl-phone" class="oa-wl-input" placeholder="+1 (555) 000-0000" />
+                        </div>
+                        <div id="oa-wl-err-1" style="display:none;color:#F87171;font-size:0.8rem;font-weight:600;margin-bottom:0.85rem;text-align:center;"></div>
+                        <button type="button" id="oa-wl-next-1" style="width:100%;padding:0.95rem 1.25rem;border-radius:14px;border:none;background:linear-gradient(135deg,#FF7A18,#F59E0B);color:#FFFFFF;font-weight:800;font-size:0.92rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.5rem;box-shadow:0 10px 25px -5px rgba(255,122,24,0.45);">
+                            <span>Next: Your profile &amp; goal</span>
+                            <span>→</span>
+                        </button>
+                    </div>
+
+                    <!-- STEP 2 -->
+                    <div id="oa-wl-step-2" style="display:none;">
+                        <label class="oa-wl-label">4. Your primary role or profile *</label>
+                        <div class="oa-wl-option-grid" data-group="user_role">
+                            <button type="button" class="oa-wl-option-btn active" data-val="Entrepreneur / Independent Builder">
+                                <span>🚀 Entrepreneur / Independent builder</span>
+                                <span>✓</span>
+                            </button>
+                            <button type="button" class="oa-wl-option-btn" data-val="Automation Engineer / AI Operator">
+                                <span>⚙️ Automation engineer / AI operator</span>
+                                <span></span>
+                            </button>
+                            <button type="button" class="oa-wl-option-btn" data-val="Student / Learner">
+                                <span>🎓 Student / Learner</span>
+                                <span></span>
+                            </button>
+                            <button type="button" class="oa-wl-option-btn" data-val="Other">
+                                <span>✨ Other professional</span>
+                                <span></span>
+                            </button>
+                        </div>
+
+                        <label class="oa-wl-label">5. Main reason for joining *</label>
+                        <div class="oa-wl-option-grid" data-group="join_reason">
+                            <button type="button" class="oa-wl-option-btn active" data-val="Founding member discount">
+                                <span>💎 Founding member discount</span>
+                                <span>✓</span>
+                            </button>
+                            <button type="button" class="oa-wl-option-btn" data-val="Discover free AI software & how to use it">
+                                <span>🧰 Discover free AI software &amp; how to use it</span>
+                                <span></span>
+                            </button>
+                            <button type="button" class="oa-wl-option-btn" data-val="Connect with other professionals">
+                                <span>🤝 Connect with other professionals</span>
+                                <span></span>
+                            </button>
+                        </div>
+
+                        <div style="display:flex;gap:0.65rem;margin-top:1.15rem;">
+                            <button type="button" id="oa-wl-back-2" style="flex:0.4;padding:0.9rem;border-radius:14px;border:1px solid rgba(255,255,255,0.14);background:rgba(255,255,255,0.04);color:#CBD5E1;font-weight:700;font-size:0.86rem;cursor:pointer;">
+                                ← Back
+                            </button>
+                            <button type="button" id="oa-wl-next-2" style="flex:1;padding:0.9rem 1.2rem;border-radius:14px;border:none;background:linear-gradient(135deg,#FF7A18,#F59E0B);color:#FFFFFF;font-weight:800;font-size:0.9rem;cursor:pointer;box-shadow:0 10px 25px -5px rgba(255,122,24,0.45);">
+                                Final step: Current focus →
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3 -->
+                    <div id="oa-wl-step-3" style="display:none;">
+                        <label class="oa-wl-label">6. What is your biggest current bottleneck? *</label>
+                        <div class="oa-wl-option-grid" data-group="main_bottleneck">
+                            <button type="button" class="oa-wl-option-btn active" data-val="Build my no-code website or full-stack app">
+                                <span>🌐 Build my no-code website or full-stack app</span>
+                                <span>✓</span>
+                            </button>
+                            <button type="button" class="oa-wl-option-btn" data-val="Automate social media, content & n8n workflows">
+                                <span>⚡ Automate social media, content &amp; n8n workflows</span>
+                                <span></span>
+                            </button>
+                            <button type="button" class="oa-wl-option-btn" data-val="Create AI agents, prompts & databases">
+                                <span>🧠 Create AI agents, prompts &amp; databases</span>
+                                <span></span>
+                            </button>
+                            <button type="button" class="oa-wl-option-btn" data-val="None, just exploring AI">
+                                <span>🔍 None, just exploring AI</span>
+                                <span></span>
+                            </button>
+                        </div>
+
+                        <div style="margin-bottom:1.15rem;">
+                            <label class="oa-wl-label">Primary tool or stack you use most</label>
+                            <div class="oa-wl-pill-row" id="oa-wl-stack-pills">
+                                <button type="button" class="oa-wl-pill active" data-stack="ChatGPT">ChatGPT</button>
+                                <button type="button" class="oa-wl-pill" data-stack="Claude">Claude</button>
+                                <button type="button" class="oa-wl-pill" data-stack="n8n">n8n</button>
+                                <button type="button" class="oa-wl-pill" data-stack="Supabase">Supabase</button>
+                                <button type="button" class="oa-wl-pill" data-stack="None">None yet</button>
+                            </div>
+                        </div>
+
+                        <div id="oa-wl-err-3" style="display:none;color:#F87171;font-size:0.8rem;font-weight:600;margin-bottom:0.85rem;text-align:center;"></div>
+
+                        <div style="display:flex;gap:0.65rem;">
+                            <button type="button" id="oa-wl-back-3" style="flex:0.38;padding:0.9rem;border-radius:14px;border:1px solid rgba(255,255,255,0.14);background:rgba(255,255,255,0.04);color:#CBD5E1;font-weight:700;font-size:0.86rem;cursor:pointer;">
+                                ← Back
+                            </button>
+                            <button type="submit" id="oa-wl-submit" style="flex:1;padding:0.95rem 1.2rem;border-radius:14px;border:none;background:linear-gradient(135deg,#FF7A18,#F59E0B);color:#FFFFFF;font-weight:800;font-size:0.92rem;cursor:pointer;box-shadow:0 12px 25px -5px rgba(255,122,24,0.5);">
+                                Lock in my priority spot →
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- SUCCESS & DYNAMIC RECOMMENDATION VIEW -->
+                <div id="oa-wl-success-view" style="display:none;text-align:center;padding:0.5rem 0 0.25rem;">
+                    <div style="width:54px;height:54px;border-radius:16px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#10B981;font-size:1.6rem;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+                        ✓
+                    </div>
+                    <div id="oa-wl-rec-badge" style="display:inline-flex;align-items:center;gap:6px;padding:0.32rem 0.85rem;border-radius:999px;background:rgba(0,240,255,0.12);border:1px solid rgba(0,240,255,0.35);color:#00F0FF;font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.75rem;">
+                        Tailored recommendation
+                    </div>
+                    <h3 id="oa-wl-rec-headline" style="font-size:1.45rem;font-weight:800;color:#FFFFFF;margin:0 0 0.55rem;">You are on the official waitlist!</h3>
+                    <p id="oa-wl-rec-msg" style="font-size:0.92rem;line-height:1.6;color:#CBD5E1;margin:0 auto 1.35rem;max-width:440px;"></p>
+                    
+                    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(0,240,255,0.25);border-radius:18px;padding:1.15rem;margin-bottom:1.1rem;">
+                        <a id="oa-wl-rec-primary" href="resources/website-creator.html" style="display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;width:100%;padding:0.95rem 1.25rem;border-radius:12px;background:linear-gradient(135deg,#00F0FF,#0EA5E9);color:#030712;font-weight:800;font-size:0.92rem;text-decoration:none;box-shadow:0 10px 25px -5px rgba(0,240,255,0.38);margin-bottom:0.65rem;">
+                            <span>Open recommended studio →</span>
+                        </a>
+                        <a id="oa-wl-rec-secondary" href="skills.html" style="display:inline-flex;align-items:center;justify-content:center;width:100%;padding:0.75rem 1rem;border-radius:12px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);color:#E2E8F0;font-weight:700;font-size:0.84rem;text-decoration:none;">
+                            <span>Explore 26 AI skills →</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div style="text-align:center;margin-top:0.85rem;">
+                    <button type="button" id="oa-campus-waitlist-dismiss" style="background:transparent;border:none;color:#64748B;font-size:0.8rem;font-weight:600;cursor:pointer;padding:0.35rem 0.75rem;">
+                        Continue exploring free resources
+                    </button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        // State inside modal closure
+        const state = {
+            user_role: 'Entrepreneur / Independent Builder',
+            join_reason: 'Founding member discount',
+            main_bottleneck: 'Build my no-code website or full-stack app',
+            tech_stack: 'ChatGPT'
+        };
+
+        const setStep = (stepNum) => {
+            const s1 = modal.querySelector('#oa-wl-step-1');
+            const s2 = modal.querySelector('#oa-wl-step-2');
+            const s3 = modal.querySelector('#oa-wl-step-3');
+            const p1 = modal.querySelector('#oa-wl-prog-1');
+            const p2 = modal.querySelector('#oa-wl-prog-2');
+            const p3 = modal.querySelector('#oa-wl-prog-3');
+            const cap = modal.querySelector('#oa-wl-step-caption');
+
+            s1.style.display = stepNum === 1 ? 'block' : 'none';
+            s2.style.display = stepNum === 2 ? 'block' : 'none';
+            s3.style.display = stepNum === 3 ? 'block' : 'none';
+
+            p1.style.background = stepNum >= 1 ? '#FF7A18' : 'rgba(255,255,255,0.12)';
+            p2.style.background = stepNum >= 2 ? '#FF7A18' : 'rgba(255,255,255,0.12)';
+            p3.style.background = stepNum >= 3 ? '#00F0FF' : 'rgba(255,255,255,0.12)';
+
+            if (stepNum === 1) cap.textContent = 'Step 1 of 3 · Contact & VIP access';
+            if (stepNum === 2) cap.textContent = 'Step 2 of 3 · Your role & goal';
+            if (stepNum === 3) cap.textContent = 'Step 3 of 3 · Current bottleneck & stack';
+        };
+
+        // Option groups
+        modal.querySelectorAll('.oa-wl-option-grid').forEach(grid => {
+            const group = grid.getAttribute('data-group');
+            grid.querySelectorAll('.oa-wl-option-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    grid.querySelectorAll('.oa-wl-option-btn').forEach(b => {
+                        b.classList.remove('active');
+                        b.querySelector('span:last-child').textContent = '';
+                    });
+                    btn.classList.add('active');
+                    btn.querySelector('span:last-child').textContent = '✓';
+                    state[group] = btn.getAttribute('data-val');
+                });
+            });
+        });
+
+        // Stack pills
+        modal.querySelectorAll('#oa-wl-stack-pills .oa-wl-pill').forEach(pill => {
+            pill.addEventListener('click', () => {
+                modal.querySelectorAll('#oa-wl-stack-pills .oa-wl-pill').forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+                state.tech_stack = pill.getAttribute('data-stack');
+            });
+        });
+
+        // Step navigation
+        modal.querySelector('#oa-wl-next-1').addEventListener('click', () => {
+            const nameVal = modal.querySelector('#oa-wl-name').value.trim();
+            const emailVal = modal.querySelector('#oa-wl-email').value.trim();
+            const errEl = modal.querySelector('#oa-wl-err-1');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!nameVal) {
+                errEl.textContent = 'Please enter your full name to continue.';
+                errEl.style.display = 'block';
+                return;
+            }
+            if (!emailRegex.test(emailVal)) {
+                errEl.textContent = 'Please enter a valid email address.';
+                errEl.style.display = 'block';
+                return;
+            }
+            errEl.style.display = 'none';
+            setStep(2);
+        });
+
+        modal.querySelector('#oa-wl-back-2').addEventListener('click', () => setStep(1));
+        modal.querySelector('#oa-wl-next-2').addEventListener('click', () => setStep(3));
+        modal.querySelector('#oa-wl-back-3').addEventListener('click', () => setStep(2));
+
+        // Submit handler -> Supabase public.waitlist_entries
+        modal.querySelector('#oa-waitlist-native-form').addEventListener('submit', async (ev) => {
+            ev.preventDefault();
+            const submitBtn = modal.querySelector('#oa-wl-submit');
+            const err3 = modal.querySelector('#oa-wl-err-3');
+            err3.style.display = 'none';
+
+            const fullName = modal.querySelector('#oa-wl-name').value.trim();
+            const email = modal.querySelector('#oa-wl-email').value.trim().toLowerCase();
+            const phone = modal.querySelector('#oa-wl-phone').value.trim();
+
+            const payload = {
+                full_name: fullName,
+                email: email,
+                phone_whatsapp: phone || null,
+                user_role: state.user_role,
+                join_reason: state.join_reason,
+                main_bottleneck: state.main_bottleneck,
+                tech_stack: state.tech_stack,
+                preferred_channel: phone ? 'WhatsApp' : 'Email'
+            };
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Saving your priority profile...';
+
+            try {
+                // Persist locally as instant backup
+                localStorage.setItem('oa_waitlist_profile', JSON.stringify({ ...payload, saved_at: new Date().toISOString() }));
+
+                const response = await fetch(`${OA_SUPABASE_URL}/rest/v1/waitlist_entries`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': OA_SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${OA_SUPABASE_ANON_KEY}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                // 201 Created, 200 OK, 204 No Content, or 409 Conflict (already on waitlist) all show recommendation
+                if (!response.ok && response.status !== 409) {
+                    console.warn('Supabase waitlist status:', response.status);
+                }
+            } catch (netErr) {
+                console.warn('Waitlist saved to local buffer:', netErr);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Lock in my priority spot →';
+            }
+
+            // Show dynamic recommendation card
+            const rec = getDynamicWaitlistRecommendation(state.user_role, state.main_bottleneck, state.tech_stack);
+            modal.querySelector('#oa-wl-header-area').style.display = 'none';
+            modal.querySelector('#oa-waitlist-native-form').style.display = 'none';
+            const successView = modal.querySelector('#oa-wl-success-view');
+            successView.querySelector('#oa-wl-rec-badge').textContent = rec.badge;
+            successView.querySelector('#oa-wl-rec-headline').textContent = `Welcome aboard, ${fullName.split(' ')[0]}!`;
+            successView.querySelector('#oa-wl-rec-msg').textContent = rec.message;
+
+            const priBtn = successView.querySelector('#oa-wl-rec-primary');
+            priBtn.href = rec.primaryUrl;
+            priBtn.querySelector('span').textContent = rec.primaryLabel;
+
+            const secBtn = successView.querySelector('#oa-wl-rec-secondary');
+            secBtn.href = rec.secondaryUrl;
+            secBtn.querySelector('span').textContent = rec.secondaryLabel;
+
+            successView.style.display = 'block';
+        });
+
+        const closeModal = () => {
+            modal.style.opacity = '0';
+            setTimeout(() => { modal.style.display = 'none'; }, 220);
+        };
+        modal.querySelector('#oa-campus-waitlist-close').addEventListener('click', closeModal);
+        modal.querySelector('#oa-campus-waitlist-dismiss').addEventListener('click', closeModal);
+        modal.addEventListener('click', (ev) => {
+            if (ev.target === modal) closeModal();
+        });
+        document.addEventListener('keydown', (ev) => {
+            if (ev.key === 'Escape' && modal.style.display === 'flex') closeModal();
+        });
+    } else {
+        // Reset to Step 1 if reopened before completing
+        const successView = modal.querySelector('#oa-wl-success-view');
+        if (successView && successView.style.display === 'none') {
+            modal.querySelector('#oa-wl-header-area').style.display = 'block';
+            modal.querySelector('#oa-waitlist-native-form').style.display = 'block';
+        }
+    }
+    modal.style.display = 'flex';
+    requestAnimationFrame(() => {
+        modal.style.opacity = '1';
+    });
+};
+
+// Allow Mascot iframe or child components to open the native Waitlist modal via postMessage
+window.addEventListener('message', (event) => {
+    if (event.data && event.data.type === 'open-waitlist-modal') {
+        window.openCampusWaitlistModal();
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Restore Initializations
     if (typeof renderForm === 'function') renderForm('email');
     currentLang = 'en';
 
-    // 2. Fix Hub links for local preview (Universal Redirect to Build)
-    const isLocalFile = window.location.protocol === 'file:';
-    if (isLocalFile) {
-        console.log("Local Preview Detected: Adjusting Hub links...");
-        document.querySelectorAll('a').forEach(link => {
-            const href = link.getAttribute('href');
-            if (href && (href.startsWith('/hub') || href.includes('hub/login'))) {
-                // Point every hub-bound link to the local production build entry
-                link.setAttribute('href', 'hub/dist/index.html');
-                console.log(`Adjusted link: ${href} -> hub/dist/index.html`);
-            }
-        });
+    // 2. Intercept ALL Campus / Waitlist / Google Form triggers and route to Native Waitlist Modal
+    document.querySelectorAll('a').forEach(link => {
+        const href = (link.getAttribute('href') || '').trim();
+        const text = (link.textContent || '').toLowerCase();
+        const isDataCampusGate = link.getAttribute('data-campus-gate') === 'true';
+
+        const isCampusGate =
+            isDataCampusGate ||
+            href.includes('docs.google.com/forms') ||
+            href === '#waitlist' ||
+            href === '/hub' ||
+            href === '/hub/' ||
+            href === '/hub/login' ||
+            href === 'construction.html' ||
+            href === '/construction.html' ||
+            href === '../construction.html' ||
+            text.includes('claim my seat') ||
+            text.includes('create your free account') ||
+            text.includes('create account') ||
+            text.includes('join waitlist') ||
+            text.includes('campus waitlist') ||
+            text.includes('enter campus') ||
+            text.includes('enter the campus');
+
+        if (isCampusGate) {
+            link.setAttribute('href', '#waitlist');
+            link.removeAttribute('target');
+            link.removeAttribute('rel');
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.openCampusWaitlistModal();
+            });
+        }
+    });
+
+    if (window.location.hash === '#waitlist') {
+        window.openCampusWaitlistModal();
     }
 
     console.log('OfficeAim Landing Page Loaded ✓');

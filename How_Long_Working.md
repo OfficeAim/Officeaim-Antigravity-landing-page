@@ -53,7 +53,8 @@ Estimación del tiempo de desarrollo basado en las sesiones de trabajo registrad
 | **20/10/2026** | ~1.8 horas | Header con Resources dropdown, Learn minimalista (learn.html), Skills Prompt Cowboy launcher multi-LLM, auditoría 20 puntos SEO en Knowledge Hub, sitemap.xml, robots.txt, llms.txt, canonicals y Open Graph |
 | **28/10/2026** | ~1.5 horas | Saneamiento YAML en `.agent/skills/`, expansión a 26 Skills, OfficeAIM Prompt Vault (`/learn/prompts`) con Launcher Cowboy Multi-LLM, n8n Automation Vault (`resources/workflows.html` con 98 workflows) y Dossier Técnico de 3 pestañas en Web Blueprint Studio |
 | **29/10/2026** | ~0.6 horas | Reparación del header global en `resources/website-creator.html`, creación de la suite de 6 documentos maestros (`PRD`, `TRD`, `App Flow`, `Design Brief`, `Backend Schema`, `Implementation Plan`) en Knowledge-Hub e indexación como Guía Canónica e Inviolable |
-| **TOTAL** | **~150.15 horas** | **Semana 8 de Desarrollo Intenso** |
+| **30/10/2026** | ~4.2 horas | Evolución integral de Web Blueprint Studio (Dossier de 1er turno + Hoja de ruta interactiva de 9 pasos), migración de 5 workflows a `.agent/skills/`, tabla `waitlist_entries` con RLS en Supabase y reemplazo total de Google Forms por el Wizard Nativo de Lista de Espera con Recomendación Dinámica Post-Envío |
+| **TOTAL** | **~154.35 horas** | **Semana 8 de Desarrollo Intenso** |
 ---
 *Nota: Estos tiempos son aproximados basados en la duración de las sesiones de terminal.*
 

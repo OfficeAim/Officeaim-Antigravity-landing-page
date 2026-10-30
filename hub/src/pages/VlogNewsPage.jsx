@@ -6,7 +6,7 @@ import { extractYouTubeId, getYouTubeEmbedUrl, getYouTubeThumbnailUrl, isYouTube
 import { vlogs as fallbackVlogs } from './newsData';
 
 const OFFICIAL_LINKS = [
-    { label: 'Waitlist', url: 'https://docs.google.com/forms/d/e/1FAIpQLSfU9WOXw1BOpMwE9HO-rtSiIjju0nZrtlu_m-1dQICDH2IceQ/viewform', icon: '📝' },
+    { label: 'Waitlist', url: '/hub/login', icon: '📝' },
     { label: 'Website', url: 'https://officeaimhq.netlify.app/', icon: '🌐' },
     { label: 'YouTube', url: 'https://www.youtube.com/@Aimora-Officeaim?sub_confirmation=1', icon: '▶' },
     { label: 'Instagram', url: 'https://www.instagram.com/office.aim/', icon: '📸' },

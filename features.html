@@ -392,10 +392,10 @@
                             <div class="mega-menu-col">
                                 <h4>Free Tools</h4>
                                 <a href="resources/website-creator.html" class="mega-link">
-                                    <div class="mega-icon">🎨</div>
+                                    <div class="mega-icon">🌐</div>
                                     <div class="mega-text">
-                                        <strong>AI SVG Logo Lab</strong>
-                                        <span>Bespoke vector design &amp; web coach</span>
+                                        <strong>Web Blueprint Studio</strong>
+                                        <span>Full-stack Jamstack blueprint compiler &amp; AI system designer.</span>
                                     </div>
                                 </a>
                                 <a href="gems.html" class="mega-link">
@@ -435,7 +435,7 @@
                 <li><a id="nav-news-link" href="news.html" class="nav-link" style="color: var(--accent-primary);">News</a></li>
             </ul>
             <div class="nav-ctas">
-                <a href="construction.html" class="btn btn-primary">Enter Campus →</a>
+                <a href="#waitlist" onclick="if(window.openCampusWaitlistModal){event.preventDefault();window.openCampusWaitlistModal();}" data-campus-gate="true" class="btn btn-primary">Enter Campus →</a>
             </div>
             <button class="mobile-menu-toggle" id="mobileMenuToggle">
                 <span></span><span></span><span></span>
@@ -484,21 +484,21 @@
                     </div>
                 </div>
 
-                <!-- Card 2: AI SVG Logo Lab & Website Creator -->
+                <!-- Card 2: Web Blueprint Studio -->
                 <div class="case-card">
                     <div class="case-badge badge-amber">
-                        <span>Generative Design</span>
+                        <span>System Architecture</span>
                     </div>
-                    <h3>AI SVG Logo Lab</h3>
-                    <p>Bespoke vector graphics studio with real-time SVG synthesis, interactive prompt compiler, and embedded AI web coaching mascot for rapid brand identity deployment.</p>
+                    <h3>Web Blueprint Studio</h3>
+                    <p>Full-stack Jamstack blueprint compiler &amp; AI system designer with first-turn production prompt compilation, Supabase RLS schema generation, and an auxiliary AI SVG Logo Lab.</p>
                     <div class="case-tags">
-                        <span class="case-tag">🎨 SVG Engine</span>
-                        <span class="case-tag">🤖 Mascot Assistant</span>
-                        <span class="case-tag">⚡ 3-Step Wizard</span>
+                        <span class="case-tag">🌐 3-Tab Dossier</span>
+                        <span class="case-tag">🗄️ Supabase RLS</span>
+                        <span class="case-tag">🎨 Auxiliary SVG Lab</span>
                     </div>
                     <div style="margin-top: auto;">
                         <a href="resources/website-creator.html" class="portfolio-link-btn">
-                            Launch Tool →
+                            Launch Studio →
                         </a>
                     </div>
                 </div>
@@ -718,7 +718,7 @@
             <h2>Start building with your AI team today.</h2>
             <p>Free forever. Upgrade when you need more power.</p>
             <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2rem;">
-                <a href="construction.html" class="btn-hero-primary" style="display:inline-flex;">
+                <a href="#waitlist" onclick="if(window.openCampusWaitlistModal){event.preventDefault();window.openCampusWaitlistModal();}" data-campus-gate="true" class="btn-hero-primary" style="display:inline-flex;">
                     Enter the Campus — Free
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2.5">
@@ -751,7 +751,7 @@
                             <li><a href="board.html">The Board</a></li>
                             <li><a href="index.html#how">How It Works</a></li>
                             <li><a href="gems.html">Free Gems &amp; Tools</a></li>
-                            <li><a href="construction.html">Campus Login</a></li>
+                            <li><a href="#waitlist" onclick="if(window.openCampusWaitlistModal){event.preventDefault();window.openCampusWaitlistModal();}" data-campus-gate="true">Campus Waitlist</a></li>
                         </ul>
                     </div>
                     <div class="footer-column">
@@ -816,6 +816,7 @@
             }
         });
     </script>
+    <script src="script.js"></script>
 </body>
 
 </html>

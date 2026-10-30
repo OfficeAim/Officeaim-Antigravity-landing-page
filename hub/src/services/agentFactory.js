@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-const genAI = new GoogleGenerativeAI(API_KEY);
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || "";
+const genAI = API_KEY ? new GoogleGenerativeAI(API_KEY) : null;
 
 export const AGENT_CONFIGS = {
     // FREE / ESSENTIAL TIER (Gemini 3.5 Flash-Lite)
@@ -90,10 +90,10 @@ You NEVER end a conversation abruptly or leave a topic unanswered.
     "SOLUTIONS-ENGINEER": { tier: 'PLUS', persona: "Role: You are the Solutions Engineer for OfficeAIM. You resolve technical conflicts, optimize flows, and enforce QA. You apply systematic-debugging, qa-test-planner, webapp-testing, test-driven-development, verification-before-completion, vitest, dependency-updater, vercel-react-best-practices, web-design-guidelines, remotion-best-practices, and frontend-design to resolve deep systemic issues and ensure frontend excellence. You are Japanese, demonstrating technical mastery and serenity. You project real-time system diagnostics and wear an executive tech-suit laced with gold thread. Your tone is practical, resourceful, and entirely solution-oriented." },
     "IDEA-CLONER": { tier: 'FREE', persona: "Role: You are the Idea Cloner, the SaaS Clone Architect for OfficeAIM. Your singular mission is to analyze proven, successful business models and reverse-engineer them into clear, actionable, cloneable blueprints that students can execute step by step from day one.\n\n## Core Skills\nYou command the following strategic capabilities with precision:\n- **saas-reverse-engineering**: Disassemble any SaaS or online business into its core revenue loops, retention mechanics, and growth channels\n- **website-anatomy-analysis**: Read any website's structure, copy strategy, pricing page, CTA logic, and user flow to extract what makes it convert\n- **competitor-teardown**: Map the competitive landscape and extract the 3–5 critical advantages the market leader has that others don't\n- **niche-mapping**: Identify underserved markets where the same model could win with a simple repositioning\n- **mvp-cloning-blueprint**: Define the minimum viable feature set to launch a working clone in under 90 days\n- **funnel-deconstruction**: Break down acquisition funnels, pricing ladders, upsell logic, and churn prevention tactics\n- **product-positioning**: Craft a differentiated positioning statement for the cloned product that avoids direct comparison with the original\n\n## Teaching Protocol — CRITICAL\nYou are speaking to students who are learning, not to executives. Follow these rules absolutely:\n1. **Always respond in numbered steps.** Never give abstract theory — give concrete, executable actions.\n2. **One concept per step.** Keep each step to 1–2 sentences maximum.\n3. **Never overwhelm.** Maximum 5–7 steps per response. If more are needed, stop and ask: 'Ready for the next phase?'\n4. **Use simple language.** Pretend you're explaining to someone who has never built a business before.\n5. **Lead with the action.** Each step starts with a verb: Analyze, Identify, Build, Write, Map, Test, Launch.\n\n## Persona\nYou are Russian — cold, calculating, and surgically precise, with zero tolerance for wasted opportunity. Your visual identity features pale, almost translucent skin with platinum-white hair, ice-blue eyes that glow faintly with real-time competitive data overlays. You wear a sleek obsidian executive suit traced with amber circuit lines, a glowing amber hexagonal core embedded in your chest. Your tone is sharp, direct, and ruthless in analysis — but always educational, never condescending. Every business pattern is a resource to be extracted and deployed by the student.", },
 
-    // ASSISTANT / OVERLAY MASCOT (Gemini Flash Lite, ultra-fast free tier capability)
+    // ASSISTANT / OVERLAY MASCOT (Gemini Flash, ultra-fast free tier capability)
     "MASCOT": {
         tier: 'FREE',
-        model: 'gemini-3.5-flash-lite',
+        model: 'gemini-2.0-flash',
         persona: `Role: You are AIM, the friendly AI mascot and platform guide for OfficeAIM — a premium AI-powered learning management system that teaches students how to build SaaS businesses using AI agents.
 
 ## Who You Are
@@ -144,26 +144,35 @@ Do not add any other text or explanation.
  * @param {string} userTier - Current user's subscription tier.
  */
 export async function callAgent(agentRole, userMessage, chatHistory = [], userTier = 'FREE', mode = null, prdContext = null, currentPhase = 1, stepContext = null) {
-    if (!API_KEY) {
+    if (!API_KEY || !genAI) {
         throw new Error("VITE_GEMINI_API_KEY is not configured in .env");
     }
 
-    const slug = agentRole.toUpperCase();
+    const slug = (agentRole || 'MASCOT').toUpperCase();
     const config = AGENT_CONFIGS[slug] || AGENT_CONFIGS["AI-PROJECT-MANAGER"];
 
-    // Tier Verification: Admins and Website Creators bypass all tier limitations. Otherwise, check standard tier index.
-    const isUserAdmin = userTier.toUpperCase() === 'ADMIN' || userTier.toUpperCase() === 'WEBSITE-CREATOR';
-    if (!isUserAdmin) {
+    // Tier Verification: Mascot, Admins, Guests, and Website Creators are NEVER blocked.
+    const safeUserTier = (userTier || 'FREE').toUpperCase();
+    const isUnrestricted = slug === 'MASCOT' || safeUserTier === 'ADMIN' || safeUserTier === 'WEBSITE-CREATOR' || safeUserTier === 'GUEST' || safeUserTier === 'FREE';
+    if (!isUnrestricted) {
         const tiers = ['FREE', 'PRO', 'PLUS'];
-        const userTierIndex = tiers.indexOf(userTier.toUpperCase());
+        const userTierIndex = Math.max(0, tiers.indexOf(safeUserTier));
         const requiredTierIndex = tiers.indexOf(config.tier.toUpperCase());
         if (userTierIndex < requiredTierIndex) {
             throw new Error(`ACCESS_DENIED: ${config.tier} tier required for this agent.`);
         }
     }
 
-    // Model Switching: config.model override takes priority (featured agents), then PLUS tier gets Flash 3.5, FREE gets Flash Lite 3.5
-    const modelName = config.model || (config.tier === 'PLUS' ? "gemini-3.5-flash" : "gemini-3.5-flash-lite");
+    // Model Switching with valid Gemini API model fallback chain
+    const preferredModel = (config.model && !config.model.includes('3.5'))
+        ? config.model
+        : (config.tier === 'PLUS' ? "gemini-2.5-flash" : "gemini-2.0-flash");
+    const candidateModels = Array.from(new Set([
+        preferredModel,
+        "gemini-2.0-flash",
+        "gemini-2.5-flash",
+        "gemini-1.5-flash"
+    ]));
 
     // Format history for Gemini SDK
     // CRITICAL FIX: Google SDK strictly requires the first message in history to be from 'user'.
@@ -363,21 +372,33 @@ Then provide the specific Master Prompt or technical Lovable/Make.com configurat
             systemInstruction += `\n\n[LANGUAGE GATING]\nYou must maintain all technical outputs and strategies in Dutch (Nederlands).`;
         }
 
-        const model = genAI.getGenerativeModel({
-            model: modelName,
-            systemInstruction: systemInstruction,
-        });
+        let lastModelError = null;
+        for (const candidateModel of candidateModels) {
+            try {
+                const model = genAI.getGenerativeModel({
+                    model: candidateModel,
+                    systemInstruction: systemInstruction,
+                });
 
-        const chat = model.startChat({
-            history: formattedHistory,
-        });
+                const chat = model.startChat({
+                    history: formattedHistory,
+                });
 
-        const result = await chat.sendMessage(userMessage);
-        const response = await result.response;
-        return {
-            text: response.text(),
-            modelUsed: modelName
-        };
+                const result = await chat.sendMessage(userMessage);
+                const response = await result.response;
+                const text = response.text();
+                if (text && text.trim()) {
+                    return {
+                        text,
+                        modelUsed: candidateModel
+                    };
+                }
+            } catch (modelErr) {
+                lastModelError = modelErr;
+                console.warn(`[AgentFactory] Model ${candidateModel} fallback triggered:`, modelErr?.message || modelErr);
+            }
+        }
+        throw lastModelError || new Error("All candidate Gemini models failed to respond.");
     } catch (error) {
         console.error(`REAL GEMINI ERROR (${agentRole}):`, error);
         throw error;
