@@ -241,3 +241,4 @@ The newsletter form currently shows an alert. To integrate with a real provider:
 
 Built with ❤️ by Antigravity for OfficeAim
 Premium Dark • Innovation Magazine Aesthetic
+# Rama para revisión de código
