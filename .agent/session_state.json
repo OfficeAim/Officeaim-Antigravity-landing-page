@@ -1,5 +1,5 @@
 {
-  "session_start": "2026-10-30T13:45:55+01:00",
+  "session_start": "2026-11-11T21:27:00+01:00",
   "canonical_architecture_guide": {
     "title": "Guía Canónica e Inviolable de Arquitectura, RLS y Diseño — OfficeAIM",
     "enforcement_rule": "Todo nuevo componente, página, función serverless o tabla en Supabase debe cumplir estrictamente con las especificaciones de estos 6 documentos maestros.",

@@ -4,8 +4,16 @@
   command = "cd hub && npm install && npm run build && cd .. && cp -R hub/dist/* hub/"
   publish = "."
 
+[functions]
+  directory = "netlify/functions"
+
 [build.environment]
   SECRETS_SCAN_ENABLED = "false"
+
+[[redirects]]
+  from = "/api/newsletter/send"
+  to = "/.netlify/functions/send-newsletter"
+  status = 200
 
 [[redirects]]
   from = "/pricing"

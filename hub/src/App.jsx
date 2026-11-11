@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Component } from 'react';
 import { supabase } from './lib/supabase';
 
 // Pages
@@ -107,6 +107,33 @@ const ResourceRedirect = ({ to }) => {
     </div>
   );
 };
+
+class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+  componentDidCatch(error, errorInfo) {
+    console.error("ErrorBoundary caught:", error, errorInfo);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="h-screen w-full flex items-center justify-center bg-[#070A12] text-white p-6">
+          <div className="glass-card p-8 border-red-500/30 text-center max-w-md">
+            <h2 className="text-xl font-bold text-red-400 mb-2">Interface Render Error</h2>
+            <p className="text-xs text-text-muted mb-4 font-mono">{this.state.error?.message || 'Unexpected component error'}</p>
+            <button onClick={() => window.location.reload()} className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-bold transition-all">Reload Page</button>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 const App = () => {
   const [session, setSession] = useState(null);
@@ -280,7 +307,8 @@ const App = () => {
       <Router>
         <Toaster position="top-right" reverseOrder={false} toastOptions={{ className: 'glass-card border-white/10 text-white text-[12px] italic font-bold', style: { background: 'rgba(7, 10, 18, 0.9)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255, 255, 255, 0.1)', color: '#fff' } }} />
         <div className={isWidgetRoute ? "min-h-screen bg-transparent text-white font-plus-jakarta" : "min-h-screen bg-[#070A12] text-white font-plus-jakarta"}>
-          <Routes>
+          <ErrorBoundary>
+            <Routes>
             {/* Super Admin Authentication & Mobile News Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/hub/admin/login" element={<AdminLogin />} />
@@ -342,6 +370,7 @@ const App = () => {
             <Route path="/" element={<Navigate to="/hub/login" />} />
             <Route path="*" element={<Navigate to="/hub/login" />} />
           </Routes>
+        </ErrorBoundary>
         </div>
       </Router>
     </NewsProvider>

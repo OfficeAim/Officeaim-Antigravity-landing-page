@@ -410,14 +410,22 @@ const Login = () => {
                             </div>
                         )}
 
-                        <div className="text-center">
+                        <div className="mt-6 pt-5 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
                             <a
                                 href="/index.html"
-                                className="inline-flex items-center justify-center gap-2 text-xs font-bold text-text-muted hover:text-white transition-colors pt-2"
+                                className="inline-flex items-center gap-1.5 font-bold text-slate-400 hover:text-white transition-colors"
                             >
                                 <ArrowLeft className="h-3.5 w-3.5" />
-                                <span>Back to OfficeAIM home</span>
+                                <span>Back to home</span>
                             </a>
+                            <button
+                                type="button"
+                                onClick={() => setShowMemberLogin(!showMemberLogin)}
+                                className="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors underline underline-offset-4 decoration-cyan-400/30 hover:decoration-cyan-300"
+                            >
+                                <Lock className="h-3 w-3" />
+                                <span>{showMemberLogin ? 'Hide sign-in' : 'Already have an account? Sign in'}</span>
+                            </button>
                         </div>
                     </div>
 

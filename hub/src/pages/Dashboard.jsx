@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { BookOpen, Trophy, Clock, Play, ChevronRight, TrendingUp, Bot, Users, Loader2, LogOut, Shield, Map, Bookmark, MessageSquare, Send, Heart, Star, Sparkles, BookOpenCheck, Activity, Copy, Check, ThumbsUp, Plus, Globe, MapPin } from 'lucide-react';
+import { BookOpen, Trophy, Clock, Play, ChevronRight, TrendingUp, Bot, Users, Loader2, LogOut, Shield, Map, Bookmark, MessageSquare, Send, Heart, Star, Sparkles, BookOpenCheck, Activity, Copy, Check, ThumbsUp, Plus, Globe, MapPin, X } from 'lucide-react';
 
 import { useNavigate } from 'react-router-dom';
 import InterestTest from '../components/InterestTest';

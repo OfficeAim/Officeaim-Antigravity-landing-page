@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Shield, ShieldCheck, Power, Search, AlertTriangle, TrendingUp, Bot, Sparkles, RefreshCcw, BookOpen, Clock, MessageSquare, Send, ChevronRight, X, Activity, Award, HeadphonesIcon, DollarSign, Cpu, BarChart3, Wallet, Pencil, Check, ChevronDown, ChevronUp, Globe, Server, Zap, Mail, ExternalLink, Copy, CheckCircle, Inbox, Bug, ClipboardCheck, Newspaper, Smartphone } from 'lucide-react';
+import { Users, Shield, ShieldCheck, Power, Search, AlertTriangle, TrendingUp, Bot, Sparkles, RefreshCcw, BookOpen, Clock, MessageSquare, Send, ChevronRight, X, Activity, Award, HeadphonesIcon, DollarSign, Cpu, BarChart3, Wallet, Pencil, Check, ChevronDown, ChevronUp, Globe, Server, Zap, Mail, ExternalLink, Copy, CheckCircle, Inbox, Bug, ClipboardCheck, Newspaper, Smartphone, Phone, Trash2, UserPlus } from 'lucide-react';
 import MascotAssistant from '../components/MascotAssistant';
 import NewsManager from '../components/NewsManager';
+import NewsletterManager from '../components/NewsletterManager';
 
 const AdminDashboard = ({ profile }) => {
     const [users, setUsers] = useState([]);
@@ -36,6 +37,12 @@ const AdminDashboard = ({ profile }) => {
     const [ticketFilter, setTicketFilter] = useState('open');
     const [expandedTicket, setExpandedTicket] = useState(null);
 
+    // Waitlist Management
+    const [waitlistEntries, setWaitlistEntries] = useState([]);
+    const [waitlistLoading, setWaitlistLoading] = useState(true);
+    const [waitlistSearch, setWaitlistSearch] = useState('');
+    const [copiedWaitlistEmail, setCopiedWaitlistEmail] = useState(null);
+
     // Cost Analysis Panel
     const [showCosts, setShowCosts] = useState(true);
     const [editingCost, setEditingCost] = useState(null);
@@ -50,7 +57,7 @@ const AdminDashboard = ({ profile }) => {
         variable: [
             { id: 'gemini_api', name: 'Gemini API', plan: 'Usage-based', cost: 5, icon: 'cpu', color: 'orange', url: 'https://aistudio.google.com/spend' },
             { id: 'n8n', name: 'n8n', plan: 'Not active', cost: 0, icon: 'zap', color: 'yellow', url: 'http://localhost:5678/home/workflows' },
-            { id: 'email', name: 'Email Service', plan: 'Not active', cost: 0, icon: 'mail', color: 'pink', url: 'https://resend.com/emails' },
+            { id: 'email', name: 'Email Service', plan: 'Active (Resend)', cost: 0, icon: 'mail', color: 'pink', url: 'https://resend.com/emails' },
         ]
     });
 
@@ -105,6 +112,7 @@ const AdminDashboard = ({ profile }) => {
     useEffect(() => {
         fetchUsers();
         fetchTickets();
+        fetchWaitlist();
     }, []);
 
     useEffect(() => {
@@ -333,6 +341,49 @@ const AdminDashboard = ({ profile }) => {
         }
     };
 
+    const fetchWaitlist = async () => {
+        setWaitlistLoading(true);
+        try {
+            const { data, error } = await supabase
+                .from('waitlist_entries')
+                .select('*')
+                .order('created_at', { ascending: false });
+            if (error) {
+                console.warn('Error fetching waitlist:', error.message);
+            } else {
+                setWaitlistEntries(data || []);
+            }
+        } catch (err) {
+            console.error('Waitlist fetch exception:', err);
+        } finally {
+            setWaitlistLoading(false);
+        }
+    };
+
+    const handleCopyWaitlistEmail = async (email) => {
+        try {
+            await navigator.clipboard.writeText(email);
+            setCopiedWaitlistEmail(email);
+            setTimeout(() => setCopiedWaitlistEmail(null), 2000);
+        } catch (err) {
+            console.error('Failed to copy email:', err);
+        }
+    };
+
+    const handleDeleteWaitlistEntry = async (id) => {
+        if (!window.confirm('Delete this inquiry from the waitlist?')) return;
+        try {
+            const { error } = await supabase
+                .from('waitlist_entries')
+                .delete()
+                .eq('id', id);
+            if (error) throw error;
+            setWaitlistEntries(prev => prev.filter(e => e.id !== id));
+        } catch (err) {
+            console.error('Failed to delete waitlist entry:', err);
+        }
+    };
+
     const handleCopyPrompt = async (id, prompt) => {
         try {
             await navigator.clipboard.writeText(prompt);
@@ -520,7 +571,17 @@ const AdminDashboard = ({ profile }) => {
                         <button onClick={() => setActiveTab('users')} className={`w-full flex items-center gap-3 px-3 py-2.5 mt-1 rounded-xl font-bold text-xs transition-all ${activeTab === 'users' ? 'bg-white/10 text-white border border-white/5' : 'text-text-muted hover:text-white hover:bg-white/5'}`}>
                             <Users className="h-4 w-4" /> Users
                         </button>
-                        <button onClick={() => setActiveTab('revenue')} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-xs transition-all ${activeTab === 'revenue' ? 'bg-white/10 text-white border border-white/5' : 'text-text-muted hover:text-white hover:bg-white/5'}`}>
+                        <button onClick={() => setActiveTab('waitlist')} className={`w-full flex items-center justify-between px-3 py-2.5 mt-1 rounded-xl font-bold text-xs transition-all ${activeTab === 'waitlist' ? 'bg-orange-500/20 text-orange-300 border border-orange-500/30' : 'text-text-muted hover:text-white hover:bg-white/5'}`}>
+                            <div className="flex items-center gap-3">
+                                <ClipboardCheck className="h-4 w-4 text-orange-400" /> Waitlist
+                            </div>
+                            {waitlistEntries.length > 0 && (
+                                <span className="text-[9px] bg-orange-500/20 text-orange-300 border border-orange-500/30 px-1.5 py-0.5 rounded-md font-black">
+                                    {waitlistEntries.length}
+                                </span>
+                            )}
+                        </button>
+                        <button onClick={() => setActiveTab('revenue')} className={`w-full flex items-center gap-3 px-3 py-2.5 mt-1 rounded-xl font-bold text-xs transition-all ${activeTab === 'revenue' ? 'bg-white/10 text-white border border-white/5' : 'text-text-muted hover:text-white hover:bg-white/5'}`}>
                             <DollarSign className="h-4 w-4" /> Revenue
                         </button>
                     </div>
@@ -529,6 +590,9 @@ const AdminDashboard = ({ profile }) => {
                         <span className="text-[8px] font-black text-text-muted uppercase tracking-widest px-3 italic">Content</span>
                         <button onClick={() => setActiveTab('news')} className={`w-full flex items-center gap-3 px-3 py-2.5 mt-1 rounded-xl font-bold text-xs transition-all ${activeTab === 'news' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30' : 'text-text-muted hover:text-white hover:bg-white/5'}`}>
                             <Newspaper className="h-4 w-4 text-cyan-400" /> Newsroom
+                        </button>
+                        <button onClick={() => setActiveTab('newsletter')} className={`w-full flex items-center gap-3 px-3 py-2.5 mt-1 rounded-xl font-bold text-xs transition-all ${activeTab === 'newsletter' ? 'bg-pink-500/20 text-pink-300 border border-pink-500/30' : 'text-text-muted hover:text-white hover:bg-white/5'}`}>
+                            <Mail className="h-4 w-4 text-pink-400" /> Newsletter
                         </button>
                         <a href="/admin/news" className="w-full flex items-center justify-between px-3 py-2 mt-1 rounded-xl font-bold text-[11px] text-cyan-400/80 hover:text-cyan-300 hover:bg-cyan-500/10 transition-all border border-cyan-500/10">
                             <div className="flex items-center gap-2"><Smartphone className="h-3.5 w-3.5" /> Mobile Publisher</div>
@@ -568,8 +632,8 @@ const AdminDashboard = ({ profile }) => {
                         </h2>
                     </div>
                     <div className="flex items-center gap-2">
-                        <button onClick={fetchUsers} className="p-2 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all flex items-center gap-2 text-xs font-bold text-text-muted hover:text-white">
-                            <RefreshCcw className={`h-3.5 w-3.5 transition-colors ${loading ? 'animate-spin text-white' : ''}`} /> Refresh Data
+                        <button onClick={() => { fetchUsers(); fetchWaitlist(); fetchTickets(); }} className="p-2 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all flex items-center gap-2 text-xs font-bold text-text-muted hover:text-white">
+                            <RefreshCcw className={`h-3.5 w-3.5 transition-colors ${loading || waitlistLoading ? 'animate-spin text-white' : ''}`} /> Refresh Data
                         </button>
                     </div>
                 </div>
@@ -640,8 +704,240 @@ const AdminDashboard = ({ profile }) => {
                     </div>
                 )}
 
+                {/* Newsletter Tab View */}
+                {activeTab === 'newsletter' && (
+                    <div className="flex-1 overflow-hidden h-full">
+                        <NewsletterManager />
+                    </div>
+                )}
+
+                {/* Waitlist Tab View */}
+                {activeTab === 'waitlist' && (
+                    <div className="flex-1 flex flex-col bg-[#0B1220] border border-white/5 rounded-2xl overflow-hidden shadow-2xl h-full">
+                        {/* Waitlist Header */}
+                        <div className="p-4 border-b border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white/[0.02]">
+                            <div>
+                                <h3 className="text-sm font-black uppercase tracking-tight flex items-center gap-2 italic text-white">
+                                    <ClipboardCheck className="h-4 w-4 text-orange-400" /> Campus Waitlist &amp; VIP Applications
+                                </h3>
+                                <p className="text-[10px] text-text-muted mt-0.5">
+                                    Review candidates, copy emails to invite via Supabase Auth, or reach out directly on WhatsApp.
+                                </p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <div className="relative">
+                                    <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-text-muted" />
+                                    <input
+                                        type="text"
+                                        placeholder="Search applicants..."
+                                        value={waitlistSearch}
+                                        onChange={(e) => setWaitlistSearch(e.target.value)}
+                                        className="bg-black/40 border border-white/10 rounded-xl pl-8 pr-3 py-1.5 text-xs focus:outline-none focus:border-orange-500/50 transition-colors w-56 text-white placeholder:text-white/20"
+                                    />
+                                </div>
+                                <a
+                                    href="https://supabase.com/dashboard/project/guemwhrdqmbneoccucht/auth/users"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="px-3 py-1.5 rounded-xl bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/30 text-orange-300 text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm"
+                                    title="Open Supabase to invite user"
+                                >
+                                    <UserPlus className="h-3.5 w-3.5" />
+                                    <span>Supabase Invite</span>
+                                    <ExternalLink className="h-3 w-3 opacity-60" />
+                                </a>
+                            </div>
+                        </div>
+
+                        {/* Quick Metrics Bar */}
+                        <div className="px-4 py-2.5 bg-black/30 border-b border-white/5 flex items-center gap-4 text-[11px] overflow-x-auto">
+                            <span className="text-text-muted font-bold uppercase tracking-wider text-[9px]">Summary:</span>
+                            <div className="flex items-center gap-1.5">
+                                <span className="text-white font-extrabold">{waitlistEntries.length}</span>
+                                <span className="text-text-muted text-[10px]">Total applicants</span>
+                            </div>
+                            <div className="h-3 w-px bg-white/10" />
+                            <div className="flex items-center gap-1.5">
+                                <span className="text-emerald-400 font-extrabold">
+                                    {waitlistEntries.filter(e => e.phone_whatsapp).length}
+                                </span>
+                                <span className="text-text-muted text-[10px]">With WhatsApp / Phone</span>
+                            </div>
+                            <div className="h-3 w-px bg-white/10" />
+                            <div className="flex items-center gap-1.5">
+                                <span className="text-cyan-400 font-extrabold">
+                                    {waitlistEntries.filter(e => !e.phone_whatsapp).length}
+                                </span>
+                                <span className="text-text-muted text-[10px]">Email only</span>
+                            </div>
+                        </div>
+
+                        {/* Entries Table */}
+                        <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: 'thin', scrollbarColor: '#ffffff10 transparent' }}>
+                            <table className="w-full text-left">
+                                <thead className="sticky top-0 bg-[#0B1220] z-10 shadow-sm border-b border-white/5">
+                                    <tr className="text-[9px] font-black uppercase tracking-[0.15em] text-text-muted">
+                                        <th className="px-4 py-3 italic font-bold">Candidate</th>
+                                        <th className="px-4 py-3 italic font-bold">Contact &amp; WhatsApp</th>
+                                        <th className="px-4 py-3 italic font-bold">Role &amp; Reason</th>
+                                        <th className="px-4 py-3 italic font-bold">Bottleneck &amp; Stack</th>
+                                        <th className="px-4 py-3 text-right italic font-bold">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-white/5">
+                                    {waitlistLoading ? (
+                                        <tr><td colSpan="5" className="px-4 py-12 text-center text-xs text-text-muted">Loading applicants...</td></tr>
+                                    ) : waitlistEntries.filter(e => {
+                                        const q = waitlistSearch.toLowerCase();
+                                        return (
+                                            (e.full_name || '').toLowerCase().includes(q) ||
+                                            (e.email || '').toLowerCase().includes(q) ||
+                                            (e.phone_whatsapp || '').toLowerCase().includes(q) ||
+                                            (e.user_role || '').toLowerCase().includes(q) ||
+                                            (e.main_bottleneck || '').toLowerCase().includes(q)
+                                        );
+                                    }).length === 0 ? (
+                                        <tr>
+                                            <td colSpan="5" className="px-4 py-12 text-center">
+                                                <ClipboardCheck className="h-8 w-8 text-text-muted/40 mx-auto mb-2" />
+                                                <p className="text-xs font-bold text-white mb-1">No waitlist applicants found</p>
+                                                <p className="text-[10px] text-text-muted">
+                                                    {waitlistSearch ? 'Try a different search term.' : 'When your friends complete the waitlist on the login page, their submissions will appear here.'}
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    ) : waitlistEntries.filter(e => {
+                                        const q = waitlistSearch.toLowerCase();
+                                        return (
+                                            (e.full_name || '').toLowerCase().includes(q) ||
+                                            (e.email || '').toLowerCase().includes(q) ||
+                                            (e.phone_whatsapp || '').toLowerCase().includes(q) ||
+                                            (e.user_role || '').toLowerCase().includes(q) ||
+                                            (e.main_bottleneck || '').toLowerCase().includes(q)
+                                        );
+                                    }).map(entry => {
+                                        const cleanPhone = (entry.phone_whatsapp || '').replace(/\D/g, '');
+                                        const waUrl = cleanPhone ? `https://wa.me/${cleanPhone}` : null;
+                                        const isCopied = copiedWaitlistEmail === entry.email;
+
+                                        return (
+                                            <tr key={entry.id} className="hover:bg-white/[0.03] transition-colors group">
+                                                {/* Candidate Info */}
+                                                <td className="px-4 py-3 align-top">
+                                                    <div className="flex items-start gap-3">
+                                                        <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-orange-500/20 to-amber-500/20 border border-orange-500/30 flex items-center justify-center text-xs font-black text-orange-400 shrink-0">
+                                                            {entry.full_name?.charAt(0)?.toUpperCase() || 'W'}
+                                                        </div>
+                                                        <div className="min-w-0">
+                                                            <div className="text-xs font-black text-white italic truncate max-w-[180px]">
+                                                                {entry.full_name || 'Anonymous Applicant'}
+                                                            </div>
+                                                            <div className="text-[10px] text-text-muted font-mono truncate max-w-[180px] flex items-center gap-1.5 mt-0.5">
+                                                                <span>{entry.email}</span>
+                                                            </div>
+                                                            <div className="text-[9px] text-slate-500 font-medium mt-1">
+                                                                Applied {formatTimeAgo(entry.created_at)}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                                {/* Contact & WhatsApp */}
+                                                <td className="px-4 py-3 align-top">
+                                                    {entry.phone_whatsapp ? (
+                                                        <div className="space-y-1">
+                                                            <a
+                                                                href={waUrl}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-[11px] font-bold transition-all group/wa"
+                                                                title="Open WhatsApp chat"
+                                                            >
+                                                                <Phone className="h-3 w-3" />
+                                                                <span>{entry.phone_whatsapp}</span>
+                                                                <ExternalLink className="h-2.5 w-2.5 opacity-60 group-hover/wa:opacity-100" />
+                                                            </a>
+                                                            <div className="text-[9px] text-emerald-400/80 font-bold tracking-wide uppercase pl-1">
+                                                                Priority Channel
+                                                            </div>
+                                                        </div>
+                                                    ) : (
+                                                        <span className="text-[11px] text-text-muted italic">Email only</span>
+                                                    )}
+                                                </td>
+
+                                                {/* Role & Reason */}
+                                                <td className="px-4 py-3 align-top">
+                                                    <div className="space-y-1">
+                                                        <span className="inline-block px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-orange-500/10 border border-orange-500/30 text-orange-400">
+                                                            {entry.user_role || 'General'}
+                                                        </span>
+                                                        <div className="text-[10px] text-slate-300 font-medium leading-tight max-w-[200px]">
+                                                            {entry.join_reason || 'Founding member'}
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                                {/* Bottleneck & Stack */}
+                                                <td className="px-4 py-3 align-top">
+                                                    <div className="space-y-1">
+                                                        {entry.tech_stack && (
+                                                            <span className="inline-block px-2 py-0.5 rounded text-[9px] font-bold bg-cyan-500/10 border border-cyan-500/30 text-cyan-300">
+                                                                {entry.tech_stack}
+                                                            </span>
+                                                        )}
+                                                        <div className="text-[10px] text-text-muted leading-tight max-w-[220px]">
+                                                            {entry.main_bottleneck || 'Exploring AI tools'}
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                                {/* Actions */}
+                                                <td className="px-4 py-3 align-top text-right">
+                                                    <div className="flex items-center justify-end gap-1.5">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleCopyWaitlistEmail(entry.email)}
+                                                            className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 border ${
+                                                                isCopied
+                                                                    ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
+                                                                    : 'bg-white/5 hover:bg-white/10 border-white/10 text-white'
+                                                            }`}
+                                                            title="Copy email to invite via Supabase"
+                                                        >
+                                                            {isCopied ? (
+                                                                <>
+                                                                    <Check className="h-3 w-3 text-emerald-400" />
+                                                                    <span className="text-[10px]">Copied!</span>
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    <Copy className="h-3 w-3 text-slate-400" />
+                                                                    <span className="text-[10px]">Copy Email</span>
+                                                                </>
+                                                            )}
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleDeleteWaitlistEntry(entry.id)}
+                                                            className="p-1.5 rounded-lg bg-white/5 hover:bg-rose-500/20 border border-white/10 hover:border-rose-500/30 text-text-muted hover:text-rose-400 transition-all"
+                                                            title="Delete entry"
+                                                        >
+                                                            <Trash2 className="h-3.5 w-3.5" />
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                )}
+
                 {/* MIDDLE ROW: 2 Columns */}
-                {activeTab !== 'news' && (
+                {activeTab !== 'news' && activeTab !== 'waitlist' && activeTab !== 'newsletter' && (
                     <div className="flex gap-6 flex-1 min-h-0 overflow-hidden">
 
                     {/* LEFT COL (60%): User List */}
