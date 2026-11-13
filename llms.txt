@@ -14,11 +14,11 @@
 - [Architectural Blueprint](https://officeaim.com/blueprint.html): Deep dive into multi-agent systems, client-side sovereignty, and edge deployments.
 - [Automated Workflows](https://officeaim.com/use-cases.html): Step-by-step guides for connecting n8n, Supabase, and Google Gemini into production pipelines.
 - [Security & Trust](https://officeaim.com/security.html): Zero-trust security model, client-side data privacy, and compliance guidelines.
-- [Realtime Board](https://officeaim.com/board.html): Live operational telemetry and status board.
+- [Realtime Board](https://officeaim.com/board.html): Directory of the 19 specialist AI agents and what each one does.
 
 ## Free Open-Source Tooling
 - [n8n Automation Vault](https://officeaim.com/resources/workflows.html): 98 production-ready n8n workflow JSON blueprints across AI agents, webhooks, Supabase databases, and automated notifications.
 - [Free Stack Kit](https://officeaim.com/resources/free-stack-kit.html): Curated zero-cost tech stack guide for solo developers and builders.
 - [Website Creator Guide](https://officeaim.com/resources/website-creator.html): Framework-free Jamstack development methodology.
 - [QR Generator](https://officeaim.com/resources/qr-generator.html): Zero-telemetry client-side SVG QR code generator.
-- [Library Tracker](https://officeaim.com/resources/library-tracker.html): Autonomous asset and dependency tracking utility.
+- [Library Tracker](https://officeaim.com/resources/library-tracker.html): Library and loan tracker with AI vision for inventory and student management.
