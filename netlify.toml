@@ -4,8 +4,12 @@
   command = "cd hub && npm install && npm run build && cd .. && cp -R hub/dist/* hub/"
   publish = "."
 
+[functions]
+  directory = "netlify/functions"
+
 [build.environment]
-  SECRETS_SCAN_ENABLED = "false"
+  SECRETS_SCAN_ENABLED = "true"
+  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_ANON_KEY,VITE_SUPABASE_URL"
 
 [[redirects]]
   from = "/pricing"
