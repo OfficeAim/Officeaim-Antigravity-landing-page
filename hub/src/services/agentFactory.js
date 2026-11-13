@@ -1,3 +1,5 @@
+import { supabase } from '../lib/supabase';
+
 export const AGENT_CONFIGS = {
     // FREE / ESSENTIAL TIER (Gemini 3.5 Flash-Lite)
     "AI-PROJECT-MANAGER": {
@@ -370,12 +372,24 @@ Then provide the specific Master Prompt or technical Lovable/Make.com configurat
             }
         ];
 
+        const { data: sessionData } = await supabase.auth.getSession();
+        const accessToken = sessionData?.session?.access_token;
+
         let lastModelError = null;
         for (const candidateModel of candidateModels) {
             try {
+                const requestHeaders = {
+                    'Content-Type': 'application/json',
+                    ...(accessToken
+                        ? { Authorization: `Bearer ${accessToken}` }
+                        : slug === 'MASCOT'
+                        ? { 'X-OfficeAIM-Public-Scope': 'mascot-widget' }
+                        : {})
+                };
+
                 const res = await fetch('/.netlify/functions/gemini', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: requestHeaders,
                     body: JSON.stringify({
                         model: candidateModel,
                         contents,

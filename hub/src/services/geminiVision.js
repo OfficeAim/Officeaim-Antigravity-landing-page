@@ -5,6 +5,7 @@
  */
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { supabase } from '../lib/supabase';
 
 /**
  * Compress and downscale high-resolution phone photos on an in-memory Canvas.
@@ -141,6 +142,12 @@ RETURN STRICTLY A JSON OBJECT matching this exact schema (no markdown outside th
   let lastError = null;
   let responseText = null;
 
+  let accessToken = '';
+  if (!genAI) {
+    const { data: sessionData } = await supabase.auth.getSession();
+    accessToken = sessionData?.session?.access_token || '';
+  }
+
   for (const modelName of candidateModels) {
     try {
       console.log(`Analyzing book cover with Gemini model: ${modelName}`);
@@ -149,9 +156,15 @@ RETURN STRICTLY A JSON OBJECT matching this exact schema (no markdown outside th
         const result = await model.generateContent([promptText, ...imageParts]);
         responseText = await result.response.text();
       } else {
+        const requestHeaders = {
+          'Content-Type': 'application/json',
+          ...(accessToken
+            ? { Authorization: `Bearer ${accessToken}` }
+            : { 'X-OfficeAIM-Public-Scope': 'library-tracker' }),
+        };
         const res = await fetch('/.netlify/functions/gemini', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: requestHeaders,
           body: JSON.stringify({
             model: modelName,
             contents: [promptText, ...imageParts],

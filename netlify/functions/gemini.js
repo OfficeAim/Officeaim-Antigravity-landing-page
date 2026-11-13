@@ -1,10 +1,13 @@
 /**
  * Netlify Serverless Function: gemini
  * Server-side proxy for Google Gemini API using process.env.GEMINI_API_KEY.
- * Accepts POST { model, contents, config } and returns { text, candidates, model }.
+ * Requires either:
+ *   1) A valid Supabase session token in `Authorization: Bearer <access_token>` (validated against GET {SUPABASE_URL}/auth/v1/user), OR
+ *   2) For explicitly allowed public routes (`mascot-widget`, `library-tracker`), an allowed Origin (`https://officeaimhq.netlify.app` or localhost in dev).
  */
 
 const MAX_BODY_BYTES = 4 * 1024 * 1024; // 4 MB max payload
+const MAX_OUTPUT_TOKENS = 2048; // Hard server-side ceiling for maxOutputTokens
 
 const ALLOWED_MODELS = new Set([
   'gemini-3.8-flash',
@@ -15,6 +18,27 @@ const ALLOWED_MODELS = new Set([
   'gemini-2.0-flash-exp',
   'gemini-1.5-flash',
 ]);
+
+const ALLOWED_PUBLIC_SCOPES = new Set(['mascot-widget', 'library-tracker']);
+
+function isAllowedOrigin(originHeader) {
+  if (!originHeader || typeof originHeader !== 'string') return false;
+  const normalized = originHeader.trim().replace(/\/+$/, '').toLowerCase();
+  if (normalized === 'https://officeaimhq.netlify.app') return true;
+  if (/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(normalized)) return true;
+  return false;
+}
+
+function getHeader(headers, name) {
+  if (!headers || typeof headers !== 'object') return '';
+  const target = name.toLowerCase();
+  for (const [k, v] of Object.entries(headers)) {
+    if (k.toLowerCase() === target && typeof v === 'string') {
+      return v;
+    }
+  }
+  return '';
+}
 
 function sanitizeErrorMessage(message, apiKey) {
   if (!message || typeof message !== 'string') {
@@ -51,6 +75,31 @@ function normalizeContents(contents) {
   return null;
 }
 
+async function verifySupabaseToken(token) {
+  const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+  const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseAnonKey || !token) {
+    return false;
+  }
+
+  try {
+    const userEndpoint = `${supabaseUrl.replace(/\/+$/, '')}/auth/v1/user`;
+    const res = await fetch(userEndpoint, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        apikey: supabaseAnonKey,
+      },
+    });
+    if (!res.ok) return false;
+    const user = await res.json().catch(() => null);
+    return Boolean(user && user.id);
+  } catch {
+    return false;
+  }
+}
+
 exports.handler = async (event) => {
   const headers = {
     'Content-Type': 'application/json',
@@ -62,6 +111,41 @@ exports.handler = async (event) => {
       headers: { ...headers, Allow: 'POST' },
       body: JSON.stringify({ error: 'Method not allowed. Use POST.' }),
     };
+  }
+
+  // 1. Reject any request carrying a foreign Origin header
+  const origin = getHeader(event.headers, 'origin');
+  if (origin && !isAllowedOrigin(origin)) {
+    return {
+      statusCode: 403,
+      headers,
+      body: JSON.stringify({ error: 'Forbidden origin.' }),
+    };
+  }
+
+  // 2. Authenticate via Supabase session token OR validate public route Origin
+  const authHeader = getHeader(event.headers, 'authorization');
+  const bearerMatch = authHeader.match(/^Bearer\s+(.+)$/i);
+  const accessToken = bearerMatch ? bearerMatch[1].trim() : '';
+
+  if (accessToken) {
+    const isValidUser = await verifySupabaseToken(accessToken);
+    if (!isValidUser) {
+      return {
+        statusCode: 401,
+        headers,
+        body: JSON.stringify({ error: 'Unauthorized: invalid or expired session token.' }),
+      };
+    }
+  } else {
+    const publicScope = getHeader(event.headers, 'x-officeaim-public-scope').trim().toLowerCase();
+    if (!ALLOWED_PUBLIC_SCOPES.has(publicScope) || !isAllowedOrigin(origin)) {
+      return {
+        statusCode: 401,
+        headers,
+        body: JSON.stringify({ error: 'Unauthorized: valid session token required.' }),
+      };
+    }
   }
 
   const rawBody = event.body || '';
@@ -104,12 +188,13 @@ exports.handler = async (event) => {
 
   const { model, contents, config } = payload || {};
 
+  // 3. Do not expose the allowed models list in the error message
   if (!model || typeof model !== 'string' || !ALLOWED_MODELS.has(model)) {
     return {
       statusCode: 400,
       headers,
       body: JSON.stringify({
-        error: `Unsupported or disallowed model. Allowed models: ${Array.from(ALLOWED_MODELS).join(', ')}`,
+        error: 'Unsupported or disallowed model.',
       }),
     };
   }
@@ -125,6 +210,9 @@ exports.handler = async (event) => {
 
   const geminiRequestBody = {
     contents: normalizedContents,
+    generationConfig: {
+      maxOutputTokens: MAX_OUTPUT_TOKENS,
+    },
   };
 
   if (config && typeof config === 'object') {
@@ -139,15 +227,33 @@ exports.handler = async (event) => {
     }
 
     if (config.generationConfig && typeof config.generationConfig === 'object') {
-      geminiRequestBody.generationConfig = { ...config.generationConfig };
+      const { maxOutputTokens: nestedMax, ...restGenConfig } = config.generationConfig;
+      Object.assign(geminiRequestBody.generationConfig, restGenConfig);
+      if (typeof nestedMax === 'number' && Number.isFinite(nestedMax) && nestedMax > 0) {
+        geminiRequestBody.generationConfig.maxOutputTokens = Math.min(
+          Math.floor(nestedMax),
+          MAX_OUTPUT_TOKENS
+        );
+      }
     }
 
-    const genKeys = ['temperature', 'topP', 'topK', 'maxOutputTokens', 'responseMimeType'];
+    const genKeys = ['temperature', 'topP', 'topK', 'responseMimeType'];
     for (const k of genKeys) {
       if (config[k] !== undefined) {
-        geminiRequestBody.generationConfig = geminiRequestBody.generationConfig || {};
         geminiRequestBody.generationConfig[k] = config[k];
       }
+    }
+
+    // 4. Enforce server-side ceiling on maxOutputTokens (ignore higher values)
+    if (
+      typeof config.maxOutputTokens === 'number' &&
+      Number.isFinite(config.maxOutputTokens) &&
+      config.maxOutputTokens > 0
+    ) {
+      geminiRequestBody.generationConfig.maxOutputTokens = Math.min(
+        Math.floor(config.maxOutputTokens),
+        MAX_OUTPUT_TOKENS
+      );
     }
 
     if (Array.isArray(config.safetySettings)) {
