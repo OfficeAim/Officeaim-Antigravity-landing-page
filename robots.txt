@@ -1,4 +1,4 @@
-# robots.txt for OfficeAIM (https://officeaim.com)
+# robots.txt for OfficeAIM (https://officeaimhq.netlify.app)
 User-agent: *
 Allow: /
 Disallow: /admin/
