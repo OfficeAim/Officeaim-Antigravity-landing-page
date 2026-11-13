@@ -20,5 +20,6 @@
 - [n8n Automation Vault](https://officeaim.com/resources/workflows.html): 98 production-ready n8n workflow JSON blueprints across AI agents, webhooks, Supabase databases, and automated notifications.
 - [Free Stack Kit](https://officeaim.com/resources/free-stack-kit.html): Curated zero-cost tech stack guide for solo developers and builders.
 - [Website Creator Guide](https://officeaim.com/resources/website-creator.html): Framework-free Jamstack development methodology.
+- [Viralist Studio](https://officeaimhq.netlify.app/resources/viralist-studio.html): Short-form video blueprint compiler for Claude and Remotion.
 - [QR Generator](https://officeaim.com/resources/qr-generator.html): Zero-telemetry client-side SVG QR code generator.
 - [Library Tracker](https://officeaim.com/resources/library-tracker.html): Autonomous asset and dependency tracking utility.
