@@ -6,7 +6,7 @@
 - [Landing Page](https://officeaimhq.netlify.app/): Overview of the open educational platform, architecture, and free tooling.
 - [Learn Directory](https://officeaimhq.netlify.app/learn.html): Minimalist learning pathways covering workflows, blueprints, interactive modules, and the OfficeAIM Prompt Vault (/learn/prompts).
 - [AI Skills Library](https://officeaimhq.netlify.app/skills.html): 26 production-ready AI agent prompts formatted with guided natural language instructions and cross-LLM launcher.
-- [Prompt Generator](https://officeaimhq.netlify.app/prompt-generator.html): Interactive meta-prompt builder designed to structure complex role prompts and frameworks.
+- [Prompt Generator](https://officeaimhq.netlify.app/prompt-generator.html): 3-stage interactive prompt engineering workbench with 6 structural frameworks (CRISP, CO-STAR, RISEN, Automator, RTF, Chain-of-Thought), live quality telemetry, 24 domain presets, and local storage vault.
 - [Newsroom & Intelligence](https://officeaimhq.netlify.app/news.html): Latest telemetry, release updates, and technical breakthroughs.
 - [Community & Mentorship](https://officeaimhq.netlify.app/community.html): Free community learning, YouTube courses, and mentorship channels.
 
@@ -20,7 +20,7 @@
 - [n8n Automation Vault](https://officeaimhq.netlify.app/resources/workflows.html): 98 production-ready n8n workflow JSON blueprints across AI agents, webhooks, Supabase databases, and automated notifications.
 - [Free Stack Kit](https://officeaimhq.netlify.app/resources/free-stack-kit.html): Curated zero-cost tech stack guide for solo developers and builders.
 - [Web Blueprint Studio](https://officeaimhq.netlify.app/resources/website-creator.html): Answer a few questions and get a complete website blueprint: build prompt, stack setup guide and launch roadmap.
-- [Viralist Studio](https://officeaimhq.netlify.app/resources/viralist-studio.html): Short-form video blueprint compiler for Claude and Remotion.
+- [Viralist Studio](https://officeaimhq.netlify.app/resources/viralist-studio.html): Short-form video blueprint compiler for terminal AI agents (Claude Code, Codex CLI, Gemini CLI / Antigravity, OpenCode) and Remotion, featuring local Voicebox TTS, Suno music briefs, low-budget mode, and animated scene previews.
 - [QR Generator](https://officeaimhq.netlify.app/resources/qr-generator.html): Zero-telemetry client-side SVG QR code generator.
 - [Library Tracker](https://officeaimhq.netlify.app/resources/library-tracker.html): Library and loan tracker with AI vision for inventory and student management.
 
