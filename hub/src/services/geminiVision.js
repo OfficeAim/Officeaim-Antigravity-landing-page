@@ -5,6 +5,7 @@
  */
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { supabase } from '../lib/supabase';
 
 /**
  * Compress and downscale high-resolution phone photos on an in-memory Canvas.
@@ -91,15 +92,12 @@ export async function fileToGenerativePart(file) {
  * @returns {Promise<Object>} Formatted book extraction result
  */
 export async function analyzeBookCovers(imageFiles, apiKey, validGenres = []) {
-  if (!apiKey || !apiKey.trim()) {
-    throw new Error('MISSING_API_KEY: Please enter your Google Gemini API Key in settings.');
-  }
-
   if (!imageFiles || imageFiles.length === 0) {
     throw new Error('NO_IMAGES: Select at least the front cover photo.');
   }
 
-  const genAI = new GoogleGenerativeAI(apiKey.trim());
+  const userKey = apiKey ? apiKey.trim() : '';
+  const genAI = userKey.length >= 15 ? new GoogleGenerativeAI(userKey) : null;
 
   const imageParts = [];
   for (const file of imageFiles) {
@@ -140,16 +138,44 @@ RETURN STRICTLY A JSON OBJECT matching this exact schema (no markdown outside th
 }
 `;
 
-  const candidateModels = ['gemini-3.6-flash', 'gemini-1.5-flash', 'gemini-2.0-flash-exp'];
+  const candidateModels = ['gemini-3.6-flash', 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-2.5-flash'];
   let lastError = null;
   let responseText = null;
+
+  let accessToken = '';
+  if (!genAI) {
+    const { data: sessionData } = await supabase.auth.getSession();
+    accessToken = sessionData?.session?.access_token || '';
+  }
 
   for (const modelName of candidateModels) {
     try {
       console.log(`Analyzing book cover with Gemini model: ${modelName}`);
-      const model = genAI.getGenerativeModel({ model: modelName });
-      const result = await model.generateContent([promptText, ...imageParts]);
-      responseText = await result.response.text();
+      if (genAI) {
+        const model = genAI.getGenerativeModel({ model: modelName });
+        const result = await model.generateContent([promptText, ...imageParts]);
+        responseText = await result.response.text();
+      } else {
+        const requestHeaders = {
+          'Content-Type': 'application/json',
+          ...(accessToken
+            ? { Authorization: `Bearer ${accessToken}` }
+            : { 'X-OfficeAIM-Public-Scope': 'library-tracker' }),
+        };
+        const res = await fetch('/.netlify/functions/gemini', {
+          method: 'POST',
+          headers: requestHeaders,
+          body: JSON.stringify({
+            model: modelName,
+            contents: [promptText, ...imageParts],
+          }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          throw new Error(data.error || `Gemini vision service returned status ${res.status}`);
+        }
+        responseText = data.text || '';
+      }
       if (responseText) break;
     } catch (err) {
       console.warn(`Model ${modelName} failed:`, err.message);

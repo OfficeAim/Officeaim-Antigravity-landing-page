@@ -1,7 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || "";
-const genAI = API_KEY ? new GoogleGenerativeAI(API_KEY) : null;
+import { supabase } from '../lib/supabase';
 
 export const AGENT_CONFIGS = {
     // FREE / ESSENTIAL TIER (Gemini 3.5 Flash-Lite)
@@ -144,10 +141,6 @@ Do not add any other text or explanation.
  * @param {string} userTier - Current user's subscription tier.
  */
 export async function callAgent(agentRole, userMessage, chatHistory = [], userTier = 'FREE', mode = null, prdContext = null, currentPhase = 1, stepContext = null) {
-    if (!API_KEY || !genAI) {
-        throw new Error("VITE_GEMINI_API_KEY is not configured in .env");
-    }
-
     const slug = (agentRole || 'MASCOT').toUpperCase();
     const config = AGENT_CONFIGS[slug] || AGENT_CONFIGS["AI-PROJECT-MANAGER"];
 
@@ -164,14 +157,13 @@ export async function callAgent(agentRole, userMessage, chatHistory = [], userTi
     }
 
     // Model Switching with valid Gemini API model fallback chain
-    const preferredModel = (config.model && !config.model.includes('3.5'))
-        ? config.model
-        : (config.tier === 'PLUS' ? "gemini-2.5-flash" : "gemini-2.0-flash");
+    const preferredModel = (config.model && !config.model.includes('2.0')) ? config.model : "gemini-3.6-flash";
     const candidateModels = Array.from(new Set([
         preferredModel,
-        "gemini-2.0-flash",
-        "gemini-2.5-flash",
-        "gemini-1.5-flash"
+        "gemini-3.6-flash",
+        "gemini-3.8-flash",
+        "gemini-3.5-flash",
+        "gemini-2.5-flash"
     ]));
 
     // Format history for Gemini SDK
@@ -372,21 +364,47 @@ Then provide the specific Master Prompt or technical Lovable/Make.com configurat
             systemInstruction += `\n\n[LANGUAGE GATING]\nYou must maintain all technical outputs and strategies in Dutch (Nederlands).`;
         }
 
+        const contents = [
+            ...formattedHistory,
+            {
+                role: 'user',
+                parts: [{ text: userMessage }]
+            }
+        ];
+
+        const { data: sessionData } = await supabase.auth.getSession();
+        const accessToken = sessionData?.session?.access_token;
+
         let lastModelError = null;
         for (const candidateModel of candidateModels) {
             try {
-                const model = genAI.getGenerativeModel({
-                    model: candidateModel,
-                    systemInstruction: systemInstruction,
+                const requestHeaders = {
+                    'Content-Type': 'application/json',
+                    ...(accessToken
+                        ? { Authorization: `Bearer ${accessToken}` }
+                        : slug === 'MASCOT'
+                        ? { 'X-OfficeAIM-Public-Scope': 'mascot-widget' }
+                        : {})
+                };
+
+                const res = await fetch('/.netlify/functions/gemini', {
+                    method: 'POST',
+                    headers: requestHeaders,
+                    body: JSON.stringify({
+                        model: candidateModel,
+                        contents,
+                        config: {
+                            systemInstruction
+                        }
+                    })
                 });
 
-                const chat = model.startChat({
-                    history: formattedHistory,
-                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) {
+                    throw new Error(data.error || `Gemini service returned status ${res.status}`);
+                }
 
-                const result = await chat.sendMessage(userMessage);
-                const response = await result.response;
-                const text = response.text();
+                const text = data.text || '';
                 if (text && text.trim()) {
                     return {
                         text,
