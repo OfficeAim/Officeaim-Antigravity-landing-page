@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Viralist Studio: free short-form video blueprint</title>
-    <meta name="description" content="A short-form video blueprint compiler. Answer three questions, pick a format, and get a 3-part production dossier that Claude turns into a finished reel. No video editor, no AI-video credits.">
+    <meta name="description" content="A short-form video blueprint compiler. Answer three questions, pick a format, and get a 3-part production dossier that your AI agent turns into a finished reel. No video editor, no AI-video credits.">
     <link rel="canonical" href="https://officeaimhq.netlify.app/resources/viralist-studio.html" />
 
     <!-- Open Graph / WhatsApp Share Preview -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://officeaimhq.netlify.app/resources/viralist-studio.html">
     <meta property="og:title" content="Viralist Studio: free short-form video blueprint">
-    <meta property="og:description" content="A short-form video blueprint compiler. Answer three questions, pick a format, and get a 3-part production dossier that Claude turns into a finished reel. No video editor, no AI-video credits.">
+    <meta property="og:description" content="A short-form video blueprint compiler. Answer three questions, pick a format, and get a 3-part production dossier that your AI agent turns into a finished reel. No video editor, no AI-video credits.">
     <meta property="og:image" content="https://officeaimhq.netlify.app/images/hero.webp">
 
     <!-- Twitter Preview -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://officeaimhq.netlify.app/resources/viralist-studio.html">
     <meta name="twitter:title" content="Viralist Studio: free short-form video blueprint">
-    <meta name="twitter:description" content="A short-form video blueprint compiler. Answer three questions, pick a format, and get a 3-part production dossier that Claude turns into a finished reel. No video editor, no AI-video credits.">
+    <meta name="twitter:description" content="A short-form video blueprint compiler. Answer three questions, pick a format, and get a 3-part production dossier that your AI agent turns into a finished reel. No video editor, no AI-video credits.">
     <meta name="twitter:image" content="https://officeaimhq.netlify.app/images/hero.webp">
 
     <!-- JSON-LD Structured Data -->
@@ -28,7 +28,7 @@
       "@type": "WebApplication",
       "name": "Viralist Studio",
       "url": "https://officeaimhq.netlify.app/resources/viralist-studio.html",
-      "description": "A short-form video blueprint compiler. Answer three questions, pick a format, and get a 3-part production dossier that Claude turns into a finished reel. No video editor, no AI-video credits.",
+      "description": "A short-form video blueprint compiler. Answer three questions, pick a format, and get a 3-part production dossier that your AI agent turns into a finished reel. No video editor, no AI-video credits.",
       "applicationCategory": "MultimediaApplication",
       "operatingSystem": "All",
       "offers": {
@@ -79,11 +79,12 @@
     <link rel="stylesheet" href="../styles.css?v=20261019">
     <link rel="stylesheet" href="../landing-new.css?v=20261016">
     <style>
-        body {
+        html, body {
             background-color: #070A12;
             color: #ffffff;
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
+            max-width: 100%;
         }
         
         /* Glassmorphism Classes */
@@ -171,14 +172,57 @@
             border-left: 2px solid #00F0FF;
             background: rgba(0, 240, 255, 0.06);
         }
+
+        /* Animated Live Preview Frame Styles (transform & opacity only) */
+        .reel-stage-9-16 {
+            width: 240px;
+            height: 426px;
+        }
+        .reel-stage-16-9 {
+            width: 100%;
+            max-width: 440px;
+            aspect-ratio: 16 / 9;
+        }
+        .reel-stage-1-1 {
+            width: 280px;
+            height: 280px;
+        }
+        .reel-headline-enter {
+            opacity: 0;
+            transform: translateY(14px) scale(0.96);
+            transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reel-headline-enter.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .reel-word-token {
+            display: inline-block;
+            opacity: 0.25;
+            transform: translateY(3px) scale(0.96);
+            transition: opacity 0.16s ease, transform 0.16s ease;
+            padding: 1px 4px;
+            border-radius: 4px;
+            margin: 1px;
+        }
+        .reel-word-token.is-spoken {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .reel-word-token.is-current {
+            opacity: 1;
+            transform: translateY(-1px) scale(1.05);
+        }
     </style>
 </head>
 <body class="min-h-screen relative antialiased selection:bg-brand-orange selection:text-white">
 
     <!-- Glowing Background Atmosphere elements -->
-    <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-brand-orange/5 blur-[120px] pointer-events-none z-0"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-brand-cyan/5 blur-[120px] pointer-events-none z-0"></div>
-    <div class="absolute top-[35%] left-[40%] w-[30vw] h-[30vw] rounded-full bg-brand-emerald/3 blur-[120px] pointer-events-none z-0"></div>
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-brand-orange/5 blur-[120px]"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-brand-cyan/5 blur-[120px]"></div>
+        <div class="absolute top-[35%] left-[40%] w-[30vw] h-[30vw] rounded-full bg-brand-emerald/3 blur-[120px]"></div>
+    </div>
 
     <!-- Global Navigation Bar -->
     <!-- NAV:START -->
@@ -347,7 +391,7 @@
     <!-- NAV:END -->
 
     <!-- Main Container -->
-    <main class="relative z-10 w-full max-w-7xl mx-auto px-6 pt-12 pb-12">
+    <main class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-12">
         
         <!-- 2.1 Hero Section -->
         <div class="max-w-3xl mb-10 text-left">
@@ -358,7 +402,7 @@
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">Viralist Studio</span>
             </h1>
             <p class="mt-3 text-sm md:text-base text-gray-300 font-medium leading-relaxed">
-                A short-form video blueprint compiler. Answer three questions, pick a format, and get a 3-part production dossier that Claude turns into a finished reel. No video editor, no AI-video credits.
+                A short-form video blueprint compiler. Answer three questions, pick a format, and get a 3-part production dossier that your AI agent turns into a finished reel. No video editor, no AI-video credits.
             </p>
             <div class="mt-6 flex flex-wrap gap-3">
                 <a href="#wizard-section" class="px-5 py-2.5 rounded-xl bg-brand-orange hover:bg-orange-600 text-white font-bold text-xs tracking-wide transition-all shadow-lg shadow-brand-orange/20">
@@ -408,7 +452,7 @@
                         </p>
                     </div>
                     <div class="mt-3 pt-2 border-t border-white/5 text-[10px] font-mono text-gray-400 italic">
-                        Claude + your voice sheet.
+                        Your AI agent + your voice sheet.
                     </div>
                 </div>
 
@@ -503,7 +547,7 @@
                         <button type="button" onclick="applyQuickPreset('animated')" data-preset-btn="animated"
                             class="preset-quick-btn text-left p-3 rounded-xl bg-black/30 border border-white/10 hover:border-brand-orange/50 transition-all group cursor-pointer">
                             <div class="text-xs font-bold text-white group-hover:text-brand-orange transition-colors">⚡ Animated reel (no camera)</div>
-                            <p class="text-[10px] text-gray-400 mt-1 leading-snug">9:16, 30–45 s, ElevenLabs voice</p>
+                            <p class="text-[10px] text-gray-400 mt-1 leading-snug">9:16, 30–45 s, Voicebox (free)</p>
                         </button>
                         <button type="button" onclick="applyQuickPreset('talking')" data-preset-btn="talking"
                             class="preset-quick-btn text-left p-3 rounded-xl bg-black/30 border border-white/10 hover:border-brand-emerald/50 transition-all group cursor-pointer">
@@ -641,6 +685,27 @@
                         </h2>
                         
                         <div class="space-y-5">
+                            <!-- 1. Your AI agent (select, required) -->
+                            <div class="flex flex-col gap-2">
+                                <label for="ai-agent" class="text-xs font-bold uppercase tracking-wider text-gray-400">Your AI agent *</label>
+                                <div class="relative">
+                                    <select id="ai-agent" name="agent" required
+                                        class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white appearance-none cursor-pointer bg-brand-card">
+                                        <option value="Claude Code" selected>Claude Code</option>
+                                        <option value="Codex CLI (ChatGPT)">Codex CLI (ChatGPT)</option>
+                                        <option value="Gemini CLI / Antigravity">Gemini CLI / Antigravity</option>
+                                        <option value="OpenCode">OpenCode</option>
+                                        <option value="Other agent with terminal access">Other agent with terminal access</option>
+                                    </select>
+                                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-brand-orange">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                </div>
+                                <p class="text-[11px] text-gray-400 leading-relaxed">
+                                    You need an agent that can run commands on your computer. A chat-only web app cannot render video.
+                                </p>
+                            </div>
+
                             <!-- Engine (4 options) -->
                             <div class="flex flex-col gap-2.5">
                                 <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Production engine</span>
@@ -684,7 +749,7 @@
                                     class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white placeholder:text-white/20 resize-y"></textarea>
                             </div>
 
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <!-- aspect -->
                                 <div class="flex flex-col gap-2">
                                     <label for="video-aspect" class="text-xs font-bold uppercase tracking-wider text-gray-400">Aspect ratio</label>
@@ -719,14 +784,17 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <!-- voice -->
                                 <div class="flex flex-col gap-2">
                                     <label for="video-voice" class="text-xs font-bold uppercase tracking-wider text-gray-400">Voice source</label>
                                     <div class="relative">
                                         <select id="video-voice" name="voice" required
                                             class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white appearance-none cursor-pointer bg-brand-card">
-                                            <option value="ElevenLabs" selected>ElevenLabs</option>
+                                            <option value="Voicebox (free, runs on your computer)" selected>Voicebox (free, runs on your computer)</option>
+                                            <option value="ElevenLabs (cloud, free tier with limits)">ElevenLabs (cloud, free tier with limits)</option>
                                             <option value="I record it myself">I record it myself</option>
                                             <option value="No voice, text only">No voice, text only</option>
                                         </select>
@@ -735,21 +803,48 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- music -->
+                                <div class="flex flex-col gap-2">
+                                    <label for="video-music" class="text-xs font-bold uppercase tracking-wider text-gray-400">Music</label>
+                                    <div class="relative">
+                                        <select id="video-music" name="music" required
+                                            class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white appearance-none cursor-pointer bg-brand-card">
+                                            <option value="No music" selected>No music</option>
+                                            <option value="My own track">My own track</option>
+                                            <option value="Suno (AI-generated)">Suno (AI-generated)</option>
+                                        </select>
+                                        <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-brand-orange">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                        </div>
+                                    </div>
+                                    <!-- Suno note & referral link (shown when Suno is selected) -->
+                                    <div id="suno-music-note" class="hidden p-3 rounded-xl bg-brand-orange/10 border border-brand-orange/30 text-[11px] text-gray-200 leading-relaxed space-y-1.5">
+                                        <p>Songs made on Suno's free plan are for non-commercial use. For monetised or client videos you need a paid Suno plan.</p>
+                                        <a id="suno-referral-link" href="https://suno.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 font-bold text-brand-orange hover:underline">
+                                            <span id="suno-referral-link-text">Try Suno</span> ↗
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- footageNotes (shown when engine != animated) -->
                             <div id="footage-notes-container" class="hidden flex-col gap-2">
                                 <label for="footage-notes" class="text-xs font-bold uppercase tracking-wider text-gray-400">Describe your raw footage</label>
                                 <textarea id="footage-notes" name="footageNotes" rows="2"
-                                    placeholder="E.g., 4 iPhone clips in public/recordings showing knee assessment and treadmill cadence..."
+                                    placeholder="E.g., 4 iPhone clips in raw/ showing knee assessment and treadmill cadence..."
                                     class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white placeholder:text-white/20 resize-y"></textarea>
                             </div>
 
-                            <!-- referenceUrl -->
+                            <!-- referenceVideos (textarea optional) -->
                             <div class="flex flex-col gap-2">
-                                <label for="reference-url" class="text-xs font-bold uppercase tracking-wider text-gray-400">Reference video or source URL (optional)</label>
-                                <input type="url" id="reference-url" name="referenceUrl" placeholder="E.g., https://www.youtube.com/watch?v=..."
-                                    class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white placeholder:text-white/20">
+                                <label for="reference-url" class="text-xs font-bold uppercase tracking-wider text-gray-400">Reference videos (optional)</label>
+                                <textarea id="reference-url" name="referenceVideos" rows="3"
+                                    placeholder="Paste 3 to 5 links to videos whose style you like. The agent will take inspiration from them, not copy them."
+                                    class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white placeholder:text-white/20 resize-y"></textarea>
+                                <p class="text-[11px] text-gray-400 leading-relaxed">
+                                    Paste 3 to 5 links to videos whose style you like. The agent will take inspiration from them, not copy them.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -821,6 +916,15 @@
                                 <input type="checkbox" id="two-endings" name="twoEndings" checked class="rounded border-white/10 text-brand-orange focus:ring-brand-orange bg-[#0A0F18] w-5 h-5">
                             </label>
 
+                            <!-- lowBudgetMode toggle -->
+                            <label class="flex items-center justify-between p-4 rounded-2xl border border-white/10 bg-black/25 hover:bg-white/[0.03] cursor-pointer">
+                                <div>
+                                    <span class="text-xs font-bold text-white block">Low-budget mode</span>
+                                    <span class="text-[11px] text-gray-400">Saves progress to a file so you can stop and continue when your free usage resets.</span>
+                                </div>
+                                <input type="checkbox" id="low-budget-mode" name="lowBudgetMode" class="rounded border-white/10 text-brand-orange focus:ring-brand-orange bg-[#0A0F18] w-5 h-5">
+                            </label>
+
                             <!-- timeline -->
                             <div class="flex flex-col gap-2">
                                 <label for="publish-timeline" class="text-xs font-bold uppercase tracking-wider text-gray-400">Publishing timeline</label>
@@ -867,58 +971,110 @@
                     <div class="flex items-start justify-between border-b border-white/[0.05] pb-4 mb-4">
                         <div>
                             <span class="text-[9px] font-black uppercase tracking-widest text-brand-orange">Blueprint compiled successfully</span>
-                            <h3 class="text-xl font-outfit font-extrabold text-white mt-0.5" id="success-title">5-scene vertical storyboard preview</h3>
+                            <h3 class="text-xl font-outfit font-extrabold text-white mt-0.5" id="success-title">Live 5-scene reel preview</h3>
                         </div>
                         <div class="w-8 h-8 rounded-full bg-brand-emerald/10 border border-brand-emerald/30 flex items-center justify-center text-brand-emerald shrink-0">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                         </div>
                     </div>
 
-                    <p class="text-[11px] text-gray-400 leading-normal mb-4 font-medium">
-                        Here is the narrative beat structure generated from your positioning and video parameters before Claude writes the scene code:
-                    </p>
-
-                    <!-- 5-Card Vertical Storyboard -->
-                    <div class="grid grid-cols-1 sm:grid-cols-5 gap-2.5 mb-5" id="storyboard-preview-grid">
-                        <div class="p-3 rounded-2xl bg-black/40 border border-brand-orange/30 flex flex-col justify-between min-h-[120px]">
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-brand-orange/15 text-brand-orange">1. HOOK</span>
-                                <span class="text-[9px] font-mono text-gray-500">0–3 s</span>
+                    <!-- Animated Reel Preview Container (replaces static storyboard) -->
+                    <div class="mb-5 p-4 rounded-2xl bg-black/35 border border-white/10 flex flex-col items-center">
+                        <!-- Top Controls Bar -->
+                        <div class="w-full flex flex-wrap items-center justify-between gap-2 mb-3">
+                            <div class="flex items-center gap-2">
+                                <span id="reel-preview-scene-badge" class="text-[10px] font-mono font-bold uppercase px-2.5 py-1 rounded-lg bg-brand-orange/15 text-brand-orange border border-brand-orange/30">
+                                    1 / 5 · HOOK
+                                </span>
+                                <span id="reel-preview-aspect-badge" class="text-[10px] font-mono text-gray-400">
+                                    9:16
+                                </span>
                             </div>
-                            <p class="text-[11px] text-white font-medium leading-snug" id="storyboard-card-hook">—</p>
+                            <div class="flex items-center gap-2" id="reel-preview-controls">
+                                <button type="button" id="reel-pause-btn" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 border border-white/15 text-[11px] font-bold text-white transition-all cursor-pointer">
+                                    Pause
+                                </button>
+                                <button type="button" id="reel-replay-btn" class="px-3 py-1.5 rounded-lg bg-brand-orange/20 hover:bg-brand-orange/30 border border-brand-orange/40 text-[11px] font-bold text-brand-orange hover:text-white transition-all cursor-pointer">
+                                    Replay
+                                </button>
+                            </div>
                         </div>
 
-                        <div class="p-3 rounded-2xl bg-black/40 border border-white/10 flex flex-col justify-between min-h-[120px]">
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-red-500/15 text-red-300">2. PROBLEM</span>
-                                <span class="text-[9px] font-mono text-gray-500">Audience</span>
+                        <!-- Phone / Video Frame (Animated Stage) -->
+                        <div id="reel-preview-stage" class="reel-stage-9-16 relative rounded-[26px] border-2 border-white/15 shadow-2xl overflow-hidden flex flex-col justify-between p-4 select-none transition-colors duration-300" style="background-color: #070A12; color: #FFFFFF;">
+                            <!-- Top Segmented Progress Bar (5 scenes) -->
+                            <div class="w-full space-y-2 z-10">
+                                <div class="grid grid-cols-5 gap-1 w-full">
+                                    <div class="h-1 rounded-full bg-white/15 overflow-hidden"><div id="reel-seg-0" class="h-full w-0 bg-brand-orange"></div></div>
+                                    <div class="h-1 rounded-full bg-white/15 overflow-hidden"><div id="reel-seg-1" class="h-full w-0 bg-brand-orange"></div></div>
+                                    <div class="h-1 rounded-full bg-white/15 overflow-hidden"><div id="reel-seg-2" class="h-full w-0 bg-brand-orange"></div></div>
+                                    <div class="h-1 rounded-full bg-white/15 overflow-hidden"><div id="reel-seg-3" class="h-full w-0 bg-brand-orange"></div></div>
+                                    <div class="h-1 rounded-full bg-white/15 overflow-hidden"><div id="reel-seg-4" class="h-full w-0 bg-brand-orange"></div></div>
+                                </div>
+                                <div class="flex items-center justify-between text-[9px] font-mono opacity-80">
+                                    <span id="reel-stage-handle">@channel</span>
+                                    <span id="reel-stage-scene-tag" class="uppercase font-bold px-1.5 py-0.5 rounded bg-white/10">HOOK</span>
+                                </div>
                             </div>
-                            <p class="text-[11px] text-gray-200 font-medium leading-snug" id="storyboard-card-problem">—</p>
+
+                            <!-- Center Animated Headline -->
+                            <div class="my-auto py-3 flex flex-col items-center justify-center text-center z-10 px-1">
+                                <div id="reel-stage-kicker" class="text-[9px] font-mono uppercase tracking-widest mb-1.5 opacity-75">Scene 01 · Hook</div>
+                                <div id="reel-stage-headline" class="reel-headline-enter font-outfit font-extrabold text-sm sm:text-base leading-snug tracking-tight">
+                                    Your hook appears here
+                                </div>
+                            </div>
+
+                            <!-- Bottom Word-by-Word Captions -->
+                            <div class="w-full z-10 pt-2 border-t border-white/10">
+                                <div id="reel-stage-captions" class="text-[11px] font-bold leading-relaxed text-center min-h-[42px] flex flex-wrap items-center justify-center">
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="p-3 rounded-2xl bg-black/40 border border-white/10 flex flex-col justify-between min-h-[120px]">
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-brand-cyan/15 text-brand-cyan">3. SOLUTION</span>
-                                <span class="text-[9px] font-mono text-gray-500">Outcome</span>
+                        <!-- Reduced-Motion Static 5-Card Fallback (shown only when prefers-reduced-motion: reduce) -->
+                        <div class="hidden grid-cols-1 sm:grid-cols-5 gap-2.5 w-full mt-2" id="storyboard-reduced-motion-grid">
+                            <div class="p-3 rounded-2xl bg-black/40 border border-brand-orange/30 flex flex-col justify-between min-h-[110px]">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-brand-orange/15 text-brand-orange">1. HOOK</span>
+                                    <span class="text-[9px] font-mono text-gray-500">0–2.4 s</span>
+                                </div>
+                                <p class="text-[11px] text-white font-medium leading-snug" id="storyboard-card-hook">—</p>
                             </div>
-                            <p class="text-[11px] text-gray-200 font-medium leading-snug" id="storyboard-card-solution">—</p>
+                            <div class="p-3 rounded-2xl bg-black/40 border border-white/10 flex flex-col justify-between min-h-[110px]">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-red-500/15 text-red-300">2. PROBLEM</span>
+                                    <span class="text-[9px] font-mono text-gray-500">2.4–4.8 s</span>
+                                </div>
+                                <p class="text-[11px] text-gray-200 font-medium leading-snug" id="storyboard-card-problem">—</p>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-black/40 border border-white/10 flex flex-col justify-between min-h-[110px]">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-brand-cyan/15 text-brand-cyan">3. SOLUTION</span>
+                                    <span class="text-[9px] font-mono text-gray-500">4.8–7.2 s</span>
+                                </div>
+                                <p class="text-[11px] text-gray-200 font-medium leading-snug" id="storyboard-card-solution">—</p>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-black/40 border border-white/10 flex flex-col justify-between min-h-[110px]">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-brand-emerald/15 text-brand-emerald">4. PROOF</span>
+                                    <span class="text-[9px] font-mono text-gray-500">7.2–9.6 s</span>
+                                </div>
+                                <p class="text-[11px] text-gray-200 font-medium leading-snug" id="storyboard-card-proof">—</p>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-black/40 border border-purple-400/30 flex flex-col justify-between min-h-[110px]">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-purple-500/15 text-purple-300">5. CTA</span>
+                                    <span class="text-[9px] font-mono text-gray-500">9.6–12 s</span>
+                                </div>
+                                <p class="text-[11px] text-white font-medium leading-snug" id="storyboard-card-cta">—</p>
+                            </div>
                         </div>
 
-                        <div class="p-3 rounded-2xl bg-black/40 border border-white/10 flex flex-col justify-between min-h-[120px]">
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-brand-emerald/15 text-brand-emerald">4. PROOF</span>
-                                <span class="text-[9px] font-mono text-gray-500">Authority</span>
-                            </div>
-                            <p class="text-[11px] text-gray-200 font-medium leading-snug" id="storyboard-card-proof">—</p>
-                        </div>
-
-                        <div class="p-3 rounded-2xl bg-black/40 border border-purple-400/30 flex flex-col justify-between min-h-[120px]">
-                            <div class="flex items-center justify-between mb-1.5">
-                                <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-purple-500/15 text-purple-300">5. CTA</span>
-                                <span class="text-[9px] font-mono text-gray-500">Outro</span>
-                            </div>
-                            <p class="text-[11px] text-white font-medium leading-snug" id="storyboard-card-cta">—</p>
-                        </div>
+                        <!-- Caption below frame -->
+                        <p class="mt-3 text-[11px] text-gray-400 text-center leading-relaxed font-medium">
+                            This is a live preview built from your answers. The real video is rendered on your computer by your AI agent.
+                        </p>
                     </div>
 
                     <!-- 3-TAB PRODUCTION DOSSIER -->
@@ -1020,18 +1176,40 @@
                     </p>
 
                     <div class="space-y-3">
-                        <!-- 1. Claude -->
+                        <!-- 1. Your AI agent subscription -->
                         <div class="border-b border-white/[0.05] pb-2.5">
                             <div class="flex justify-between items-start gap-2">
                                 <div>
-                                    <a href="https://claude.ai" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-white hover:text-brand-orange transition-colors">Claude (with code execution) ↗</a>
+                                    <span class="text-xs font-bold text-white block">Your AI agent subscription (Claude, ChatGPT, Gemini or OpenCode)</span>
                                     <span class="text-[10px] text-gray-400 block">Script, scene plan &amp; Remotion code</span>
                                 </div>
                                 <span class="text-[10px] font-bold text-brand-cyan bg-brand-cyan/10 px-2.5 py-0.5 rounded-full shrink-0">User's plan</span>
                             </div>
                         </div>
 
-                        <!-- 2. Remotion -->
+                        <!-- 2. Voicebox -->
+                        <div class="border-b border-white/[0.05] pb-2.5">
+                            <div class="flex justify-between items-start gap-2">
+                                <div>
+                                    <a href="https://voicebox.sh" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-white hover:text-brand-orange transition-colors">Voicebox ↗</a>
+                                    <span class="text-[10px] text-gray-400 block">$0, open source, runs locally</span>
+                                </div>
+                                <span class="text-[10px] font-bold text-brand-emerald bg-brand-emerald/10 px-2.5 py-0.5 rounded-full shrink-0">$0 (local)</span>
+                            </div>
+                        </div>
+
+                        <!-- 3. Suno -->
+                        <div class="border-b border-white/[0.05] pb-2.5">
+                            <div class="flex justify-between items-start gap-2">
+                                <div>
+                                    <a href="https://suno.com" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-white hover:text-brand-orange transition-colors">Suno ↗</a>
+                                    <span class="text-[10px] text-gray-400 block">Free plan: non-commercial; paid plan for commercial use</span>
+                                </div>
+                                <span class="text-[10px] font-bold text-gray-300 bg-white/10 px-2.5 py-0.5 rounded-full shrink-0">Free / Paid</span>
+                            </div>
+                        </div>
+
+                        <!-- 4. Remotion -->
                         <div class="border-b border-white/[0.05] pb-2.5">
                             <div class="flex justify-between items-start gap-2">
                                 <div>
@@ -1042,7 +1220,7 @@
                             </div>
                         </div>
 
-                        <!-- 3. ffmpeg, whisper.cpp -->
+                        <!-- 5. ffmpeg, whisper.cpp -->
                         <div class="border-b border-white/[0.05] pb-2.5">
                             <div class="flex justify-between items-start gap-2">
                                 <div>
@@ -1057,7 +1235,7 @@
                             </div>
                         </div>
 
-                        <!-- 4. ElevenLabs -->
+                        <!-- 6. ElevenLabs -->
                         <div class="border-b border-white/[0.05] pb-2.5">
                             <div class="flex justify-between items-start gap-2">
                                 <div>
@@ -1068,7 +1246,7 @@
                             </div>
                         </div>
 
-                        <!-- 5. HyperFrames -->
+                        <!-- 7. HyperFrames -->
                         <div class="border-b border-white/[0.05] pb-2.5">
                             <div class="flex justify-between items-start gap-2">
                                 <div>
@@ -1079,7 +1257,7 @@
                             </div>
                         </div>
 
-                        <!-- 6. DaVinci Resolve -->
+                        <!-- 8. DaVinci Resolve -->
                         <div class="pb-1">
                             <div class="flex justify-between items-start gap-2">
                                 <div>
@@ -1117,6 +1295,37 @@
                     </div>
                 </div>
 
+                <!-- Collapsible Section: Advanced, optional -->
+                <details class="glass-card rounded-3xl p-5 border border-white/10 group">
+                    <summary class="flex items-center justify-between gap-2 cursor-pointer list-none select-none">
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm">⚙️</span>
+                            <span class="font-outfit font-extrabold text-xs tracking-wide text-white">Advanced, optional</span>
+                        </div>
+                        <span class="text-[10px] font-mono text-gray-400 group-open:rotate-180 transition-transform">▾</span>
+                    </summary>
+                    <div class="mt-4 pt-3 border-t border-white/[0.06] space-y-3">
+                        <!-- Card 1: Duix Avatar -->
+                        <div class="p-3.5 rounded-2xl bg-black/35 border border-white/[0.07]">
+                            <a href="https://github.com/duixcom/Duix.Avatar" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-white hover:text-brand-orange transition-colors inline-flex items-center gap-1">
+                                <span>Duix Avatar</span> <span>↗</span>
+                            </a>
+                            <p class="text-[11px] text-gray-400 leading-relaxed mt-1">
+                                Open-source talking avatar that runs offline. Needs Windows or Linux with an NVIDIA GPU and a large download. Use it only with your own face and voice.
+                            </p>
+                        </div>
+                        <!-- Card 2: ComfyUI -->
+                        <div class="p-3.5 rounded-2xl bg-black/35 border border-white/[0.07]">
+                            <a href="https://github.com/comfyanonymous/ComfyUI" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-white hover:text-brand-orange transition-colors inline-flex items-center gap-1">
+                                <span>ComfyUI</span> <span>↗</span>
+                            </a>
+                            <p class="text-[11px] text-gray-400 leading-relaxed mt-1">
+                                Local AI image generation for b-roll stills. Needs a capable GPU.
+                            </p>
+                        </div>
+                    </div>
+                </details>
+
             </aside>
 
         </div>
@@ -1139,7 +1348,7 @@
                 </div>
 
                 <!-- Interactive Navigation & Progress Controls -->
-                <div class="glass-card rounded-2xl p-4 border border-white/10 bg-[#050811]/90 flex flex-col gap-3 min-w-[280px] sm:min-w-[340px]">
+                <div class="glass-card rounded-2xl p-4 border border-white/10 bg-[#050811]/90 flex flex-col gap-3 w-full sm:w-auto sm:min-w-[340px]">
                     <div class="flex items-center justify-between gap-3">
                         <div class="flex items-center gap-2">
                             <span id="roadmap-active-step-badge" class="px-2.5 py-1 rounded-lg bg-brand-orange/15 border border-brand-orange/40 text-brand-orange font-mono font-bold text-xs">
@@ -1279,7 +1488,7 @@
                         </div>
                         <h3 class="text-sm font-bold text-white mb-1.5">Compile the dossier</h3>
                         <p class="text-[11px] text-gray-400 leading-relaxed">
-                            Generate your 3-part production dossier and review the 5-card vertical storyboard preview before opening Claude.
+                            Generate your 3-part production dossier and review the live 5-scene preview before opening your AI agent.
                         </p>
                     </div>
                     <div class="mt-4 pt-2.5 border-t border-white/5 flex items-center justify-between text-[10px]">
@@ -1301,9 +1510,9 @@
                                 <span class="roadmap-step-status-label">To do</span>
                             </label>
                         </div>
-                        <h3 class="text-sm font-bold text-white mb-1.5">Set up the project in Claude</h3>
+                        <h3 class="text-sm font-bold text-white mb-1.5">Set up the project in your AI agent</h3>
                         <p class="text-[11px] text-gray-400 leading-relaxed">
-                            Enable code execution and file creation in Claude desktop, open your project folder, and place BRAND.md and voice.md inside brand/.
+                            Create your project folders (raw/, references/, exports/, brand/), open the workspace in your AI agent, and place BRAND.md and voice.md inside brand/.
                         </p>
                     </div>
                     <div class="mt-4 pt-2.5 border-t border-white/5 flex items-center justify-between text-[10px]">
@@ -1327,7 +1536,7 @@
                         </div>
                         <h3 class="text-sm font-bold text-white mb-1.5">Paste the master prompt, approve the script</h3>
                         <p class="text-[11px] text-gray-400 leading-relaxed">
-                            Paste video_prompt.md into Claude. Review the hook and sentence-by-sentence script first before allowing scene construction.
+                            Paste video_prompt.md into your AI agent. Review the hook and sentence-by-sentence script first before allowing scene construction.
                         </p>
                     </div>
                     <div class="mt-4 pt-2.5 border-t border-white/5 flex items-center justify-between text-[10px]">
@@ -1351,7 +1560,7 @@
                         </div>
                         <h3 class="text-sm font-bold text-white mb-1.5">Review the storyboard, then render</h3>
                         <p class="text-[11px] text-gray-400 leading-relaxed">
-                            Inspect the contact sheet of frames in Claude, fix any visual timing issues in plain English, and render the final MP4 and cover.
+                            Inspect the contact sheet of frames, fix any visual timing issues in plain English, and render the final MP4 and cover to exports/.
                         </p>
                     </div>
                     <div class="mt-4 pt-2.5 border-t border-white/5 flex items-center justify-between text-[10px]">
@@ -1406,7 +1615,7 @@
                 <div class="step-card">
                     <div class="step-number">03</div>
                     <h3>Export 3-part production dossier</h3>
-                    <p>Copy or download video_prompt.md, BRAND.md + voice.md, and setup_guide.md for Claude to script, storyboard, and render your reel.</p>
+                    <p>Copy or download video_prompt.md, BRAND.md + voice.md, and setup_guide.md for your AI agent to script, storyboard, and render your reel.</p>
                 </div>
             </div>
         </section>
@@ -1450,7 +1659,7 @@
                 <!-- Prompt Box -->
                 <div class="prompt-box">
                     <div class="prompt-label">
-                        <span>⚡ Build your own video blueprint workflow with Claude</span>
+                        <span>⚡ Build your own video blueprint workflow with your AI agent</span>
                         <div style="display: flex; align-items: center; gap: 0.75rem;">
                             <span style="color: #94A3B8;">Viralist Studio</span>
                             <button type="button" class="btn-copy-prompt" onclick="copyPrompt('viralist-studio-prompt', this)">
@@ -1459,7 +1668,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="prompt-code" id="viralist-studio-prompt">"You are my video producer. Read BRAND.md and voice.md first and follow them. Show me the hook and sentence-by-sentence script first and wait for my OK before building any Remotion scenes. Nothing static on screen for more than 0.6 s. Before rendering the final MP4, show me a contact sheet of frames and fix what looks wrong."</div>
+                    <div class="prompt-code" id="viralist-studio-prompt">"You are my video producer. Read brand/BRAND.md and brand/voice.md first and follow them. Show me the hook and sentence-by-sentence script first and wait for my OK before building any Remotion scenes. Nothing static on screen for more than 0.6 s. Before rendering the final MP4, show me a contact sheet of frames and fix what looks wrong."</div>
                 </div>
             </div>
         </section>
@@ -1559,6 +1768,20 @@
     <script src="../script.js"></script>
     <script>
     (() => {
+        // TODO: Replace with Rody's Suno referral URL when available (shows "(referral link)" only when different from "https://suno.com")
+        const SUNO_REFERRAL_URL = "https://suno.com";
+
+        function syncSunoReferralLink(urlValue = SUNO_REFERRAL_URL) {
+            const linkEl = document.getElementById('suno-referral-link');
+            const textEl = document.getElementById('suno-referral-link-text');
+            if (!linkEl || !textEl) return;
+            const cleanUrl = (urlValue || "https://suno.com").trim();
+            linkEl.href = cleanUrl;
+            const isReferral = cleanUrl !== "https://suno.com" && cleanUrl !== "https://suno.com/";
+            textEl.innerText = isReferral ? "Try Suno (referral link)" : "Try Suno";
+        }
+        window.syncSunoReferralLink = syncSunoReferralLink;
+
         // Mascot Widget context setup
         const widgetIframe = document.getElementById('mascot-widget');
         const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
@@ -1675,6 +1898,8 @@
 
         const footageNotesContainer = document.getElementById('footage-notes-container');
         const engineRadios = form.querySelectorAll('input[name="engine"]');
+        const musicSelect = document.getElementById('video-music');
+        const sunoMusicNote = document.getElementById('suno-music-note');
 
         function updateEngineConditionalFields() {
             const checkedEngine = form.querySelector('input[name="engine"]:checked');
@@ -1688,10 +1913,21 @@
             }
         }
 
+        function updateMusicConditionalFields() {
+            if (!musicSelect || !sunoMusicNote) return;
+            const isSuno = musicSelect.value === 'Suno (AI-generated)';
+            sunoMusicNote.classList.toggle('hidden', !isSuno);
+            syncSunoReferralLink();
+        }
+
         engineRadios.forEach(radio => {
             radio.addEventListener('change', updateEngineConditionalFields);
         });
+        if (musicSelect) {
+            musicSelect.addEventListener('change', updateMusicConditionalFields);
+        }
         updateEngineConditionalFields();
+        updateMusicConditionalFields();
 
         function validatePhaseInputs(phaseIndex = currentPhase) {
             const activeEl = document.getElementById(`phase-${phaseIndex}`);
@@ -1803,6 +2039,256 @@
         }
 
         // ===================================================
+        // LIVE 12-SECOND REEL PREVIEW ENGINE (NO AI, NO LIBS)
+        // ===================================================
+        const REEL_TOTAL_MS = 12000;
+        const REEL_SCENE_MS = 2400;
+        let reelScenes = [];
+        let reelPaletteTokens = PALETTE_TOKENS['Modern Dark Tech'];
+        let reelHighlightKeyword = '';
+        let reelRafId = null;
+        let reelIsPlaying = false;
+        let reelElapsedMs = 0;
+        let reelLastFrameTs = 0;
+        let reelActiveSceneIndex = -1;
+
+        const reelStageEl = document.getElementById('reel-preview-stage');
+        const reelReducedGridEl = document.getElementById('storyboard-reduced-motion-grid');
+        const reelControlsEl = document.getElementById('reel-preview-controls');
+        const reelPauseBtn = document.getElementById('reel-pause-btn');
+        const reelReplayBtn = document.getElementById('reel-replay-btn');
+        const reelSceneBadge = document.getElementById('reel-preview-scene-badge');
+        const reelAspectBadge = document.getElementById('reel-preview-aspect-badge');
+        const reelStageHandle = document.getElementById('reel-stage-handle');
+        const reelStageSceneTag = document.getElementById('reel-stage-scene-tag');
+        const reelStageKicker = document.getElementById('reel-stage-kicker');
+        const reelStageHeadline = document.getElementById('reel-stage-headline');
+        const reelStageCaptions = document.getElementById('reel-stage-captions');
+
+        function prefersReducedMotion() {
+            return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        }
+
+        function stopReelPreview() {
+            if (reelRafId) {
+                cancelAnimationFrame(reelRafId);
+                reelRafId = null;
+            }
+            reelIsPlaying = false;
+            if (reelPauseBtn) reelPauseBtn.innerText = 'Resume';
+        }
+
+        function configureReelPreviewData(cfg) {
+            stopReelPreview();
+            reelPaletteTokens = PALETTE_TOKENS[cfg.palette] || PALETTE_TOKENS['Modern Dark Tech'];
+            reelHighlightKeyword = (cfg.ctaKeyword || '').trim().replace(/[^a-zA-Z0-9_-]/g, '');
+
+            const ctaLine = cfg.ctaKeyword
+                ? `${cfg.ctaType}: "${cfg.ctaKeyword}"`
+                : cfg.ctaType;
+
+            reelScenes = [
+                { tag: 'HOOK', kicker: 'Scene 01 · Hook', text: cfg.topic || 'Your hook goes here.' },
+                { tag: 'PROBLEM', kicker: 'Scene 02 · Problem', text: `Built for ${cfg.whoYouHelp || 'your audience'}.` },
+                { tag: 'SOLUTION', kicker: 'Scene 03 · Solution', text: `Achieve: ${cfg.outcome || 'your core outcome'}.` },
+                { tag: 'PROOF', kicker: 'Scene 04 · Proof', text: `Why listen: ${cfg.whyYou || 'your real authority'}.` },
+                { tag: 'CTA', kicker: 'Scene 05 · Call to action', text: ctaLine }
+            ];
+
+            // Aspect ratio class on frame
+            if (reelStageEl) {
+                reelStageEl.classList.remove('reel-stage-9-16', 'reel-stage-16-9', 'reel-stage-1-1');
+                if (cfg.aspect === '16:9') {
+                    reelStageEl.classList.add('reel-stage-16-9');
+                } else if (cfg.aspect === '1:1') {
+                    reelStageEl.classList.add('reel-stage-1-1');
+                } else {
+                    reelStageEl.classList.add('reel-stage-9-16');
+                }
+                reelStageEl.style.backgroundColor = reelPaletteTokens.background;
+                reelStageEl.style.color = reelPaletteTokens.text;
+                reelStageEl.style.borderColor = reelPaletteTokens.accent + '55';
+            }
+
+            if (reelAspectBadge) reelAspectBadge.innerText = cfg.aspect || '9:16';
+            if (reelStageHandle) reelStageHandle.innerText = cfg.handle || '@channel';
+
+            // Populate reduced-motion static cards as well
+            document.getElementById('storyboard-card-hook').innerText = cfg.topic || '—';
+            document.getElementById('storyboard-card-problem').innerText = cfg.whoYouHelp || '—';
+            document.getElementById('storyboard-card-solution').innerText = cfg.outcome || '—';
+            document.getElementById('storyboard-card-proof').innerText = cfg.whyYou || '—';
+            document.getElementById('storyboard-card-cta').innerText = cfg.twoEndings
+                ? `${ctaLine} (+ TikTok DM ending)`
+                : ctaLine;
+
+            // Check prefers-reduced-motion
+            if (prefersReducedMotion()) {
+                if (reelStageEl) reelStageEl.classList.add('hidden');
+                if (reelControlsEl) reelControlsEl.classList.add('hidden');
+                if (reelReducedGridEl) {
+                    reelReducedGridEl.classList.remove('hidden');
+                    reelReducedGridEl.classList.add('grid');
+                }
+                if (reelSceneBadge) reelSceneBadge.innerText = '5 SCENES · STATIC VIEW';
+            } else {
+                if (reelStageEl) reelStageEl.classList.remove('hidden');
+                if (reelControlsEl) reelControlsEl.classList.remove('hidden');
+                if (reelReducedGridEl) {
+                    reelReducedGridEl.classList.add('hidden');
+                    reelReducedGridEl.classList.remove('grid');
+                }
+                reelElapsedMs = 0;
+                reelActiveSceneIndex = -1;
+                renderReelFrameAt(0);
+            }
+        }
+
+        function pickHighlightWord(words) {
+            if (reelHighlightKeyword) {
+                const kwLower = reelHighlightKeyword.toLowerCase();
+                const matchIdx = words.findIndex(w => w.toLowerCase().replace(/[^a-z0-9]/g, '').includes(kwLower));
+                if (matchIdx !== -1) return matchIdx;
+            }
+            // Otherwise highlight the longest meaningful word in the scene
+            let bestIdx = 0;
+            let bestLen = 0;
+            words.forEach((w, idx) => {
+                const clean = w.replace(/[^a-zA-Z0-9]/g, '');
+                if (clean.length > bestLen) {
+                    bestLen = clean.length;
+                    bestIdx = idx;
+                }
+            });
+            return bestIdx;
+        }
+
+        function renderReelFrameAt(elapsedMs) {
+            if (!reelScenes.length) return;
+            const clamped = Math.min(Math.max(elapsedMs, 0), REEL_TOTAL_MS - 1);
+            const sceneIdx = Math.min(4, Math.floor(clamped / REEL_SCENE_MS));
+            const sceneElapsed = clamped - (sceneIdx * REEL_SCENE_MS);
+            const sceneProgress = Math.min(1, Math.max(0, sceneElapsed / REEL_SCENE_MS));
+
+            // Update segmented top bars
+            for (let i = 0; i < 5; i++) {
+                const seg = document.getElementById(`reel-seg-${i}`);
+                if (!seg) continue;
+                seg.style.backgroundColor = reelPaletteTokens.accent;
+                if (i < sceneIdx) {
+                    seg.style.width = '100%';
+                } else if (i === sceneIdx) {
+                    seg.style.width = `${Math.round(sceneProgress * 100)}%`;
+                } else {
+                    seg.style.width = '0%';
+                }
+            }
+
+            const scene = reelScenes[sceneIdx];
+            if (sceneIdx !== reelActiveSceneIndex) {
+                reelActiveSceneIndex = sceneIdx;
+                if (reelSceneBadge) reelSceneBadge.innerText = `${sceneIdx + 1} / 5 · ${scene.tag}`;
+                if (reelStageSceneTag) {
+                    reelStageSceneTag.innerText = scene.tag;
+                    reelStageSceneTag.style.backgroundColor = reelPaletteTokens.accent + '25';
+                    reelStageSceneTag.style.color = reelPaletteTokens.accent;
+                }
+                if (reelStageKicker) reelStageKicker.innerText = scene.kicker;
+
+                if (reelStageHeadline) {
+                    reelStageHeadline.classList.remove('is-visible');
+                    const rawWords = scene.text.split(/\s+/).filter(Boolean);
+                    const headlineText = rawWords.slice(0, 10).join(' ') + (rawWords.length > 10 ? '…' : '');
+                    reelStageHeadline.innerText = headlineText;
+                    requestAnimationFrame(() => {
+                        reelStageHeadline.classList.add('is-visible');
+                    });
+                }
+
+                if (reelStageCaptions) {
+                    const words = scene.text.split(/\s+/).filter(Boolean).slice(0, 18);
+                    const highlightIdx = pickHighlightWord(words);
+                    reelStageCaptions.innerHTML = '';
+                    words.forEach((word, wIdx) => {
+                        const span = document.createElement('span');
+                        span.className = 'reel-word-token';
+                        span.innerText = word;
+                        if (wIdx === highlightIdx) {
+                            span.dataset.keyWord = '1';
+                        }
+                        reelStageCaptions.appendChild(span);
+                    });
+                }
+            }
+
+            // Animate word-by-word captions according to sceneProgress
+            if (reelStageCaptions) {
+                const tokens = reelStageCaptions.querySelectorAll('.reel-word-token');
+                const totalTokens = tokens.length || 1;
+                const activeWordIdx = Math.min(totalTokens - 1, Math.floor(sceneProgress * totalTokens));
+                tokens.forEach((span, idx) => {
+                    const isSpoken = idx <= activeWordIdx;
+                    const isCurrent = idx === activeWordIdx;
+                    span.classList.toggle('is-spoken', isSpoken);
+                    span.classList.toggle('is-current', isCurrent);
+                    if (span.dataset.keyWord === '1' && isSpoken) {
+                        span.style.backgroundColor = reelPaletteTokens.accent;
+                        span.style.color = '#FFFFFF';
+                    } else {
+                        span.style.backgroundColor = 'transparent';
+                        span.style.color = reelPaletteTokens.text;
+                    }
+                });
+            }
+        }
+
+        function tickReelPreview(now) {
+            if (!reelIsPlaying) return;
+            if (!reelLastFrameTs) reelLastFrameTs = now;
+            const delta = now - reelLastFrameTs;
+            reelLastFrameTs = now;
+            reelElapsedMs += delta;
+
+            if (reelElapsedMs >= REEL_TOTAL_MS) {
+                renderReelFrameAt(REEL_TOTAL_MS - 1);
+                stopReelPreview();
+                return;
+            }
+
+            renderReelFrameAt(reelElapsedMs);
+            reelRafId = requestAnimationFrame(tickReelPreview);
+        }
+
+        function startReelPreview(fromStart = false) {
+            if (prefersReducedMotion()) return;
+            if (fromStart || reelElapsedMs >= REEL_TOTAL_MS) {
+                reelElapsedMs = 0;
+                reelActiveSceneIndex = -1;
+            }
+            reelIsPlaying = true;
+            reelLastFrameTs = 0;
+            if (reelPauseBtn) reelPauseBtn.innerText = 'Pause';
+            if (reelRafId) cancelAnimationFrame(reelRafId);
+            reelRafId = requestAnimationFrame(tickReelPreview);
+        }
+
+        if (reelPauseBtn) {
+            reelPauseBtn.addEventListener('click', () => {
+                if (reelIsPlaying) {
+                    stopReelPreview();
+                } else {
+                    startReelPreview(false);
+                }
+            });
+        }
+
+        if (reelReplayBtn) {
+            reelReplayBtn.addEventListener('click', () => {
+                startReelPreview(true);
+            });
+        }
+
+        // ===================================================
         // QUICK PRESETS & 3-TAB DOSSIER COMPILER
         // ===================================================
         const successPanel = document.getElementById('success-panel');
@@ -1830,17 +2316,20 @@
                 outcome: 'Run again without pain',
                 whyYou: "I'm a physio and I also run",
                 tone: 'Direct & practical',
+                agent: 'Claude Code',
                 engine: 'animated',
                 topic: 'Why stretching your IT band never fixes knee pain, and the 30-second single-leg step test that reveals the real cause.',
                 aspect: '9:16',
                 duration: '30–45 s',
-                voice: 'ElevenLabs',
+                voice: 'Voicebox (free, runs on your computer)',
+                music: 'No music',
                 footageNotes: '',
                 referenceUrl: '',
                 platforms: ['Instagram', 'TikTok', 'YouTube Shorts'],
                 ctaType: 'Comment a keyword',
                 ctaKeyword: 'KNEE',
                 twoEndings: true,
+                lowBudgetMode: false,
                 timeline: 'ASAP',
                 badgeText: 'Preset active: Animated reel (no camera)'
             },
@@ -1853,17 +2342,20 @@
                 outcome: 'Ship clean customer dashboards in one weekend',
                 whyYou: 'I have shipped 40+ production web apps for startups',
                 tone: 'Direct & practical',
+                agent: 'Claude Code',
                 engine: 'talking',
                 topic: 'The 3 database tables every client portal needs on day one so you never rewrite permissions later.',
                 aspect: '9:16',
                 duration: '30–45 s',
                 voice: 'I record it myself',
-                footageNotes: '3 talking-head takes in public/recordings filmed at my desk + 2 screen recordings.',
+                music: 'No music',
+                footageNotes: '3 talking-head takes in raw/ filmed at my desk + 2 screen recordings.',
                 referenceUrl: '',
                 platforms: ['Instagram', 'TikTok', 'YouTube Shorts'],
                 ctaType: 'Follow + DM',
                 ctaKeyword: 'PORTAL',
                 twoEndings: true,
+                lowBudgetMode: false,
                 timeline: 'ASAP',
                 badgeText: 'Preset active: Talking-head edit'
             },
@@ -1876,17 +2368,20 @@
                 outcome: 'Pack light and camp safely in changing mountain weather',
                 whyYou: 'I have hiked 3,000 km across Scandinavian trails in all four seasons',
                 tone: 'Calm documentary',
+                agent: 'Claude Code',
                 engine: 'broll',
                 topic: 'How I pack a 7-day autumn mountain kit under 8 kg without sacrificing warmth or safety.',
                 aspect: '16:9',
                 duration: '3–8 min',
-                voice: 'ElevenLabs',
-                footageNotes: '18 silent 4K b-roll clips showing tent setup in wind, stove cooking, and gear layout.',
-                referenceUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                voice: 'Voicebox (free, runs on your computer)',
+                music: 'Suno (AI-generated)',
+                footageNotes: '18 silent 4K b-roll clips in raw/ showing tent setup in wind, stove cooking, and gear layout.',
+                referenceUrl: 'https://www.youtube.com/watch?v=example1\nhttps://www.youtube.com/watch?v=example2\nhttps://www.youtube.com/watch?v=example3',
                 platforms: ['YouTube long-form', 'Instagram'],
                 ctaType: 'Visit link',
                 ctaKeyword: 'GEARLIST',
                 twoEndings: false,
+                lowBudgetMode: false,
                 timeline: 'This week',
                 badgeText: 'Preset active: Travel b-roll + voiceover'
             },
@@ -1899,17 +2394,20 @@
                 outcome: 'Turn repeatable client audits into a fixed-scope productized offer',
                 whyYou: 'I scaled a 2-person advisory practice to 120 productized audits a year',
                 tone: 'Warm & personal',
+                agent: 'Claude Code',
                 engine: 'clips',
                 topic: 'Extracting the 10 sharpest positioning and pricing lessons from Episode 14 on productized consulting.',
                 aspect: '9:16',
                 duration: '10 clips',
                 voice: 'I record it myself',
-                footageNotes: 'Full 52-minute podcast video recording in public/recordings/ep14.mp4.',
-                referenceUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                music: 'No music',
+                footageNotes: 'Full 52-minute podcast video recording in raw/ep14.mp4.',
+                referenceUrl: 'https://www.youtube.com/watch?v=example1',
                 platforms: ['Instagram', 'TikTok', 'YouTube Shorts'],
                 ctaType: 'Save this video',
                 ctaKeyword: 'AUDIT',
                 twoEndings: true,
+                lowBudgetMode: false,
                 timeline: 'This week',
                 badgeText: 'Preset active: Clips from a long video'
             }
@@ -1927,6 +2425,7 @@
             document.getElementById('outcome').value = cfg.outcome;
             document.getElementById('why-you').value = cfg.whyYou;
             document.getElementById('voice-tone').value = cfg.tone;
+            document.getElementById('ai-agent').value = cfg.agent || 'Claude Code';
 
             // Set engine radio
             form.querySelectorAll('input[name="engine"]').forEach(r => {
@@ -1938,6 +2437,8 @@
             document.getElementById('video-aspect').value = cfg.aspect;
             document.getElementById('video-duration').value = cfg.duration;
             document.getElementById('video-voice').value = cfg.voice;
+            document.getElementById('video-music').value = cfg.music || 'No music';
+            updateMusicConditionalFields();
             document.getElementById('footage-notes').value = cfg.footageNotes;
             document.getElementById('reference-url').value = cfg.referenceUrl;
 
@@ -1949,6 +2450,7 @@
             document.getElementById('cta-type').value = cfg.ctaType;
             document.getElementById('cta-keyword').value = cfg.ctaKeyword;
             document.getElementById('two-endings').checked = cfg.twoEndings;
+            document.getElementById('low-budget-mode').checked = Boolean(cfg.lowBudgetMode);
             document.getElementById('publish-timeline').value = cfg.timeline;
 
             // Highlight active preset button
@@ -1965,7 +2467,7 @@
                 presetBadge.className = "text-[10px] font-mono text-brand-emerald font-bold uppercase tracking-wider";
             }
 
-            // Re-compile dossier in background so master prompt block updates immediately
+            // Re-compile dossier in background without starting playback yet
             generateBlueprint(false);
             showToast(`${cfg.badgeText} loaded!`);
         }
@@ -2006,14 +2508,16 @@
             const whyYou = document.getElementById('why-you').value.trim();
             const tone = document.getElementById('voice-tone').value;
 
+            const agent = document.getElementById('ai-agent').value;
             const checkedEngine = form.querySelector('input[name="engine"]:checked');
             const engine = checkedEngine ? checkedEngine.value : 'animated';
             const topic = document.getElementById('video-topic').value.trim();
             const aspect = document.getElementById('video-aspect').value;
             const duration = document.getElementById('video-duration').value;
             const voice = document.getElementById('video-voice').value;
-            const footageNotes = document.getElementById('footage-notes').value.trim() || 'Raw clips located in public/recordings';
-            const referenceUrl = document.getElementById('reference-url').value.trim() || 'None provided (use channel voice sheet)';
+            const music = document.getElementById('video-music').value;
+            const footageNotes = document.getElementById('footage-notes').value.trim() || 'Raw clips located in raw/';
+            const rawReferenceVideos = document.getElementById('reference-url').value.trim();
 
             const checkedPlatforms = [];
             form.querySelectorAll('input[name="platforms"]:checked').forEach(cb => {
@@ -2024,6 +2528,7 @@
             const ctaType = document.getElementById('cta-type').value;
             const ctaKeyword = document.getElementById('cta-keyword').value.trim();
             const twoEndings = document.getElementById('two-endings').checked;
+            const lowBudgetMode = document.getElementById('low-budget-mode').checked;
             const timeline = document.getElementById('publish-timeline').value;
 
             const ctaFull = ctaKeyword ? `${ctaType} "${ctaKeyword}"` : ctaType;
@@ -2031,36 +2536,80 @@
                 ? `\nMake a second ending for TikTok that asks viewers to follow and send the keyword by DM.`
                 : '';
 
-            // Engine-specific block (Section 3 of HANDOFF)
+            // B.1: Agent-specific startup line
+            let agentStartupLine = '';
+            if (agent === 'Claude Code') {
+                agentStartupLine = 'Save this workflow as a slash command called /reel.';
+            } else if (agent === 'Codex CLI (ChatGPT)' || agent === 'Gemini CLI / Antigravity' || agent === 'OpenCode') {
+                agentStartupLine = 'Save this workflow as a reusable command or prompt file named reel in this project, using your own convention.';
+            } else {
+                agentStartupLine = 'Save this workflow in REEL_WORKFLOW.md and read it at the start of every session.';
+            }
+
+            // B.3: Reference videos block (if provided)
+            const referenceBlock = rawReferenceVideos
+                ? `\nReference videos:\n${rawReferenceVideos}\nStudy the videos in references/ for pacing, caption style and transitions. Take inspiration from them; do not copy their script, branding or footage.\n`
+                : '';
+
+            // B.4: Voice instruction
+            let voiceInstruction = `Voice: ${voice}.`;
+            if (voice.startsWith('Voicebox')) {
+                voiceInstruction = `Voice: ${voice}.\nUse my local Voicebox app for the voiceover. Give me the final script as plain text first; I will generate the audio and put it in raw/voice.wav. Then align captions to it.`;
+            }
+
+            // B.5: Music instruction
+            let musicInstruction = `Music: ${music}.`;
+            if (music === 'Suno (AI-generated)') {
+                musicInstruction = `Music: ${music}.\nI will generate the music in Suno and put it in raw/music.mp3. Mix it under the voice and never louder than it. Give me a one-line music prompt that fits the video.`;
+            } else if (music === 'My own track') {
+                musicInstruction = `Music: ${music} (located in raw/music.mp3; mix it cleanly under the voice).`;
+            }
+
+            // B.6: Low-budget mode block
+            const lowBudgetBlock = lowBudgetMode
+                ? `\nLow-budget mode:\nWork in small steps. After each step, update PROGRESS.md with what is done and what is next. If you are close to a usage limit, stop cleanly after updating it. At the start of every session, read PROGRESS.md and continue from there.\n`
+                : '';
+
+            // Engine-specific block with B.2 folder structure (raw/, references/, exports/, brand/)
             let engineSpecificBlock = '';
             if (engine === 'animated') {
                 engineSpecificBlock = `Build a fully animated vertical video with code (React + Remotion), no stock footage and no AI video.
 Write a scene plan as JSON: one scene per sentence, with the on-screen elements timed to the exact word that names them.
 Add word-by-word captions with key words highlighted, sound effects, and a cover image.
-Deliver: the mp4, the cover, and the title + description for each platform.`;
+Deliver in exports/: the mp4, the cover, and the title + description for each platform.`;
             } else if (engine === 'talking') {
-                engineSpecificBlock = `My raw clips are in public/recordings. Footage notes: ${footageNotes}
+                engineSpecificBlock = `My raw clips are in raw/. Footage notes: ${footageNotes}
 Transcribe them with whisper.cpp (word-level timestamps), cut every pause longer than 0.1 s,
 add captions timed to my words, and plan one motion graphic per beat in my brand.
-Lay it out as a storyboard page with a short clip per beat so I can rate each one Keep, Maybe or Drop.`;
+Lay it out as a storyboard page with a short clip per beat so I can rate each one Keep, Maybe or Drop. Export finished files to exports/.`;
             } else if (engine === 'broll') {
-                engineSpecificBlock = `My raw clips have no speech. Footage notes: ${footageNotes}
-1. With ffmpeg, extract one low-resolution frame every 5 seconds from each clip.
+                const refNote = rawReferenceVideos || 'Use channel voice sheet';
+                engineSpecificBlock = `My raw clips are in raw/ and have no speech. Footage notes: ${footageNotes}
+1. With ffmpeg, extract one low-resolution frame every 5 seconds from each clip in raw/.
 2. Look at the frames once and write clip_inventory.json (file, start, end, what is shown, quality 1-5).
    Never re-read the video files after this.
-3. Write a voiceover script whose sentences match the length of the best shots. Reference: ${referenceUrl}
-4. Give me the voiceover text to generate the audio; when I upload it, align it.
-5. Assemble clips, captions and music in Remotion and render.
-6. Also export the cut list as an FCPXML timeline so I can open it in DaVinci Resolve.`;
+3. Write a voiceover script whose sentences match the length of the best shots. Reference: ${refNote}
+4. Give me the voiceover text to generate the audio; when I place it in raw/, align it.
+5. Assemble clips, captions and music in Remotion and render to exports/.
+6. Also export the cut list as an FCPXML timeline in exports/ so I can open it in DaVinci Resolve.`;
             } else if (engine === 'clips') {
-                engineSpecificBlock = `Source video: ${referenceUrl}
+                const srcNote = rawReferenceVideos || footageNotes;
+                engineSpecificBlock = `Source video in raw/: ${srcNote}
 Transcribe it, score every moment for how interesting it is to ${whoYouHelp},
 and propose the 10 best moments with a title each. After I approve, cut them to ${aspect},
-add captions and a cover per clip, and write the publish copy.`;
+add captions and a cover per clip in exports/, and write the publish copy.`;
             }
 
             // Tab 1: Master prompt (video_prompt.md)
-            compiledVideoPrompt = `You are my video producer. Read BRAND.md and voice.md first and follow them.
+            compiledVideoPrompt = `You are my video producer. Read brand/BRAND.md and brand/voice.md first and follow them.
+${agentStartupLine}
+From now on, when I type /reel followed by one line, produce a full reel about it.
+
+Project folders:
+- raw/ (footage, voiceover and music)
+- references/ (style inspiration videos)
+- exports/ (rendered mp4, covers and cut lists)
+- brand/ (BRAND.md and voice.md)
 
 Brand: ${brandName} (${handle})
 I help: ${whoYouHelp}
@@ -2070,26 +2619,28 @@ Tone: ${tone}. Language: ${language}.
 
 Video: ${topic}
 Format: ${aspect}, ${duration}. Platforms: ${platforms}.
-Voice: ${voice}.
+${voiceInstruction}
+${musicInstruction}
 Call to action: ${ctaFull}.${twoEndingsLine}
-
+${referenceBlock}${lowBudgetBlock}
 Rules:
 - The first sentence is the hook: concrete, no greeting.
 - One idea per sentence. Nothing static on screen for more than 0.6 s.
 - The hook must not promise anything the video does not deliver. Facts must be real.
+- Only clone a voice or a face that is mine or that I have written permission to use.
 - Show me the script first and wait for my OK before building anything.
 - Before rendering, show me a contact sheet of frames and fix what looks wrong.
 
 ${engineSpecificBlock}`;
 
-            // Tab 2: BRAND.md + voice.md (Section 4 of HANDOFF)
+            // Tab 2: BRAND.md + voice.md
             const tokens = PALETTE_TOKENS[palette] || PALETTE_TOKENS['Modern Dark Tech'];
             compiledBrandAndVoice = `# BRAND.md — ${brandName}
 Palette: ${palette} (background: ${tokens.background}, surface: ${tokens.surface}, text: ${tokens.text}, accent: ${tokens.accent}, secondary accent: ${tokens.secondaryAccent})
 Fonts: heading: ${tokens.headingFont} / body: ${tokens.bodyFont}
 Captions: word by word, key words in an accent-colour box (${tokens.accent})
 Titles: short lines (max 14 characters per line), large
-Motifs and sounds: (fill in after your first video; ask Claude to add what you liked)
+Motifs and sounds: (fill in after your first video; ask your AI agent to add what you liked)
 
 ---
 
@@ -2104,44 +2655,91 @@ Never: greetings, filler, promises the video does not keep.
 Default CTA: ${ctaFull}
 Publishing timeline: ${timeline}`;
 
-            // Tab 3: setup_guide.md (Section 5 of HANDOFF)
+            // B.8: Tab 3: setup_guide.md (agent-specific section + Voicebox when chosen + folder structure + ffmpeg, Node, Chrome)
+            let agentInstallSection = '';
+            if (agent === 'Claude Code') {
+                agentInstallSection = `## Agent setup: Claude Code
+- Install Claude Code (\`npm install -g @anthropic-ai/claude-code\`) or use the Claude desktop app with code execution and file creation enabled.
+- Open your terminal inside your project folder and run \`claude\`.`;
+            } else if (agent === 'Codex CLI (ChatGPT)') {
+                agentInstallSection = `## Agent setup: Codex CLI (ChatGPT)
+- Install OpenAI Codex CLI (\`npm install -g @openai/codex\`) and sign in with your ChatGPT account or API key.
+- Open your terminal inside your project folder and run \`codex\`.`;
+            } else if (agent === 'Gemini CLI / Antigravity') {
+                agentInstallSection = `## Agent setup: Gemini CLI / Antigravity
+- Install Gemini CLI (\`npm install -g @google/gemini-cli\`) or open the folder directly in Google Antigravity IDE.
+- Start a session in your project root with terminal command execution enabled.`;
+            } else if (agent === 'OpenCode') {
+                agentInstallSection = `## Agent setup: OpenCode
+- Install OpenCode (https://opencode.ai) and configure your preferred coding model.
+- Open your terminal in the project folder and launch \`opencode\`.`;
+            } else {
+                agentInstallSection = `## Agent setup: Other agent with terminal access
+- Use any coding agent or IDE assistant that can read/write local files and execute shell commands.
+- Open your project folder as the workspace root and save the master prompt in \`REEL_WORKFLOW.md\`.`;
+            }
+
+            const voiceboxSection = voice.startsWith('Voicebox')
+                ? `\n## Voiceover setup: Voicebox (local, free)
+- Download and install Voicebox from https://voicebox.sh (open-source, runs locally on your computer).
+- When your agent gives you the approved plain-text script, generate the audio in Voicebox and save it as \`raw/voice.wav\`.\n`
+                : '';
+
             compiledSetupGuide = `# setup_guide.md — ${brandName} (${handle})
 
-1. Install: the Claude desktop app, Node.js LTS, Google Chrome. Claude can install ffmpeg for you.
-2. In Claude settings, turn on code execution and file creation.
-3. Create an empty folder, open it in Claude, and save BRAND.md and voice.md inside brand/.
-4. Paste the master prompt (video_prompt.md).
-5. Approve the script, then the storyboard, then the render.
-6. Publish to ${platforms}. If the voice is AI-generated (${voice}), label the post as AI content where the platform asks for it.
+## Core prerequisites
+- Install **Node.js LTS** (https://nodejs.org), **Google Chrome**, and **ffmpeg** (https://ffmpeg.org — your AI agent can also install ffmpeg for you).
+
+${agentInstallSection}
+${voiceboxSection}
+## Folder structure
+Create a new project folder with these four subdirectories:
+- \`raw/\` — raw footage clips, \`raw/voice.wav\`, and \`raw/music.mp3\`
+- \`references/\` — reference videos for pacing and style inspiration
+- \`exports/\` — rendered MP4 reels, covers, and FCPXML timelines
+- \`brand/\` — save \`BRAND.md\` and \`voice.md\` inside \`brand/\`
+
+## Production workflow
+1. Save \`BRAND.md\` and \`voice.md\` inside \`brand/\`.
+2. Paste \`video_prompt.md\` into ${agent} to register your \`/reel\` workflow.
+3. Approve the script first, then inspect the frame contact sheet, then render to \`exports/\`.
+4. Publish to ${platforms}. If the voice is AI-generated (${voice}), label the post as AI content where the platform asks for it.
 
 Licence note: Remotion is free for individuals and companies up to 3 people.`;
 
-            // Populate 5-card Storyboard Preview (Section 2.4 of HANDOFF)
-            document.getElementById('storyboard-card-hook').innerText = topic;
-            document.getElementById('storyboard-card-problem').innerText = whoYouHelp;
-            document.getElementById('storyboard-card-solution').innerText = outcome;
-            document.getElementById('storyboard-card-proof').innerText = whyYou;
-            document.getElementById('storyboard-card-cta').innerText = twoEndings
-                ? `${ctaFull} (+ TikTok DM ending)`
-                : ctaFull;
+            // Configure animated preview with current wizard answers
+            configureReelPreviewData({
+                palette,
+                aspect,
+                handle,
+                topic,
+                whoYouHelp,
+                outcome,
+                whyYou,
+                ctaType,
+                ctaKeyword,
+                twoEndings
+            });
 
             switchDossierTab('prompt');
 
             if (showOverlay) {
                 successPanel.classList.remove('translate-y-full', 'opacity-0', 'pointer-events-none');
                 successPanel.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+                startReelPreview(true);
                 showToast("3-part production dossier compiled! 🎬");
             }
         }
 
         function getActiveDossierArtifact() {
+            const agent = document.getElementById('ai-agent') ? document.getElementById('ai-agent').value : 'Your AI agent';
             if (activeDossierTab === 'brand') {
                 return {
                     content: compiledBrandAndVoice,
                     filename: 'brand_and_voice.md',
                     mime: 'text/markdown;charset=utf-8',
-                    engineLabel: 'BRAND.md + voice.md',
-                    desc: 'Save these two sections as brand/BRAND.md and brand/voice.md inside your project folder so Claude keeps your visual identity and voice consistent:',
+                    engineLabel: 'brand/BRAND.md + brand/voice.md',
+                    desc: 'Save these two sections as brand/BRAND.md and brand/voice.md inside your project folder so your AI agent keeps your visual identity and voice consistent:',
                     copyLabel: 'Copy file (brand_and_voice.md)',
                     downloadLabel: 'Download .md (brand_and_voice.md)'
                 };
@@ -2152,7 +2750,7 @@ Licence note: Remotion is free for individuals and companies up to 3 people.`;
                     filename: 'setup_guide.md',
                     mime: 'text/markdown;charset=utf-8',
                     engineLabel: 'Local Setup & Publish',
-                    desc: 'Follow these 6 steps to configure Claude desktop with Remotion and publish your finished reel:',
+                    desc: `Follow these steps to configure ${agent} with Remotion, ffmpeg, and your project folders:`,
                     copyLabel: 'Copy file (setup_guide.md)',
                     downloadLabel: 'Download .md (setup_guide.md)'
                 };
@@ -2161,8 +2759,8 @@ Licence note: Remotion is free for individuals and companies up to 3 people.`;
                 content: compiledVideoPrompt,
                 filename: 'video_prompt.md',
                 mime: 'text/markdown;charset=utf-8',
-                engineLabel: 'Claude + Remotion',
-                desc: 'Paste this master prompt into Claude after saving your BRAND.md and voice.md files inside your project folder:',
+                engineLabel: `${agent} + Remotion`,
+                desc: `Paste this master prompt into ${agent} after saving your BRAND.md and voice.md files inside brand/:`,
                 copyLabel: 'Copy file (video_prompt.md)',
                 downloadLabel: 'Download .md (video_prompt.md)'
             };
@@ -2203,14 +2801,17 @@ Licence note: Remotion is free for individuals and companies up to 3 people.`;
 
         if (editBlueprintBtn) {
             editBlueprintBtn.addEventListener('click', () => {
+                stopReelPreview();
                 successPanel.classList.add('translate-y-full', 'opacity-0', 'pointer-events-none');
                 successPanel.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
             });
         }
 
         restartBtn.addEventListener('click', () => {
+            stopReelPreview();
             form.reset();
             updateEngineConditionalFields();
+            updateMusicConditionalFields();
             document.querySelectorAll('.preset-quick-btn').forEach(btn => {
                 btn.classList.remove('border-brand-orange', 'bg-brand-orange/10');
                 btn.classList.add('border-white/10');
@@ -2398,6 +2999,23 @@ Licence note: Remotion is free for individuals and companies up to 3 people.`;
                 showToast('8-step production roadmap reset.');
             });
         }
+
+        window.copyPrompt = function (elementId, btn) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            const text = el.innerText || el.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const span = btn.querySelector('span');
+                if (!span) return;
+                const orig = span.textContent;
+                span.textContent = 'Copied!';
+                btn.style.borderColor = 'var(--accent-secondary)';
+                setTimeout(() => {
+                    span.textContent = orig;
+                    btn.style.borderColor = '';
+                }, 2000);
+            });
+        };
 
         renderRoadmapState();
     })();
