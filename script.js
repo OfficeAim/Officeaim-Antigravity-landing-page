@@ -532,12 +532,8 @@ if (mobileMenuToggle) {
         if (!navLinks) return;
         navLinks.classList.toggle('active');
 
-        if (navLinks.classList.contains('active')) {
-            if (window.innerWidth <= 768) {
-                ensureMobileNavCTAs();
-            }
-        } else {
-            navLinks.querySelectorAll('.mobile-only-nav-item').forEach(el => el.remove());
+        if (navLinks.classList.contains('active') && window.innerWidth <= 768) {
+            ensureMobileNavCTAs();
         }
 
         // Toggle animation for burger icon
@@ -555,18 +551,37 @@ if (mobileMenuToggle) {
     });
 }
 
-// Clean up mobile shortcuts on desktop resize
+// Allow tapping dropdown headers on mobile to collapse/expand groups
+document.querySelectorAll('.nav-item-dropdown > .nav-link').forEach(trigger => {
+    trigger.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768) {
+            e.preventDefault();
+            const parent = trigger.closest('.nav-item-dropdown');
+            if (parent) parent.classList.toggle('collapsed');
+        }
+    });
+});
+
+// Clean up mobile menu open state on desktop resize
 window.addEventListener('resize', () => {
     if (window.innerWidth > 768) {
         const navLinks = document.querySelector('.nav-links');
         if (navLinks) {
             navLinks.classList.remove('active');
-            navLinks.querySelectorAll('.mobile-only-nav-item').forEach(el => el.remove());
+        }
+        if (mobileMenuToggle) {
+            mobileMenuToggle.classList.remove('active');
+            const spans = mobileMenuToggle.querySelectorAll('span');
+            if (spans.length === 3) {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
         }
     }
 });
 
-// Automatically ensure mobile action shortcuts exist ONLY in mobile viewport
+// Automatically ensure mobile action shortcut exists in mobile viewport
 function ensureMobileNavCTAs() {
     if (window.innerWidth > 768) return; // Strict guard: never execute in desktop
 
@@ -575,24 +590,13 @@ function ensureMobileNavCTAs() {
 
     const campusLi = document.createElement('li');
     campusLi.className = 'mobile-only-nav-item';
-    campusLi.style.cssText = 'list-style: none; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid rgba(255, 255, 255, 0.12); width: 100%;';
     campusLi.innerHTML = `
-        <a href="#waitlist" data-campus-gate="true" onclick="if(window.openCampusWaitlistModal){event.preventDefault();window.openCampusWaitlistModal();}" class="btn-campus-mobile" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 13px 20px; background: linear-gradient(135deg, rgba(0, 240, 255, 0.18), rgba(0, 112, 243, 0.3)); border: 1px solid rgba(0, 240, 255, 0.55); border-radius: 14px; color: #00f0ff; font-size: 0.95rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; text-decoration: none; box-shadow: 0 0 20px rgba(0, 240, 255, 0.16);">
-            <span>Enter Campus →</span>
-        </a>
-    `;
-
-    const adminLi = document.createElement('li');
-    adminLi.className = 'mobile-only-nav-item';
-    adminLi.style.cssText = 'list-style: none; margin-top: 0.75rem; width: 100%;';
-    adminLi.innerHTML = `
-        <a href="/admin/news" class="btn-admin-mobile" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px 20px; background: rgba(255, 122, 0, 0.14); border: 1px solid rgba(255, 122, 0, 0.45); border-radius: 14px; color: #ff9800; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; text-decoration: none; box-shadow: 0 0 16px rgba(255, 122, 0, 0.14);">
-            <span>⚡ Command Center</span>
+        <a href="#waitlist" data-campus-gate="true" onclick="if(window.openCampusWaitlistModal){event.preventDefault();window.openCampusWaitlistModal();}" class="btn-campus-mobile">
+            <span>Join the waitlist</span>
         </a>
     `;
 
     navLinks.appendChild(campusLi);
-    navLinks.appendChild(adminLi);
 }
 
 // ============================================================
@@ -672,7 +676,7 @@ const OA_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzd
 function resolveOfficeAimPath(relativePath) {
     const clean = relativePath.replace(/^\/+/, '');
     const path = window.location.pathname || '';
-    if (path.includes('/resources/') || path.includes('/learn/')) {
+    if (path.includes('/resources/') || path.includes('/learn/') || path.includes('/news/')) {
         return '../' + clean;
     }
     return clean;
