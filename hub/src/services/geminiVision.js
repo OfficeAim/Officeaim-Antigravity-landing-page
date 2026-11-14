@@ -138,15 +138,17 @@ RETURN STRICTLY A JSON OBJECT matching this exact schema (no markdown outside th
 }
 `;
 
-  const candidateModels = ['gemini-3.6-flash', 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-2.5-flash'];
-  let lastError = null;
-  let responseText = null;
-
   let accessToken = '';
   if (!genAI) {
     const { data: sessionData } = await supabase.auth.getSession();
     accessToken = sessionData?.session?.access_token || '';
   }
+
+  const candidateModels = (!genAI && !accessToken)
+    ? ['gemini-3.5-flash']
+    : ['gemini-3.6-flash', 'gemini-3.8-flash', 'gemini-3.5-flash'];
+  let lastError = null;
+  let responseText = null;
 
   for (const modelName of candidateModels) {
     try {
@@ -168,6 +170,7 @@ RETURN STRICTLY A JSON OBJECT matching this exact schema (no markdown outside th
           body: JSON.stringify({
             model: modelName,
             contents: [promptText, ...imageParts],
+            ...(!accessToken ? { config: { maxOutputTokens: 512 } } : {}),
           }),
         });
         const data = await res.json().catch(() => ({}));

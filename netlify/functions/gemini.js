@@ -3,23 +3,47 @@
  * Server-side proxy for Google Gemini API using process.env.GEMINI_API_KEY.
  * Requires either:
  *   1) A valid Supabase session token in `Authorization: Bearer <access_token>` (validated against GET {SUPABASE_URL}/auth/v1/user), OR
- *   2) For explicitly allowed public routes (`mascot-widget`, `library-tracker`), an allowed Origin (`https://officeaimhq.netlify.app` or localhost in dev).
+ *   2) For explicitly allowed public routes (`mascot-widget`, `library-tracker`), an allowed Origin (`https://officeaimhq.netlify.app` or localhost in dev),
+ *      restricted to the cheapest model (`gemini-3.5-flash`), maxOutputTokens <= 512,
+ *      and rate-limited to max 10 requests per IP per 10 minutes + a daily global cap.
  */
 
-const MAX_BODY_BYTES = 4 * 1024 * 1024; // 4 MB max payload
-const MAX_OUTPUT_TOKENS = 2048; // Hard server-side ceiling for maxOutputTokens
+const crypto = require('crypto');
 
+const MAX_BODY_BYTES = 4 * 1024 * 1024; // 4 MB max payload
+const MAX_OUTPUT_TOKENS = 2048; // Hard server-side ceiling for authenticated requests
+const PUBLIC_MAX_OUTPUT_TOKENS = 512; // Hard ceiling for public routes (mascot-widget, library-tracker)
+
+// Ordered from highest tier to cheapest tier; gemini-3.5-flash is the cheapest active model
 const ALLOWED_MODELS = new Set([
   'gemini-3.8-flash',
   'gemini-3.6-flash',
   'gemini-3.5-flash',
-  'gemini-2.5-flash',
-  'gemini-2.0-flash',
-  'gemini-2.0-flash-exp',
-  'gemini-1.5-flash',
 ]);
+const PUBLIC_CHEAPEST_MODEL = 'gemini-3.5-flash';
 
 const ALLOWED_PUBLIC_SCOPES = new Set(['mascot-widget', 'library-tracker']);
+
+// Public route rate-limit constants
+const PUBLIC_IP_MAX_REQUESTS = 10;
+const PUBLIC_IP_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
+const DEFAULT_PUBLIC_DAILY_GLOBAL_LIMIT = 200;
+
+// Warm-instance rate-limit store (paired with Supabase RLS table `public.gemini_public_rate_limits`)
+const ipRateWindows = new Map(); // ipHash -> { count, resetAt }
+let dailyGlobalState = {
+  dayKey: '',
+  count: 0,
+};
+
+function resetRateLimitsForTest() {
+  ipRateWindows.clear();
+  dailyGlobalState = { dayKey: '', count: 0 };
+}
+
+function getUtcDayKey(nowMs = Date.now()) {
+  return new Date(nowMs).toISOString().slice(0, 10);
+}
 
 function isAllowedOrigin(originHeader) {
   if (!originHeader || typeof originHeader !== 'string') return false;
@@ -38,6 +62,126 @@ function getHeader(headers, name) {
     }
   }
   return '';
+}
+
+function extractClientIp(headers) {
+  const nfIp = getHeader(headers, 'x-nf-client-connection-ip').trim();
+  if (nfIp) return nfIp;
+
+  const clientIp = getHeader(headers, 'client-ip').trim();
+  if (clientIp) return clientIp;
+
+  const xff = getHeader(headers, 'x-forwarded-for');
+  if (xff) {
+    const first = xff.split(',')[0].trim();
+    if (first) return first;
+  }
+
+  return 'unknown-ip';
+}
+
+function hashIp(ip) {
+  return crypto
+    .createHash('sha256')
+    .update(String(ip || 'unknown-ip'))
+    .digest('hex')
+    .slice(0, 32);
+}
+
+function checkLocalRateLimit(ipHash, dailyLimit) {
+  const now = Date.now();
+  const todayKey = getUtcDayKey(now);
+
+  if (dailyGlobalState.dayKey !== todayKey) {
+    dailyGlobalState = { dayKey: todayKey, count: 0 };
+  }
+
+  // Cleanup expired IP entries
+  for (const [key, entry] of ipRateWindows.entries()) {
+    if (entry.resetAt <= now) {
+      ipRateWindows.delete(key);
+    }
+  }
+
+  if (dailyGlobalState.count >= dailyLimit) {
+    return { allowed: false, reason: 'daily_limit' };
+  }
+
+  let ipEntry = ipRateWindows.get(ipHash);
+  if (!ipEntry || ipEntry.resetAt <= now) {
+    ipEntry = { count: 0, resetAt: now + PUBLIC_IP_WINDOW_MS };
+  }
+
+  if (ipEntry.count >= PUBLIC_IP_MAX_REQUESTS) {
+    return { allowed: false, reason: 'ip_limit' };
+  }
+
+  ipEntry.count += 1;
+  ipRateWindows.set(ipHash, ipEntry);
+  dailyGlobalState.count += 1;
+
+  return {
+    allowed: true,
+    reason: 'ok',
+    ipCount: ipEntry.count,
+    dailyCount: dailyGlobalState.count,
+  };
+}
+
+async function checkPublicRateLimit(ipHash, publicScope) {
+  const dailyLimit =
+    Number(process.env.GEMINI_PUBLIC_DAILY_LIMIT) > 0
+      ? Number(process.env.GEMINI_PUBLIC_DAILY_LIMIT)
+      : DEFAULT_PUBLIC_DAILY_GLOBAL_LIMIT;
+
+  // 1. Always enforce in-memory window first (fast path & fallback)
+  const localDecision = checkLocalRateLimit(ipHash, dailyLimit);
+  if (!localDecision.allowed) {
+    return localDecision;
+  }
+
+  // 2. Persist & cross-check in Supabase RLS table via SECURITY DEFINER RPC when configured
+  const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+  const supabaseKey =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.SUPABASE_ANON_KEY ||
+    process.env.VITE_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    return localDecision;
+  }
+
+  try {
+    const rpcEndpoint = `${supabaseUrl.replace(/\/+$/, '')}/rest/v1/rpc/check_gemini_public_rate_limit`;
+    const res = await fetch(rpcEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        apikey: supabaseKey,
+        Authorization: `Bearer ${supabaseKey}`,
+      },
+      body: JSON.stringify({
+        p_ip_hash: ipHash,
+        p_scope: publicScope,
+        p_ip_limit: PUBLIC_IP_MAX_REQUESTS,
+        p_daily_limit: dailyLimit,
+      }),
+    });
+
+    if (res.ok) {
+      const data = await res.json().catch(() => null);
+      if (data && typeof data.allowed === 'boolean' && !data.allowed) {
+        return {
+          allowed: false,
+          reason: data.reason || 'ip_limit',
+        };
+      }
+    }
+  } catch {
+    // Fall back gracefully to localDecision if RPC is unreachable
+  }
+
+  return localDecision;
 }
 
 function sanitizeErrorMessage(message, apiKey) {
@@ -128,6 +272,9 @@ exports.handler = async (event) => {
   const bearerMatch = authHeader.match(/^Bearer\s+(.+)$/i);
   const accessToken = bearerMatch ? bearerMatch[1].trim() : '';
 
+  let isAuthenticatedUser = false;
+  let publicScope = '';
+
   if (accessToken) {
     const isValidUser = await verifySupabaseToken(accessToken);
     if (!isValidUser) {
@@ -137,8 +284,9 @@ exports.handler = async (event) => {
         body: JSON.stringify({ error: 'Unauthorized: invalid or expired session token.' }),
       };
     }
+    isAuthenticatedUser = true;
   } else {
-    const publicScope = getHeader(event.headers, 'x-officeaim-public-scope').trim().toLowerCase();
+    publicScope = getHeader(event.headers, 'x-officeaim-public-scope').trim().toLowerCase();
     if (!ALLOWED_PUBLIC_SCOPES.has(publicScope) || !isAllowedOrigin(origin)) {
       return {
         statusCode: 401,
@@ -188,7 +336,7 @@ exports.handler = async (event) => {
 
   const { model, contents, config } = payload || {};
 
-  // 3. Do not expose the allowed models list in the error message
+  // 3. Validate model (do not expose allowed models list in error message)
   if (!model || typeof model !== 'string' || !ALLOWED_MODELS.has(model)) {
     return {
       statusCode: 400,
@@ -197,6 +345,35 @@ exports.handler = async (event) => {
         error: 'Unsupported or disallowed model.',
       }),
     };
+  }
+
+  // 4. For public routes (mascot-widget & library-tracker), enforce cheapest model + rate limit
+  if (!isAuthenticatedUser) {
+    if (model !== PUBLIC_CHEAPEST_MODEL) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({
+          error: 'Public routes are restricted to the default lightweight model.',
+        }),
+      };
+    }
+
+    const clientIp = extractClientIp(event.headers);
+    const ipHash = hashIp(clientIp);
+    const rateDecision = await checkPublicRateLimit(ipHash, publicScope);
+
+    if (!rateDecision.allowed) {
+      const errMsg =
+        rateDecision.reason === 'daily_limit'
+          ? 'Daily public quota reached. Please sign in or try again tomorrow.'
+          : 'Too many requests. Please wait 10 minutes before trying again.';
+      return {
+        statusCode: 429,
+        headers: { ...headers, 'Retry-After': '600' },
+        body: JSON.stringify({ error: errMsg }),
+      };
+    }
   }
 
   const normalizedContents = normalizeContents(contents);
@@ -208,10 +385,15 @@ exports.handler = async (event) => {
     };
   }
 
+  const effectiveMaxTokensCeiling = isAuthenticatedUser
+    ? MAX_OUTPUT_TOKENS
+    : PUBLIC_MAX_OUTPUT_TOKENS;
+
   const geminiRequestBody = {
     contents: normalizedContents,
     generationConfig: {
-      maxOutputTokens: MAX_OUTPUT_TOKENS,
+      maxOutputTokens: effectiveMaxTokensCeiling,
+      thinkingConfig: { thinkingBudget: 0 },
     },
   };
 
@@ -232,7 +414,7 @@ exports.handler = async (event) => {
       if (typeof nestedMax === 'number' && Number.isFinite(nestedMax) && nestedMax > 0) {
         geminiRequestBody.generationConfig.maxOutputTokens = Math.min(
           Math.floor(nestedMax),
-          MAX_OUTPUT_TOKENS
+          effectiveMaxTokensCeiling
         );
       }
     }
@@ -244,7 +426,7 @@ exports.handler = async (event) => {
       }
     }
 
-    // 4. Enforce server-side ceiling on maxOutputTokens (ignore higher values)
+    // 5. Enforce server-side ceiling on maxOutputTokens (512 for public, 2048 for authenticated)
     if (
       typeof config.maxOutputTokens === 'number' &&
       Number.isFinite(config.maxOutputTokens) &&
@@ -252,7 +434,7 @@ exports.handler = async (event) => {
     ) {
       geminiRequestBody.generationConfig.maxOutputTokens = Math.min(
         Math.floor(config.maxOutputTokens),
-        MAX_OUTPUT_TOKENS
+        effectiveMaxTokensCeiling
       );
     }
 
@@ -306,3 +488,5 @@ exports.handler = async (event) => {
     };
   }
 };
+
+exports._resetRateLimitsForTest = resetRateLimitsForTest;

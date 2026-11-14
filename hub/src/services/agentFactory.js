@@ -90,7 +90,7 @@ You NEVER end a conversation abruptly or leave a topic unanswered.
     // ASSISTANT / OVERLAY MASCOT (Gemini Flash, ultra-fast free tier capability)
     "MASCOT": {
         tier: 'FREE',
-        model: 'gemini-2.0-flash',
+        model: 'gemini-3.5-flash',
         persona: `Role: You are AIM, the friendly AI mascot and platform guide for OfficeAIM — a premium AI-powered learning management system that teaches students how to build SaaS businesses using AI agents.
 
 ## Who You Are
@@ -375,8 +375,13 @@ Then provide the specific Master Prompt or technical Lovable/Make.com configurat
         const { data: sessionData } = await supabase.auth.getSession();
         const accessToken = sessionData?.session?.access_token;
 
+        // Public mascot route is restricted to the cheapest model (gemini-3.5-flash) and 512 tokens
+        const modelsToTry = (!accessToken && slug === 'MASCOT')
+            ? ['gemini-3.5-flash']
+            : candidateModels.filter((m) => m !== 'gemini-2.5-flash');
+
         let lastModelError = null;
-        for (const candidateModel of candidateModels) {
+        for (const candidateModel of modelsToTry) {
             try {
                 const requestHeaders = {
                     'Content-Type': 'application/json',
@@ -394,7 +399,8 @@ Then provide the specific Master Prompt or technical Lovable/Make.com configurat
                         model: candidateModel,
                         contents,
                         config: {
-                            systemInstruction
+                            systemInstruction,
+                            ...(!accessToken && slug === 'MASCOT' ? { maxOutputTokens: 512 } : {})
                         }
                     })
                 });
