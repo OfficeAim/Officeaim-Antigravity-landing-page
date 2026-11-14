@@ -83,8 +83,13 @@ function extractClientIp(headers) {
 }
 
 function hashIp(ip) {
+  const hmacSecret =
+    process.env.GEMINI_IP_HMAC_SECRET ||
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.GEMINI_API_KEY ||
+    'officeaim-rate-limit-fallback-secret';
   return crypto
-    .createHash('sha256')
+    .createHmac('sha256', hmacSecret)
     .update(String(ip || 'unknown-ip'))
     .digest('hex')
     .slice(0, 32);
