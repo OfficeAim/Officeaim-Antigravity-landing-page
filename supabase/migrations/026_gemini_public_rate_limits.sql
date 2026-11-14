@@ -33,11 +33,12 @@ CREATE POLICY "Only Superadmins can read rate limits"
 COMMENT ON TABLE public.gemini_public_rate_limits IS '@graphql({"enabled": false})';
 
 -- Atomic rate-limit check and increment RPC
+-- Hardcodes limits inside the SQL function (10 requests per IP / 10 min, 200 global requests / day)
+-- so callers cannot override or spoof quota thresholds.
+DROP FUNCTION IF EXISTS public.check_gemini_public_rate_limit(TEXT, TEXT, INTEGER, INTEGER);
 CREATE OR REPLACE FUNCTION public.check_gemini_public_rate_limit(
     p_ip_hash TEXT,
-    p_scope TEXT DEFAULT 'public',
-    p_ip_limit INTEGER DEFAULT 10,
-    p_daily_limit INTEGER DEFAULT 200
+    p_scope TEXT DEFAULT 'public'
 )
 RETURNS JSONB
 LANGUAGE plpgsql
@@ -45,6 +46,8 @@ SECURITY DEFINER
 SET search_path = ''
 AS $$
 DECLARE
+    c_ip_limit CONSTANT INTEGER := 10;
+    c_daily_limit CONSTANT INTEGER := 200;
     v_now TIMESTAMPTZ := now();
     v_epoch BIGINT := EXTRACT(EPOCH FROM v_now)::BIGINT;
     v_window_slot BIGINT := v_epoch / 600; -- 10-minute buckets (600s)
@@ -62,7 +65,7 @@ BEGIN
     FROM public.gemini_public_rate_limits
     WHERE bucket_key = v_day_key;
 
-    IF COALESCE(v_daily_count, 0) >= p_daily_limit THEN
+    IF COALESCE(v_daily_count, 0) >= c_daily_limit THEN
         RETURN jsonb_build_object(
             'allowed', false,
             'reason', 'daily_limit',
@@ -76,7 +79,7 @@ BEGIN
     FROM public.gemini_public_rate_limits
     WHERE bucket_key = v_ip_key;
 
-    IF COALESCE(v_ip_count, 0) >= p_ip_limit THEN
+    IF COALESCE(v_ip_count, 0) >= c_ip_limit THEN
         RETURN jsonb_build_object(
             'allowed', false,
             'reason', 'ip_limit',
@@ -116,10 +119,10 @@ BEGIN
     RETURNING request_count INTO v_daily_count;
 
     RETURN jsonb_build_object(
-        'allowed', (v_ip_count <= p_ip_limit AND v_daily_count <= p_daily_limit),
+        'allowed', (v_ip_count <= c_ip_limit AND v_daily_count <= c_daily_limit),
         'reason', CASE
-            WHEN v_daily_count > p_daily_limit THEN 'daily_limit'
-            WHEN v_ip_count > p_ip_limit THEN 'ip_limit'
+            WHEN v_daily_count > c_daily_limit THEN 'daily_limit'
+            WHEN v_ip_count > c_ip_limit THEN 'ip_limit'
             ELSE 'ok'
         END,
         'ip_count', v_ip_count,
@@ -128,5 +131,5 @@ BEGIN
 END;
 $$;
 
-REVOKE EXECUTE ON FUNCTION public.check_gemini_public_rate_limit(TEXT, TEXT, INTEGER, INTEGER) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION public.check_gemini_public_rate_limit(TEXT, TEXT, INTEGER, INTEGER) TO anon, authenticated, service_role;
+REVOKE EXECUTE ON FUNCTION public.check_gemini_public_rate_limit(TEXT, TEXT) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.check_gemini_public_rate_limit(TEXT, TEXT) TO service_role;

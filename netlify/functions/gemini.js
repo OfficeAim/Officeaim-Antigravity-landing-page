@@ -24,10 +24,10 @@ const PUBLIC_CHEAPEST_MODEL = 'gemini-3.5-flash';
 
 const ALLOWED_PUBLIC_SCOPES = new Set(['mascot-widget', 'library-tracker']);
 
-// Public route rate-limit constants
+// Public route rate-limit constants (fixed server-side: 10 per IP / 10 min, 200 per day)
 const PUBLIC_IP_MAX_REQUESTS = 10;
 const PUBLIC_IP_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
-const DEFAULT_PUBLIC_DAILY_GLOBAL_LIMIT = 200;
+const PUBLIC_DAILY_GLOBAL_LIMIT = 200;
 
 // Warm-instance rate-limit store (paired with Supabase RLS table `public.gemini_public_rate_limits`)
 const ipRateWindows = new Map(); // ipHash -> { count, resetAt }
@@ -35,10 +35,12 @@ let dailyGlobalState = {
   dayKey: '',
   count: 0,
 };
+let hasLoggedMissingServiceRoleWarning = false;
 
 function resetRateLimitsForTest() {
   ipRateWindows.clear();
   dailyGlobalState = { dayKey: '', count: 0 };
+  hasLoggedMissingServiceRoleWarning = false;
 }
 
 function getUtcDayKey(nowMs = Date.now()) {
@@ -88,7 +90,7 @@ function hashIp(ip) {
     .slice(0, 32);
 }
 
-function checkLocalRateLimit(ipHash, dailyLimit) {
+function checkLocalRateLimit(ipHash) {
   const now = Date.now();
   const todayKey = getUtcDayKey(now);
 
@@ -103,7 +105,7 @@ function checkLocalRateLimit(ipHash, dailyLimit) {
     }
   }
 
-  if (dailyGlobalState.count >= dailyLimit) {
+  if (dailyGlobalState.count >= PUBLIC_DAILY_GLOBAL_LIMIT) {
     return { allowed: false, reason: 'daily_limit' };
   }
 
@@ -129,25 +131,23 @@ function checkLocalRateLimit(ipHash, dailyLimit) {
 }
 
 async function checkPublicRateLimit(ipHash, publicScope) {
-  const dailyLimit =
-    Number(process.env.GEMINI_PUBLIC_DAILY_LIMIT) > 0
-      ? Number(process.env.GEMINI_PUBLIC_DAILY_LIMIT)
-      : DEFAULT_PUBLIC_DAILY_GLOBAL_LIMIT;
-
   // 1. Always enforce in-memory window first (fast path & fallback)
-  const localDecision = checkLocalRateLimit(ipHash, dailyLimit);
+  const localDecision = checkLocalRateLimit(ipHash);
   if (!localDecision.allowed) {
     return localDecision;
   }
 
-  // 2. Persist & cross-check in Supabase RLS table via SECURITY DEFINER RPC when configured
+  // 2. Persist & cross-check in Supabase RLS table via SECURITY DEFINER RPC using ONLY SUPABASE_SERVICE_ROLE_KEY
   const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
-  const supabaseKey =
-    process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    process.env.SUPABASE_ANON_KEY ||
-    process.env.VITE_SUPABASE_ANON_KEY;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  if (!supabaseUrl || !supabaseKey) {
+  if (!supabaseUrl || !serviceRoleKey) {
+    if (!hasLoggedMissingServiceRoleWarning) {
+      hasLoggedMissingServiceRoleWarning = true;
+      console.warn(
+        '[gemini] SUPABASE_SERVICE_ROLE_KEY is not configured; using in-memory rate limit only for public routes.'
+      );
+    }
     return localDecision;
   }
 
@@ -157,14 +157,12 @@ async function checkPublicRateLimit(ipHash, publicScope) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        apikey: supabaseKey,
-        Authorization: `Bearer ${supabaseKey}`,
+        apikey: serviceRoleKey,
+        Authorization: `Bearer ${serviceRoleKey}`,
       },
       body: JSON.stringify({
         p_ip_hash: ipHash,
         p_scope: publicScope,
-        p_ip_limit: PUBLIC_IP_MAX_REQUESTS,
-        p_daily_limit: dailyLimit,
       }),
     });
 
