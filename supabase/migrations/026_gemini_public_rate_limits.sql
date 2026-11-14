@@ -110,7 +110,7 @@ BEGIN
         'global_daily',
         1,
         v_now,
-        date_trunc('day', v_now AT TIME ZONE 'UTC') + INTERVAL '1 day',
+        (date_trunc('day', v_now AT TIME ZONE 'UTC') + INTERVAL '1 day') AT TIME ZONE 'UTC',
         v_now
     )
     ON CONFLICT (bucket_key) DO UPDATE
