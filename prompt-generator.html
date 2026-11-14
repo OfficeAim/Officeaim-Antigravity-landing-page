@@ -58,6 +58,687 @@
   }
 }
     </script>
+
+    <!-- Interactive Prompt Experience Styles (Dark Tech) -->
+    <style>
+        /* Step Progression Tabs */
+        .pg-nav-tabs {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .pg-nav-tab {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94A3B8;
+            padding: 0.75rem 1.4rem;
+            border-radius: 9999px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .pg-nav-tab:hover {
+            color: #FFFFFF;
+            border-color: rgba(0, 240, 255, 0.4);
+            background: rgba(0, 240, 255, 0.05);
+        }
+
+        .pg-nav-tab.active {
+            color: #030712;
+            background: linear-gradient(135deg, #00F0FF 0%, #38BDF8 100%);
+            border-color: #00F0FF;
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.4);
+        }
+
+        .pg-step-pane {
+            display: none;
+            animation: pgFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .pg-step-pane.active {
+            display: block;
+        }
+
+        @keyframes pgFadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== STEP 1: CAROUSEL ===== */
+        .pg-carousel-card {
+            background: #0B1120;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .pg-carousel-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 1.75rem;
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 860px) {
+            .pg-carousel-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .pg-box-before {
+            background: rgba(239, 68, 68, 0.04);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            border-radius: 14px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pg-box-after {
+            background: rgba(0, 240, 255, 0.03);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 14px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.06);
+        }
+
+        .pg-tag-bad {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.3rem 0.75rem;
+            background: rgba(239, 68, 68, 0.15);
+            color: #F87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.9rem;
+            width: fit-content;
+        }
+
+        .pg-tag-good {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.3rem 0.75rem;
+            background: rgba(0, 240, 255, 0.12);
+            color: #00F0FF;
+            border: 1px solid rgba(0, 240, 255, 0.35);
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.9rem;
+            width: fit-content;
+        }
+
+        .pg-code-preview {
+            background: #060912;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 1rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            color: #E2E8F0;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            flex: 1;
+        }
+
+        .pg-pill-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .pg-pillar-chip {
+            padding: 0.25rem 0.65rem;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .pg-chip-role { background: rgba(168, 85, 247, 0.18); color: #C084FC; border: 1px solid rgba(168, 85, 247, 0.35); }
+        .pg-chip-task { background: rgba(59, 130, 246, 0.18); color: #60A5FA; border: 1px solid rgba(59, 130, 246, 0.35); }
+        .pg-chip-ctx { background: rgba(245, 158, 11, 0.18); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.35); }
+        .pg-chip-fmt { background: rgba(16, 185, 129, 0.18); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.35); }
+
+        /* Color-coded Pillar Header Badges in Prompt Previews */
+        .pg-sec-header {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.28rem 0.75rem;
+            border-radius: 6px;
+            font-weight: 800;
+            font-size: 0.82rem;
+            letter-spacing: 0.04em;
+            margin: 0.85rem 0 0.45rem;
+            width: fit-content;
+            line-height: 1.3;
+        }
+        .pg-sec-header:first-child { margin-top: 0; }
+
+        .pg-sec-role {
+            background: rgba(168, 85, 247, 0.22);
+            color: #E9D5FF;
+            border: 1px solid rgba(168, 85, 247, 0.55);
+            box-shadow: 0 0 14px rgba(168, 85, 247, 0.2);
+        }
+        .pg-sec-task {
+            background: rgba(59, 130, 246, 0.22);
+            color: #DBEAFE;
+            border: 1px solid rgba(59, 130, 246, 0.55);
+            box-shadow: 0 0 14px rgba(59, 130, 246, 0.2);
+        }
+        .pg-sec-ctx {
+            background: rgba(245, 158, 11, 0.22);
+            color: #FEF3C7;
+            border: 1px solid rgba(245, 158, 11, 0.55);
+            box-shadow: 0 0 14px rgba(245, 158, 11, 0.2);
+        }
+        .pg-sec-fmt {
+            background: rgba(16, 185, 129, 0.22);
+            color: #D1FAE5;
+            border: 1px solid rgba(16, 185, 129, 0.55);
+            box-shadow: 0 0 14px rgba(16, 185, 129, 0.2);
+        }
+
+        .pg-carousel-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .pg-carousel-dots {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pg-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pg-dot.active {
+            width: 28px;
+            border-radius: 9999px;
+            background: #00F0FF;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+        }
+
+        /* ===== STEP 2: TRAINER GAME ===== */
+        .pg-game-card {
+            background: #0B1120;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 2.25rem;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+        }
+
+        .pg-game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .pg-streak-badge {
+            background: rgba(255, 122, 24, 0.12);
+            border: 1px solid rgba(255, 122, 24, 0.3);
+            color: #FF7A18;
+            padding: 0.4rem 0.9rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .pg-options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 640px) {
+            .pg-options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .pg-option-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #F8FAFC;
+            padding: 1.15rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .pg-option-btn span:first-child {
+            font-size: 1rem;
+            color: #FFFFFF;
+        }
+
+        .pg-option-btn span:last-child {
+            font-size: 0.75rem;
+            color: #94A3B8;
+            font-weight: 500;
+        }
+
+        .pg-option-btn:hover:not(:disabled) {
+            border-color: rgba(0, 240, 255, 0.4);
+            background: rgba(0, 240, 255, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .pg-option-btn.correct {
+            background: rgba(16, 185, 129, 0.15) !important;
+            border-color: #10B981 !important;
+            color: #34D399 !important;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .pg-option-btn.wrong {
+            background: rgba(239, 68, 68, 0.15) !important;
+            border-color: #EF4444 !important;
+            color: #F87171 !important;
+        }
+
+        .pg-feedback-box {
+            display: none;
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            border-radius: 12px;
+            animation: pgFadeIn 0.25s ease;
+        }
+
+        /* ===== STEP 3: BUILDER & ENHANCEMENTS ===== */
+        .pg-strength-container {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .pg-strength-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .pg-meter-track {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 9999px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .pg-meter-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #EF4444, #F59E0B, #10B981, #00F0FF);
+            background-size: 400% 100%;
+            border-radius: 9999px;
+            transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .pg-pillars-checklist {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 720px) {
+            .pg-pillars-checklist {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .pg-pillar-status {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            padding: 0.6rem 0.8rem;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #94A3B8;
+            transition: all 0.2s;
+        }
+
+        .pg-pillar-status.active {
+            color: #FFFFFF;
+        }
+
+        #chk-role.active {
+            border-color: rgba(168, 85, 247, 0.55);
+            background: rgba(168, 85, 247, 0.12);
+            color: #E9D5FF;
+        }
+        #chk-role.active .pg-indicator-dot {
+            background: #C084FC;
+            box-shadow: 0 0 10px #C084FC;
+        }
+
+        #chk-task.active {
+            border-color: rgba(59, 130, 246, 0.55);
+            background: rgba(59, 130, 246, 0.12);
+            color: #DBEAFE;
+        }
+        #chk-task.active .pg-indicator-dot {
+            background: #60A5FA;
+            box-shadow: 0 0 10px #60A5FA;
+        }
+
+        #chk-context.active {
+            border-color: rgba(245, 158, 11, 0.55);
+            background: rgba(245, 158, 11, 0.12);
+            color: #FEF3C7;
+        }
+        #chk-context.active .pg-indicator-dot {
+            background: #FBBF24;
+            box-shadow: 0 0 10px #FBBF24;
+        }
+
+        #chk-format.active {
+            border-color: rgba(16, 185, 129, 0.55);
+            background: rgba(16, 185, 129, 0.12);
+            color: #D1FAE5;
+        }
+        #chk-format.active .pg-indicator-dot {
+            background: #34D399;
+            box-shadow: 0 0 10px #34D399;
+        }
+
+        .pg-indicator-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        /* Variable Preset Chips */
+        .pg-presets-wrapper {
+            margin-bottom: 1.5rem;
+        }
+
+        .pg-presets-scroll {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            padding-bottom: 0.25rem;
+        }
+
+        .pg-preset-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #CBD5E1;
+            padding: 0.55rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .pg-preset-btn:hover {
+            color: #FFFFFF;
+            border-color: #00F0FF;
+            background: rgba(0, 240, 255, 0.08);
+        }
+
+        /* Format Switcher */
+        .pg-format-switcher {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.3rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            width: fit-content;
+        }
+
+        .pg-format-tab {
+            padding: 0.45rem 0.9rem;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            color: #94A3B8;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pg-format-tab.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: #00F0FF;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Saved Prompts Drawer */
+        .pg-saved-section {
+            margin-top: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px dashed rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .pg-saved-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .pg-saved-card {
+            background: #070B14;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1.15rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 0.75rem;
+            transition: border-color 0.2s;
+        }
+
+        .pg-saved-card:hover {
+            border-color: rgba(0, 240, 255, 0.35);
+        }
+
+        /* Cowboy Multi-LLM Launcher Modal */
+        .cowboy-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(3, 6, 14, 0.88);
+            backdrop-filter: blur(8px);
+            z-index: 999999;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .cowboy-modal {
+            background: #0B1120;
+            border: 1px solid rgba(34, 211, 238, 0.35);
+            border-radius: 18px;
+            max-width: 580px;
+            width: 100%;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(6, 182, 212, 0.25);
+            animation: cowboyPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes cowboyPop {
+            0% { transform: scale(0.92); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .cowboy-header {
+            padding: 1.5rem 1.75rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .cowboy-header-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .cowboy-header h3 {
+            color: #ffffff;
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .cowboy-close-btn {
+            background: transparent;
+            border: none;
+            color: #94A3B8;
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0.25rem;
+        }
+
+        .cowboy-close-btn:hover {
+            color: #ffffff;
+        }
+
+        .cowboy-copy-alert {
+            margin: 0 1.75rem 1.25rem;
+            background: rgba(34, 211, 238, 0.12);
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #E2E8F0;
+            font-size: 0.88rem;
+        }
+
+        .cowboy-launcher-grid {
+            padding: 0 1.75rem 1.75rem;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        @media (max-width: 520px) {
+            .cowboy-launcher-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cowboy-tile {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .cowboy-tile:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(34, 211, 238, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .cowboy-tile-icon {
+            font-size: 1.5rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .cowboy-tile-text strong {
+            display: block;
+            font-size: 0.92rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .cowboy-tile-text span {
+            font-size: 0.75rem;
+            color: #94A3B8;
+        }
+    </style>
 </head>
 
 <body>
@@ -243,85 +924,300 @@
             </p>
             <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-top: 2rem;">
                 <a href="#demo" class="btn-hero-primary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
-                    <span>Launch Generator ↓</span>
+                    <span>Launch generator ↓</span>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
                 <a href="#guide" class="btn-hero-secondary" style="background: rgba(255,255,255,0.05); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.15);">
-                    <span>How It Works ↓</span>
+                    <span>How it works ↓</span>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- ===== PROMPT GENERATOR ===== -->
+    <!-- ===== PROMPT WORKBENCH (3-STEP EXPERIENCE) ===== -->
     <section class="demo-section" id="demo">
         <div class="container">
             <div class="demo-header" style="text-align:center;">
                 <div class="section-label">PARAMETRIC META-PROMPT ENGINE</div>
                 <h2 class="section-heading">The OfficeAIM Prompt Generator</h2>
-                <p class="section-desc" style="text-align:center; max-width:100%; margin-left:auto; margin-right:auto;">
-                    Pick a template, customize parameters, and copy the compiled system prompt. Ready to inject into any modern LLM.
+                <p class="section-desc" style="text-align:center; max-width:840px; margin-left:auto; margin-right:auto;">
+                    Master structured prompting in three interactive stages: inspect high-contrast Before vs. After pairs, test your eye on missing prompt pillars, and craft production-grade prompts with live strength scoring.
                 </p>
             </div>
-            <div class="demo-container">
-                <div class="demo-privacy-note">
-                    <span>🔒</span>
-                    <span>Runs entirely in your browser. No data sent to external servers.</span>
-                </div>
-                <div class="template-selector">
-                    <div class="template-cards">
-                        <div class="template-card active" data-template="email">
-                            <div class="template-icon">✉️</div>
-                            <h4>Professional Email</h4>
+
+            <!-- Progression Tabs -->
+            <div class="pg-nav-tabs">
+                <button type="button" class="pg-nav-tab active" data-step="1" id="tab-step-1">
+                    <span>01</span>
+                    <span>See the difference</span>
+                </button>
+                <button type="button" class="pg-nav-tab" data-step="2" id="tab-step-2">
+                    <span>02</span>
+                    <span>Train your eye</span>
+                </button>
+                <button type="button" class="pg-nav-tab" data-step="3" id="tab-step-3">
+                    <span>03</span>
+                    <span>Build yours</span>
+                </button>
+            </div>
+
+            <!-- ===== STEP 1: SEE THE DIFFERENCE (CAROUSEL) ===== -->
+            <div class="pg-step-pane active" id="pane-step-1">
+                <div class="pg-carousel-card">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem;">
+                        <div>
+                            <div style="font-size:0.75rem; font-weight:800; color:#00F0FF; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.35rem;" id="carouselCategory">
+                                Category: Outreach &amp; Sales
+                            </div>
+                            <h3 style="font-size:1.45rem; font-weight:800; color:#FFFFFF; margin:0;" id="carouselTitle">
+                                Executive cold email outreach
+                            </h3>
                         </div>
-                        <div class="template-card" data-template="summary">
-                            <div class="template-icon">📄</div>
-                            <h4>Document Summary</h4>
-                        </div>
-                        <div class="template-card" data-template="project">
-                            <div class="template-icon">📋</div>
-                            <h4>Project Plan</h4>
-                        </div>
-                        <div class="template-card" data-template="marketing">
-                            <div class="template-icon">📢</div>
-                            <h4>Marketing Copy</h4>
+                        <div style="display:flex; align-items:center; gap:0.5rem; font-size:0.8rem; color:#94A3B8; background:rgba(255,255,255,0.04); padding:0.4rem 0.85rem; border-radius:999px; border:1px solid rgba(255,255,255,0.08);">
+                            <span>Case</span>
+                            <strong style="color:#00F0FF;" id="carouselIndexDisplay">1 / 6</strong>
                         </div>
                     </div>
-                </div>
-                <div class="form-area" id="formArea"></div>
-                <div class="global-options">
-                    <div class="option-group">
-                        <label for="toneSelector">Tone:</label>
-                        <select id="toneSelector">
-                            <option value="professional">Professional</option>
-                            <option value="friendly">Friendly</option>
-                            <option value="technical">Technical</option>
-                        </select>
+
+                    <div class="pg-carousel-grid">
+                        <!-- Before (Vague) -->
+                        <div class="pg-box-before">
+                            <span class="pg-tag-bad">
+                                <span>✕</span> <span>Before · Vague &amp; Hallucinable</span>
+                            </span>
+                            <div class="pg-code-preview" id="carouselBefore"></div>
+                            <p style="font-size:0.8rem; color:#F87171; margin-top:0.85rem; line-height:1.5;" id="carouselBeforeFlaw">
+                                <strong>Why it fails:</strong> No role defined, no value prop specified, no length constraints, resulting in a generic 500-word spam email.
+                            </p>
+                        </div>
+
+                        <!-- After (Structured) -->
+                        <div class="pg-box-after">
+                            <span class="pg-tag-good">
+                                <span>✓</span> <span>After · 4 Core Pillars</span>
+                            </span>
+                            <div class="pg-code-preview" id="carouselAfter"></div>
+                            <div class="pg-pill-group">
+                                <span class="pg-pillar-chip pg-chip-role">ROLE</span>
+                                <span class="pg-pillar-chip pg-chip-task">TASK</span>
+                                <span class="pg-pillar-chip pg-chip-ctx">CONTEXT</span>
+                                <span class="pg-pillar-chip pg-chip-fmt">FORMAT</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="option-group">
-                        <label for="languageOutput">Output Language:</label>
-                        <select id="languageOutput">
-                            <option value="en">English</option>
-                            <option value="es">Español</option>
-                            <option value="nl">Nederlands</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="demo-actions">
-                    <button class="btn btn-primary" id="generateBtn">Generate Prompt</button>
-                    <button class="btn btn-secondary" id="resetBtn">Reset</button>
-                </div>
-                <div class="output-area" id="outputArea" style="display:none;">
-                    <div class="output-header">
-                        <h3>Your Generated Prompt</h3>
-                        <button class="btn btn-copy" id="copyBtn">Copy</button>
-                    </div>
-                    <div class="output-content" id="outputContent"></div>
-                    <div class="output-helper">
-                        <p>Paste into ChatGPT, Gemini, Claude, or any AI assistant.</p>
+
+                    <!-- Carousel Controls -->
+                    <div class="pg-carousel-controls">
+                        <button type="button" class="btn btn-secondary" id="carouselPrevBtn" style="padding:0.6rem 1.25rem; font-size:0.85rem;">
+                            ← Previous case
+                        </button>
+                        <div class="pg-carousel-dots" id="carouselDots"></div>
+                        <button type="button" class="btn btn-primary" id="carouselNextBtn" style="padding:0.6rem 1.25rem; font-size:0.85rem;">
+                            Next case →
+                        </button>
                     </div>
                 </div>
             </div>
+
+            <!-- ===== STEP 2: TRAIN YOUR EYE (GAME) ===== -->
+            <div class="pg-step-pane" id="pane-step-2">
+                <div class="pg-game-card">
+                    <div class="pg-game-header">
+                        <div>
+                            <div style="font-size:0.75rem; font-weight:800; color:#00F0FF; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.25rem;">
+                                Interactive Diagnosis Game
+                            </div>
+                            <h3 style="font-size:1.35rem; font-weight:800; color:#FFFFFF; margin:0;" id="gameQuestionCounter">
+                                Question 1 of 5: What pillar is missing?
+                            </h3>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:0.75rem;">
+                            <div class="pg-streak-badge">
+                                <span>🔥</span>
+                                <span id="gameStreakDisplay">Streak: 0</span>
+                            </div>
+                            <button type="button" class="btn btn-secondary" id="gameRestartBtn" style="padding:0.4rem 0.85rem; font-size:0.75rem;">
+                                Restart game
+                            </button>
+                        </div>
+                    </div>
+
+                    <p style="color:#94A3B8; font-size:0.9rem; margin-bottom:1rem;">
+                        Inspect the flawed prompt snippet below. Diagnose which essential pillar was omitted:
+                    </p>
+
+                    <div class="pg-code-preview" id="gamePromptSnippet" style="background:#070B14; border-color:rgba(0,240,255,0.2); font-size:0.92rem; padding:1.25rem;"></div>
+
+                    <div class="pg-options-grid" id="gameOptionsGrid">
+                        <button type="button" class="pg-option-btn" data-pillar="role">
+                            <span>1. Missing Role</span>
+                            <span>No identity, senior expertise, or authority assigned.</span>
+                        </button>
+                        <button type="button" class="pg-option-btn" data-pillar="task">
+                            <span>2. Missing Task</span>
+                            <span>No clear primary action verb or core deliverable specified.</span>
+                        </button>
+                        <button type="button" class="pg-option-btn" data-pillar="context">
+                            <span>3. Missing Context</span>
+                            <span>Lacks background info, target audience, or operational constraints.</span>
+                        </button>
+                        <button type="button" class="pg-option-btn" data-pillar="format">
+                            <span>4. Missing Format</span>
+                            <span>No word limits, structural layout, or output rules specified.</span>
+                        </button>
+                    </div>
+
+                    <div class="pg-feedback-box" id="gameFeedbackBox"></div>
+
+                    <div style="display:flex; justify-content:flex-end; margin-top:1.5rem;">
+                        <button type="button" class="btn btn-primary" id="gameNextBtn" style="display:none; padding:0.7rem 1.4rem;">
+                            Next question →
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== STEP 3: BUILD YOURS (WIZARD & TOOLS) ===== -->
+            <div class="pg-step-pane" id="pane-step-3">
+                <div class="demo-container" style="max-width:100%;">
+                    
+                    <!-- 1. Real-Time Prompt Strength Meter (0 - 100%) -->
+                    <div class="pg-strength-container">
+                        <div class="pg-strength-header">
+                            <div>
+                                <span style="font-size:0.72rem; font-weight:800; color:#00F0FF; text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:0.2rem;">
+                                    Real-time prompt quality scoring
+                                </span>
+                                <strong style="font-size:1.15rem; color:#FFFFFF;" id="pgStrengthLabel">
+                                    Prompt Strength: 0% · Incomplete
+                                </strong>
+                            </div>
+                            <span style="font-size:1.25rem; font-weight:800; color:#00F0FF;" id="pgScoreNumber">0%</span>
+                        </div>
+
+                        <div class="pg-meter-track">
+                            <div class="pg-meter-fill" id="pgMeterFill"></div>
+                        </div>
+
+                        <!-- 4 Pillars Checklist -->
+                        <div class="pg-pillars-checklist">
+                            <div class="pg-pillar-status" id="chk-role">
+                                <span class="pg-indicator-dot"></span>
+                                <span>1. ROLE (25%)</span>
+                            </div>
+                            <div class="pg-pillar-status" id="chk-task">
+                                <span class="pg-indicator-dot"></span>
+                                <span>2. TASK (25%)</span>
+                            </div>
+                            <div class="pg-pillar-status" id="chk-context">
+                                <span class="pg-indicator-dot"></span>
+                                <span>3. CONTEXT (25%)</span>
+                            </div>
+                            <div class="pg-pillar-status" id="chk-format">
+                                <span class="pg-indicator-dot"></span>
+                                <span>4. FORMAT (25%)</span>
+                            </div>
+                        </div>
+
+                        <div id="pgStrengthTip" style="margin-top:0.75rem; font-size:0.8rem; color:#94A3B8;">
+                            💡 <strong>Tip:</strong> Assign a specialized Role/Persona to begin calibrating your prompt.
+                        </div>
+                    </div>
+
+                    <!-- 2. Instant Variable Presets -->
+                    <div class="pg-presets-wrapper">
+                        <label style="font-size:0.75rem; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; color:#94A3B8; margin-bottom:0.5rem; display:block;">
+                            ⚡ Instant Variable Presets (1-Click Fill)
+                        </label>
+                        <div class="pg-presets-scroll">
+                            <button type="button" class="pg-preset-btn" data-preset="outreach">
+                                <span>📧</span> <span>B2B Cold Outreach Email</span>
+                            </button>
+                            <button type="button" class="pg-preset-btn" data-preset="bug">
+                                <span>🐛</span> <span>Engineering Bug Report &amp; Fix</span>
+                            </button>
+                            <button type="button" class="pg-preset-btn" data-preset="content">
+                                <span>🗓️</span> <span>Multi-Channel Content Plan</span>
+                            </button>
+                            <button type="button" class="pg-preset-btn" data-preset="sop">
+                                <span>📋</span> <span>Standard Operating Procedure (SOP)</span>
+                            </button>
+                            <button type="button" class="pg-preset-btn" data-preset="reset">
+                                <span>🔄</span> <span>Clear canvas</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Builder Form -->
+                    <div class="form-area" style="display:grid; grid-template-columns:repeat(2, 1fr); gap:1.25rem;">
+                        <div class="form-group" style="margin:0;">
+                            <label for="builderRole">1. ROLE:</label>
+                            <input type="text" id="builderRole" placeholder="e.g. Senior Conversion Copywriter with 10+ years in SaaS B2B" />
+                        </div>
+                        <div class="form-group" style="margin:0;">
+                            <label for="builderTask">2. TASK:</label>
+                            <input type="text" id="builderTask" placeholder="e.g. Write a 3-part cold email sequence targeting CTOs" />
+                        </div>
+                        <div class="form-group" style="margin:0; grid-column:span 2;">
+                            <label for="builderContext">3. CONTEXT:</label>
+                            <textarea id="builderContext" rows="3" placeholder="e.g. Target audience: [CTO / VP of Eng]. Pain point: [Slow build times]. Value prop: [3x faster CI/CD pipelines]. Tone: [Direct, authoritative, zero fluff]."></textarea>
+                        </div>
+                        <div class="form-group" style="margin:0; grid-column:span 2;">
+                            <label for="builderFormat">4. FORMAT:</label>
+                            <input type="text" id="builderFormat" placeholder="e.g. Markdown bullet points. Max 120 words per email. Do not use buzzwords like 'game-changer' or 'synergy'." />
+                        </div>
+                    </div>
+
+                    <!-- 3. Multi-LLM Output Switcher & Actions -->
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2rem; flex-wrap:wrap; gap:1rem;">
+                        <div class="pg-format-switcher">
+                            <button type="button" class="pg-format-tab active" data-fmt="markdown">Markdown (ChatGPT / Gemini)</button>
+                            <button type="button" class="pg-format-tab" data-fmt="xml">XML Tags (Claude / DeepSeek)</button>
+                            <button type="button" class="pg-format-tab" data-fmt="system">System Prompt (Agents / Custom GPTs)</button>
+                        </div>
+
+                        <div style="display:flex; gap:0.75rem;">
+                            <button class="btn btn-secondary" id="savePromptBtn" style="padding:0.75rem 1.25rem; font-size:0.85rem;">
+                                <span>💾 Save to Library</span>
+                            </button>
+                            <button class="btn btn-primary" id="openLauncherBtn" style="padding:0.75rem 1.4rem; font-size:0.85rem; box-shadow:0 0 25px rgba(0,240,255,0.35);">
+                                <span>Copy &amp; Launch Multi-LLM →</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Compiled Live Preview -->
+                    <div class="output-area" id="builderOutputArea" style="display:block; margin-top:1.5rem;">
+                        <div class="output-header">
+                            <div style="display:flex; align-items:center; gap:0.5rem;">
+                                <span style="font-size:0.9rem;">⚡</span>
+                                <h3 id="previewFormatTitle" style="font-size:1rem; margin:0;">Compiled prompt (Markdown format)</h3>
+                            </div>
+                            <button class="btn btn-copy" id="quickCopyBtn">Copy</button>
+                        </div>
+                        <div class="output-content" id="builderOutputContent" style="max-height:360px; overflow-y:auto; font-family:'Courier New', monospace; font-size:0.85rem; line-height:1.6; white-space:pre-wrap;"></div>
+                    </div>
+
+                    <!-- 4. My Saved Prompts (localStorage) -->
+                    <div class="pg-saved-section" id="pgSavedSection">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+                            <div>
+                                <h4 style="font-size:1rem; color:#FFFFFF; margin:0 0 0.25rem;">My saved prompts (browser memory)</h4>
+                                <span style="font-size:0.75rem; color:#94A3B8;">Stored securely in your local browser storage. Zero tracking.</span>
+                            </div>
+                            <button type="button" class="btn btn-secondary" id="clearSavedPromptsBtn" style="padding:0.35rem 0.8rem; font-size:0.72rem;">
+                                Clear all
+                            </button>
+                        </div>
+
+                        <div class="pg-saved-grid" id="pgSavedGrid">
+                            <div style="color:#64748B; font-size:0.85rem; font-style:italic;">No saved prompts yet. Craft a prompt above and click "Save to Library".</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -329,22 +1225,22 @@
     <section class="steps-section" id="guide">
         <div class="section-header">
             <div class="section-eyebrow">WORKFLOW PLAYBOOK</div>
-            <h2 class="section-title">How It Works (3 Simple Steps)</h2>
+            <h2 class="section-title">How it works (3 simple steps)</h2>
         </div>
         <div class="steps-grid">
             <div class="step-card">
                 <div class="step-number">01</div>
-                <h3>Select Domain &amp; Agent Role</h3>
+                <h3>Select domain &amp; agent role</h3>
                 <p>Choose the target specialization or communication domain: Executive Email, Document Summary, Technical Project Plan, or High-Conversion Copy.</p>
             </div>
             <div class="step-card">
                 <div class="step-number">02</div>
-                <h3>Define Variables &amp; Guardrails</h3>
+                <h3>Define variables &amp; guardrails</h3>
                 <p>Calibrate system parameters, audience constraints, tone of voice, negative prompt guardrails, and output language in real time.</p>
             </div>
             <div class="step-card">
                 <div class="step-number">03</div>
-                <h3>Generate &amp; Inject</h3>
+                <h3>Generate &amp; inject</h3>
                 <p>Copy the hardened, high-precision system prompt with one click and inject it directly into Google Gemini, Claude, or ChatGPT for flawless execution.</p>
             </div>
         </div>
@@ -356,7 +1252,7 @@
             <div style="text-align: center; max-width: 48rem; margin: 0 auto;">
                 <div class="section-eyebrow" style="color: var(--accent-primary, #FF7A18);">THE AI BUSINESS LESSON</div>
                 <h2 style="font-size: 2rem; font-weight: 800; color: white; margin: 0.5rem 0 1rem;">
-                    Replacing Paid Prompt Marketplaces with Parametric Generators
+                    Replacing paid prompt marketplaces with parametric generators
                 </h2>
                 <p style="color: #94A3B8; font-size: 0.95rem; line-height: 1.6;">
                     Prompt marketplaces and gated SaaS libraries charge $20 to $50/month for static text snippets. With modern meta-prompting architecture, you can generate dynamic, parameter-driven system prompts for $0.
@@ -366,7 +1262,7 @@
             <div class="matrix-grid">
                 <div class="matrix-col col-commercial">
                     <span class="matrix-badge badge-red">Paid Prompt Marketplaces</span>
-                    <h3 style="color: #F87171; font-size: 1.25rem; font-weight: 800; margin: 0;">$240 – $600 / Year</h3>
+                    <h3 style="color: #F87171; font-size: 1.25rem; font-weight: 800; margin: 0;">$240 – $600 / year</h3>
                     <ul class="matrix-list">
                         <li>❌ Monthly recurring software subscriptions</li>
                         <li>❌ Static copy-paste text files without dynamic parameters</li>
@@ -377,7 +1273,7 @@
                 </div>
                 <div class="matrix-col col-ai">
                     <span class="matrix-badge badge-cyan-tag">OfficeAIM &amp; Parametric Engine</span>
-                    <h3 style="color: var(--accent-secondary, #00F0FF); font-size: 1.25rem; font-weight: 800; margin: 0;">$0 / Forever (Open Source)</h3>
+                    <h3 style="color: var(--accent-secondary, #00F0FF); font-size: 1.25rem; font-weight: 800; margin: 0;">$0 / forever (open source)</h3>
                     <ul class="matrix-list">
                         <li>✅ 100% Free client-side execution in your browser</li>
                         <li>✅ Parametric variable injection and dynamic templates</li>
@@ -415,7 +1311,7 @@
         <div class="container">
             <div class="gems-join-inner">
                 <div class="gems-join-text">
-                    <h2>Explore 26 Pre-Configured AI Skills</h2>
+                    <h2>Explore 26 pre-configured AI skills</h2>
                     <p>Looking for ready-to-run modules? Install our finished agent skills directly into your LLM or launch them in Gemini.</p>
                 </div>
                 <a href="skills.html" class="btn-hero-primary">
@@ -511,15 +1407,779 @@
     </footer>
     <!-- FOOTER:END -->
 
+    <!-- Cowboy Multi-LLM Launcher Modal -->
+    <div class="cowboy-backdrop" id="cowboyBackdrop">
+        <div class="cowboy-modal">
+            <div class="cowboy-header">
+                <div class="cowboy-header-title">
+                    <span id="cowboyIcon" style="font-size: 1.5rem;">⚡</span>
+                    <div>
+                        <h3 id="cowboyTitle" style="font-size: 1.25rem; font-weight: 700; color: #ffffff;">Prompt ready</h3>
+                        <span style="font-size: 0.78rem; color: #94A3B8;">Structured prompt copied to clipboard</span>
+                    </div>
+                </div>
+                <button class="cowboy-close-btn" id="cowboyCloseBtn">&times;</button>
+            </div>
+
+            <div class="cowboy-copy-alert">
+                <span style="font-size: 1.25rem; color: #00F0FF;">✓</span>
+                <div>
+                    <strong style="color: #ffffff; display: block; margin-bottom: 0.15rem;">Prompt copied to clipboard!</strong>
+                    <div style="font-size: 0.82rem; color: #94A3B8; line-height: 1.4;">
+                        Select your preferred AI platform below to launch and paste (Cmd+V / Ctrl+V):
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Launch Tiles -->
+            <div class="cowboy-launcher-grid">
+                <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" class="cowboy-tile" onclick="trackPromptLaunch('ChatGPT')">
+                    <div class="cowboy-tile-icon">💬</div>
+                    <div class="cowboy-tile-text">
+                        <strong>ChatGPT</strong>
+                        <span>OpenAI GPT-4o / o1</span>
+                    </div>
+                </a>
+                <a href="https://claude.ai/new" target="_blank" rel="noopener noreferrer" class="cowboy-tile" onclick="trackPromptLaunch('Claude')">
+                    <div class="cowboy-tile-icon">🧠</div>
+                    <div class="cowboy-tile-text">
+                        <strong>Claude</strong>
+                        <span>Anthropic Sonnet 3.7</span>
+                    </div>
+                </a>
+                <a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer" class="cowboy-tile" onclick="trackPromptLaunch('Gemini')">
+                    <div class="cowboy-tile-icon">✨</div>
+                    <div class="cowboy-tile-text">
+                        <strong>Google Gemini</strong>
+                        <span>Gemini 2.5 Flash / Pro</span>
+                    </div>
+                </a>
+                <a href="https://www.perplexity.ai/" target="_blank" rel="noopener noreferrer" class="cowboy-tile" onclick="trackPromptLaunch('Perplexity')">
+                    <div class="cowboy-tile-icon">🔍</div>
+                    <div class="cowboy-tile-text">
+                        <strong>Perplexity</strong>
+                        <span>Real-time research</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js?v=20261019"></script>
 
+    <!-- Interactive Experience Script: Carousel + Game + Builder + Storage -->
     <script>
-        function copyPrompt(elementId, btn) {
+    (function () {
+        // ==========================================
+        // 1. CAROUSEL DATA (6 CASES)
+        // ==========================================
+        const CAROUSEL_CASES = [
+            {
+                category: "Outreach & Sales",
+                title: "Executive cold email outreach",
+                before: "Write an email to a VP of Sales selling our AI automation software.",
+                beforeFlaw: "Why it fails: Zero role defined, no target company tier, no concrete pain point, and no length constraints. The LLM produces a 400-word spam email with generic buzzwords.",
+                after: `# ROLE
+You are a Senior B2B Sales Strategist specializing in Enterprise SaaS.
+
+# TASK
+Write a concise cold outreach email (max 90 words) to a VP of Sales at a Series B fintech company.
+
+# CONTEXT
+- Problem: Their SDR team spends 15+ hours weekly on manual CRM data hygiene.
+- Solution: OfficeAIM automates CRM enrichment directly via webhooks.
+- Social Proof: Reduced lead turnaround time by 64% for 3 high-growth startups.
+
+# FORMAT
+- Subject line: 4 words or fewer.
+- Low-friction CTA: Ask for permission to send a 2-minute Loom, NOT a 30-min call.
+- Negative constraint: No buzzwords (e.g. 'game-changer', 'synergy', 'revolutionize').`
+            },
+            {
+                category: "Engineering & QA",
+                title: "Production bug report & diagnosis",
+                before: "My API is throwing a 500 error on checkout. How do I fix it?",
+                beforeFlaw: "Why it fails: No framework or stack mentioned, no error logs provided, and no debugging methodology specified. Result: vague generic troubleshooting steps.",
+                after: `<role>
+You are a Principal Backend Engineer and Database Reliability Architect.
+</role>
+
+<task>
+1. Identify the root cause of the undefined object access.
+2. Provide a fault-tolerant patch with optional chaining and input fallback.
+3. Write a Jest unit test covering empty or malformed discount payload objects.
+</task>
+
+<context>
+- Stack: Node.js (v20), PostgreSQL on Supabase, Stripe Webhooks.
+- Incident: POST /api/checkout returns 500 Internal Server Error when cart contains discounted items.
+- Log trace: "TypeError: Cannot read properties of undefined (reading 'cents') at calculateDiscount".
+</context>
+
+<format>
+Provide the patch first, followed by a concise 3-bullet explanation. Zero preamble.
+</format>`
+            },
+            {
+                category: "Content Strategy",
+                title: "B2B thought leadership content",
+                before: "Write a LinkedIn post about why companies should adopt AI agents.",
+                beforeFlaw: "Why it fails: Uninspired, preachy post packed with rocket emojis and generic corporate clichés that gets zero engagement.",
+                after: `# ROLE
+You are an AI Systems Architect writing for senior technical founders on LinkedIn. Tone is direct, tactical, and empathetic.
+
+# TASK
+Write an impactful 150-word LinkedIn post debunking the myth that "AI agents replace entire departments overnight".
+
+# CONTEXT
+- Contrast hype vs reality: Agents excel at repetitive 5-minute workflows (PDF parsing, webhook triage), not strategic company leadership.
+- Lesson: Modern teams use human-in-the-loop oversight to scale output 3x without headcount bloat.
+
+# FORMAT
+- Hook (Line 1): Start with a contrarian observation under 10 words.
+- Structure: 1 to 2 sentences per paragraph with generous mobile whitespace.
+- Call to Action: End with an open question asking readers which task they automated first this month.`
+            },
+            {
+                category: "Operations & HR",
+                title: "Standard Operating Procedure (SOP)",
+                before: "Make an SOP for onboarding a new remote employee.",
+                beforeFlaw: "Why it fails: Missing tool ecosystem, no timeline, no security checklist, and vague responsibilities.",
+                after: `<role>
+You are an Operations Lead and Information Security Compliance Auditor.
+</role>
+
+<task>
+Create a standardized 14-day Remote Onboarding SOP for an incoming Frontend Engineer.
+</task>
+
+<context>
+- Stack: GitHub, Slack, 1Password, Figma, Vercel.
+- Company Policy: SOC2 Type II compliance requires 2FA activation on day 1.
+</context>
+
+<format>
+Use a chronological markdown table:
+| Day / Milestone | Responsible Owner | Action Items & Security Check | Verification Output |
+Include a mandatory rollback/escalation protocol if 1Password vault is not provisioned within 4 hours.
+</format>`
+            },
+            {
+                category: "Database & Architecture",
+                title: "Supabase PostgreSQL RLS policies",
+                before: "Give me an SQL query to protect user projects in Supabase.",
+                beforeFlaw: "Why it fails: Ignores foreign keys, auth helper functions, policy idempotency, and admin roles. Dangerous in production.",
+                after: `# ROLE
+You are a Principal Database Administrator specializing in PostgreSQL and Supabase Row-Level Security (RLS).
+
+# TASK
+Write a clean, idempotent SQL migration for a table named 'student_projects'.
+
+# CONTEXT
+- Columns: id UUID PRIMARY KEY, user_id UUID REFERENCES auth.users(id), title TEXT, data JSONB, created_at TIMESTAMPTZ.
+- Security Definer: Superadmins have role = 'superadmin' in public.profiles.
+
+# FORMAT
+1. Enable RLS on student_projects explicitly.
+2. Drop existing policies before creation (idempotent).
+3. Allow authenticated users to SELECT, INSERT, and UPDATE only their own rows (auth.uid() = user_id).
+4. Provide a Superadmin override policy allowing full SELECT across all rows.
+5. Format as pure, syntactically valid SQL code block with comments.`
+            },
+            {
+                category: "Customer Support",
+                title: "High-stakes refund mitigation email",
+                before: "Reply to an angry customer asking for a refund because our server went down.",
+                beforeFlaw: "Why it fails: Defensive tone, over-promising or arguing, causing customer churn or public escalation.",
+                after: `# ROLE
+You are a Head of Customer Experience handling VIP tier enterprise accounts.
+
+# TASK
+Draft a sincere, de-escalating email response to an enterprise customer experiencing an unexpected 45-minute service disruption.
+
+# CONTEXT
+- Incident: DNS propagation delay during scheduled maintenance window.
+- Impact: Customer could not export analytics reports for 45 minutes.
+- Offer: Issue a 25% courtesy service credit for the current billing cycle and invite them to an engineering post-mortem.
+
+# FORMAT
+- Tone: Accountable, calm, zero corporate deflection.
+- Never use phrasing like "per our terms of service" or "as you know".
+- Word count: Under 140 words.
+- Sign-off: Direct personal sign-off from the Customer Success Director.`
+            }
+        ];
+
+        // Helper to escape HTML characters before decorating
+        function escapeHtml(str) {
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Decorates Markdown headers and XML tags with pillar color badge styles
+        function colorizePromptPreview(rawText) {
+            const safe = escapeHtml(rawText);
+            return safe
+                // 1. Markdown headers (# ROLE, # TASK, # CONTEXT, # FORMAT, etc.)
+                .replace(/^(#+\s*(ROLE[^\n]*))/gm, '<span class="pg-sec-header pg-sec-role">$1</span>')
+                .replace(/^(#+\s*(PRIMARY TASK|TASK[^\n]*))/gm, '<span class="pg-sec-header pg-sec-task">$1</span>')
+                .replace(/^(#+\s*(CONTEXT[^\n]*|SCHEMA CONTEXT[^\n]*|OPERATING CONTEXT[^\n]*))/gm, '<span class="pg-sec-header pg-sec-ctx">$1</span>')
+                .replace(/^(#+\s*(FORMAT[^\n]*|DELIVERABLE FORMAT[^\n]*|CONSTRAINTS[^\n]*|RESPONSE PROTOCOL[^\n]*))/gm, '<span class="pg-sec-header pg-sec-fmt">$1</span>')
+                .replace(/^(#+\s*(SYSTEM IDENTITY[^\n]*))/gm, '<span class="pg-sec-header pg-sec-role">$1</span>')
+                .replace(/^(#+\s*(DIRECTIVE[^\n]*))/gm, '<span class="pg-sec-header pg-sec-task">$1</span>')
+                // 2. XML tags (<role>, <task>, <context>, <format>, etc.)
+                .replace(/(&lt;role&gt;|&lt;\/role&gt;|&lt;system_instructions&gt;|&lt;\/system_instructions&gt;)/g, '<span class="pg-sec-header pg-sec-role" style="margin:0.4rem 0;">$1</span>')
+                .replace(/(&lt;task&gt;|&lt;\/task&gt;)/g, '<span class="pg-sec-header pg-sec-task" style="margin:0.4rem 0;">$1</span>')
+                .replace(/(&lt;context&gt;|&lt;\/context&gt;)/g, '<span class="pg-sec-header pg-sec-ctx" style="margin:0.4rem 0;">$1</span>')
+                .replace(/(&lt;format&gt;|&lt;\/format&gt;|&lt;output_rules&gt;|&lt;\/output_rules&gt;|&lt;format_requirements&gt;|&lt;\/format_requirements&gt;)/g, '<span class="pg-sec-header pg-sec-fmt" style="margin:0.4rem 0;">$1</span>');
+        }
+
+        let currentCarouselIndex = 0;
+
+        function renderCarousel(index) {
+            const item = CAROUSEL_CASES[index];
+            document.getElementById('carouselCategory').textContent = 'Category: ' + item.category;
+            document.getElementById('carouselTitle').textContent = item.title;
+            document.getElementById('carouselIndexDisplay').textContent = (index + 1) + ' / ' + CAROUSEL_CASES.length;
+            document.getElementById('carouselBefore').textContent = item.before;
+            document.getElementById('carouselBeforeFlaw').innerHTML = '<strong>Why it fails:</strong> ' + item.beforeFlaw.replace(/^Why it fails:\s*/i, '');
+            document.getElementById('carouselAfter').innerHTML = colorizePromptPreview(item.after);
+
+            // Render Dots
+            const dotsContainer = document.getElementById('carouselDots');
+            dotsContainer.innerHTML = '';
+            CAROUSEL_CASES.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.className = 'pg-dot' + (i === index ? ' active' : '');
+                dot.addEventListener('click', () => {
+                    currentCarouselIndex = i;
+                    renderCarousel(i);
+                });
+                dotsContainer.appendChild(dot);
+            });
+        }
+
+        document.getElementById('carouselPrevBtn').addEventListener('click', () => {
+            currentCarouselIndex = (currentCarouselIndex - 1 + CAROUSEL_CASES.length) % CAROUSEL_CASES.length;
+            renderCarousel(currentCarouselIndex);
+        });
+
+        document.getElementById('carouselNextBtn').addEventListener('click', () => {
+            currentCarouselIndex = (currentCarouselIndex + 1) % CAROUSEL_CASES.length;
+            renderCarousel(currentCarouselIndex);
+        });
+
+        // ==========================================
+        // 2. TRAINER GAME DATA (5 QUESTIONS)
+        // ==========================================
+        const GAME_QUESTIONS = [
+            {
+                snippet: '"Write a marketing blog post about why developers love Next.js. Keep it under 600 words with bullet points and clear H2 subheaders."',
+                missing: 'role',
+                explanation: 'Correct! The prompt has a Task (write a post), Context (Next.js benefits), and Format (under 600 words, bullets, H2s), but lacks a Role (e.g. "Senior Developer Advocate / Jamstack Specialist"), leaving the tone to chance.'
+            },
+            {
+                snippet: '"Act as a Principal Cybersecurity Analyst specializing in zero-trust architectures for modern cloud infrastructures."',
+                missing: 'task',
+                explanation: 'Spot on! While the Role is clearly defined, there is no action verb or deliverable Task. What should the analyst actually do? Audit a diagram? Write an incident report? Provide hardening steps?'
+            },
+            {
+                snippet: '"You are a Senior Technical Recruiter. Draft a personalized outreach message to a candidate on LinkedIn offering them our open Senior Backend Engineer position."',
+                missing: 'context',
+                explanation: 'Bingo! Missing Context. What is the tech stack (Go, Rust, Node)? What is the compensation or mission? Why should this specific candidate care? Without context, the message feels like spam.'
+            },
+            {
+                snippet: '"You are a Creative Director at a branding agency. Recommend 5 compelling name ideas for an AI-powered accounting software for independent contractors."',
+                missing: 'format',
+                explanation: 'Excellent! Missing Format. Should the names be single-word, compound, or abstract? Do you need domain availability criteria (.com)? Word limit? Negative guardrails? Specifying the format ensures actionable results.'
+            },
+            {
+                snippet: '"You are a Customer Success Manager at a SaaS platform. Context: A customer asked how to connect their Google Drive account via OAuth."',
+                missing: 'task',
+                explanation: 'Correct! The Role and Context are set, but there is no explicit Task. Are you drafting a reply email, recording a Loom script, or generating internal documentation?'
+            }
+        ];
+
+        let currentGameIndex = 0;
+        let currentStreak = 0;
+
+        function renderGameQuestion(index) {
+            const q = GAME_QUESTIONS[index];
+            document.getElementById('gameQuestionCounter').textContent = `Question ${index + 1} of ${GAME_QUESTIONS.length}: What pillar is missing?`;
+            document.getElementById('gamePromptSnippet').textContent = q.snippet;
+            document.getElementById('gameStreakDisplay').textContent = `Streak: ${currentStreak}`;
+
+            const feedback = document.getElementById('gameFeedbackBox');
+            feedback.style.display = 'none';
+            feedback.className = 'pg-feedback-box';
+
+            const nextBtn = document.getElementById('gameNextBtn');
+            nextBtn.style.display = 'none';
+
+            // Reset buttons
+            const buttons = document.querySelectorAll('#gameOptionsGrid .pg-option-btn');
+            buttons.forEach(btn => {
+                btn.className = 'pg-option-btn';
+                btn.disabled = false;
+            });
+        }
+
+        document.querySelectorAll('#gameOptionsGrid .pg-option-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const selectedPillar = this.getAttribute('data-pillar');
+                const q = GAME_QUESTIONS[currentGameIndex];
+                const buttons = document.querySelectorAll('#gameOptionsGrid .pg-option-btn');
+                buttons.forEach(b => b.disabled = true);
+
+                const feedback = document.getElementById('gameFeedbackBox');
+                const nextBtn = document.getElementById('gameNextBtn');
+
+                if (selectedPillar === q.missing) {
+                    this.classList.add('correct');
+                    currentStreak++;
+                    feedback.style.display = 'block';
+                    feedback.style.background = 'rgba(16, 185, 129, 0.12)';
+                    feedback.style.border = '1px solid rgba(16, 185, 129, 0.35)';
+                    feedback.style.color = '#34D399';
+                    feedback.innerHTML = `<strong>✓ Spot on!</strong> ${q.explanation}`;
+                } else {
+                    this.classList.add('wrong');
+                    currentStreak = 0;
+                    // Highlight the correct one
+                    buttons.forEach(b => {
+                        if (b.getAttribute('data-pillar') === q.missing) b.classList.add('correct');
+                    });
+                    feedback.style.display = 'block';
+                    feedback.style.background = 'rgba(239, 68, 68, 0.12)';
+                    feedback.style.border = '1px solid rgba(239, 68, 68, 0.35)';
+                    feedback.style.color = '#F87171';
+                    feedback.innerHTML = `<strong>✕ Not quite!</strong> The correct answer is <strong>Missing ${q.missing.toUpperCase()}</strong>. ${q.explanation}`;
+                }
+
+                document.getElementById('gameStreakDisplay').textContent = `Streak: ${currentStreak}`;
+                nextBtn.style.display = 'inline-flex';
+                nextBtn.textContent = (currentGameIndex + 1 < GAME_QUESTIONS.length) ? 'Next question →' : 'Review score & restart →';
+            });
+        });
+
+        document.getElementById('gameNextBtn').addEventListener('click', () => {
+            if (currentGameIndex + 1 < GAME_QUESTIONS.length) {
+                currentGameIndex++;
+                renderGameQuestion(currentGameIndex);
+            } else {
+                currentGameIndex = 0;
+                renderGameQuestion(0);
+            }
+        });
+
+        document.getElementById('gameRestartBtn').addEventListener('click', () => {
+            currentGameIndex = 0;
+            currentStreak = 0;
+            renderGameQuestion(0);
+        });
+
+        // ==========================================
+        // 3. STEP 3: BUILDER, PRESETS & STRENGTH METER
+        // ==========================================
+        const PRESET_DATA = {
+            outreach: {
+                role: "Senior Enterprise B2B Sales Strategist with expertise in SaaS sales pipelines",
+                task: "Write a high-converting, 3-touch cold email sequence targeting [Target Title, e.g. VP of Operations]",
+                context: "Company: [Company Name]. Target Audience: [Mid-market logistics firms]. Main Frustration: [Delayed freight dispatch]. Solution: [Real-time AI routing]. Tone: [Authoritative yet concise, zero fluff].",
+                format: "Markdown format. Touch 1 under 80 words. Include a single low-friction CTA (asking permission to share a 90-second case study). No sales clichés."
+            },
+            bug: {
+                role: "Principal Systems Reliability Engineer & Full-Stack Architect",
+                task: "Diagnose this error trace, isolate the failure mechanism, and generate a production-ready patch",
+                context: "Environment: [Next.js 15, Supabase PostgreSQL, Node 22]. Error: [TypeError: undefined property on auth webhook payload]. Affected endpoint: [/api/webhooks/supabase].",
+                format: "1. Root Cause Summary (2 bullets). 2. TypeScript code patch with defensive fallbacks. 3. Jest test case verifying null payload safety."
+            },
+            content: {
+                role: "Lead Content Strategist & Technical Editor",
+                task: "Develop a 4-week editorial content roadmap focused on [Niche, e.g. AI Automation for Legal Firms]",
+                context: "Channels: [LinkedIn, Substack Newsletter, YouTube shorts]. Target Audience: [Managing partners at boutique law firms]. Goal: [Educate on document parsing without hallucination risks].",
+                format: "Markdown table with columns: [Week | Hook / Angle | Primary Channel | CTA | Asset Required]. Include 1 contrarian opinion post per week."
+            },
+            sop: {
+                role: "Director of Business Operations & Security Compliance Auditor",
+                task: "Draft a Standard Operating Procedure (SOP) for [Process Name, e.g. Production Database Migration]",
+                context: "Tooling: [Supabase CLI, GitHub Actions, Slack Alerts]. Constraints: [Zero-downtime requirement, mandatory rollback checkpoint at Step 3].",
+                format: "Numbered chronological steps with [Owner, Pre-check, Command, Verification Test, Escalation Contact]. Conclude with a post-mortem review checklist."
+            }
+        };
+
+        const roleInput = document.getElementById('builderRole');
+        const taskInput = document.getElementById('builderTask');
+        const contextInput = document.getElementById('builderContext');
+        const formatInput = document.getElementById('builderFormat');
+        let currentFormat = 'markdown'; // 'markdown' | 'xml' | 'system'
+
+        function updateStrengthMeter() {
+            const hasRole = (roleInput.value.trim().length >= 8);
+            const hasTask = (taskInput.value.trim().length >= 8);
+            const hasContext = (contextInput.value.trim().length >= 12);
+            const hasFormat = (formatInput.value.trim().length >= 8);
+
+            let score = 0;
+            if (hasRole) score += 25;
+            if (hasTask) score += 25;
+            if (hasContext) score += 25;
+            if (hasFormat) score += 25;
+
+            // Update UI indicators
+            document.getElementById('chk-role').className = 'pg-pillar-status' + (hasRole ? ' active' : '');
+            document.getElementById('chk-task').className = 'pg-pillar-status' + (hasTask ? ' active' : '');
+            document.getElementById('chk-context').className = 'pg-pillar-status' + (hasContext ? ' active' : '');
+            document.getElementById('chk-format').className = 'pg-pillar-status' + (hasFormat ? ' active' : '');
+
+            const fill = document.getElementById('pgMeterFill');
+            fill.style.width = score + '%';
+            document.getElementById('pgScoreNumber').textContent = score + '%';
+
+            const label = document.getElementById('pgStrengthLabel');
+            const tip = document.getElementById('pgStrengthTip');
+
+            if (score === 100) {
+                label.textContent = "Prompt Strength: 100% · Production Grade ✓";
+                label.style.color = "#00F0FF";
+                tip.innerHTML = "🔥 <strong>Excellent!</strong> All 4 pillars are calibrated. Your prompt is ready for deployment in any frontier model.";
+            } else if (score >= 75) {
+                label.textContent = "Prompt Strength: 75% · Strong Draft";
+                label.style.color = "#34D399";
+                tip.innerHTML = !hasFormat ? "💡 <strong>Next Step:</strong> Add formatting and negative constraints to lock in 100%." : "💡 <strong>Next Step:</strong> Complete the remaining pillar to reach 100%.";
+            } else if (score >= 50) {
+                label.textContent = "Prompt Strength: 50% · Moderate";
+                label.style.color = "#FBBF24";
+                tip.innerHTML = "💡 <strong>Next Step:</strong> Provide more context, constraints, or target audience details.";
+            } else {
+                label.textContent = `Prompt Strength: ${score}% · Incomplete`;
+                label.style.color = "#94A3B8";
+                tip.innerHTML = "💡 <strong>Tip:</strong> Define the Role, Task, Context, and Format to unlock high precision.";
+            }
+
+            compileAndRenderPrompt();
+        }
+
+        function compilePromptText(fmt) {
+            const r = roleInput.value.trim() || "[Define AI Role]";
+            const t = taskInput.value.trim() || "[Define Core Task]";
+            const c = contextInput.value.trim() || "[Insert Context, Variables & Guardrails]";
+            const f = formatInput.value.trim() || "[Specify Format & Constraints]";
+
+            if (fmt === 'xml') {
+                return `<role>
+${r}
+</role>
+
+<task>
+${t}
+</task>
+
+<context>
+${c}
+</context>
+
+<format>
+${f}
+</format>`;
+            }
+
+            if (fmt === 'system') {
+                return `### ROLE
+${r}
+
+### TASK
+${t}
+
+### CONTEXT
+${c}
+
+### FORMAT
+${f}`;
+            }
+
+            // Default: Markdown (ChatGPT/Gemini)
+            return `# ROLE
+${r}
+
+# TASK
+${t}
+
+# CONTEXT
+${c}
+
+# FORMAT
+${f}`;
+        }
+
+        function compileAndRenderPrompt() {
+            const preview = document.getElementById('builderOutputContent');
+            const raw = compilePromptText(currentFormat);
+            preview.innerHTML = colorizePromptPreview(raw);
+        }
+
+        // Live input listeners
+        [roleInput, taskInput, contextInput, formatInput].forEach(el => {
+            el.addEventListener('input', updateStrengthMeter);
+        });
+
+        // Presets Buttons
+        document.querySelectorAll('.pg-preset-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const presetKey = this.getAttribute('data-preset');
+                if (presetKey === 'reset') {
+                    roleInput.value = '';
+                    taskInput.value = '';
+                    contextInput.value = '';
+                    formatInput.value = '';
+                } else if (PRESET_DATA[presetKey]) {
+                    const data = PRESET_DATA[presetKey];
+                    roleInput.value = data.role;
+                    taskInput.value = data.task;
+                    contextInput.value = data.context;
+                    formatInput.value = data.format;
+                }
+                updateStrengthMeter();
+            });
+        });
+
+        // Format Switcher Tabs
+        document.querySelectorAll('.pg-format-tab').forEach(tab => {
+            tab.addEventListener('click', function () {
+                document.querySelectorAll('.pg-format-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                currentFormat = this.getAttribute('data-fmt');
+
+                const titleMap = {
+                    markdown: "Compiled prompt (Markdown format — ChatGPT & Gemini)",
+                    xml: "Compiled prompt (XML delimiter tags — Claude & DeepSeek)",
+                    system: "Compiled prompt (System prompt schema — Custom GPTs & Agents)"
+                };
+                document.getElementById('previewFormatTitle').textContent = titleMap[currentFormat] || "Compiled prompt";
+                compileAndRenderPrompt();
+            });
+        });
+
+        // Copy Helper
+        function copyTextToClipboard(text, btn) {
+            navigator.clipboard.writeText(text).then(() => {
+                if (btn) {
+                    const orig = btn.textContent;
+                    btn.textContent = '✓ Copied!';
+                    setTimeout(() => { btn.textContent = orig; }, 2000);
+                }
+            }).catch(() => {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                if (btn) {
+                    const orig = btn.textContent;
+                    btn.textContent = '✓ Copied!';
+                    setTimeout(() => { btn.textContent = orig; }, 2000);
+                }
+            });
+        }
+
+        document.getElementById('quickCopyBtn').addEventListener('click', function () {
+            const text = compilePromptText(currentFormat);
+            copyTextToClipboard(text, this);
+        });
+
+        // Multi-LLM Launcher Modal
+        const cowboyBackdrop = document.getElementById('cowboyBackdrop');
+        const openLauncherBtn = document.getElementById('openLauncherBtn');
+        const cowboyCloseBtn = document.getElementById('cowboyCloseBtn');
+
+        function openLauncher() {
+            const text = compilePromptText(currentFormat);
+            copyTextToClipboard(text);
+            cowboyBackdrop.style.display = 'flex';
+        }
+
+        function closeLauncher() {
+            cowboyBackdrop.style.display = 'none';
+        }
+
+        openLauncherBtn.addEventListener('click', openLauncher);
+        cowboyCloseBtn.addEventListener('click', closeLauncher);
+        cowboyBackdrop.addEventListener('click', (e) => {
+            if (e.target === cowboyBackdrop) closeLauncher();
+        });
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLauncher();
+        });
+
+        window.trackPromptLaunch = function (platform) {
+            console.log(`[OfficeAIM Prompt Launcher]: Injected into ${platform}`);
+        };
+
+        // ==========================================
+        // 4. MY SAVED PROMPTS (LOCALSTORAGE)
+        // ==========================================
+        const STORAGE_KEY = 'officeaim_saved_prompts';
+
+        function getSavedPrompts() {
+            try {
+                return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function savePromptToLibrary() {
+            const role = roleInput.value.trim();
+            const task = taskInput.value.trim();
+            const context = contextInput.value.trim();
+            const format = formatInput.value.trim();
+
+            if (!role && !task) {
+                alert("Please fill in at least a Role or a Task before saving.");
+                return;
+            }
+
+            const newPrompt = {
+                id: Date.now().toString(),
+                title: task.slice(0, 40) || role.slice(0, 40) || "Untitled Prompt",
+                role,
+                task,
+                context,
+                format,
+                compiledFormat: currentFormat,
+                savedAt: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+            };
+
+            const list = getSavedPrompts();
+            list.unshift(newPrompt);
+            // Cap at 20 prompts
+            if (list.length > 20) list.pop();
+
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+            renderSavedPrompts();
+
+            const saveBtn = document.getElementById('savePromptBtn');
+            const orig = saveBtn.innerHTML;
+            saveBtn.innerHTML = '<span>✓ Saved!</span>';
+            setTimeout(() => { saveBtn.innerHTML = orig; }, 1800);
+        }
+
+        function deleteSavedPrompt(id) {
+            let list = getSavedPrompts();
+            list = list.filter(item => item.id !== id);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+            renderSavedPrompts();
+        }
+
+        function loadSavedPrompt(id) {
+            const list = getSavedPrompts();
+            const target = list.find(item => item.id === id);
+            if (target) {
+                roleInput.value = target.role || '';
+                taskInput.value = target.task || '';
+                contextInput.value = target.context || '';
+                formatInput.value = target.format || '';
+                updateStrengthMeter();
+                document.getElementById('demo').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function clearAllSaved() {
+            if (confirm("Are you sure you want to clear your saved prompts library?")) {
+                localStorage.removeItem(STORAGE_KEY);
+                renderSavedPrompts();
+            }
+        }
+
+        function renderSavedPrompts() {
+            const container = document.getElementById('pgSavedGrid');
+            const list = getSavedPrompts();
+
+            if (!list || list.length === 0) {
+                container.innerHTML = '<div style="color:#64748B; font-size:0.85rem; font-style:italic;">No saved prompts yet. Craft a prompt above and click "Save to Library".</div>';
+                return;
+            }
+
+            container.innerHTML = list.map(item => `
+                <div class="pg-saved-card">
+                    <div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+                            <span style="font-size:0.68rem; font-weight:800; color:#00F0FF; text-transform:uppercase; letter-spacing:0.06em;">${item.savedAt}</span>
+                            <button type="button" onclick="pgDeletePrompt('${item.id}')" style="background:transparent; border:none; color:#EF4444; font-size:0.8rem; cursor:pointer;" title="Delete prompt">&times;</button>
+                        </div>
+                        <strong style="color:#FFFFFF; font-size:0.88rem; display:block; margin-bottom:0.35rem; line-height:1.3;">${escapeHtml(item.title || "")}</strong>
+                        <p style="color:#94A3B8; font-size:0.75rem; margin:0; line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">
+                            ${escapeHtml(item.context || item.role || "")}
+                        </p>
+                    </div>
+                    <div style="display:flex; gap:0.4rem; margin-top:0.5rem;">
+                        <button type="button" onclick="pgLoadPrompt('${item.id}')" class="btn btn-secondary" style="flex:1; padding:0.4rem 0.6rem; font-size:0.75rem; text-align:center;">
+                            Load
+                        </button>
+                        <button type="button" onclick="pgCopySaved('${item.id}', this)" class="btn btn-primary" style="padding:0.4rem 0.75rem; font-size:0.75rem;">
+                            Copy
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Expose handlers to window for inline onclicks
+        window.pgDeletePrompt = deleteSavedPrompt;
+        window.pgLoadPrompt = loadSavedPrompt;
+        window.pgCopySaved = function (id, btn) {
+            const list = getSavedPrompts();
+            const item = list.find(i => i.id === id);
+            if (item) {
+                const fmt = item.compiledFormat || 'markdown';
+                const r = item.role || '[Define AI Role]';
+                const t = item.task || '[Define Core Task]';
+                const c = item.context || '[Insert Context, Variables & Guardrails]';
+                const f = item.format || '[Specify Format & Constraints]';
+                let text = `# ROLE\n${r}\n\n# TASK\n${t}\n\n# CONTEXT\n${c}\n\n# FORMAT\n${f}`;
+                if (fmt === 'xml') {
+                    text = `<role>\n${r}\n</role>\n\n<task>\n${t}\n</task>\n\n<context>\n${c}\n</context>\n\n<format>\n${f}\n</format>`;
+                } else if (fmt === 'system') {
+                    text = `### ROLE\n${r}\n\n### TASK\n${t}\n\n### CONTEXT\n${c}\n\n### FORMAT\n${f}`;
+                }
+                copyTextToClipboard(text, btn);
+            }
+        };
+
+        document.getElementById('savePromptBtn').addEventListener('click', savePromptToLibrary);
+        document.getElementById('clearSavedPromptsBtn').addEventListener('click', clearAllSaved);
+
+        // ==========================================
+        // 5. STEP TABS NAVIGATION
+        // ==========================================
+        const tabBtns = document.querySelectorAll('.pg-nav-tab');
+        const panes = document.querySelectorAll('.pg-step-pane');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                const step = this.getAttribute('data-step');
+                tabBtns.forEach(b => b.classList.remove('active'));
+                panes.forEach(p => p.classList.remove('active'));
+
+                this.classList.add('active');
+                const targetPane = document.getElementById('pane-step-' + step);
+                if (targetPane) targetPane.classList.add('active');
+            });
+        });
+
+        // Expose copyPrompt for the Gemini Meta-Prompt Blueprint box
+        window.copyPrompt = function (elementId, btn) {
             const el = document.getElementById(elementId);
             if (!el) return;
             const text = el.innerText || el.textContent;
             navigator.clipboard.writeText(text).then(() => {
                 const span = btn.querySelector('span');
+                if (!span) return;
                 const orig = span.textContent;
                 span.textContent = 'Copied!';
                 btn.style.borderColor = 'var(--accent-secondary)';
@@ -528,53 +2188,54 @@
                     btn.style.borderColor = '';
                 }, 2000);
             });
-        }
+        };
+
+        // Initialize Everything
+        renderCarousel(0);
+        renderGameQuestion(0);
+        updateStrengthMeter();
+        renderSavedPrompts();
+
+    })();
     </script>
 
     <!-- Global Mascot Widget Injection -->
-    <iframe id="mascot-widget" src="/hub/widget"
-        style="position: fixed; bottom: 0; right: 0; border: none; z-index: 2147483647; background: transparent; width: 300px; height: 200px; transition: all 0.3s ease-in-out; pointer-events: auto;"
+    <iframe id="mascot-widget"
+        style="position: fixed; bottom: 0; right: 0; border: none; z-index: 2147483647; background: transparent; width: 300px; height: 200px; transition: all 0.3s ease-in-out; pointer-events: none;"
         allowtransparency="true"></iframe>
 
     <script>
-        const widgetIframe = document.getElementById('mascot-widget');
-        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
-        let contextStr = 'gems';
-        let activeViteUrl = "http://localhost:5174";
-        if (isLocal) {
-            const ports = [5173, 5174, 5175];
-            let detected = false;
-            Promise.any(ports.map(port => 
-                fetch(`http://localhost:${port}/hub/logo_officeaim.png`)
-                    .then(res => {
-                        if (!res.ok) throw new Error("Not our server");
-                        if (!detected) {
-                            detected = true;
-                            activeViteUrl = `http://localhost:${port}`;
-                            widgetIframe.src = activeViteUrl + '/hub/widget?context=' + contextStr;
-                        }
-                    })
-            )).catch(() => {
-                widgetIframe.src = activeViteUrl + '/hub/widget?context=' + contextStr;
-            });
-        } else {
-            widgetIframe.src = '/hub/widget?context=' + contextStr;
-        }
+        (function () {
+            const widgetIframe = document.getElementById('mascot-widget');
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
+            const contextStr = 'gems';
 
-        window.addEventListener('message', (event) => {
-            if (event.data && event.data.type === 'mascot-toggle') {
-                const widget = document.getElementById('mascot-widget');
-                if (event.data.isOpen) {
-                    widget.style.width = '420px';
-                    widget.style.height = '600px';
-                    widget.style.pointerEvents = 'auto';
-                } else {
-                    widget.style.width = '300px';
-                    widget.style.height = '200px';
-                    widget.style.pointerEvents = 'auto';
-                }
+            if (!isLocal) {
+                widgetIframe.src = '/hub/widget?context=' + contextStr;
+                widgetIframe.style.pointerEvents = 'auto';
+            } else if (['5173', '5174', '5175'].includes(window.location.port)) {
+                widgetIframe.src = '/hub/widget?context=' + contextStr;
+                widgetIframe.style.pointerEvents = 'auto';
+            } else {
+                widgetIframe.style.display = 'none';
             }
-        });
+
+            window.addEventListener('message', (event) => {
+                if (event.data && event.data.type === 'mascot-toggle') {
+                    const widget = document.getElementById('mascot-widget');
+                    if (event.data.isOpen) {
+                        widget.style.width = '420px';
+                        widget.style.height = '600px';
+                        widget.style.pointerEvents = 'auto';
+                    } else {
+                        widget.style.width = '300px';
+                        widget.style.height = '200px';
+                        widget.style.pointerEvents = 'auto';
+                    }
+                }
+            });
+        })();
     </script>
 </body>
+
 </html>
