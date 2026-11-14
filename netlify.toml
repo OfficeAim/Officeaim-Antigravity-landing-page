@@ -52,6 +52,11 @@
   status = 200
 
 [[redirects]]
+  from = "/resources/viralist-studio"
+  to = "/resources/viralist-studio.html"
+  status = 200
+
+[[redirects]]
   from = "/skills"
   to = "/skills.html"
   status = 200
