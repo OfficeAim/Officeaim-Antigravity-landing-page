@@ -53,6 +53,8 @@
 
 html {
     scroll-behavior: smooth;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 body {
@@ -60,6 +62,7 @@ body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
     line-height: 1.6;
+    max-width: 100%;
     overflow-x: hidden;
 }
 
@@ -317,6 +320,20 @@ p {
 }
 
 /* --- MEGA MENU STYLES --- */
+.navbar .nav-container,
+.footer .container {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+.nav-links a.active-nav-link {
+    color: var(--accent-secondary) !important;
+    font-weight: 700;
+}
+
 .nav-item-dropdown {
     position: relative;
     /* Important for containing the absolute mega-menu */
@@ -325,8 +342,9 @@ p {
 }
 
 .dropdown-arrow {
+    display: inline-block;
     vertical-align: middle;
-    margin-left: 2px;
+    margin-left: 3px;
     transition: transform var(--transition-fast);
 }
 
@@ -340,8 +358,8 @@ p {
     /* Push directly below navbar */
     left: 50%;
     transform: translateX(-50%) translateY(15px);
-    width: 600px;
-    /* Fixed wide width for Smoobu style */
+    width: 640px;
+    /* Fixed wide width for 2-column Tools dropdown */
     background: var(--bg-card);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: var(--radius-md);
@@ -351,6 +369,10 @@ p {
     transition: all var(--transition-normal);
     z-index: 1000;
     pointer-events: none;
+}
+
+.mega-menu.mega-menu-compact {
+    width: 340px;
 }
 
 /* Hover activates the menu */
@@ -363,17 +385,32 @@ p {
 
 .mega-menu-inner {
     display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+    padding: 1.25rem 1.5rem;
+}
+
+.mega-menu.mega-menu-compact .mega-menu-inner {
+    padding: 1.15rem 1.25rem;
+}
+
+.mega-menu-links-grid {
+    display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-lg);
-    padding: var(--spacing-lg);
+    gap: 0.35rem 1rem;
+}
+
+.mega-menu.mega-menu-compact .mega-menu-links-grid {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
 }
 
 .mega-menu-col h4 {
     color: var(--text-muted);
-    font-size: 0.85rem;
+    font-size: 0.78rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: 0.65rem;
     padding-left: var(--spacing-xs);
 }
 
@@ -381,7 +418,7 @@ p {
     display: flex;
     align-items: flex-start;
     gap: var(--spacing-sm);
-    padding: var(--spacing-sm);
+    padding: 0.65rem 0.75rem;
     border-radius: var(--radius-sm);
     transition: background var(--transition-fast);
 }
@@ -393,6 +430,11 @@ p {
 
 .mega-link:hover {
     background: rgba(255, 255, 255, 0.05);
+}
+
+.mega-link.active-mega-link {
+    border-left: 2px solid var(--accent-secondary);
+    background: rgba(34, 211, 238, 0.08);
 }
 
 .mega-icon {
@@ -1304,7 +1346,7 @@ p {
 
 .footer-content {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 1fr 2.8fr auto;
     gap: var(--spacing-xl);
     margin-bottom: var(--spacing-xl);
 }
@@ -1322,8 +1364,8 @@ p {
 
 .footer-links {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-xl);
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg);
 }
 
 .footer-column h4 {
@@ -1409,24 +1451,53 @@ p {
         padding: 0.75rem 0;
     }
 
+    .container,
+    .hero-v2-container,
+    .hero-v2-visual,
+    .hero-v2-content,
+    .bento-grid,
+    .bento-card,
+    .footer-content,
+    .footer-links {
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .creator-quote-card {
+        flex-direction: column !important;
+        padding: 1.5rem !important;
+        gap: 1rem !important;
+        text-align: center;
+    }
+
+    .footer-links {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
     .nav-links {
         display: none;
         position: absolute;
         top: 100%;
         left: 0;
         width: 100%;
+        max-width: 100vw;
+        box-sizing: border-box;
         background: #0A0F1D;
         background: rgba(10, 15, 29, 0.98);
         backdrop-filter: blur(24px);
         -webkit-backdrop-filter: blur(24px);
         flex-direction: column;
-        padding: 2rem 1.75rem;
-        gap: 1.25rem;
+        align-items: stretch;
+        padding: 1.5rem 1.25rem;
+        gap: 0.75rem;
         border-bottom: 1px solid rgba(0, 240, 255, 0.2);
         text-align: left;
         box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 240, 255, 0.08);
         max-height: calc(100vh - 70px);
         overflow-y: auto;
+        overflow-x: hidden;
         z-index: 99999;
     }
 
@@ -1434,17 +1505,25 @@ p {
         display: flex;
     }
 
+    .nav-item-dropdown {
+        width: 100%;
+        padding: 0.25rem 0;
+    }
+
     /* Mobile Mega Menu Adjustments */
-    .mega-menu {
+    .mega-menu,
+    .mega-menu.mega-menu-compact {
         position: static;
         /* Clear absolute positioning on mobile */
         transform: none;
         width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
         box-shadow: none;
-        background: rgba(0, 0, 0, 0.2);
-        margin-top: 1rem;
-        display: none;
-        /* Hide by default on mobile */
+        background: rgba(0, 0, 0, 0.22);
+        margin-top: 0.5rem;
+        display: block;
+        /* Expanded by default in mobile drawer so all items show in order */
         opacity: 1;
         visibility: visible;
         pointer-events: auto;
@@ -1453,22 +1532,42 @@ p {
         border-radius: 0;
     }
 
-    .nav-item-dropdown:hover .mega-menu,
-    .nav-item-dropdown.active .mega-menu {
-        display: block;
-        /* Show on click/hover for mobile */
-        transform: none;
+    .nav-item-dropdown.collapsed .mega-menu {
+        display: none;
     }
 
-    .mega-menu-inner {
+    .nav-item-dropdown:not(.collapsed) .dropdown-arrow {
+        transform: rotate(180deg);
+    }
+
+    .mega-menu-inner,
+    .mega-menu.mega-menu-compact .mega-menu-inner {
         grid-template-columns: 1fr;
-        /* Stack columns on mobile */
-        gap: 1rem;
-        padding: 1rem;
+        gap: 0.5rem;
+        padding: 0.65rem 0.75rem;
+    }
+
+    .mega-menu-links-grid,
+    .mega-menu.mega-menu-compact .mega-menu-links-grid {
+        grid-template-columns: 1fr !important;
+        gap: 0.35rem;
     }
 
     .mega-link {
-        padding: 0.5rem;
+        padding: 0.45rem 0.5rem;
+    }
+
+    .mega-icon {
+        font-size: 1.25rem;
+        padding: 8px;
+    }
+
+    .mega-text strong {
+        font-size: 0.95rem;
+    }
+
+    .mega-text span {
+        font-size: 0.78rem;
     }
 
     .nav-ctas {
