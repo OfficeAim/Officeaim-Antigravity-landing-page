@@ -297,16 +297,14 @@ export default function LibraryTracker({ standalone = false }) {
   // Combine Default Genres + User Custom Genres
   const allGenreOptions = Array.from(new Set([...DEFAULT_GENRES, ...customGenres]));
 
-  // Active Key Check
-  const envKey = import.meta.env.VITE_LIBRARY_GEMINI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY || '';
-  const currentActiveKey = apiKey || localStorage.getItem('OFFICEAIM_LIBRARY_GEMINI_KEY') || envKey;
-  const hasValidApiKey = currentActiveKey && currentActiveKey.trim().length >= 15;
+  // Active Key Check (Optional user-provided override key; falls back to server-side /.netlify/functions/gemini)
+  const currentActiveKey = apiKey || localStorage.getItem('OFFICEAIM_LIBRARY_GEMINI_KEY') || '';
+  const hasValidApiKey = Boolean(currentActiveKey && currentActiveKey.trim().length >= 15);
 
   // --- Initial Load ---
   useEffect(() => {
     loadLibraryData();
-    const envKey = import.meta.env.VITE_LIBRARY_GEMINI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY || '';
-    const storedKey = localStorage.getItem('OFFICEAIM_LIBRARY_GEMINI_KEY') || envKey;
+    const storedKey = localStorage.getItem('OFFICEAIM_LIBRARY_GEMINI_KEY') || '';
     setApiKey(storedKey);
     const savedLang = localStorage.getItem('OFFICEAIM_LIBRARY_LANG') || 'en';
     setLang(savedLang);
@@ -359,16 +357,7 @@ export default function LibraryTracker({ standalone = false }) {
       return;
     }
 
-    const envKey = import.meta.env.VITE_LIBRARY_GEMINI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY || '';
-    const currentKey = apiKey || localStorage.getItem('OFFICEAIM_LIBRARY_GEMINI_KEY') || envKey;
-    if (!currentKey || currentKey.trim().length < 15) {
-      setShowSettingsModal(true);
-      toast.error(lang === 'nl' 
-        ? '⚠️ Voer een geldige Google Gemini API-sleutel in. Haal uw gratis sleutel op via aistudio.google.com.' 
-        : '⚠️ Please enter a valid Google Gemini API Key. Get your free key at aistudio.google.com.'
-      );
-      return;
-    }
+    const currentKey = (apiKey || localStorage.getItem('OFFICEAIM_LIBRARY_GEMINI_KEY') || '').trim();
 
     setIsScanning(true);
     setScanStepText(t.scanningProgress1);

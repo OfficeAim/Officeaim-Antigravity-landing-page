@@ -1,0 +1,2244 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viralist Studio: free short-form video blueprint</title>
+    <meta name="description" content="A short-form video blueprint compiler. Answer three questions, pick a format, and get a 3-part production dossier that Claude turns into a finished reel. No video editor, no AI-video credits.">
+    <link rel="canonical" href="https://officeaimhq.netlify.app/resources/viralist-studio.html" />
+
+    <!-- Open Graph / WhatsApp Share Preview -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://officeaimhq.netlify.app/resources/viralist-studio.html">
+    <meta property="og:title" content="Viralist Studio: free short-form video blueprint">
+    <meta property="og:description" content="A short-form video blueprint compiler. Answer three questions, pick a format, and get a 3-part production dossier that Claude turns into a finished reel. No video editor, no AI-video credits.">
+    <meta property="og:image" content="https://officeaimhq.netlify.app/images/hero.webp">
+
+    <!-- Twitter Preview -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://officeaimhq.netlify.app/resources/viralist-studio.html">
+    <meta name="twitter:title" content="Viralist Studio: free short-form video blueprint">
+    <meta name="twitter:description" content="A short-form video blueprint compiler. Answer three questions, pick a format, and get a 3-part production dossier that Claude turns into a finished reel. No video editor, no AI-video credits.">
+    <meta name="twitter:image" content="https://officeaimhq.netlify.app/images/hero.webp">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Viralist Studio",
+      "url": "https://officeaimhq.netlify.app/resources/viralist-studio.html",
+      "description": "A short-form video blueprint compiler. Answer three questions, pick a format, and get a 3-part production dossier that Claude turns into a finished reel. No video editor, no AI-video credits.",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "OfficeAIM",
+        "url": "https://officeaimhq.netlify.app"
+      }
+    }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        outfit: ['Outfit', 'sans-serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#070A12',
+                            card: '#0c101c',
+                            orange: '#f97316',
+                            cyan: '#06b6d4',
+                            emerald: '#10b981',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS Styles -->
+    <link rel="stylesheet" href="../styles.css?v=20261019">
+    <link rel="stylesheet" href="../landing-new.css?v=20261016">
+    <style>
+        body {
+            background-color: #070A12;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* Glassmorphism Classes */
+        .glass-card {
+            background: rgba(12, 16, 28, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-input {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-input:focus {
+            border-color: #f97316;
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 15px rgba(249, 115, 22, 0.15);
+            outline: none;
+        }
+
+        /* Glowing Gradients */
+        .glow-orange {
+            box-shadow: 0 0 40px rgba(249, 115, 22, 0.15);
+        }
+
+        .glow-cyan {
+            box-shadow: 0 0 40px rgba(6, 182, 214, 0.15);
+        }
+
+        /* Animation & Transition helpers */
+        .step-phase {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hidden-phase {
+            opacity: 0;
+            transform: translateX(30px);
+            pointer-events: none;
+            position: absolute;
+            width: 100%;
+        }
+
+        .active-phase {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+            position: relative;
+        }
+
+        /* Custom Scrollbar for Terminal block */
+        .terminal-scroll::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .terminal-scroll::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.2);
+        }
+        .terminal-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+        .terminal-scroll::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Protect canonical OfficeAIM navbar from Tailwind Preflight resets */
+        .navbar .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar .dropdown-arrow {
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+        .navbar .mega-link.active-mega-link {
+            border-left: 2px solid #00F0FF;
+            background: rgba(0, 240, 255, 0.06);
+        }
+    </style>
+</head>
+<body class="min-h-screen relative antialiased selection:bg-brand-orange selection:text-white">
+
+    <!-- Glowing Background Atmosphere elements -->
+    <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-brand-orange/5 blur-[120px] pointer-events-none z-0"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-brand-cyan/5 blur-[120px] pointer-events-none z-0"></div>
+    <div class="absolute top-[35%] left-[40%] w-[30vw] h-[30vw] rounded-full bg-brand-emerald/3 blur-[120px] pointer-events-none z-0"></div>
+
+    <!-- Global Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">
+                <img src="../images/favicon.png" alt="OfficeAIM logo" class="logo-img" width="640" height="640">
+            </a>
+            <ul class="nav-links">
+                <li><a href="../learn.html" class="nav-link">Learn</a></li>
+                <li class="nav-item-dropdown">
+                    <a href="#resources" class="nav-link" style="color: var(--accent-secondary); font-weight: 700;">Resources <svg class="dropdown-arrow" width="12" height="12"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-inner">
+                            <div class="mega-menu-col">
+                                <h4>Resource vault &amp; generators</h4>
+                                <a href="../skills.html" class="mega-link">
+                                    <div class="mega-icon">⚡</div>
+                                    <div class="mega-text">
+                                        <strong>Skills</strong>
+                                        <span>26 modular agent skills ready to install</span>
+                                    </div>
+                                </a>
+                                <a href="./workflows.html" class="mega-link">
+                                    <div class="mega-icon">🔄</div>
+                                    <div class="mega-text">
+                                        <strong>n8n Automation Vault</strong>
+                                        <span>98 ready-to-import n8n JSON pipelines</span>
+                                    </div>
+                                </a>
+                                <a href="../prompt-generator.html" class="mega-link">
+                                    <div class="mega-icon">⭐</div>
+                                    <div class="mega-text">
+                                        <strong>Prompt Generator</strong>
+                                        <span>Parametric meta-prompts calibrated for LLMs</span>
+                                    </div>
+                                </a>
+                                <a href="./website-creator.html" class="mega-link">
+                                    <div class="mega-icon">🌐</div>
+                                    <div class="mega-text">
+                                        <strong>Web Blueprint Studio</strong>
+                                        <span>Full-stack Jamstack blueprint compiler &amp; AI system designer.</span>
+                                    </div>
+                                </a>
+                                <a href="./viralist-studio.html" class="mega-link active-mega-link">
+                                    <div class="mega-icon">🎬</div>
+                                    <div class="mega-text">
+                                        <strong>Viralist Studio</strong>
+                                        <span>Short-form video blueprint compiler for Claude.</span>
+                                    </div>
+                                </a>
+                                <a href="./qr-generator.html" class="mega-link">
+                                    <div class="mega-icon">🔲</div>
+                                    <div class="mega-text">
+                                        <strong>AI QR Generator</strong>
+                                        <span>Branded high-contrast QR codes, zero fees</span>
+                                    </div>
+                                </a>
+                                <a href="./free-stack-kit.html" class="mega-link">
+                                    <div class="mega-icon">📦</div>
+                                    <div class="mega-text">
+                                        <strong>Free Stack Kit</strong>
+                                        <span>Curated agent skills pack &amp; step-by-step guide</span>
+                                    </div>
+                                </a>
+                                <a href="../board.html" class="mega-link">
+                                    <div class="mega-icon">👥</div>
+                                    <div class="mega-text">
+                                        <strong>The AI Board</strong>
+                                        <span>Meet your 19 specialist agents — free to explore</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="../community.html" class="nav-link">Community</a></li>
+                <li><a id="nav-news-link" href="../news.html" class="nav-link">News</a></li>
+            </ul>
+            <div class="nav-ctas">
+                <a href="#waitlist" onclick="if(window.openCampusWaitlistModal){event.preventDefault();window.openCampusWaitlistModal();}" data-campus-gate="true" class="btn btn-primary">Enter Campus →</a>
+            </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="relative z-10 w-full max-w-7xl mx-auto px-6 pt-12 pb-12">
+        
+        <!-- 2.1 Hero Section -->
+        <div class="max-w-3xl mb-10 text-left">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-orange/10 border border-brand-orange/30 text-brand-orange text-[10px] font-bold tracking-wider mb-3">
+                <span>🎬 100% free &amp; open-source video studio</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl font-outfit font-extrabold tracking-tight text-white leading-tight">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">Viralist Studio</span>
+            </h1>
+            <p class="mt-3 text-sm md:text-base text-gray-300 font-medium leading-relaxed">
+                A short-form video blueprint compiler. Answer three questions, pick a format, and get a 3-part production dossier that Claude turns into a finished reel. No video editor, no AI-video credits.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-3">
+                <a href="#wizard-section" class="px-5 py-2.5 rounded-xl bg-brand-orange hover:bg-orange-600 text-white font-bold text-xs tracking-wide transition-all shadow-lg shadow-brand-orange/20">
+                    Configure video blueprint →
+                </a>
+                <a href="#crew-section" class="px-5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 hover:border-brand-cyan/40 text-gray-300 hover:text-white font-bold text-xs tracking-wide transition-all">
+                    Why a system beats a prompt ↓
+                </a>
+                <a href="#roadmap-section" class="px-5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 hover:border-brand-orange/40 text-gray-300 hover:text-white font-bold text-xs tracking-wide transition-all">
+                    8-step production roadmap ↓
+                </a>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 2.2 METAPHOR: THE PROBLEM WITH VIDEO WITHOUT A SYSTEM -->
+        <!-- ============================================================ -->
+        <section id="crew-section" class="mb-10 glass-card rounded-3xl p-6 md:p-8 border border-brand-cyan/20 relative overflow-hidden">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-white/[0.06]">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-cyan/10 border border-brand-cyan/30 text-brand-cyan text-[10px] font-bold uppercase tracking-wider mb-2">
+                        <span>🎬 Production architecture · The film crew metaphor</span>
+                    </div>
+                    <h2 class="text-xl md:text-2xl font-outfit font-extrabold text-white">
+                        The problem with video without a system
+                    </h2>
+                    <p class="mt-1.5 text-xs md:text-sm text-gray-400 max-w-3xl leading-relaxed">
+                        Asking an AI to <em class="text-gray-300">"make me a viral reel"</em> without a production system produces generic scripts and mismatched visuals. A repeatable video channel coordinates four distinct roles in every production:
+                    </p>
+                </div>
+                <div class="shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-xl bg-black/40 border border-white/10 text-[11px] font-mono text-brand-emerald">
+                    <span>✓ 4-role production standard</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+                <!-- Card 1: Scriptwriter -->
+                <div class="p-4 rounded-2xl bg-black/35 border border-white/[0.07] hover:border-brand-orange/40 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2.5">
+                            <span class="text-xl">✍️</span>
+                            <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded-md bg-brand-orange/15 text-brand-orange">1. Scriptwriter</span>
+                        </div>
+                        <h3 class="text-sm font-bold text-white mb-1">Scriptwriter</h3>
+                        <p class="text-[11px] text-gray-400 leading-relaxed">
+                            Hook, one idea per sentence, call to action.
+                        </p>
+                    </div>
+                    <div class="mt-3 pt-2 border-t border-white/5 text-[10px] font-mono text-gray-400 italic">
+                        Claude + your voice sheet.
+                    </div>
+                </div>
+
+                <!-- Card 2: Art director -->
+                <div class="p-4 rounded-2xl bg-black/35 border border-white/[0.07] hover:border-brand-cyan/40 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2.5">
+                            <span class="text-xl">🎨</span>
+                            <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded-md bg-brand-cyan/15 text-brand-cyan">2. Art director</span>
+                        </div>
+                        <h3 class="text-sm font-bold text-white mb-1">Art director</h3>
+                        <p class="text-[11px] text-gray-400 leading-relaxed">
+                            Colours, fonts, caption style, so every video looks like the same channel.
+                        </p>
+                    </div>
+                    <div class="mt-3 pt-2 border-t border-white/5 text-[10px] font-mono text-gray-400 italic">
+                        Your brand sheet.
+                    </div>
+                </div>
+
+                <!-- Card 3: Editor -->
+                <div class="p-4 rounded-2xl bg-black/35 border border-white/[0.07] hover:border-brand-emerald/40 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2.5">
+                            <span class="text-xl">🎞️</span>
+                            <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded-md bg-brand-emerald/15 text-brand-emerald">3. Editor</span>
+                        </div>
+                        <h3 class="text-sm font-bold text-white mb-1">Editor</h3>
+                        <p class="text-[11px] text-gray-400 leading-relaxed">
+                            Scenes, captions timed to each word, sound effects, render.
+                        </p>
+                    </div>
+                    <div class="mt-3 pt-2 border-t border-white/5 text-[10px] font-mono text-gray-400 italic">
+                        Remotion (video written as code) + ffmpeg.
+                    </div>
+                </div>
+
+                <!-- Card 4: Distributor -->
+                <div class="p-4 rounded-2xl bg-black/35 border border-white/[0.07] hover:border-purple-400/40 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2.5">
+                            <span class="text-xl">📡</span>
+                            <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded-md bg-purple-500/15 text-purple-300">4. Distributor</span>
+                        </div>
+                        <h3 class="text-sm font-bold text-white mb-1">Distributor</h3>
+                        <p class="text-[11px] text-gray-400 leading-relaxed">
+                            Cover, title, description, one ending per platform.
+                        </p>
+                    </div>
+                    <div class="mt-3 pt-2 border-t border-white/5 text-[10px] font-mono text-gray-400 italic">
+                        Instagram, TikTok, YouTube Shorts.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Desktop Grid Layout -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+            
+            <!-- Left Side: Interactive Wizard Form -->
+            <section class="md:col-span-8 glass-card rounded-3xl p-6 md:p-8 relative overflow-hidden" id="wizard-section">
+                
+                <!-- Wizard Status / Progress Bar Header -->
+                <div class="mb-8 border-b border-white/[0.05] pb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-brand-orange/15 border border-brand-orange/30 flex items-center justify-center shrink-0">
+                            <span class="font-outfit font-black text-brand-orange text-lg" id="step-number-indicator">01</span>
+                        </div>
+                        <div>
+                            <span class="text-[9px] uppercase tracking-widest font-black text-brand-orange leading-none block">Active phase</span>
+                            <span class="text-sm font-bold text-white tracking-wide" id="step-title-indicator">Brand &amp; positioning</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Bullet Progress Line -->
+                    <div class="flex items-center gap-2">
+                        <div class="h-2 w-16 md:w-24 rounded-full bg-brand-orange shadow-[0_0_8px_rgba(249,115,22,0.5)] transition-all duration-500" id="progress-bar-1"></div>
+                        <div class="h-2 w-16 md:w-24 rounded-full bg-white/10 transition-all duration-500" id="progress-bar-2"></div>
+                        <div class="h-2 w-16 md:w-24 rounded-full bg-white/10 transition-all duration-500" id="progress-bar-3"></div>
+                    </div>
+                </div>
+
+                <!-- Quick Presets Bar (Visible across wizard) -->
+                <div class="mb-6 p-4 rounded-2xl bg-white/[0.02] border border-brand-cyan/20">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                        <span class="text-xs font-bold text-white flex items-center gap-1.5">
+                            <span class="text-brand-cyan">✨</span> Pick a video format preset to auto-fill defaults:
+                        </span>
+                        <span class="text-[10px] font-mono text-brand-cyan uppercase tracking-wider" id="preset-status-badge">4 quick presets</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+                        <button type="button" onclick="applyQuickPreset('animated')" data-preset-btn="animated"
+                            class="preset-quick-btn text-left p-3 rounded-xl bg-black/30 border border-white/10 hover:border-brand-orange/50 transition-all group cursor-pointer">
+                            <div class="text-xs font-bold text-white group-hover:text-brand-orange transition-colors">⚡ Animated reel (no camera)</div>
+                            <p class="text-[10px] text-gray-400 mt-1 leading-snug">9:16, 30–45 s, ElevenLabs voice</p>
+                        </button>
+                        <button type="button" onclick="applyQuickPreset('talking')" data-preset-btn="talking"
+                            class="preset-quick-btn text-left p-3 rounded-xl bg-black/30 border border-white/10 hover:border-brand-emerald/50 transition-all group cursor-pointer">
+                            <div class="text-xs font-bold text-white group-hover:text-brand-emerald transition-colors">🎙️ Talking-head edit</div>
+                            <p class="text-[10px] text-gray-400 mt-1 leading-snug">9:16, own footage, self-recorded voice</p>
+                        </button>
+                        <button type="button" onclick="applyQuickPreset('broll')" data-preset-btn="broll"
+                            class="preset-quick-btn text-left p-3 rounded-xl bg-black/30 border border-white/10 hover:border-brand-cyan/50 transition-all group cursor-pointer">
+                            <div class="text-xs font-bold text-white group-hover:text-brand-cyan transition-colors">🌍 Travel b-roll + voiceover</div>
+                            <p class="text-[10px] text-gray-400 mt-1 leading-snug">16:9, 3–8 min, voiceover script</p>
+                        </button>
+                        <button type="button" onclick="applyQuickPreset('clips')" data-preset-btn="clips"
+                            class="preset-quick-btn text-left p-3 rounded-xl bg-black/30 border border-white/10 hover:border-purple-400/50 transition-all group cursor-pointer">
+                            <div class="text-xs font-bold text-white group-hover:text-purple-400 transition-colors">✂️ Clips from a long video</div>
+                            <p class="text-[10px] text-gray-400 mt-1 leading-snug">9:16, 10 clips, original audio</p>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- FORM ELEMENT -->
+                <form id="creator-wizard-form" class="relative min-h-[380px]" novalidate>
+
+                    <!-- ============================================ -->
+                    <!-- PHASE 1: BRAND & POSITIONING -->
+                    <!-- ============================================ -->
+                    <div class="step-phase active-phase" id="phase-1">
+                        <h2 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                            <span class="text-brand-orange">1.</span> Brand &amp; positioning
+                        </h2>
+                        
+                        <div class="space-y-5">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <!-- brandName -->
+                                <div class="flex flex-col gap-2">
+                                    <label for="brand-name" class="text-xs font-bold uppercase tracking-wider text-gray-400">Brand or channel name *</label>
+                                    <input type="text" id="brand-name" name="brandName" placeholder="E.g., Stride Lab Physio" required
+                                        class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white placeholder:text-white/20">
+                                </div>
+
+                                <!-- handle -->
+                                <div class="flex flex-col gap-2">
+                                    <label for="brand-handle" class="text-xs font-bold uppercase tracking-wider text-gray-400">Social handle (@account) *</label>
+                                    <input type="text" id="brand-handle" name="handle" placeholder="E.g., @stridelab" required
+                                        class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white placeholder:text-white/20">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <!-- language -->
+                                <div class="flex flex-col gap-2">
+                                    <label for="video-language" class="text-xs font-bold uppercase tracking-wider text-gray-400">Dossier &amp; script language</label>
+                                    <div class="relative">
+                                        <select id="video-language" name="language" required
+                                            class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white appearance-none cursor-pointer bg-brand-card">
+                                            <option value="English" selected>English</option>
+                                            <option value="Spanish">Spanish</option>
+                                            <option value="Dutch">Dutch</option>
+                                            <option value="French">French</option>
+                                            <option value="German">German</option>
+                                            <option value="Portuguese">Portuguese</option>
+                                            <option value="Italian">Italian</option>
+                                        </select>
+                                        <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-brand-orange">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- palette -->
+                                <div class="flex flex-col gap-2">
+                                    <label for="color-aesthetic" class="text-xs font-bold uppercase tracking-wider text-gray-400">Brand colour palette</label>
+                                    <div class="relative">
+                                        <select id="color-aesthetic" name="palette" required
+                                            class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white appearance-none cursor-pointer bg-brand-card">
+                                            <option value="Modern Dark Tech" selected>Modern Dark Tech (Dark theme, neon cyan/orange glows)</option>
+                                            <option value="Clean Corporate Blue">Clean Corporate Blue (White theme, trustful slate-blues)</option>
+                                            <option value="Warm Organic Earth">Warm Organic Earth (Warm tones, forest green, organic sand)</option>
+                                            <option value="Vibrant & Creative">Vibrant &amp; Creative (Lively gradients, purple-pink flow)</option>
+                                        </select>
+                                        <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-brand-orange">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Three Positioning Questions -->
+                            <div class="p-4 rounded-2xl bg-black/25 border border-white/[0.06] space-y-4">
+                                <div class="text-xs font-bold text-brand-cyan uppercase tracking-wider">Three positioning questions (required)</div>
+
+                                <div class="flex flex-col gap-1.5">
+                                    <label for="who-you-help" class="text-xs font-bold text-gray-300">Who do you help? *</label>
+                                    <input type="text" id="who-you-help" name="whoYouHelp" placeholder="E.g., Runners with knee pain" required
+                                        class="glass-input w-full px-4 py-2.5 rounded-xl text-sm text-white placeholder:text-white/20">
+                                </div>
+
+                                <div class="flex flex-col gap-1.5">
+                                    <label for="outcome" class="text-xs font-bold text-gray-300">To achieve what? *</label>
+                                    <input type="text" id="outcome" name="outcome" placeholder="E.g., Run again without pain" required
+                                        class="glass-input w-full px-4 py-2.5 rounded-xl text-sm text-white placeholder:text-white/20">
+                                </div>
+
+                                <div class="flex flex-col gap-1.5">
+                                    <label for="why-you" class="text-xs font-bold text-gray-300">Why you? *</label>
+                                    <input type="text" id="why-you" name="whyYou" placeholder="E.g., I'm a physio and I also run" required
+                                        class="glass-input w-full px-4 py-2.5 rounded-xl text-sm text-white placeholder:text-white/20">
+                                </div>
+                            </div>
+
+                            <!-- tone -->
+                            <div class="flex flex-col gap-2">
+                                <label for="voice-tone" class="text-xs font-bold uppercase tracking-wider text-gray-400">Voice tone</label>
+                                <div class="relative">
+                                    <select id="voice-tone" name="tone" required
+                                        class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white appearance-none cursor-pointer bg-brand-card">
+                                        <option value="Direct & practical" selected>Direct &amp; practical</option>
+                                        <option value="Warm & personal">Warm &amp; personal</option>
+                                        <option value="Playful">Playful</option>
+                                        <option value="Calm documentary">Calm documentary</option>
+                                    </select>
+                                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-brand-orange">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ============================================ -->
+                    <!-- PHASE 2: VIDEO FORMAT -->
+                    <!-- ============================================ -->
+                    <div class="step-phase hidden-phase" id="phase-2">
+                        <h2 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                            <span class="text-brand-orange">2.</span> Video format
+                        </h2>
+                        
+                        <div class="space-y-5">
+                            <!-- Engine (4 options) -->
+                            <div class="flex flex-col gap-2.5">
+                                <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Production engine</span>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <label class="relative cursor-pointer">
+                                        <input type="radio" name="engine" value="animated" checked class="sr-only peer">
+                                        <div class="p-3.5 rounded-xl border border-white/10 bg-white/[0.01] hover:bg-white/[0.04] peer-checked:border-brand-orange peer-checked:bg-brand-orange/10 transition-all flex flex-col gap-1 h-full">
+                                            <span class="text-xs font-bold text-white">⚡ Animated reel (no camera)</span>
+                                            <p class="text-[10px] text-gray-400 leading-tight">100% code-driven React + Remotion scenes timed to each word.</p>
+                                        </div>
+                                    </label>
+                                    <label class="relative cursor-pointer">
+                                        <input type="radio" name="engine" value="talking" class="sr-only peer">
+                                        <div class="p-3.5 rounded-xl border border-white/10 bg-white/[0.01] hover:bg-white/[0.04] peer-checked:border-brand-orange peer-checked:bg-brand-orange/10 transition-all flex flex-col gap-1 h-full">
+                                            <span class="text-xs font-bold text-white">🎙️ Talking-head edit</span>
+                                            <p class="text-[10px] text-gray-400 leading-tight">Whisper.cpp word timestamps, silence cuts &gt;0.1 s, and beat graphics.</p>
+                                        </div>
+                                    </label>
+                                    <label class="relative cursor-pointer">
+                                        <input type="radio" name="engine" value="broll" class="sr-only peer">
+                                        <div class="p-3.5 rounded-xl border border-white/10 bg-white/[0.01] hover:bg-white/[0.04] peer-checked:border-brand-orange peer-checked:bg-brand-orange/10 transition-all flex flex-col gap-1 h-full">
+                                            <span class="text-xs font-bold text-white">🌍 Travel b-roll + voiceover</span>
+                                            <p class="text-[10px] text-gray-400 leading-tight">ffmpeg frame inventory, voiceover script matched to shots, FCPXML export.</p>
+                                        </div>
+                                    </label>
+                                    <label class="relative cursor-pointer">
+                                        <input type="radio" name="engine" value="clips" class="sr-only peer">
+                                        <div class="p-3.5 rounded-xl border border-white/10 bg-white/[0.01] hover:bg-white/[0.04] peer-checked:border-brand-orange peer-checked:bg-brand-orange/10 transition-all flex flex-col gap-1 h-full">
+                                            <span class="text-xs font-bold text-white">✂️ Clips from a long video</span>
+                                            <p class="text-[10px] text-gray-400 leading-tight">Transcribe source video, rank top 10 moments, cut &amp; caption each clip.</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- topic -->
+                            <div class="flex flex-col gap-2">
+                                <label for="video-topic" class="text-xs font-bold uppercase tracking-wider text-gray-400">What is this video about? *</label>
+                                <textarea id="video-topic" name="topic" rows="3" required
+                                    placeholder="E.g., Why stretching your IT band never fixes runner's knee, and the 2-minute glute load test that actually solves it."
+                                    class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white placeholder:text-white/20 resize-y"></textarea>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <!-- aspect -->
+                                <div class="flex flex-col gap-2">
+                                    <label for="video-aspect" class="text-xs font-bold uppercase tracking-wider text-gray-400">Aspect ratio</label>
+                                    <div class="relative">
+                                        <select id="video-aspect" name="aspect" required
+                                            class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white appearance-none cursor-pointer bg-brand-card">
+                                            <option value="9:16" selected>9:16 (Vertical Reel / Short)</option>
+                                            <option value="16:9">16:9 (Horizontal YouTube)</option>
+                                            <option value="1:1">1:1 (Square Feed)</option>
+                                        </select>
+                                        <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-brand-orange">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- duration -->
+                                <div class="flex flex-col gap-2">
+                                    <label for="video-duration" class="text-xs font-bold uppercase tracking-wider text-gray-400">Target duration</label>
+                                    <div class="relative">
+                                        <select id="video-duration" name="duration" required
+                                            class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white appearance-none cursor-pointer bg-brand-card">
+                                            <option value="15–30 s">15–30 s</option>
+                                            <option value="30–45 s" selected>30–45 s</option>
+                                            <option value="45–60 s">45–60 s</option>
+                                            <option value="60–90 s">60–90 s</option>
+                                            <option value="3–8 min">3–8 min</option>
+                                            <option value="10 clips">10 clips</option>
+                                        </select>
+                                        <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-brand-orange">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- voice -->
+                                <div class="flex flex-col gap-2">
+                                    <label for="video-voice" class="text-xs font-bold uppercase tracking-wider text-gray-400">Voice source</label>
+                                    <div class="relative">
+                                        <select id="video-voice" name="voice" required
+                                            class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white appearance-none cursor-pointer bg-brand-card">
+                                            <option value="ElevenLabs" selected>ElevenLabs</option>
+                                            <option value="I record it myself">I record it myself</option>
+                                            <option value="No voice, text only">No voice, text only</option>
+                                        </select>
+                                        <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-brand-orange">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- footageNotes (shown when engine != animated) -->
+                            <div id="footage-notes-container" class="hidden flex-col gap-2">
+                                <label for="footage-notes" class="text-xs font-bold uppercase tracking-wider text-gray-400">Describe your raw footage</label>
+                                <textarea id="footage-notes" name="footageNotes" rows="2"
+                                    placeholder="E.g., 4 iPhone clips in public/recordings showing knee assessment and treadmill cadence..."
+                                    class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white placeholder:text-white/20 resize-y"></textarea>
+                            </div>
+
+                            <!-- referenceUrl -->
+                            <div class="flex flex-col gap-2">
+                                <label for="reference-url" class="text-xs font-bold uppercase tracking-wider text-gray-400">Reference video or source URL (optional)</label>
+                                <input type="url" id="reference-url" name="referenceUrl" placeholder="E.g., https://www.youtube.com/watch?v=..."
+                                    class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white placeholder:text-white/20">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ============================================ -->
+                    <!-- PHASE 3: CALL TO ACTION & PUBLISHING -->
+                    <!-- ============================================ -->
+                    <div class="step-phase hidden-phase" id="phase-3">
+                        <h2 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                            <span class="text-brand-orange">3.</span> Call to action &amp; publishing
+                        </h2>
+                        
+                        <div class="space-y-5">
+                            <!-- platforms -->
+                            <div class="flex flex-col gap-2.5">
+                                <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Target platforms</span>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                    <label class="flex items-center gap-2.5 p-3 rounded-xl border border-white/10 bg-white/[0.01] hover:bg-white/[0.03] cursor-pointer">
+                                        <input type="checkbox" name="platforms" value="Instagram" checked class="rounded border-white/10 text-brand-orange focus:ring-brand-orange bg-[#0A0F18] w-4 h-4">
+                                        <span class="text-xs font-semibold text-white">Instagram</span>
+                                    </label>
+                                    <label class="flex items-center gap-2.5 p-3 rounded-xl border border-white/10 bg-white/[0.01] hover:bg-white/[0.03] cursor-pointer">
+                                        <input type="checkbox" name="platforms" value="TikTok" checked class="rounded border-white/10 text-brand-orange focus:ring-brand-orange bg-[#0A0F18] w-4 h-4">
+                                        <span class="text-xs font-semibold text-white">TikTok</span>
+                                    </label>
+                                    <label class="flex items-center gap-2.5 p-3 rounded-xl border border-white/10 bg-white/[0.01] hover:bg-white/[0.03] cursor-pointer">
+                                        <input type="checkbox" name="platforms" value="YouTube Shorts" checked class="rounded border-white/10 text-brand-orange focus:ring-brand-orange bg-[#0A0F18] w-4 h-4">
+                                        <span class="text-xs font-semibold text-white">YouTube Shorts</span>
+                                    </label>
+                                    <label class="flex items-center gap-2.5 p-3 rounded-xl border border-white/10 bg-white/[0.01] hover:bg-white/[0.03] cursor-pointer">
+                                        <input type="checkbox" name="platforms" value="YouTube long-form" class="rounded border-white/10 text-brand-orange focus:ring-brand-orange bg-[#0A0F18] w-4 h-4">
+                                        <span class="text-xs font-semibold text-white">YouTube long-form</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <!-- ctaType -->
+                                <div class="flex flex-col gap-2">
+                                    <label for="cta-type" class="text-xs font-bold uppercase tracking-wider text-gray-400">Call to action type</label>
+                                    <div class="relative">
+                                        <select id="cta-type" name="ctaType" required
+                                            class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white appearance-none cursor-pointer bg-brand-card">
+                                            <option value="Comment a keyword" selected>Comment a keyword</option>
+                                            <option value="Follow + DM">Follow + DM</option>
+                                            <option value="Save this video">Save this video</option>
+                                            <option value="Visit link">Visit link</option>
+                                        </select>
+                                        <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-brand-orange">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ctaKeyword -->
+                                <div class="flex flex-col gap-2">
+                                    <label for="cta-keyword" class="text-xs font-bold uppercase tracking-wider text-gray-400">CTA keyword or link target</label>
+                                    <input type="text" id="cta-keyword" name="ctaKeyword" placeholder="E.g., KNEE"
+                                        class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white placeholder:text-white/20">
+                                </div>
+                            </div>
+
+                            <!-- twoEndings toggle -->
+                            <label class="flex items-center justify-between p-4 rounded-2xl border border-white/10 bg-black/25 hover:bg-white/[0.03] cursor-pointer">
+                                <div>
+                                    <span class="text-xs font-bold text-white block">Different ending for TikTok</span>
+                                    <span class="text-[11px] text-gray-400">Adds a second ending asking TikTok viewers to follow and send the keyword by DM.</span>
+                                </div>
+                                <input type="checkbox" id="two-endings" name="twoEndings" checked class="rounded border-white/10 text-brand-orange focus:ring-brand-orange bg-[#0A0F18] w-5 h-5">
+                            </label>
+
+                            <!-- timeline -->
+                            <div class="flex flex-col gap-2">
+                                <label for="publish-timeline" class="text-xs font-bold uppercase tracking-wider text-gray-400">Publishing timeline</label>
+                                <div class="relative">
+                                    <select id="publish-timeline" name="timeline" required
+                                        class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white appearance-none cursor-pointer bg-brand-card">
+                                        <option value="ASAP" selected>ASAP</option>
+                                        <option value="This week">This week</option>
+                                        <option value="Planning only">Planning only</option>
+                                    </select>
+                                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-brand-orange">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+                <!-- Navigation Controls -->
+                <div class="mt-8 border-t border-white/[0.05] pt-6 flex flex-wrap items-center justify-between gap-3">
+                    <button type="button" id="prev-btn" class="hidden px-5 py-3 rounded-xl bg-white/[0.02] border border-white/10 hover:bg-white/[0.05] transition-all text-xs font-bold uppercase tracking-wider text-white cursor-pointer">
+                        ← Back
+                    </button>
+                    
+                    <div class="ml-auto flex flex-wrap items-center gap-3">
+                        <button type="button" id="compile-dossier-btn" class="px-5 py-3 rounded-xl bg-brand-cyan/15 border border-brand-cyan/40 hover:bg-brand-cyan/25 transition-all text-xs font-extrabold tracking-wide text-brand-cyan flex items-center gap-2 cursor-pointer">
+                            <span>⚡ Compile production dossier</span>
+                        </button>
+                        <button type="button" id="next-btn" class="px-6 py-3 rounded-xl bg-gradient-to-r from-brand-orange to-amber-500 hover:from-brand-orange hover:to-brand-orange transition-all duration-300 text-xs font-black uppercase tracking-wider text-white shadow-[0_4px_20px_rgba(249,115,22,0.2)] hover:shadow-[0_4px_25px_rgba(249,115,22,0.4)] flex items-center gap-2 cursor-pointer">
+                            <span>Continue</span>
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- 2.4 & 2.5 SUCCESS PANEL: STORYBOARD + 3-TAB DOSSIER -->
+                <!-- ============================================ -->
+                <div class="absolute inset-0 bg-[#070A12] z-20 flex flex-col p-6 md:p-8 transition-all duration-500 transform translate-y-full opacity-0 pointer-events-none overflow-y-auto" id="success-panel">
+                    
+                    <!-- Success Header -->
+                    <div class="flex items-start justify-between border-b border-white/[0.05] pb-4 mb-4">
+                        <div>
+                            <span class="text-[9px] font-black uppercase tracking-widest text-brand-orange">Blueprint compiled successfully</span>
+                            <h3 class="text-xl font-outfit font-extrabold text-white mt-0.5" id="success-title">5-scene vertical storyboard preview</h3>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-brand-emerald/10 border border-brand-emerald/30 flex items-center justify-center text-brand-emerald shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                    </div>
+
+                    <p class="text-[11px] text-gray-400 leading-normal mb-4 font-medium">
+                        Here is the narrative beat structure generated from your positioning and video parameters before Claude writes the scene code:
+                    </p>
+
+                    <!-- 5-Card Vertical Storyboard -->
+                    <div class="grid grid-cols-1 sm:grid-cols-5 gap-2.5 mb-5" id="storyboard-preview-grid">
+                        <div class="p-3 rounded-2xl bg-black/40 border border-brand-orange/30 flex flex-col justify-between min-h-[120px]">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-brand-orange/15 text-brand-orange">1. HOOK</span>
+                                <span class="text-[9px] font-mono text-gray-500">0–3 s</span>
+                            </div>
+                            <p class="text-[11px] text-white font-medium leading-snug" id="storyboard-card-hook">—</p>
+                        </div>
+
+                        <div class="p-3 rounded-2xl bg-black/40 border border-white/10 flex flex-col justify-between min-h-[120px]">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-red-500/15 text-red-300">2. PROBLEM</span>
+                                <span class="text-[9px] font-mono text-gray-500">Audience</span>
+                            </div>
+                            <p class="text-[11px] text-gray-200 font-medium leading-snug" id="storyboard-card-problem">—</p>
+                        </div>
+
+                        <div class="p-3 rounded-2xl bg-black/40 border border-white/10 flex flex-col justify-between min-h-[120px]">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-brand-cyan/15 text-brand-cyan">3. SOLUTION</span>
+                                <span class="text-[9px] font-mono text-gray-500">Outcome</span>
+                            </div>
+                            <p class="text-[11px] text-gray-200 font-medium leading-snug" id="storyboard-card-solution">—</p>
+                        </div>
+
+                        <div class="p-3 rounded-2xl bg-black/40 border border-white/10 flex flex-col justify-between min-h-[120px]">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-brand-emerald/15 text-brand-emerald">4. PROOF</span>
+                                <span class="text-[9px] font-mono text-gray-500">Authority</span>
+                            </div>
+                            <p class="text-[11px] text-gray-200 font-medium leading-snug" id="storyboard-card-proof">—</p>
+                        </div>
+
+                        <div class="p-3 rounded-2xl bg-black/40 border border-purple-400/30 flex flex-col justify-between min-h-[120px]">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-purple-500/15 text-purple-300">5. CTA</span>
+                                <span class="text-[9px] font-mono text-gray-500">Outro</span>
+                            </div>
+                            <p class="text-[11px] text-white font-medium leading-snug" id="storyboard-card-cta">—</p>
+                        </div>
+                    </div>
+
+                    <!-- 3-TAB PRODUCTION DOSSIER -->
+                    <div class="border border-white/10 rounded-2xl overflow-hidden bg-black/25 mb-4 shrink-0">
+                        <div class="px-4 py-3 bg-[#0d1222]/50 flex items-center justify-between text-[10px] font-bold tracking-wider text-brand-orange select-none">
+                            <span>🎬 3-part production dossier (Master prompt · Brand &amp; voice sheets · Setup &amp; publish guide)</span>
+                        </div>
+                        
+                        <div class="flex flex-col p-4 border-t border-white/5 bg-black/15" id="webmaster-accordion-content">
+                            <!-- 3-Tab Switcher Bar -->
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-1.5 p-1 bg-black/40 rounded-xl border border-white/10 mb-3 select-none">
+                                <button type="button" onclick="switchDossierTab('prompt')" data-dossier-tab="prompt"
+                                    class="dossier-tab-btn py-2 px-3 rounded-lg text-[10px] font-bold text-white bg-brand-orange shadow-md transition-all text-left sm:text-center cursor-pointer">
+                                    🎬 1. Master prompt (video_prompt.md)
+                                </button>
+                                <button type="button" onclick="switchDossierTab('brand')" data-dossier-tab="brand"
+                                    class="dossier-tab-btn py-2 px-3 rounded-lg text-[10px] font-bold text-gray-400 hover:text-white transition-all text-left sm:text-center cursor-pointer">
+                                    🎨 2. Brand &amp; voice sheets (BRAND.md + voice.md)
+                                </button>
+                                <button type="button" onclick="switchDossierTab('setup')" data-dossier-tab="setup"
+                                    class="dossier-tab-btn py-2 px-3 rounded-lg text-[10px] font-bold text-gray-400 hover:text-white transition-all text-left sm:text-center cursor-pointer">
+                                    🚀 3. Setup &amp; publish guide (setup_guide.md)
+                                </button>
+                            </div>
+
+                            <!-- Explanatory note for the active tab -->
+                            <p class="text-[10px] text-gray-400 leading-normal mb-3 font-medium" id="dossier-tab-desc">
+                                Paste this master prompt into Claude after saving your BRAND.md and voice.md files inside your project folder:
+                            </p>
+                            
+                            <!-- Terminal Code Area -->
+                            <div class="relative w-full h-[220px] bg-[#020408]/95 rounded-xl border border-white/[0.06] p-3 flex flex-col font-mono text-[9.5px] text-brand-cyan/90 overflow-hidden shadow-inner">
+                                <!-- Terminal Bar -->
+                                <div class="flex items-center justify-between pb-2 border-b border-white/5 mb-2 select-none text-[8px] text-gray-500 uppercase font-black tracking-widest">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-red-500/50 block"></span>
+                                        <span class="w-1.5 h-1.5 rounded-full bg-yellow-500/60 block"></span>
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500/50 block"></span>
+                                        <span class="ml-2 font-mono text-[8.5px] text-gray-300" id="dossier-filename-label">video_prompt.md</span>
+                                    </div>
+                                    <span class="text-brand-cyan font-bold" id="dossier-engine-label">Claude + Remotion</span>
+                                </div>
+                                
+                                <!-- Terminal Text Display -->
+                                <div class="flex-grow overflow-y-auto terminal-scroll pr-2 leading-relaxed text-gray-300 font-normal whitespace-pre-wrap select-all select-text" id="compiled-prompt-output">
+                                </div>
+                            </div>
+                            
+                            <!-- Copy & Download Action Buttons inside Dossier -->
+                            <div class="mt-3 flex items-center justify-between gap-2 flex-wrap">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <button type="button" id="copy-prompt-btn" class="px-4 py-2 rounded-lg bg-brand-orange hover:bg-brand-orange/90 transition-all text-[10px] font-bold tracking-wide text-white shadow-md flex items-center gap-2 cursor-pointer">
+                                        <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="copy-btn-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                                        <span id="copy-btn-text">Copy file (video_prompt.md)</span>
+                                    </button>
+                                    <button type="button" id="download-dossier-btn" class="px-4 py-2 rounded-lg bg-white/[0.06] border border-white/15 hover:border-brand-cyan/50 hover:bg-brand-cyan/10 transition-all text-[10px] font-bold tracking-wide text-white flex items-center gap-2 cursor-pointer">
+                                        <svg class="w-3.5 h-3.5 shrink-0 text-brand-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                        <span id="download-btn-text">Download .md (video_prompt.md)</span>
+                                    </button>
+                                </div>
+                                <span class="text-[9.5px] text-gray-400 font-mono">100% your files · zero vendor lock-in</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="mt-2 flex flex-col sm:flex-row gap-3 shrink-0">
+                        <button type="button" id="edit-blueprint-btn" class="px-5 py-3 rounded-xl bg-brand-cyan/10 border border-brand-cyan/30 hover:bg-brand-cyan/20 transition-all text-xs font-bold tracking-wider text-brand-cyan text-center cursor-pointer">
+                            ← Edit blueprint settings
+                        </button>
+                        <button type="button" id="restart-btn" class="px-6 py-3 rounded-xl bg-white/[0.03] border border-white/10 hover:bg-white/[0.08] hover:border-white/20 transition-all text-xs font-bold tracking-wider text-white text-center cursor-pointer">
+                            Reset &amp; start fresh
+                        </button>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Right Side: Video Stack Costs & Open-Source Sovereignty -->
+            <aside class="md:col-span-4 space-y-6">
+                
+                <!-- 2.6 Video Stack Costs -->
+                <div class="glass-card rounded-3xl p-6 border-brand-cyan/20 glow-cyan relative overflow-hidden">
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-lg bg-brand-cyan/10 flex items-center justify-center text-brand-cyan shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="font-outfit font-extrabold text-xs tracking-wide text-white">Video stack costs</h3>
+                                <p class="text-[9px] text-brand-cyan font-bold uppercase tracking-wider">Transparent &amp; local</p>
+                            </div>
+                        </div>
+                        <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-brand-emerald/10 text-brand-emerald border border-brand-emerald/30 font-bold">No AI-video credits</span>
+                    </div>
+                    
+                    <p class="text-[11px] text-gray-400 leading-relaxed mb-4 font-medium">
+                        Videos render locally on your computer with open-source tooling. Check each official site for current plan details:
+                    </p>
+
+                    <div class="space-y-3">
+                        <!-- 1. Claude -->
+                        <div class="border-b border-white/[0.05] pb-2.5">
+                            <div class="flex justify-between items-start gap-2">
+                                <div>
+                                    <a href="https://claude.ai" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-white hover:text-brand-orange transition-colors">Claude (with code execution) ↗</a>
+                                    <span class="text-[10px] text-gray-400 block">Script, scene plan &amp; Remotion code</span>
+                                </div>
+                                <span class="text-[10px] font-bold text-brand-cyan bg-brand-cyan/10 px-2.5 py-0.5 rounded-full shrink-0">User's plan</span>
+                            </div>
+                        </div>
+
+                        <!-- 2. Remotion -->
+                        <div class="border-b border-white/[0.05] pb-2.5">
+                            <div class="flex justify-between items-start gap-2">
+                                <div>
+                                    <a href="https://remotion.pro/license" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-white hover:text-brand-orange transition-colors">Remotion ↗</a>
+                                    <span class="text-[10px] text-gray-400 block leading-snug mt-0.5">Free for individuals and companies up to 3 people; larger companies need a paid licence (remotion.pro/license)</span>
+                                </div>
+                                <span class="text-[10px] font-bold text-brand-emerald bg-brand-emerald/10 px-2.5 py-0.5 rounded-full shrink-0">Free (≤3)</span>
+                            </div>
+                        </div>
+
+                        <!-- 3. ffmpeg, whisper.cpp -->
+                        <div class="border-b border-white/[0.05] pb-2.5">
+                            <div class="flex justify-between items-start gap-2">
+                                <div>
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <a href="https://ffmpeg.org" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-white hover:text-brand-orange transition-colors">ffmpeg ↗</a>
+                                        <span class="text-gray-600">·</span>
+                                        <a href="https://github.com/ggerganov/whisper.cpp" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-white hover:text-brand-orange transition-colors">whisper.cpp ↗</a>
+                                    </div>
+                                    <span class="text-[10px] text-gray-400 block">Local rendering &amp; word-level timestamps</span>
+                                </div>
+                                <span class="text-[10px] font-bold text-brand-emerald bg-brand-emerald/10 px-2.5 py-0.5 rounded-full shrink-0">$0 (open source)</span>
+                            </div>
+                        </div>
+
+                        <!-- 4. ElevenLabs -->
+                        <div class="border-b border-white/[0.05] pb-2.5">
+                            <div class="flex justify-between items-start gap-2">
+                                <div>
+                                    <a href="https://elevenlabs.io" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-white hover:text-brand-orange transition-colors">ElevenLabs (voice) ↗</a>
+                                    <span class="text-[10px] text-gray-400 block">Optional; see their website</span>
+                                </div>
+                                <span class="text-[10px] font-bold text-gray-300 bg-white/10 px-2.5 py-0.5 rounded-full shrink-0">Optional</span>
+                            </div>
+                        </div>
+
+                        <!-- 5. HyperFrames -->
+                        <div class="border-b border-white/[0.05] pb-2.5">
+                            <div class="flex justify-between items-start gap-2">
+                                <div>
+                                    <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-white hover:text-brand-orange transition-colors">HyperFrames (3D effects) ↗</a>
+                                    <span class="text-[10px] text-gray-400 block">$0 (Apache 2.0), optional</span>
+                                </div>
+                                <span class="text-[10px] font-bold text-brand-emerald bg-brand-emerald/10 px-2.5 py-0.5 rounded-full shrink-0">$0 (Apache 2.0)</span>
+                            </div>
+                        </div>
+
+                        <!-- 6. DaVinci Resolve -->
+                        <div class="pb-1">
+                            <div class="flex justify-between items-start gap-2">
+                                <div>
+                                    <a href="https://www.blackmagicdesign.com/products/davinciresolve" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-white hover:text-brand-orange transition-colors">DaVinci Resolve (final polish) ↗</a>
+                                    <span class="text-[10px] text-gray-400 block">$0 free version, optional</span>
+                                </div>
+                                <span class="text-[10px] font-bold text-brand-emerald bg-brand-emerald/10 px-2.5 py-0.5 rounded-full shrink-0">$0 free version</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 100% Free & Open-Source Sovereignty Panel -->
+                <div class="glass-card rounded-3xl p-6 border-brand-orange/20 glow-orange">
+                    <div class="flex items-center justify-between gap-2 mb-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-lg bg-brand-orange/10 flex items-center justify-center text-brand-orange shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                            </div>
+                            <h3 class="font-outfit font-extrabold text-xs tracking-wide text-white">A private studio for creators</h3>
+                        </div>
+                        <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-brand-orange/15 text-brand-orange border border-brand-orange/30 font-bold">100% Local</span>
+                    </div>
+                    
+                    <div class="space-y-3 text-[11px] text-gray-300 leading-relaxed font-medium">
+                        <p>
+                            🎬 <strong class="text-white">No Per-Minute Subscriptions:</strong> Compile your master prompt, brand sheet, and voice sheet in the browser with zero watermarks or render fees.
+                        </p>
+                        <p>
+                            🛡️ <strong class="text-white">Reusable Brand &amp; Voice Sheets:</strong> Save <code class="text-brand-cyan">BRAND.md</code> and <code class="text-brand-cyan">voice.md</code> once so every new reel stays consistent across your channel.
+                        </p>
+                        <p>
+                            🤝 <strong class="text-white">Creator Community:</strong> Share workflows and Remotion templates with fellow creators in the <a href="../community.html" class="text-brand-cyan hover:underline font-bold">OfficeAIM Community →</a>
+                        </p>
+                    </div>
+                </div>
+
+            </aside>
+
+        </div>
+
+        <!-- ============================================ -->
+        <!-- 2.7 INTERACTIVE 8-STEP PRODUCTION ROADMAP -->
+        <!-- ============================================ -->
+        <section class="mt-16 pt-12 border-t border-white/[0.08]" id="roadmap-section">
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8">
+                <div class="max-w-3xl text-left">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-orange/10 border border-brand-orange/30 text-brand-orange text-[10px] font-bold uppercase tracking-widest mb-3">
+                        <span>✨ Interactive production checklist · Viral Finder → Script → Editor → Publish</span>
+                    </div>
+                    <h2 class="text-2xl md:text-4xl font-outfit font-extrabold tracking-tight text-white">
+                        The 8-step <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">production roadmap</span>
+                    </h2>
+                    <p class="mt-3 text-xs md:text-sm text-gray-400 leading-relaxed font-medium">
+                        Follow this repeatable workflow from positioning to published reel. Check off each step as you produce your video—your progress is saved in your browser independently.
+                    </p>
+                </div>
+
+                <!-- Interactive Navigation & Progress Controls -->
+                <div class="glass-card rounded-2xl p-4 border border-white/10 bg-[#050811]/90 flex flex-col gap-3 min-w-[280px] sm:min-w-[340px]">
+                    <div class="flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-2">
+                            <span id="roadmap-active-step-badge" class="px-2.5 py-1 rounded-lg bg-brand-orange/15 border border-brand-orange/40 text-brand-orange font-mono font-bold text-xs">
+                                Step 1 of 8
+                            </span>
+                            <span id="roadmap-completed-counter" class="text-[11px] font-mono text-brand-cyan font-bold">
+                                0/8 completed (0%)
+                            </span>
+                        </div>
+                        <button type="button" id="roadmap-reset-btn" class="text-[10px] font-mono text-gray-400 hover:text-white underline cursor-pointer">
+                            Reset checklist
+                        </button>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="w-full h-2 rounded-full bg-white/5 overflow-hidden border border-white/5">
+                        <div id="roadmap-progress-bar" class="h-full bg-gradient-to-r from-brand-orange via-amber-400 to-brand-cyan transition-all duration-300" style="width: 13%;"></div>
+                    </div>
+
+                    <!-- Previous / Next Step Buttons -->
+                    <div class="flex items-center justify-between gap-2 pt-1">
+                        <button type="button" id="roadmap-prev-btn" class="flex-1 py-2 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-gray-300 hover:text-white transition-all cursor-pointer disabled:opacity-40">
+                            ← Previous step
+                        </button>
+                        <button type="button" id="roadmap-next-btn" class="flex-1 py-2 px-3 rounded-xl bg-brand-orange/20 hover:bg-brand-orange/30 border border-brand-orange/40 text-xs font-bold text-brand-orange hover:text-white transition-all cursor-pointer">
+                            Next step →
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Step Spotlight Banner -->
+            <div id="roadmap-spotlight-banner" class="mb-8 p-5 rounded-2xl border border-brand-cyan/30 bg-gradient-to-r from-brand-cyan/10 via-[#070B16] to-brand-orange/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="space-y-1">
+                    <div class="flex items-center gap-2">
+                        <span id="spotlight-step-num" class="text-[10px] font-mono font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-brand-cyan/20 text-brand-cyan">Active focus · Step 01</span>
+                        <span id="spotlight-layer-tag" class="text-[10px] font-mono text-gray-400">Role: Scriptwriter</span>
+                    </div>
+                    <h3 id="spotlight-step-title" class="text-base md:text-lg font-outfit font-bold text-white">1. Answer the three positioning questions</h3>
+                    <p id="spotlight-step-desc" class="text-xs text-gray-300 leading-relaxed max-w-3xl">
+                        Define who you help, what outcome they want, and why you have authority so every script speaks directly to one person.
+                    </p>
+                </div>
+                <div class="flex items-center gap-3 shrink-0">
+                    <button type="button" id="spotlight-toggle-check-btn" class="px-4 py-2.5 rounded-xl bg-brand-emerald/20 hover:bg-brand-emerald/30 border border-brand-emerald/40 text-brand-emerald font-bold text-xs transition-all cursor-pointer flex items-center gap-2">
+                        <span>✓ Mark current step completed</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 8 Chronological Steps Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5" id="roadmap-steps-grid">
+                <!-- Step 1 -->
+                <div class="roadmap-step-card glass-card rounded-2xl p-5 border border-brand-orange/60 bg-brand-orange/[0.04] transition-all cursor-pointer flex flex-col justify-between" data-roadmap-step="1" data-layer="Role: Scriptwriter">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-2">
+                                <span class="w-7 h-7 rounded-lg bg-brand-orange/20 text-brand-orange flex items-center justify-center font-outfit font-black text-xs">01</span>
+                                <span class="text-[9px] font-bold uppercase tracking-wider text-brand-orange bg-brand-orange/10 px-2 py-0.5 rounded-full">Voice</span>
+                            </div>
+                            <label class="flex items-center gap-1.5 text-[10px] font-mono text-gray-300 cursor-pointer select-none" onclick="event.stopPropagation();">
+                                <input type="checkbox" class="roadmap-step-checkbox w-4 h-4 rounded accent-emerald-500 cursor-pointer" data-check-step="1">
+                                <span class="roadmap-step-status-label">To do</span>
+                            </label>
+                        </div>
+                        <h3 class="text-sm font-bold text-white mb-1.5">Answer the three positioning questions</h3>
+                        <p class="text-[11px] text-gray-400 leading-relaxed">
+                            Define who you help, what outcome they want, and why you have authority so every script speaks directly to one person.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-2.5 border-t border-white/5 flex items-center justify-between text-[10px]">
+                        <span class="text-gray-500 font-mono">Artifact:</span>
+                        <span class="text-brand-cyan font-mono font-bold">voice.md</span>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="roadmap-step-card glass-card rounded-2xl p-5 border border-white/[0.06] hover:border-brand-orange/40 transition-all cursor-pointer flex flex-col justify-between" data-roadmap-step="2" data-layer="Role: Art director">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-2">
+                                <span class="w-7 h-7 rounded-lg bg-brand-orange/15 text-brand-orange flex items-center justify-center font-outfit font-black text-xs">02</span>
+                                <span class="text-[9px] font-bold uppercase tracking-wider text-gray-400 bg-white/5 px-2 py-0.5 rounded-full">Brand</span>
+                            </div>
+                            <label class="flex items-center gap-1.5 text-[10px] font-mono text-gray-300 cursor-pointer select-none" onclick="event.stopPropagation();">
+                                <input type="checkbox" class="roadmap-step-checkbox w-4 h-4 rounded accent-emerald-500 cursor-pointer" data-check-step="2">
+                                <span class="roadmap-step-status-label">To do</span>
+                            </label>
+                        </div>
+                        <h3 class="text-sm font-bold text-white mb-1.5">Lock colours, fonts and caption style</h3>
+                        <p class="text-[11px] text-gray-400 leading-relaxed">
+                            Choose your brand palette so background, text, accent boxes, and word-by-word captions stay identical across every video.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-2.5 border-t border-white/5 flex items-center justify-between text-[10px]">
+                        <span class="text-gray-500 font-mono">Artifact:</span>
+                        <span class="text-brand-cyan font-mono font-bold">BRAND.md</span>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="roadmap-step-card glass-card rounded-2xl p-5 border border-white/[0.06] hover:border-brand-orange/40 transition-all cursor-pointer flex flex-col justify-between" data-roadmap-step="3" data-layer="Role: Editor">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-2">
+                                <span class="w-7 h-7 rounded-lg bg-brand-orange/15 text-brand-orange flex items-center justify-center font-outfit font-black text-xs">03</span>
+                                <span class="text-[9px] font-bold uppercase tracking-wider text-gray-400 bg-white/5 px-2 py-0.5 rounded-full">Format</span>
+                            </div>
+                            <label class="flex items-center gap-1.5 text-[10px] font-mono text-gray-300 cursor-pointer select-none" onclick="event.stopPropagation();">
+                                <input type="checkbox" class="roadmap-step-checkbox w-4 h-4 rounded accent-emerald-500 cursor-pointer" data-check-step="3">
+                                <span class="roadmap-step-status-label">To do</span>
+                            </label>
+                        </div>
+                        <h3 class="text-sm font-bold text-white mb-1.5">Pick the engine and format</h3>
+                        <p class="text-[11px] text-gray-400 leading-relaxed">
+                            Select animated reel, talking-head edit, travel b-roll, or long-video clips along with aspect ratio, duration, and voice source.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-2.5 border-t border-white/5 flex items-center justify-between text-[10px]">
+                        <span class="text-gray-500 font-mono">Artifact:</span>
+                        <span class="text-brand-cyan font-mono font-bold">Video blueprint</span>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="roadmap-step-card glass-card rounded-2xl p-5 border border-white/[0.06] hover:border-brand-orange/40 transition-all cursor-pointer flex flex-col justify-between" data-roadmap-step="4" data-layer="Role: All 4 crew roles">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-2">
+                                <span class="w-7 h-7 rounded-lg bg-brand-orange/15 text-brand-orange flex items-center justify-center font-outfit font-black text-xs">04</span>
+                                <span class="text-[9px] font-bold uppercase tracking-wider text-gray-400 bg-white/5 px-2 py-0.5 rounded-full">Compiler</span>
+                            </div>
+                            <label class="flex items-center gap-1.5 text-[10px] font-mono text-gray-300 cursor-pointer select-none" onclick="event.stopPropagation();">
+                                <input type="checkbox" class="roadmap-step-checkbox w-4 h-4 rounded accent-emerald-500 cursor-pointer" data-check-step="4">
+                                <span class="roadmap-step-status-label">To do</span>
+                            </label>
+                        </div>
+                        <h3 class="text-sm font-bold text-white mb-1.5">Compile the dossier</h3>
+                        <p class="text-[11px] text-gray-400 leading-relaxed">
+                            Generate your 3-part production dossier and review the 5-card vertical storyboard preview before opening Claude.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-2.5 border-t border-white/5 flex items-center justify-between text-[10px]">
+                        <span class="text-gray-500 font-mono">Artifact:</span>
+                        <span class="text-brand-cyan font-mono font-bold">3-tab dossier</span>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="roadmap-step-card glass-card rounded-2xl p-5 border border-white/[0.06] hover:border-brand-orange/40 transition-all cursor-pointer flex flex-col justify-between" data-roadmap-step="5" data-layer="Role: Editor">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-2">
+                                <span class="w-7 h-7 rounded-lg bg-brand-orange/15 text-brand-orange flex items-center justify-center font-outfit font-black text-xs">05</span>
+                                <span class="text-[9px] font-bold uppercase tracking-wider text-gray-400 bg-white/5 px-2 py-0.5 rounded-full">Workspace</span>
+                            </div>
+                            <label class="flex items-center gap-1.5 text-[10px] font-mono text-gray-300 cursor-pointer select-none" onclick="event.stopPropagation();">
+                                <input type="checkbox" class="roadmap-step-checkbox w-4 h-4 rounded accent-emerald-500 cursor-pointer" data-check-step="5">
+                                <span class="roadmap-step-status-label">To do</span>
+                            </label>
+                        </div>
+                        <h3 class="text-sm font-bold text-white mb-1.5">Set up the project in Claude</h3>
+                        <p class="text-[11px] text-gray-400 leading-relaxed">
+                            Enable code execution and file creation in Claude desktop, open your project folder, and place BRAND.md and voice.md inside brand/.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-2.5 border-t border-white/5 flex items-center justify-between text-[10px]">
+                        <span class="text-gray-500 font-mono">Artifact:</span>
+                        <span class="text-brand-cyan font-mono font-bold">Working Remotion project</span>
+                    </div>
+                </div>
+
+                <!-- Step 6 -->
+                <div class="roadmap-step-card glass-card rounded-2xl p-5 border border-white/[0.06] hover:border-brand-orange/40 transition-all cursor-pointer flex flex-col justify-between" data-roadmap-step="6" data-layer="Role: Scriptwriter + Art director">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-2">
+                                <span class="w-7 h-7 rounded-lg bg-brand-orange/15 text-brand-orange flex items-center justify-center font-outfit font-black text-xs">06</span>
+                                <span class="text-[9px] font-bold uppercase tracking-wider text-gray-400 bg-white/5 px-2 py-0.5 rounded-full">Script</span>
+                            </div>
+                            <label class="flex items-center gap-1.5 text-[10px] font-mono text-gray-300 cursor-pointer select-none" onclick="event.stopPropagation();">
+                                <input type="checkbox" class="roadmap-step-checkbox w-4 h-4 rounded accent-emerald-500 cursor-pointer" data-check-step="6">
+                                <span class="roadmap-step-status-label">To do</span>
+                            </label>
+                        </div>
+                        <h3 class="text-sm font-bold text-white mb-1.5">Paste the master prompt, approve the script</h3>
+                        <p class="text-[11px] text-gray-400 leading-relaxed">
+                            Paste video_prompt.md into Claude. Review the hook and sentence-by-sentence script first before allowing scene construction.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-2.5 border-t border-white/5 flex items-center justify-between text-[10px]">
+                        <span class="text-gray-500 font-mono">Artifact:</span>
+                        <span class="text-brand-cyan font-mono font-bold">Script + scene plan</span>
+                    </div>
+                </div>
+
+                <!-- Step 7 -->
+                <div class="roadmap-step-card glass-card rounded-2xl p-5 border border-white/[0.06] hover:border-brand-orange/40 transition-all cursor-pointer flex flex-col justify-between" data-roadmap-step="7" data-layer="Role: Editor">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-2">
+                                <span class="w-7 h-7 rounded-lg bg-brand-orange/15 text-brand-orange flex items-center justify-center font-outfit font-black text-xs">07</span>
+                                <span class="text-[9px] font-bold uppercase tracking-wider text-gray-400 bg-white/5 px-2 py-0.5 rounded-full">Render</span>
+                            </div>
+                            <label class="flex items-center gap-1.5 text-[10px] font-mono text-gray-300 cursor-pointer select-none" onclick="event.stopPropagation();">
+                                <input type="checkbox" class="roadmap-step-checkbox w-4 h-4 rounded accent-emerald-500 cursor-pointer" data-check-step="7">
+                                <span class="roadmap-step-status-label">To do</span>
+                            </label>
+                        </div>
+                        <h3 class="text-sm font-bold text-white mb-1.5">Review the storyboard, then render</h3>
+                        <p class="text-[11px] text-gray-400 leading-relaxed">
+                            Inspect the contact sheet of frames in Claude, fix any visual timing issues in plain English, and render the final MP4 and cover.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-2.5 border-t border-white/5 flex items-center justify-between text-[10px]">
+                        <span class="text-gray-500 font-mono">Artifact:</span>
+                        <span class="text-brand-cyan font-mono font-bold">reel.mp4 + cover</span>
+                    </div>
+                </div>
+
+                <!-- Step 8 -->
+                <div class="roadmap-step-card glass-card rounded-2xl p-5 border border-white/[0.06] hover:border-brand-orange/40 transition-all cursor-pointer flex flex-col justify-between" data-roadmap-step="8" data-layer="Role: Distributor">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-2">
+                                <span class="w-7 h-7 rounded-lg bg-brand-orange/15 text-brand-orange flex items-center justify-center font-outfit font-black text-xs">08</span>
+                                <span class="text-[9px] font-bold uppercase tracking-wider text-brand-emerald bg-brand-emerald/10 px-2 py-0.5 rounded-full">Publish</span>
+                            </div>
+                            <label class="flex items-center gap-1.5 text-[10px] font-mono text-gray-300 cursor-pointer select-none" onclick="event.stopPropagation();">
+                                <input type="checkbox" class="roadmap-step-checkbox w-4 h-4 rounded accent-emerald-500 cursor-pointer" data-check-step="8">
+                                <span class="roadmap-step-status-label">To do</span>
+                            </label>
+                        </div>
+                        <h3 class="text-sm font-bold text-white mb-1.5">Publish with title, description and CTA</h3>
+                        <p class="text-[11px] text-gray-400 leading-relaxed">
+                            Upload your video, cover, and platform-specific endings to Instagram, TikTok, or YouTube Shorts (and label AI voice if used).
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-2.5 border-t border-white/5 flex items-center justify-between text-[10px]">
+                        <span class="text-gray-500 font-mono">Artifact:</span>
+                        <span class="text-brand-emerald font-mono font-bold">Live post</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SECTION 9: HOW IT WORKS (3 STEPS) ===== -->
+        <section class="steps-section" id="how-it-works-section" style="margin-top: 5rem; margin-bottom: 4rem;">
+            <div class="section-header">
+                <div class="section-eyebrow">WORKFLOW PLAYBOOK</div>
+                <h2 class="section-title">How it works (3 simple steps)</h2>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <h3>Answer 3 positioning questions</h3>
+                    <p>Lock in who you help, the outcome you deliver, your authority, and your brand palette so every video shares one recognizable identity.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <h3>Pick your production engine</h3>
+                    <p>Choose between code-animated reels, talking-head edits with whisper.cpp, travel b-roll voiceovers, or multi-clip extraction from long videos.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <h3>Export 3-part production dossier</h3>
+                    <p>Copy or download video_prompt.md, BRAND.md + voice.md, and setup_guide.md for Claude to script, storyboard, and render your reel.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SECTION 2.8: COMPARISON WITH VIDEO EDITORS ===== -->
+        <section class="matrix-section" style="margin-bottom: 5rem;">
+            <div class="matrix-box">
+                <div style="text-align: center; max-width: 48rem; margin: 0 auto;">
+                    <div class="section-eyebrow" style="color: #f97316;">THE CREATOR SYSTEM LESSON</div>
+                    <h2 style="font-size: 2rem; font-weight: 800; color: white; margin: 0.5rem 0 1rem;">
+                        Replacing video bottlenecks with a repeatable system
+                    </h2>
+                    <p style="color: #94A3B8; font-size: 0.95rem; line-height: 1.6;">
+                        Hiring editors per reel or burning AI-video credits slows down how many videos you publish each week. With a code-based video blueprint, your brand rules live in plain text files.
+                    </p>
+                </div>
+
+                <div class="matrix-grid">
+                    <div class="matrix-col col-commercial">
+                        <span class="matrix-badge badge-red">Freelance editor</span>
+                        <h3 style="color: #F87171; font-size: 1.25rem; font-weight: 800; margin: 0;">Paid per video</h3>
+                        <ul class="matrix-list">
+                            <li>❌ Paid per video, days of turnaround, every change is a new request.</li>
+                            <li>❌ Inconsistent fonts, caption styles, and pacing between editors</li>
+                            <li>❌ Waiting days just to test a new hook or TikTok ending</li>
+                            <li>❌ Project files locked in proprietary timeline formats</li>
+                        </ul>
+                    </div>
+                    <div class="matrix-col col-ai">
+                        <span class="matrix-badge badge-cyan-tag">Viralist Studio</span>
+                        <h3 style="color: #06b6d4; font-size: 1.25rem; font-weight: 800; margin: 0;">$0 tooling · Minutes per video</h3>
+                        <ul class="matrix-list">
+                            <li>✅ $0 tooling, minutes per video, changes in plain English.</li>
+                            <li>✅ Persistent BRAND.md and voice.md keep every video on-brand</li>
+                            <li>✅ Word-accurate captions and silence cuts via whisper.cpp + ffmpeg</li>
+                            <li>✅ Approve script and frame contact sheet before rendering MP4</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Prompt Box -->
+                <div class="prompt-box">
+                    <div class="prompt-label">
+                        <span>⚡ Build your own video blueprint workflow with Claude</span>
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span style="color: #94A3B8;">Viralist Studio</span>
+                            <button type="button" class="btn-copy-prompt" onclick="copyPrompt('viralist-studio-prompt', this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                <span>Copy Prompt</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="prompt-code" id="viralist-studio-prompt">"You are my video producer. Read BRAND.md and voice.md first and follow them. Show me the hook and sentence-by-sentence script first and wait for my OK before building any Remotion scenes. Nothing static on screen for more than 0.6 s. Before rendering the final MP4, show me a contact sheet of frames and fix what looks wrong."</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Global Mascot Widget Injection (AIM Mascot Widget Bridge) -->
+    <iframe id="mascot-widget" src="about:blank"
+        style="position: fixed; bottom: 0; right: 0; border: none; z-index: 2147483647; background: transparent; width: 300px; height: 200px; transition: all 0.3s ease-in-out; pointer-events: none;"
+        allowtransparency="true" allow="microphone"></iframe>
+
+    <script src="../script.js"></script>
+    <script>
+    (() => {
+        // Mascot Widget context setup
+        const widgetIframe = document.getElementById('mascot-widget');
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
+        
+        if (!isLocal) {
+            widgetIframe.src = '/hub/widget?context=viralist-studio';
+            widgetIframe.style.pointerEvents = 'auto';
+        } else if (['5173', '5174', '5175'].includes(window.location.port)) {
+            widgetIframe.src = '/hub/widget?context=viralist-studio';
+            widgetIframe.style.pointerEvents = 'auto';
+        } else {
+            widgetIframe.style.display = 'none';
+        }
+
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'mascot-toggle') {
+                const widget = document.getElementById('mascot-widget');
+                if (event.data.isOpen) {
+                    widget.style.width = 'min(420px, calc(100vw - 20px))';
+                    widget.style.height = 'min(620px, calc(100vh - 30px))';
+                } else {
+                    widget.style.width = '300px';
+                    widget.style.height = '200px';
+                }
+            }
+        });
+
+        // Toast notification helper
+        function showToast(message) {
+            if (window.toast) {
+                window.toast.success(message);
+            } else {
+                const toast = document.createElement('div');
+                toast.className = "fixed top-5 right-5 z-50 glass-card px-4 py-2.5 rounded-xl border-brand-orange/30 text-xs font-bold text-white shadow-lg shadow-brand-orange/10 transform translate-y-[-20px] opacity-0 transition-all duration-300";
+                toast.innerText = message;
+                document.body.appendChild(toast);
+                setTimeout(() => {
+                    toast.classList.remove('translate-y-[-20px]', 'opacity-0');
+                }, 50);
+                setTimeout(() => {
+                    toast.classList.add('translate-y-[-20px]', 'opacity-0');
+                    setTimeout(() => document.body.removeChild(toast), 300);
+                }, 3000);
+            }
+        }
+
+        // ===================================================
+        // PALETTE TOKENS (reused from website-creator)
+        // ===================================================
+        const PALETTE_TOKENS = {
+            'Modern Dark Tech': {
+                background: '#070A12',
+                surface: '#0C101C',
+                text: '#FFFFFF',
+                mutedText: '#94A3B8',
+                accent: '#F97316',
+                secondaryAccent: '#06B6D4',
+                headingFont: 'Outfit (800 ExtraBold)',
+                bodyFont: 'Plus Jakarta Sans (500 Medium)'
+            },
+            'Clean Corporate Blue': {
+                background: '#F8FAFC',
+                surface: '#FFFFFF',
+                text: '#1E293B',
+                mutedText: '#64748B',
+                accent: '#2563EB',
+                secondaryAccent: '#0EA5E9',
+                headingFont: 'Outfit (700 Bold)',
+                bodyFont: 'Plus Jakarta Sans (500 Medium)'
+            },
+            'Warm Organic Earth': {
+                background: '#FAF7F2',
+                surface: '#F3EDE2',
+                text: '#2C2620',
+                mutedText: '#615446',
+                accent: '#065F46',
+                secondaryAccent: '#D97706',
+                headingFont: 'Outfit (700 Bold)',
+                bodyFont: 'Plus Jakarta Sans (500 Medium)'
+            },
+            'Vibrant & Creative': {
+                background: '#13072E',
+                surface: '#070311',
+                text: '#FFFFFF',
+                mutedText: '#CBD5E1',
+                accent: '#EC4899',
+                secondaryAccent: '#9333EA',
+                headingFont: 'Outfit (900 Black)',
+                bodyFont: 'Plus Jakarta Sans (600 SemiBold)'
+            }
+        };
+
+        // ===================================================
+        // STEP WIZARD LOGIC
+        // ===================================================
+        let currentPhase = 1;
+        const totalPhases = 3;
+        
+        const form = document.getElementById('creator-wizard-form');
+        const phase1 = document.getElementById('phase-1');
+        const phase2 = document.getElementById('phase-2');
+        const phase3 = document.getElementById('phase-3');
+        
+        const nextBtn = document.getElementById('next-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const compileDossierBtn = document.getElementById('compile-dossier-btn');
+        
+        const stepNumIndicator = document.getElementById('step-number-indicator');
+        const stepTitleIndicator = document.getElementById('step-title-indicator');
+        
+        const progressBar1 = document.getElementById('progress-bar-1');
+        const progressBar2 = document.getElementById('progress-bar-2');
+        const progressBar3 = document.getElementById('progress-bar-3');
+
+        const footageNotesContainer = document.getElementById('footage-notes-container');
+        const engineRadios = form.querySelectorAll('input[name="engine"]');
+
+        function updateEngineConditionalFields() {
+            const checkedEngine = form.querySelector('input[name="engine"]:checked');
+            const engineVal = checkedEngine ? checkedEngine.value : 'animated';
+            if (engineVal === 'animated') {
+                footageNotesContainer.classList.add('hidden');
+                footageNotesContainer.classList.remove('flex');
+            } else {
+                footageNotesContainer.classList.remove('hidden');
+                footageNotesContainer.classList.add('flex');
+            }
+        }
+
+        engineRadios.forEach(radio => {
+            radio.addEventListener('change', updateEngineConditionalFields);
+        });
+        updateEngineConditionalFields();
+
+        function validatePhaseInputs(phaseIndex = currentPhase) {
+            const activeEl = document.getElementById(`phase-${phaseIndex}`);
+            const inputs = activeEl.querySelectorAll('input[required], select[required], textarea[required]');
+            for (const input of inputs) {
+                if (!input.value.trim()) {
+                    return { valid: false, element: input, phase: phaseIndex };
+                }
+            }
+            return { valid: true, element: null, phase: phaseIndex };
+        }
+
+        function validateAllRequiredInputs() {
+            for (let p = 1; p <= totalPhases; p++) {
+                const check = validatePhaseInputs(p);
+                if (!check.valid) {
+                    return check;
+                }
+            }
+            return { valid: true, element: null, phase: currentPhase };
+        }
+
+        nextBtn.addEventListener('click', () => {
+            const check = validatePhaseInputs(currentPhase);
+            if (!check.valid) {
+                showToast("Please fill in all required fields before continuing.");
+                if (check.element) {
+                    check.element.focus();
+                    check.element.reportValidity();
+                }
+                return;
+            }
+
+            if (currentPhase < totalPhases) {
+                goToPhase(currentPhase + 1);
+            } else {
+                const fullCheck = validateAllRequiredInputs();
+                if (!fullCheck.valid) {
+                    goToPhase(fullCheck.phase);
+                    showToast("Please fill in all required fields to compile the dossier.");
+                    if (fullCheck.element) {
+                        fullCheck.element.focus();
+                        fullCheck.element.reportValidity();
+                    }
+                    return;
+                }
+                generateBlueprint(true);
+            }
+        });
+
+        if (compileDossierBtn) {
+            compileDossierBtn.addEventListener('click', () => {
+                const fullCheck = validateAllRequiredInputs();
+                if (!fullCheck.valid) {
+                    goToPhase(fullCheck.phase);
+                    showToast("Please fill in all required fields to compile the dossier.");
+                    if (fullCheck.element) {
+                        fullCheck.element.focus();
+                        fullCheck.element.reportValidity();
+                    }
+                    return;
+                }
+                generateBlueprint(true);
+            });
+        }
+
+        prevBtn.addEventListener('click', () => {
+            if (currentPhase > 1) {
+                goToPhase(currentPhase - 1);
+            }
+        });
+
+        function goToPhase(target) {
+            phase1.className = "step-phase hidden-phase";
+            phase2.className = "step-phase hidden-phase";
+            phase3.className = "step-phase hidden-phase";
+            
+            const targetEl = document.getElementById(`phase-${target}`);
+            targetEl.className = "step-phase active-phase";
+            
+            currentPhase = target;
+            
+            stepNumIndicator.innerText = target < 10 ? `0${target}` : target;
+            if (target === 1) {
+                stepTitleIndicator.innerText = "Brand & positioning";
+                progressBar1.className = "h-2 w-16 md:w-24 rounded-full bg-brand-orange shadow-[0_0_8px_rgba(249,115,22,0.5)] transition-all duration-500";
+                progressBar2.className = "h-2 w-16 md:w-24 rounded-full bg-white/10 transition-all duration-500";
+                progressBar3.className = "h-2 w-16 md:w-24 rounded-full bg-white/10 transition-all duration-500";
+                prevBtn.classList.add('hidden');
+                nextBtn.querySelector('span').innerText = "Continue";
+                nextBtn.querySelector('svg').classList.remove('hidden');
+            } else if (target === 2) {
+                stepTitleIndicator.innerText = "Video format";
+                progressBar1.className = "h-2 w-16 md:w-24 rounded-full bg-brand-orange/40 transition-all duration-500";
+                progressBar2.className = "h-2 w-16 md:w-24 rounded-full bg-brand-orange shadow-[0_0_8px_rgba(249,115,22,0.5)] transition-all duration-500";
+                progressBar3.className = "h-2 w-16 md:w-24 rounded-full bg-white/10 transition-all duration-500";
+                prevBtn.classList.remove('hidden');
+                nextBtn.querySelector('span').innerText = "Continue";
+                nextBtn.querySelector('svg').classList.remove('hidden');
+            } else if (target === 3) {
+                stepTitleIndicator.innerText = "Call to action & publishing";
+                progressBar1.className = "h-2 w-16 md:w-24 rounded-full bg-brand-orange/40 transition-all duration-500";
+                progressBar2.className = "h-2 w-16 md:w-24 rounded-full bg-brand-orange/40 transition-all duration-500";
+                progressBar3.className = "h-2 w-16 md:w-24 rounded-full bg-brand-orange shadow-[0_0_8px_rgba(249,115,22,0.5)] transition-all duration-500";
+                prevBtn.classList.remove('hidden');
+                nextBtn.querySelector('span').innerText = "⚡ Compile production dossier";
+                nextBtn.querySelector('svg').classList.add('hidden');
+            }
+        }
+
+        // ===================================================
+        // QUICK PRESETS & 3-TAB DOSSIER COMPILER
+        // ===================================================
+        const successPanel = document.getElementById('success-panel');
+        const promptOutput = document.getElementById('compiled-prompt-output');
+        const dossierCopyBtn = document.getElementById('copy-prompt-btn');
+        const dossierDownloadBtn = document.getElementById('download-dossier-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const editBlueprintBtn = document.getElementById('edit-blueprint-btn');
+        const dossierTabDesc = document.getElementById('dossier-tab-desc');
+        const dossierFilenameLabel = document.getElementById('dossier-filename-label');
+        const dossierEngineLabel = document.getElementById('dossier-engine-label');
+        
+        let compiledVideoPrompt = "";
+        let compiledBrandAndVoice = "";
+        let compiledSetupGuide = "";
+        let activeDossierTab = "prompt";
+
+        const PRESETS = {
+            animated: {
+                brandName: 'Stride Lab Physio',
+                handle: '@stridelab',
+                language: 'English',
+                palette: 'Modern Dark Tech',
+                whoYouHelp: 'Runners with knee pain',
+                outcome: 'Run again without pain',
+                whyYou: "I'm a physio and I also run",
+                tone: 'Direct & practical',
+                engine: 'animated',
+                topic: 'Why stretching your IT band never fixes knee pain, and the 30-second single-leg step test that reveals the real cause.',
+                aspect: '9:16',
+                duration: '30–45 s',
+                voice: 'ElevenLabs',
+                footageNotes: '',
+                referenceUrl: '',
+                platforms: ['Instagram', 'TikTok', 'YouTube Shorts'],
+                ctaType: 'Comment a keyword',
+                ctaKeyword: 'KNEE',
+                twoEndings: true,
+                timeline: 'ASAP',
+                badgeText: 'Preset active: Animated reel (no camera)'
+            },
+            talking: {
+                brandName: 'Craft & Code Studio',
+                handle: '@craftandcode',
+                language: 'English',
+                palette: 'Clean Corporate Blue',
+                whoYouHelp: 'Solo founders building client portals',
+                outcome: 'Ship clean customer dashboards in one weekend',
+                whyYou: 'I have shipped 40+ production web apps for startups',
+                tone: 'Direct & practical',
+                engine: 'talking',
+                topic: 'The 3 database tables every client portal needs on day one so you never rewrite permissions later.',
+                aspect: '9:16',
+                duration: '30–45 s',
+                voice: 'I record it myself',
+                footageNotes: '3 talking-head takes in public/recordings filmed at my desk + 2 screen recordings.',
+                referenceUrl: '',
+                platforms: ['Instagram', 'TikTok', 'YouTube Shorts'],
+                ctaType: 'Follow + DM',
+                ctaKeyword: 'PORTAL',
+                twoEndings: true,
+                timeline: 'ASAP',
+                badgeText: 'Preset active: Talking-head edit'
+            },
+            broll: {
+                brandName: 'Northbound Trails',
+                handle: '@northboundtrails',
+                language: 'English',
+                palette: 'Warm Organic Earth',
+                whoYouHelp: 'First-time solo hikers in Northern Europe',
+                outcome: 'Pack light and camp safely in changing mountain weather',
+                whyYou: 'I have hiked 3,000 km across Scandinavian trails in all four seasons',
+                tone: 'Calm documentary',
+                engine: 'broll',
+                topic: 'How I pack a 7-day autumn mountain kit under 8 kg without sacrificing warmth or safety.',
+                aspect: '16:9',
+                duration: '3–8 min',
+                voice: 'ElevenLabs',
+                footageNotes: '18 silent 4K b-roll clips showing tent setup in wind, stove cooking, and gear layout.',
+                referenceUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                platforms: ['YouTube long-form', 'Instagram'],
+                ctaType: 'Visit link',
+                ctaKeyword: 'GEARLIST',
+                twoEndings: false,
+                timeline: 'This week',
+                badgeText: 'Preset active: Travel b-roll + voiceover'
+            },
+            clips: {
+                brandName: 'Signal & Scale Podcast',
+                handle: '@signalandscale',
+                language: 'English',
+                palette: 'Vibrant & Creative',
+                whoYouHelp: 'B2B consultants stuck trading hours for dollars',
+                outcome: 'Turn repeatable client audits into a fixed-scope productized offer',
+                whyYou: 'I scaled a 2-person advisory practice to 120 productized audits a year',
+                tone: 'Warm & personal',
+                engine: 'clips',
+                topic: 'Extracting the 10 sharpest positioning and pricing lessons from Episode 14 on productized consulting.',
+                aspect: '9:16',
+                duration: '10 clips',
+                voice: 'I record it myself',
+                footageNotes: 'Full 52-minute podcast video recording in public/recordings/ep14.mp4.',
+                referenceUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                platforms: ['Instagram', 'TikTok', 'YouTube Shorts'],
+                ctaType: 'Save this video',
+                ctaKeyword: 'AUDIT',
+                twoEndings: true,
+                timeline: 'This week',
+                badgeText: 'Preset active: Clips from a long video'
+            }
+        };
+
+        function applyQuickPreset(presetKey) {
+            const cfg = PRESETS[presetKey];
+            if (!cfg) return;
+
+            document.getElementById('brand-name').value = cfg.brandName;
+            document.getElementById('brand-handle').value = cfg.handle;
+            document.getElementById('video-language').value = cfg.language;
+            document.getElementById('color-aesthetic').value = cfg.palette;
+            document.getElementById('who-you-help').value = cfg.whoYouHelp;
+            document.getElementById('outcome').value = cfg.outcome;
+            document.getElementById('why-you').value = cfg.whyYou;
+            document.getElementById('voice-tone').value = cfg.tone;
+
+            // Set engine radio
+            form.querySelectorAll('input[name="engine"]').forEach(r => {
+                r.checked = (r.value === cfg.engine);
+            });
+            updateEngineConditionalFields();
+
+            document.getElementById('video-topic').value = cfg.topic;
+            document.getElementById('video-aspect').value = cfg.aspect;
+            document.getElementById('video-duration').value = cfg.duration;
+            document.getElementById('video-voice').value = cfg.voice;
+            document.getElementById('footage-notes').value = cfg.footageNotes;
+            document.getElementById('reference-url').value = cfg.referenceUrl;
+
+            // Set platforms checkboxes
+            form.querySelectorAll('input[name="platforms"]').forEach(cb => {
+                cb.checked = cfg.platforms.includes(cb.value);
+            });
+
+            document.getElementById('cta-type').value = cfg.ctaType;
+            document.getElementById('cta-keyword').value = cfg.ctaKeyword;
+            document.getElementById('two-endings').checked = cfg.twoEndings;
+            document.getElementById('publish-timeline').value = cfg.timeline;
+
+            // Highlight active preset button
+            document.querySelectorAll('.preset-quick-btn').forEach(btn => {
+                const isSelected = btn.getAttribute('data-preset-btn') === presetKey;
+                btn.classList.toggle('border-brand-orange', isSelected);
+                btn.classList.toggle('bg-brand-orange/10', isSelected);
+                btn.classList.toggle('border-white/10', !isSelected);
+            });
+
+            const presetBadge = document.getElementById('preset-status-badge');
+            if (presetBadge) {
+                presetBadge.innerText = cfg.badgeText;
+                presetBadge.className = "text-[10px] font-mono text-brand-emerald font-bold uppercase tracking-wider";
+            }
+
+            // Re-compile dossier in background so master prompt block updates immediately
+            generateBlueprint(false);
+            showToast(`${cfg.badgeText} loaded!`);
+        }
+        window.applyQuickPreset = applyQuickPreset;
+
+        function switchDossierTab(tabKey) {
+            activeDossierTab = tabKey;
+            const copyBtnText = document.getElementById('copy-btn-text');
+            const downloadBtnText = document.getElementById('download-btn-text');
+
+            document.querySelectorAll('.dossier-tab-btn').forEach(btn => {
+                const isTarget = btn.getAttribute('data-dossier-tab') === tabKey;
+                if (isTarget) {
+                    btn.className = "dossier-tab-btn py-2 px-3 rounded-lg text-[10px] font-bold text-white bg-brand-orange shadow-md transition-all text-left sm:text-center cursor-pointer";
+                } else {
+                    btn.className = "dossier-tab-btn py-2 px-3 rounded-lg text-[10px] font-bold text-gray-400 hover:text-white transition-all text-left sm:text-center cursor-pointer";
+                }
+            });
+
+            const artifact = getActiveDossierArtifact();
+            promptOutput.innerText = artifact.content;
+            dossierFilenameLabel.innerText = artifact.filename;
+            dossierEngineLabel.innerText = artifact.engineLabel;
+            dossierTabDesc.innerText = artifact.desc;
+            copyBtnText.innerText = artifact.copyLabel;
+            if (downloadBtnText) downloadBtnText.innerText = artifact.downloadLabel;
+        }
+        window.switchDossierTab = switchDossierTab;
+
+        function generateBlueprint(showOverlay = true) {
+            const brandName = document.getElementById('brand-name').value.trim();
+            const rawHandle = document.getElementById('brand-handle').value.trim();
+            const handle = rawHandle.startsWith('@') ? rawHandle : `@${rawHandle}`;
+            const language = document.getElementById('video-language').value;
+            const palette = document.getElementById('color-aesthetic').value;
+            const whoYouHelp = document.getElementById('who-you-help').value.trim();
+            const outcome = document.getElementById('outcome').value.trim();
+            const whyYou = document.getElementById('why-you').value.trim();
+            const tone = document.getElementById('voice-tone').value;
+
+            const checkedEngine = form.querySelector('input[name="engine"]:checked');
+            const engine = checkedEngine ? checkedEngine.value : 'animated';
+            const topic = document.getElementById('video-topic').value.trim();
+            const aspect = document.getElementById('video-aspect').value;
+            const duration = document.getElementById('video-duration').value;
+            const voice = document.getElementById('video-voice').value;
+            const footageNotes = document.getElementById('footage-notes').value.trim() || 'Raw clips located in public/recordings';
+            const referenceUrl = document.getElementById('reference-url').value.trim() || 'None provided (use channel voice sheet)';
+
+            const checkedPlatforms = [];
+            form.querySelectorAll('input[name="platforms"]:checked').forEach(cb => {
+                checkedPlatforms.push(cb.value);
+            });
+            const platforms = checkedPlatforms.length ? checkedPlatforms.join(', ') : 'Instagram, TikTok, YouTube Shorts';
+
+            const ctaType = document.getElementById('cta-type').value;
+            const ctaKeyword = document.getElementById('cta-keyword').value.trim();
+            const twoEndings = document.getElementById('two-endings').checked;
+            const timeline = document.getElementById('publish-timeline').value;
+
+            const ctaFull = ctaKeyword ? `${ctaType} "${ctaKeyword}"` : ctaType;
+            const twoEndingsLine = twoEndings
+                ? `\nMake a second ending for TikTok that asks viewers to follow and send the keyword by DM.`
+                : '';
+
+            // Engine-specific block (Section 3 of HANDOFF)
+            let engineSpecificBlock = '';
+            if (engine === 'animated') {
+                engineSpecificBlock = `Build a fully animated vertical video with code (React + Remotion), no stock footage and no AI video.
+Write a scene plan as JSON: one scene per sentence, with the on-screen elements timed to the exact word that names them.
+Add word-by-word captions with key words highlighted, sound effects, and a cover image.
+Deliver: the mp4, the cover, and the title + description for each platform.`;
+            } else if (engine === 'talking') {
+                engineSpecificBlock = `My raw clips are in public/recordings. Footage notes: ${footageNotes}
+Transcribe them with whisper.cpp (word-level timestamps), cut every pause longer than 0.1 s,
+add captions timed to my words, and plan one motion graphic per beat in my brand.
+Lay it out as a storyboard page with a short clip per beat so I can rate each one Keep, Maybe or Drop.`;
+            } else if (engine === 'broll') {
+                engineSpecificBlock = `My raw clips have no speech. Footage notes: ${footageNotes}
+1. With ffmpeg, extract one low-resolution frame every 5 seconds from each clip.
+2. Look at the frames once and write clip_inventory.json (file, start, end, what is shown, quality 1-5).
+   Never re-read the video files after this.
+3. Write a voiceover script whose sentences match the length of the best shots. Reference: ${referenceUrl}
+4. Give me the voiceover text to generate the audio; when I upload it, align it.
+5. Assemble clips, captions and music in Remotion and render.
+6. Also export the cut list as an FCPXML timeline so I can open it in DaVinci Resolve.`;
+            } else if (engine === 'clips') {
+                engineSpecificBlock = `Source video: ${referenceUrl}
+Transcribe it, score every moment for how interesting it is to ${whoYouHelp},
+and propose the 10 best moments with a title each. After I approve, cut them to ${aspect},
+add captions and a cover per clip, and write the publish copy.`;
+            }
+
+            // Tab 1: Master prompt (video_prompt.md)
+            compiledVideoPrompt = `You are my video producer. Read BRAND.md and voice.md first and follow them.
+
+Brand: ${brandName} (${handle})
+I help: ${whoYouHelp}
+To achieve: ${outcome}
+Why me: ${whyYou}
+Tone: ${tone}. Language: ${language}.
+
+Video: ${topic}
+Format: ${aspect}, ${duration}. Platforms: ${platforms}.
+Voice: ${voice}.
+Call to action: ${ctaFull}.${twoEndingsLine}
+
+Rules:
+- The first sentence is the hook: concrete, no greeting.
+- One idea per sentence. Nothing static on screen for more than 0.6 s.
+- The hook must not promise anything the video does not deliver. Facts must be real.
+- Show me the script first and wait for my OK before building anything.
+- Before rendering, show me a contact sheet of frames and fix what looks wrong.
+
+${engineSpecificBlock}`;
+
+            // Tab 2: BRAND.md + voice.md (Section 4 of HANDOFF)
+            const tokens = PALETTE_TOKENS[palette] || PALETTE_TOKENS['Modern Dark Tech'];
+            compiledBrandAndVoice = `# BRAND.md — ${brandName}
+Palette: ${palette} (background: ${tokens.background}, surface: ${tokens.surface}, text: ${tokens.text}, accent: ${tokens.accent}, secondary accent: ${tokens.secondaryAccent})
+Fonts: heading: ${tokens.headingFont} / body: ${tokens.bodyFont}
+Captions: word by word, key words in an accent-colour box (${tokens.accent})
+Titles: short lines (max 14 characters per line), large
+Motifs and sounds: (fill in after your first video; ask Claude to add what you liked)
+
+---
+
+# voice.md — ${brandName}
+I help: ${whoYouHelp}
+Outcome: ${outcome}
+Authority: ${whyYou}
+Tone: ${tone}
+Language: ${language}
+Always: speak to one person, name their problem in the first sentence.
+Never: greetings, filler, promises the video does not keep.
+Default CTA: ${ctaFull}
+Publishing timeline: ${timeline}`;
+
+            // Tab 3: setup_guide.md (Section 5 of HANDOFF)
+            compiledSetupGuide = `# setup_guide.md — ${brandName} (${handle})
+
+1. Install: the Claude desktop app, Node.js LTS, Google Chrome. Claude can install ffmpeg for you.
+2. In Claude settings, turn on code execution and file creation.
+3. Create an empty folder, open it in Claude, and save BRAND.md and voice.md inside brand/.
+4. Paste the master prompt (video_prompt.md).
+5. Approve the script, then the storyboard, then the render.
+6. Publish to ${platforms}. If the voice is AI-generated (${voice}), label the post as AI content where the platform asks for it.
+
+Licence note: Remotion is free for individuals and companies up to 3 people.`;
+
+            // Populate 5-card Storyboard Preview (Section 2.4 of HANDOFF)
+            document.getElementById('storyboard-card-hook').innerText = topic;
+            document.getElementById('storyboard-card-problem').innerText = whoYouHelp;
+            document.getElementById('storyboard-card-solution').innerText = outcome;
+            document.getElementById('storyboard-card-proof').innerText = whyYou;
+            document.getElementById('storyboard-card-cta').innerText = twoEndings
+                ? `${ctaFull} (+ TikTok DM ending)`
+                : ctaFull;
+
+            switchDossierTab('prompt');
+
+            if (showOverlay) {
+                successPanel.classList.remove('translate-y-full', 'opacity-0', 'pointer-events-none');
+                successPanel.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+                showToast("3-part production dossier compiled! 🎬");
+            }
+        }
+
+        function getActiveDossierArtifact() {
+            if (activeDossierTab === 'brand') {
+                return {
+                    content: compiledBrandAndVoice,
+                    filename: 'brand_and_voice.md',
+                    mime: 'text/markdown;charset=utf-8',
+                    engineLabel: 'BRAND.md + voice.md',
+                    desc: 'Save these two sections as brand/BRAND.md and brand/voice.md inside your project folder so Claude keeps your visual identity and voice consistent:',
+                    copyLabel: 'Copy file (brand_and_voice.md)',
+                    downloadLabel: 'Download .md (brand_and_voice.md)'
+                };
+            }
+            if (activeDossierTab === 'setup') {
+                return {
+                    content: compiledSetupGuide,
+                    filename: 'setup_guide.md',
+                    mime: 'text/markdown;charset=utf-8',
+                    engineLabel: 'Local Setup & Publish',
+                    desc: 'Follow these 6 steps to configure Claude desktop with Remotion and publish your finished reel:',
+                    copyLabel: 'Copy file (setup_guide.md)',
+                    downloadLabel: 'Download .md (setup_guide.md)'
+                };
+            }
+            return {
+                content: compiledVideoPrompt,
+                filename: 'video_prompt.md',
+                mime: 'text/markdown;charset=utf-8',
+                engineLabel: 'Claude + Remotion',
+                desc: 'Paste this master prompt into Claude after saving your BRAND.md and voice.md files inside your project folder:',
+                copyLabel: 'Copy file (video_prompt.md)',
+                downloadLabel: 'Download .md (video_prompt.md)'
+            };
+        }
+
+        dossierCopyBtn.addEventListener('click', () => {
+            const artifact = getActiveDossierArtifact();
+            navigator.clipboard.writeText(artifact.content).then(() => {
+                const btnText = document.getElementById('copy-btn-text');
+                btnText.innerText = "Copied! ✓";
+                dossierCopyBtn.classList.remove('bg-brand-orange');
+                dossierCopyBtn.classList.add('bg-brand-emerald');
+                showToast(`Copied ${artifact.filename} to clipboard! ✓`);
+                setTimeout(() => {
+                    btnText.innerText = artifact.copyLabel;
+                    dossierCopyBtn.classList.add('bg-brand-orange');
+                    dossierCopyBtn.classList.remove('bg-brand-emerald');
+                }, 2000);
+            });
+        });
+
+        if (dossierDownloadBtn) {
+            dossierDownloadBtn.addEventListener('click', () => {
+                const artifact = getActiveDossierArtifact();
+                if (!artifact.content) return;
+                const blob = new Blob([artifact.content], { type: artifact.mime });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = artifact.filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showToast(`Downloaded ${artifact.filename}! ✓`);
+            });
+        }
+
+        if (editBlueprintBtn) {
+            editBlueprintBtn.addEventListener('click', () => {
+                successPanel.classList.add('translate-y-full', 'opacity-0', 'pointer-events-none');
+                successPanel.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            });
+        }
+
+        restartBtn.addEventListener('click', () => {
+            form.reset();
+            updateEngineConditionalFields();
+            document.querySelectorAll('.preset-quick-btn').forEach(btn => {
+                btn.classList.remove('border-brand-orange', 'bg-brand-orange/10');
+                btn.classList.add('border-white/10');
+            });
+            const presetBadge = document.getElementById('preset-status-badge');
+            if (presetBadge) {
+                presetBadge.innerText = "4 quick presets";
+                presetBadge.className = "text-[10px] font-mono text-brand-cyan uppercase tracking-wider";
+            }
+            successPanel.classList.add('translate-y-full', 'opacity-0', 'pointer-events-none');
+            successPanel.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            goToPhase(1);
+        });
+
+        // =========================================================================
+        // INTERACTIVE 8-STEP PRODUCTION ROADMAP CONTROLLER
+        // =========================================================================
+        const ROADMAP_STORAGE_KEY = 'officeaim_viralist_studio_roadmap_v1';
+        const totalSteps = 8;
+        let activeRoadmapStep = 1;
+        let checkedRoadmapSteps = new Set();
+
+        try {
+            const savedSteps = JSON.parse(localStorage.getItem(ROADMAP_STORAGE_KEY) || '[]');
+            if (Array.isArray(savedSteps)) {
+                savedSteps.forEach(s => {
+                    const num = Number(s);
+                    if (num >= 1 && num <= totalSteps) checkedRoadmapSteps.add(num);
+                });
+            }
+        } catch (err) {
+            console.warn('Could not read roadmap progress from localStorage:', err);
+        }
+
+        const roadmapStepCards = Array.from(document.querySelectorAll('.roadmap-step-card'));
+        const roadmapCheckboxes = Array.from(document.querySelectorAll('.roadmap-step-checkbox'));
+        const activeStepBadge = document.getElementById('roadmap-active-step-badge');
+        const completedCounter = document.getElementById('roadmap-completed-counter');
+        const roadmapProgressBar = document.getElementById('roadmap-progress-bar');
+        const roadmapPrevBtn = document.getElementById('roadmap-prev-btn');
+        const roadmapNextBtn = document.getElementById('roadmap-next-btn');
+        const roadmapResetBtn = document.getElementById('roadmap-reset-btn');
+        const spotlightStepNum = document.getElementById('spotlight-step-num');
+        const spotlightLayerTag = document.getElementById('spotlight-layer-tag');
+        const spotlightStepTitle = document.getElementById('spotlight-step-title');
+        const spotlightStepDesc = document.getElementById('spotlight-step-desc');
+        const spotlightToggleCheckBtn = document.getElementById('spotlight-toggle-check-btn');
+
+        function persistRoadmapChecks() {
+            try {
+                localStorage.setItem(ROADMAP_STORAGE_KEY, JSON.stringify(Array.from(checkedRoadmapSteps)));
+            } catch (err) {
+                console.warn('Could not persist roadmap progress:', err);
+            }
+        }
+
+        function renderRoadmapState() {
+            const completedCount = checkedRoadmapSteps.size;
+            const completionPct = Math.round((completedCount / totalSteps) * 100);
+            const barWidth = Math.max(Math.round((activeRoadmapStep / totalSteps) * 100), completionPct);
+
+            if (activeStepBadge) activeStepBadge.innerText = `Step ${activeRoadmapStep} of ${totalSteps}`;
+            if (completedCounter) completedCounter.innerText = `${completedCount}/${totalSteps} completed (${completionPct}%)`;
+            if (roadmapProgressBar) roadmapProgressBar.style.width = `${barWidth}%`;
+            if (roadmapPrevBtn) roadmapPrevBtn.disabled = activeRoadmapStep <= 1;
+            if (roadmapNextBtn) roadmapNextBtn.disabled = activeRoadmapStep >= totalSteps;
+
+            roadmapCheckboxes.forEach(cb => {
+                const stepNum = Number(cb.getAttribute('data-check-step'));
+                const isChecked = checkedRoadmapSteps.has(stepNum);
+                cb.checked = isChecked;
+                const statusLabel = cb.parentElement ? cb.parentElement.querySelector('.roadmap-step-status-label') : null;
+                if (statusLabel) {
+                    statusLabel.innerText = isChecked ? 'Done' : 'To do';
+                    statusLabel.className = isChecked
+                        ? 'roadmap-step-status-label text-brand-emerald font-bold'
+                        : 'roadmap-step-status-label text-gray-400';
+                }
+            });
+
+            roadmapStepCards.forEach(card => {
+                const stepNum = Number(card.getAttribute('data-roadmap-step'));
+                const isActive = stepNum === activeRoadmapStep;
+                const isDone = checkedRoadmapSteps.has(stepNum);
+
+                card.classList.remove(
+                    'border-brand-orange/60',
+                    'bg-brand-orange/[0.04]',
+                    'border-brand-emerald/50',
+                    'bg-brand-emerald/[0.04]',
+                    'border-white/[0.06]'
+                );
+
+                if (isActive) {
+                    card.classList.add('border-brand-orange/60', 'bg-brand-orange/[0.04]');
+                } else if (isDone) {
+                    card.classList.add('border-brand-emerald/50', 'bg-brand-emerald/[0.04]');
+                } else {
+                    card.classList.add('border-white/[0.06]');
+                }
+
+                if (isActive) {
+                    const titleEl = card.querySelector('h3');
+                    const descEl = card.querySelector('p');
+                    const layerText = card.getAttribute('data-layer') || '';
+                    if (spotlightStepNum) spotlightStepNum.innerText = `Active focus · Step 0${stepNum}`;
+                    if (spotlightLayerTag) spotlightLayerTag.innerText = layerText;
+                    if (spotlightStepTitle && titleEl) spotlightStepTitle.innerText = `${stepNum}. ${titleEl.innerText}`;
+                    if (spotlightStepDesc && descEl) spotlightStepDesc.innerText = descEl.innerText;
+                }
+            });
+
+            if (spotlightToggleCheckBtn) {
+                const isCurrentDone = checkedRoadmapSteps.has(activeRoadmapStep);
+                spotlightToggleCheckBtn.innerHTML = isCurrentDone
+                    ? '<span>✓ Step completed (click to uncheck)</span>'
+                    : '<span>✓ Mark current step completed</span>';
+            }
+        }
+
+        roadmapStepCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const stepNum = Number(card.getAttribute('data-roadmap-step'));
+                if (stepNum >= 1 && stepNum <= totalSteps) {
+                    activeRoadmapStep = stepNum;
+                    renderRoadmapState();
+                }
+            });
+        });
+
+        roadmapCheckboxes.forEach(cb => {
+            cb.addEventListener('change', () => {
+                const stepNum = Number(cb.getAttribute('data-check-step'));
+                if (cb.checked) {
+                    checkedRoadmapSteps.add(stepNum);
+                    showToast(`Step ${stepNum} marked as completed! ✓`);
+                } else {
+                    checkedRoadmapSteps.delete(stepNum);
+                }
+                persistRoadmapChecks();
+                renderRoadmapState();
+            });
+        });
+
+        if (roadmapPrevBtn) {
+            roadmapPrevBtn.addEventListener('click', () => {
+                if (activeRoadmapStep > 1) {
+                    activeRoadmapStep -= 1;
+                    renderRoadmapState();
+                }
+            });
+        }
+
+        if (roadmapNextBtn) {
+            roadmapNextBtn.addEventListener('click', () => {
+                if (activeRoadmapStep < totalSteps) {
+                    activeRoadmapStep += 1;
+                    renderRoadmapState();
+                }
+            });
+        }
+
+        if (spotlightToggleCheckBtn) {
+            spotlightToggleCheckBtn.addEventListener('click', () => {
+                if (checkedRoadmapSteps.has(activeRoadmapStep)) {
+                    checkedRoadmapSteps.delete(activeRoadmapStep);
+                } else {
+                    checkedRoadmapSteps.add(activeRoadmapStep);
+                    showToast(`Step ${activeRoadmapStep} marked as completed! ✓`);
+                    if (activeRoadmapStep < totalSteps) {
+                        activeRoadmapStep += 1;
+                    }
+                }
+                persistRoadmapChecks();
+                renderRoadmapState();
+            });
+        }
+
+        if (roadmapResetBtn) {
+            roadmapResetBtn.addEventListener('click', () => {
+                checkedRoadmapSteps.clear();
+                activeRoadmapStep = 1;
+                persistRoadmapChecks();
+                renderRoadmapState();
+                showToast('8-step production roadmap reset.');
+            });
+        }
+
+        renderRoadmapState();
+    })();
+    </script>
+</body>
+</html>

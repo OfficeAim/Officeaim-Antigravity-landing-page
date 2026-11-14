@@ -3,22 +3,30 @@
 > OfficeAIM is a 100% free, open-source educational laboratory and interactive campus dedicated to autonomous AI agent workflows, prompt engineering, and modern web architectures.
 
 ## Core Pages & Directories
-- [Landing Page](https://officeaim.com/): Overview of the open educational platform, architecture, and free tooling.
-- [Learn Directory](https://officeaim.com/learn.html): Minimalist learning pathways covering workflows, blueprints, interactive modules, and the OfficeAIM Prompt Vault (/learn/prompts).
-- [AI Skills Library](https://officeaim.com/skills.html): 26 production-ready AI agent prompts formatted with guided natural language instructions and cross-LLM launcher.
-- [Prompt Generator](https://officeaim.com/prompt-generator.html): Interactive meta-prompt builder designed to structure complex role prompts and frameworks.
-- [Newsroom & Intelligence](https://officeaim.com/news.html): Latest telemetry, release updates, and technical breakthroughs.
-- [Community & Mentorship](https://officeaim.com/community.html): Free community learning, YouTube courses, and mentorship channels.
+- [Landing Page](https://officeaimhq.netlify.app/): Overview of the open educational platform, architecture, and free tooling.
+- [Learn Directory](https://officeaimhq.netlify.app/learn.html): Minimalist learning pathways covering workflows, blueprints, interactive modules, and the OfficeAIM Prompt Vault (/learn/prompts).
+- [AI Skills Library](https://officeaimhq.netlify.app/skills.html): 26 production-ready AI agent prompts formatted with guided natural language instructions and cross-LLM launcher.
+- [Prompt Generator](https://officeaimhq.netlify.app/prompt-generator.html): Interactive meta-prompt builder designed to structure complex role prompts and frameworks.
+- [Newsroom & Intelligence](https://officeaimhq.netlify.app/news.html): Latest telemetry, release updates, and technical breakthroughs.
+- [Community & Mentorship](https://officeaimhq.netlify.app/community.html): Free community learning, YouTube courses, and mentorship channels.
 
 ## Technical Architecture & Blueprints
-- [Architectural Blueprint](https://officeaim.com/blueprint.html): Deep dive into multi-agent systems, client-side sovereignty, and edge deployments.
-- [Automated Workflows](https://officeaim.com/use-cases.html): Step-by-step guides for connecting n8n, Supabase, and Google Gemini into production pipelines.
-- [Security & Trust](https://officeaim.com/security.html): Zero-trust security model, client-side data privacy, and compliance guidelines.
-- [Realtime Board](https://officeaim.com/board.html): Live operational telemetry and status board.
+- [Architectural Blueprint](https://officeaimhq.netlify.app/blueprint.html): Deep dive into multi-agent systems, client-side sovereignty, and edge deployments.
+- [Automated Workflows](https://officeaimhq.netlify.app/use-cases.html): Step-by-step guides for connecting n8n, Supabase, and Google Gemini into production pipelines.
+- [Security & Trust](https://officeaimhq.netlify.app/security.html): Zero-trust security model, client-side data privacy, and compliance guidelines.
+- [Realtime Board](https://officeaimhq.netlify.app/board.html): Directory of the 19 specialist AI agents and what each one does.
 
 ## Free Open-Source Tooling
-- [n8n Automation Vault](https://officeaim.com/resources/workflows.html): 98 production-ready n8n workflow JSON blueprints across AI agents, webhooks, Supabase databases, and automated notifications.
-- [Free Stack Kit](https://officeaim.com/resources/free-stack-kit.html): Curated zero-cost tech stack guide for solo developers and builders.
-- [Website Creator Guide](https://officeaim.com/resources/website-creator.html): Framework-free Jamstack development methodology.
-- [QR Generator](https://officeaim.com/resources/qr-generator.html): Zero-telemetry client-side SVG QR code generator.
-- [Library Tracker](https://officeaim.com/resources/library-tracker.html): Autonomous asset and dependency tracking utility.
+- [n8n Automation Vault](https://officeaimhq.netlify.app/resources/workflows.html): 98 production-ready n8n workflow JSON blueprints across AI agents, webhooks, Supabase databases, and automated notifications.
+- [Free Stack Kit](https://officeaimhq.netlify.app/resources/free-stack-kit.html): Curated zero-cost tech stack guide for solo developers and builders.
+- [Web Blueprint Studio](https://officeaimhq.netlify.app/resources/website-creator.html): Answer a few questions and get a complete website blueprint: build prompt, stack setup guide and launch roadmap.
+- [Viralist Studio](https://officeaimhq.netlify.app/resources/viralist-studio.html): Short-form video blueprint compiler for Claude and Remotion.
+- [QR Generator](https://officeaimhq.netlify.app/resources/qr-generator.html): Zero-telemetry client-side SVG QR code generator.
+- [Library Tracker](https://officeaimhq.netlify.app/resources/library-tracker.html): Library and loan tracker with AI vision for inventory and student management.
+
+## News & Research Articles
+- [100 AI websites: find the few that matter](https://officeaimhq.netlify.app/news/100-ai-websites-find-the-tools-that-matter.html): How to filter, test, and keep the AI tools that genuinely improve your workflow.
+- [Building an AI MVP in Days](https://officeaimhq.netlify.app/news/ai-mvp-days.html): How modern startups utilize AI APIs, n8n orchestration, and Supabase to bootstrap and launch MVPs.
+- [Ideogram 4.5: image editing without the drift](https://officeaimhq.netlify.app/news/ideogram-4-5-consistent-ai-image-editing.html): Why Ideogram 4.5 consistency focus and persistent AI tools matter for creators and teams.
+- [Meta-prompting: AI that writes its own prompts](https://officeaimhq.netlify.app/news/meta-prompting.html): Meta-prompting lets AI models draft and refine their own prompts; how it works and when to apply it.
+- [OpenAI Dots: the always-on AI agent](https://officeaimhq.netlify.app/news/openai-dots-always-on-ai-agents.html): How always-on background AI agents move from answering prompts to managing projects.
